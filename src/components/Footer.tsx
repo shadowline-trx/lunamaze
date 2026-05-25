@@ -1,8 +1,9 @@
 'use client';
 
+import { internalUrl } from '@/lib/paths';
+
 const PLAY_STORE_URL =
   'https://play.google.com/store/apps/details?id=com.axiomapp.app&hl=en_IN';
-const STUDIO_URL = '/';
 const STUDIO_GITHUB_URL = 'https://github.com/shadowline-trx';
 const STUDIO_EMAIL = 'lunamaze.dev@gmail.com';
 
@@ -21,7 +22,7 @@ export default function Footer() {
             <p className="text-axiom-textDim text-sm mt-4">
               A product of{' '}
               <a
-                href={STUDIO_URL}
+                href={internalUrl('/')}
                 className="text-axiom-primaryLight hover:text-axiom-textPrimary transition-colors"
               >
                 Luna Maze
@@ -81,7 +82,7 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <a
-                  href={STUDIO_URL}
+                  href={internalUrl('/')}
                   className="text-axiom-textSecondary hover:text-axiom-primaryLight transition-colors text-sm"
                 >
                   Luna Maze

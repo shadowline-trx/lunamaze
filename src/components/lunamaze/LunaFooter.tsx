@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
 import { founderSocials } from '@/content/lunamaze';
+import { internalUrl } from '@/lib/paths';
 
 /**
  * Computed once at module evaluation time so server render and client
@@ -31,7 +32,7 @@ export default function LunaFooter(): JSX.Element {
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-8">
         <div>
           <a
-            href="/"
+            href={internalUrl('/')}
             className="text-lg font-semibold text-lunamaze-textPrimary tracking-tight"
           >
             Luna Maze
@@ -45,7 +46,7 @@ export default function LunaFooter(): JSX.Element {
           aria-label="Footer"
         >
           <a
-            href="/axiom/"
+            href={internalUrl('/axiom/')}
             className="text-lunamaze-textSecondary hover:text-lunamaze-violetLight transition-colors duration-200"
           >
             Axiom

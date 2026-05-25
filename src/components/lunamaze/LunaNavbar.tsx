@@ -2,6 +2,7 @@
 
 import type { JSX } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { internalUrl } from '@/lib/paths';
 
 /**
  * A single anchor entry in the Luna Maze navbar.
@@ -122,7 +123,7 @@ export default function LunaNavbar({
 
           {/* Right: cross-link to the relocated Axiom site. */}
           <a
-            href="/axiom/"
+            href={internalUrl('/axiom/')}
             className="inline-flex items-center gap-2 rounded-full border border-lunamaze-border bg-lunamaze-bgSurface/60 px-4 py-2 text-xs sm:text-sm font-medium text-lunamaze-textPrimary hover:border-lunamaze-violet/60 hover:text-lunamaze-violetLight transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lunamaze-violetLight"
           >
             <span>Visit Axiom</span>
