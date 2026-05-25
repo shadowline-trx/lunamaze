@@ -1,0 +1,130 @@
+/**
+ * Luna Maze studio content module.
+ *
+ * Single source of truth for all copy, products, capabilities, and contact
+ * data surfaced on the Luna Maze landing page and in the AWS Activate
+ * application document. Every export is fully typed and immutable.
+ */
+
+export type ProductStatus = 'live' | 'coming-soon';
+
+export interface Product {
+  readonly id: string;
+  readonly name: string;
+  readonly description: string;
+  readonly status: ProductStatus;
+  readonly href?: string;
+  readonly tag?: string;
+}
+
+export interface Capability {
+  readonly id: string;
+  readonly title: string;
+  readonly description: string;
+  readonly icon: 'spark' | 'compass' | 'pulse' | 'orbit' | 'ship' | 'graph';
+}
+
+export interface SocialLink {
+  readonly id: string;
+  readonly label: string;
+  readonly href: string;
+  readonly host: 'github' | 'linkedin' | 'twitter' | 'email';
+}
+
+// aboutCopy: 417 chars (must be in [300, 500] and contain "Luna Maze")
+export const aboutCopy: string =
+  'Luna Maze is an independent product studio building tools at the intersection of cognition, focus, and craft. Founder-led and considered, we ship premium software for the people doing the deepest work — operators, builders, and quiet professionals who want their tools to feel earned. We choose depth over breadth, longevity over launches, and design every surface as if a single person will live inside it for years.';
+
+// buildingCopy: 389 chars (must be in [300, 500] and contain "Luna Maze")
+export const buildingCopy: string =
+  'Luna Maze is shipping software for attention, signal, and ambient cognition. Our first product, Axiom, is a premium habit tracker for brain recovery — built to help people rebuild streaks, rewire pathways, and reclaim focus after burnout, illness, or drift. A roadmap of companion products is taking shape behind it, each released only when the craft is right. We move quietly, on purpose.';
+
+/**
+ * Real Google Play listing for the Axiom Android app.
+ * Source: provided by the founder. Wire any "Get the app" CTA to this URL.
+ */
+export const axiomPlayStoreUrl: string =
+  'https://play.google.com/store/apps/details?id=com.axiomapp.app&hl=en_IN';
+
+export const products: ReadonlyArray<Product> = [
+  {
+    id: 'axiom',
+    name: 'Axiom',
+    description:
+      'Habit tracker engineered for brain recovery — build streaks, rewire pathways, reclaim focus. Live on Google Play.',
+    status: 'live',
+    href: '/axiom/',
+    tag: 'Product 01',
+  },
+  {
+    id: 'project-2',
+    name: 'In the maze',
+    description:
+      'Our next product is being mapped. Charting routes through ambient cognition.',
+    status: 'coming-soon',
+    tag: 'Product 02',
+  },
+  {
+    id: 'project-3',
+    name: 'Signal',
+    description:
+      "A research thread becoming a product. Coming when it's ready, not before.",
+    status: 'coming-soon',
+    tag: 'Product 03',
+  },
+];
+
+export const capabilities: ReadonlyArray<Capability> = [
+  {
+    id: 'product-engineering',
+    title: 'Product engineering',
+    description:
+      'End-to-end TypeScript, React, and Next.js builds shipped as resilient static or edge-rendered systems.',
+    icon: 'ship',
+  },
+  {
+    id: 'design-systems',
+    title: 'Design systems',
+    description:
+      'Token-driven visual languages that stay coherent from first sketch through tenth product.',
+    icon: 'compass',
+  },
+  {
+    id: 'applied-research',
+    title: 'Applied research',
+    description:
+      'Translating findings from cognition, attention, and recovery science into product mechanics that hold up in the wild.',
+    icon: 'pulse',
+  },
+  {
+    id: 'deployment-ops',
+    title: 'Deployment & ops',
+    description:
+      'Pragmatic CI/CD on GitHub Actions, AWS, and edge platforms — fast deploys, quiet pagers, observable systems.',
+    icon: 'orbit',
+  },
+  {
+    id: 'content-strategy',
+    title: 'Content strategy',
+    description:
+      'Founder-grade narrative and product copy tuned for trust, clarity, and the particular weight of a premium brand.',
+    icon: 'graph',
+  },
+];
+
+export const founderSocials: ReadonlyArray<SocialLink> = [
+  {
+    id: 'github',
+    label: 'GitHub',
+    href: 'https://github.com/shadowline-trx',
+    host: 'github',
+  },
+  {
+    id: 'email',
+    label: 'Email',
+    href: 'mailto:lunamaze.dev@gmail.com',
+    host: 'email',
+  },
+];
+
+export const contactEmail: string = 'lunamaze.dev@gmail.com';
