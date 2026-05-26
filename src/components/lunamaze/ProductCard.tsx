@@ -1,16 +1,19 @@
 import type { JSX } from 'react';
-import type { Product } from '@/content/lunamaze';
+import type { Product, ProductStatus } from '@/content/lunamaze';
 
 /**
  * ProductCard — single tile in the Luna Maze Products grid.
  *
- * Branching root element:
+ * Branching root element by status:
  *   - `live` + `href` defined → an `<a>` with `aria-label="Visit <name>"`.
- *   - otherwise              → a `<div role="group" aria-disabled="true">`
- *     that is non-interactive (no link, dimmed, `cursor-not-allowed`).
+ *     External `https://` URLs additionally open in a new tab with safe
+ *     `rel="noopener noreferrer"`.
+ *   - `private-testing` or `coming-soon` (or no href) → a non-interactive
+ *     `<div role="group" aria-disabled="true">` with the appropriate pill
+ *     and dimmed treatment.
  *
- * Card body is rendered identically in both branches via a shared inner
- * JSX block so the surface visuals stay consistent.
+ * The card body is rendered identically across all branches via a shared
+ * inner JSX block so the surface visuals stay consistent.
  */
 
 interface ProductCardProps {
@@ -28,26 +31,49 @@ const CARD_INTERACTIVE_CLASS =
   'focus-visible:outline-2 focus-visible:outline-offset-2 ' +
   'focus-visible:outline-lunamaze-violetLight';
 
-const CARD_DISABLED_CLASS = 'opacity-60 cursor-not-allowed';
+const CARD_DISABLED_CLASS = 'opacity-70 cursor-not-allowed';
 
 const STATUS_PILL_BASE_CLASS =
-  'inline-flex items-center text-xs font-medium rounded-full px-3 py-1';
+  'inline-flex items-center gap-1.5 text-xs font-medium rounded-full px-3 py-1';
 
-const STATUS_PILL_LIVE_CLASS =
-  'bg-lunamaze-violet/15 text-lunamaze-violetLight border border-lunamaze-violet/30';
+interface StatusPresentation {
+  readonly label: string;
+  readonly pillClass: string;
+  readonly dotClass: string;
+}
 
-const STATUS_PILL_COMING_SOON_CLASS =
-  'bg-lunamaze-bgElevated text-lunamaze-textDim border border-lunamaze-border';
+function getStatusPresentation(status: ProductStatus): StatusPresentation {
+  switch (status) {
+    case 'live':
+      return {
+        label: 'Live',
+        pillClass:
+          'bg-lunamaze-violet/15 text-lunamaze-violetLight border border-lunamaze-violet/30',
+        dotClass: 'bg-lunamaze-violetLight',
+      };
+    case 'private-testing':
+      return {
+        label: 'Private testing',
+        pillClass:
+          'bg-lunamaze-signal/10 text-lunamaze-signal border border-lunamaze-signal/30',
+        dotClass: 'bg-lunamaze-signal',
+      };
+    case 'coming-soon':
+      return {
+        label: 'Coming soon',
+        pillClass:
+          'bg-lunamaze-bgElevated text-lunamaze-textDim border border-lunamaze-border',
+        dotClass: 'bg-lunamaze-textDim',
+      };
+  }
+}
 
 export default function ProductCard({ product }: ProductCardProps): JSX.Element {
   const isLive = product.status === 'live' && product.href !== undefined;
+  const presentation = getStatusPresentation(product.status);
 
   const cardClassName = `${CARD_BASE_CLASS} ${
     isLive ? CARD_INTERACTIVE_CLASS : CARD_DISABLED_CLASS
-  }`;
-
-  const statusPillClassName = `${STATUS_PILL_BASE_CLASS} ${
-    isLive ? STATUS_PILL_LIVE_CLASS : STATUS_PILL_COMING_SOON_CLASS
   }`;
 
   const cardBody = (
@@ -60,8 +86,12 @@ export default function ProductCard({ product }: ProductCardProps): JSX.Element 
         ) : (
           <span aria-hidden="true" />
         )}
-        <span className={statusPillClassName}>
-          {isLive ? 'Live' : 'Coming soon'}
+        <span className={`${STATUS_PILL_BASE_CLASS} ${presentation.pillClass}`}>
+          <span
+            aria-hidden="true"
+            className={`w-1.5 h-1.5 rounded-full ${presentation.dotClass}`}
+          />
+          {presentation.label}
         </span>
       </div>
 
@@ -73,20 +103,24 @@ export default function ProductCard({ product }: ProductCardProps): JSX.Element 
         {product.description}
       </p>
 
-      {isLive && (
+      {isLive && product.href !== undefined && (
         <div className="mt-8 text-sm text-lunamaze-violetLight">
-          Open product →
+          {/^https?:\/\//.test(product.href) ? 'Visit site ↗' : 'Open product →'}
         </div>
       )}
     </>
   );
 
   if (isLive && product.href !== undefined) {
+    const isExternal = /^https?:\/\//.test(product.href);
     return (
       <a
         href={product.href}
         aria-label={`Visit ${product.name}`}
         className={cardClassName}
+        {...(isExternal
+          ? { target: '_blank', rel: 'noopener noreferrer' }
+          : {})}
       >
         {cardBody}
       </a>

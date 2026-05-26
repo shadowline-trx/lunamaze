@@ -6,7 +6,7 @@
  * application document. Every export is fully typed and immutable.
  */
 
-export type ProductStatus = 'live' | 'coming-soon';
+export type ProductStatus = 'live' | 'private-testing' | 'coming-soon';
 
 export interface Product {
   readonly id: string;
@@ -57,19 +57,20 @@ export const products: ReadonlyArray<Product> = [
     tag: 'Product 01',
   },
   {
-    id: 'project-2',
-    name: 'In the maze',
+    id: 'typecrt',
+    name: 'Typecrt',
     description:
-      'Our next product is being mapped. Charting routes through ambient cognition.',
-    status: 'coming-soon',
+      'A focused, frictionless typing practice site. Open it, start typing, get faster. Live at typecrt.in.',
+    status: 'live',
+    href: 'https://www.typecrt.in',
     tag: 'Product 02',
   },
   {
-    id: 'project-3',
-    name: 'Signal',
+    id: 'drift',
+    name: 'Drift',
     description:
-      "A research thread becoming a product. Coming when it's ready, not before.",
-    status: 'coming-soon',
+      'A precision puzzle game in closed testing on the Google Play Console — paused mid-build to ship Axiom and Typecrt first. Returning to it next.',
+    status: 'private-testing',
     tag: 'Product 03',
   },
 ];
