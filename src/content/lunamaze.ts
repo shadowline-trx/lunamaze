@@ -57,6 +57,7 @@ export const products: ReadonlyArray<Product> = [
     status: 'live',
     href: '/axiom/',
     tag: 'Product 01',
+    imageHref: '/images/axiom-icon.png',
   },
   {
     id: 'typecrt',
@@ -75,6 +76,7 @@ export const products: ReadonlyArray<Product> = [
       'A precision puzzle game in closed testing on the Google Play Console — paused mid-build to ship Axiom and TypeCrt first. Returning to it next.',
     status: 'private-testing',
     tag: 'Product 03',
+    imageHref: '/images/drift-mark.svg',
   },
 ];
 
