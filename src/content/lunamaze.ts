@@ -35,9 +35,9 @@ export interface SocialLink {
 export const aboutCopy: string =
   'Luna Maze is an independent product studio building tools at the intersection of cognition, focus, and craft. Founder-led and considered, we ship premium software for the people doing the deepest work — operators, builders, and quiet professionals who want their tools to feel earned. We choose depth over breadth, longevity over launches, and design every surface as if a single person will live inside it for years.';
 
-// buildingCopy: 389 chars (must be in [300, 500] and contain "Luna Maze")
+// buildingCopy: 480 chars (must be in [300, 500] and contain "Luna Maze")
 export const buildingCopy: string =
-  'Luna Maze is shipping software for attention, signal, and ambient cognition. Our first product, Axiom, is a premium habit tracker for brain recovery — built to help people rebuild streaks, rewire pathways, and reclaim focus after burnout, illness, or drift. A roadmap of companion products is taking shape behind it, each released only when the craft is right. We move quietly, on purpose.';
+  "Luna Maze is shipping software for attention, signal, and craft. Axiom — our first app — is a habit tracker for brain recovery, live on Google Play. TypeCrt is our zero-latency typing test (CRT-styled, vanilla TypeScript, 50+ themes, smart practice), live at typecrt.in. Drift, a precision puzzle game, is in closed testing on the Play Console. Solo founder, no investors. We move quietly, on purpose.";
 
 /**
  * Real Google Play listing for the Axiom Android app.
@@ -58,9 +58,9 @@ export const products: ReadonlyArray<Product> = [
   },
   {
     id: 'typecrt',
-    name: 'Typecrt',
+    name: 'TypeCrt',
     description:
-      'A focused, frictionless typing practice site. Open it, start typing, get faster. Live at typecrt.in.',
+      'Aesthetic, zero-latency typing test inspired by CRT terminals. 50+ themes, smart practice on your weak keys, command palette, smooth caret engine, and a 3-tier profile dashboard. Built in pure TypeScript — no framework. Live at typecrt.in.',
     status: 'live',
     href: 'https://www.typecrt.in',
     tag: 'Product 02',
@@ -69,7 +69,7 @@ export const products: ReadonlyArray<Product> = [
     id: 'drift',
     name: 'Drift',
     description:
-      'A precision puzzle game in closed testing on the Google Play Console — paused mid-build to ship Axiom and Typecrt first. Returning to it next.',
+      'A precision puzzle game in closed testing on the Google Play Console — paused mid-build to ship Axiom and TypeCrt first. Returning to it next.',
     status: 'private-testing',
     tag: 'Product 03',
   },

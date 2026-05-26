@@ -44,3 +44,6 @@ Thumbs.db
 .kiro/steering/
 tsconfig.tsbuildinfo
 *.tsbuildinfo
+
+# Local symlinks to other Luna Maze project source trees (read-only refs)
+.refs/
