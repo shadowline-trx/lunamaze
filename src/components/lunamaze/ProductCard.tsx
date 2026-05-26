@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
 import type { Product, ProductStatus } from '@/content/lunamaze';
+import { internalUrl } from '@/lib/paths';
 
 /**
  * ProductCard — single tile in the Luna Maze Products grid.
@@ -94,6 +95,23 @@ export default function ProductCard({ product }: ProductCardProps): JSX.Element 
           {presentation.label}
         </span>
       </div>
+
+      {product.imageHref !== undefined && (
+        <div
+          className="mt-6 -mx-2 h-32 sm:h-36 rounded-xl overflow-hidden bg-gradient-to-br from-lunamaze-bgElevated/60 to-lunamaze-bgDeep/40 border border-lunamaze-border/60 flex items-center justify-center"
+          aria-hidden="true"
+        >
+          {/* Static-export friendly: plain <img>, basePath-aware src. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={internalUrl(product.imageHref)}
+            alt=""
+            className="max-h-full max-w-[80%] object-contain drop-shadow-[0_0_24px_rgba(123,92,255,0.35)] transition-transform duration-500 group-hover:scale-[1.04]"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+      )}
 
       <h3 className="text-2xl sm:text-3xl font-semibold text-lunamaze-textPrimary mt-6">
         {product.name}

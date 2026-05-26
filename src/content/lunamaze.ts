@@ -15,6 +15,8 @@ export interface Product {
   readonly status: ProductStatus;
   readonly href?: string;
   readonly tag?: string;
+  /** Optional public-relative path to a product visual (logo / mark). */
+  readonly imageHref?: string;
 }
 
 export interface Capability {
@@ -64,6 +66,7 @@ export const products: ReadonlyArray<Product> = [
     status: 'live',
     href: 'https://www.typecrt.in',
     tag: 'Product 02',
+    imageHref: '/images/typecrt-logo.png',
   },
   {
     id: 'drift',
