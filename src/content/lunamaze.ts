@@ -65,7 +65,7 @@ export const products: ReadonlyArray<Product> = [
     description:
       'Aesthetic, zero-latency typing test inspired by CRT terminals. 50+ themes, smart practice on your weak keys, command palette, smooth caret engine, and a 3-tier profile dashboard. Built in pure TypeScript — no framework. Live at typecrt.in.',
     status: 'live',
-    href: 'https://www.typecrt.in',
+    href: '/typecrt/',
     tag: 'Product 02',
     imageHref: '/images/typecrt-logo.png',
   },
@@ -75,6 +75,7 @@ export const products: ReadonlyArray<Product> = [
     description:
       'A precision puzzle game in closed testing on the Google Play Console — paused mid-build to ship Axiom and TypeCrt first. Returning to it next.',
     status: 'private-testing',
+    href: '/drift/',
     tag: 'Product 03',
     imageHref: '/images/drift-mark.svg',
   },

@@ -6,6 +6,7 @@ import HowItWorksSection from '@/components/HowItWorksSection';
 import PremiumSection from '@/components/PremiumSection';
 import CTASection from '@/components/CTASection';
 import Footer from '@/components/Footer';
+import GridDistortion from '@/components/backgrounds/GridDistortion';
 
 export default function AxiomPage() {
   return (
@@ -15,7 +16,10 @@ export default function AxiomPage() {
       <div className="relative z-10">
         <HeroSection />
         <div className="grid-bg noise-overlay relative">
-          <FeaturesSection />
+          <GridDistortion density={18} intensity={0.35} />
+          <div className="relative z-10">
+            <FeaturesSection />
+          </div>
         </div>
         <section id="protocol">
           <HowItWorksSection />
