@@ -22,8 +22,10 @@ interface ProductCardProps {
 }
 
 const CARD_BASE_CLASS =
-  'group relative block rounded-2xl border border-lunamaze-border ' +
-  'bg-lunamaze-bgSurface/60 p-8 backdrop-blur-sm transition-all duration-300';
+  'group relative block rounded-2xl border border-lunamaze-border/80 ' +
+  'bg-lunamaze-bgSurface/80 p-8 backdrop-blur-md ' +
+  'shadow-[0_12px_48px_-20px_rgba(0,0,0,0.85)] ring-1 ring-white/[0.04] ' +
+  'transition-all duration-300';
 
 const CARD_INTERACTIVE_CLASS =
   'hover:border-lunamaze-violet/60 hover:bg-lunamaze-bgElevated/70 ' +
@@ -70,11 +72,14 @@ function getStatusPresentation(status: ProductStatus): StatusPresentation {
 }
 
 export default function ProductCard({ product }: ProductCardProps): JSX.Element {
-  const isLive = product.status === 'live' && product.href !== undefined;
+  // A card is interactive whenever it has a destination — this now includes
+  // in-development products (e.g. Drift) that have a dedicated teaser page,
+  // not just `live` ones. The status pill still communicates real status.
+  const isInteractive = product.href !== undefined;
   const presentation = getStatusPresentation(product.status);
 
   const cardClassName = `${CARD_BASE_CLASS} ${
-    isLive ? CARD_INTERACTIVE_CLASS : CARD_DISABLED_CLASS
+    isInteractive ? CARD_INTERACTIVE_CLASS : CARD_DISABLED_CLASS
   }`;
 
   const cardBody = (
@@ -97,20 +102,52 @@ export default function ProductCard({ product }: ProductCardProps): JSX.Element 
       </div>
 
       {product.imageHref !== undefined && (
-        <div
-          className="mt-6 -mx-2 h-32 sm:h-36 rounded-xl overflow-hidden bg-gradient-to-br from-lunamaze-bgElevated/60 to-lunamaze-bgDeep/40 border border-lunamaze-border/60 flex items-center justify-center"
-          aria-hidden="true"
-        >
-          {/* Static-export friendly: plain <img>, basePath-aware src. */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={internalUrl(product.imageHref)}
-            alt=""
-            className="max-h-full max-w-[80%] object-contain drop-shadow-[0_0_24px_rgba(123,92,255,0.35)] transition-transform duration-500 group-hover:scale-[1.04]"
-            loading="lazy"
-            decoding="async"
-          />
-        </div>
+        (() => {
+          // Raster icons (PNG/JPG) ship with baked-in dark/textured squares,
+          // so they need blend + edge feathering to dissolve the box. Vector
+          // marks (SVG) are already transparent and must stay crisp/untinted.
+          const isRaster = /\.(png|jpe?g|webp)$/i.test(product.imageHref);
+          return (
+            <div
+              className="relative mt-6 -mx-2 h-32 sm:h-36 rounded-2xl overflow-hidden flex items-center justify-center"
+              aria-hidden="true"
+            >
+              {/* Soft radial plate that lifts the mark without a hard frame. */}
+              <div
+                className="absolute inset-0"
+                style={{
+                  background:
+                    'radial-gradient(circle at 50% 45%, rgba(123,92,255,0.18) 0%, rgba(123,92,255,0.06) 38%, rgba(10,14,39,0) 72%)',
+                }}
+              />
+              {/* Static-export friendly: plain <img>, basePath-aware src. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={internalUrl(product.imageHref)}
+                alt=""
+                className="relative max-h-[78%] max-w-[72%] object-contain transition-transform duration-500 group-hover:scale-[1.05]"
+                style={
+                  isRaster
+                    ? {
+                        // `screen` drops flat dark backgrounds; the radial
+                        // mask feathers any remaining hard edges into the card.
+                        mixBlendMode: 'screen',
+                        WebkitMaskImage:
+                          'radial-gradient(circle at 50% 50%, #000 58%, rgba(0,0,0,0) 86%)',
+                        maskImage:
+                          'radial-gradient(circle at 50% 50%, #000 58%, rgba(0,0,0,0) 86%)',
+                        filter: 'drop-shadow(0 0 22px rgba(123,92,255,0.35))',
+                      }
+                    : {
+                        filter: 'drop-shadow(0 0 22px rgba(123,92,255,0.35))',
+                      }
+                }
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          );
+        })()
       )}
 
       <h3 className="text-2xl sm:text-3xl font-semibold text-lunamaze-textPrimary mt-6">
@@ -121,7 +158,7 @@ export default function ProductCard({ product }: ProductCardProps): JSX.Element 
         {product.description}
       </p>
 
-      {isLive && product.href !== undefined && (
+      {isInteractive && product.href !== undefined && (
         <div className="mt-8 text-sm text-lunamaze-violetLight">
           {/^https?:\/\//.test(product.href) ? 'Visit site ↗' : 'Open product →'}
         </div>
@@ -129,11 +166,11 @@ export default function ProductCard({ product }: ProductCardProps): JSX.Element 
     </>
   );
 
-  if (isLive && product.href !== undefined) {
+  if (isInteractive && product.href !== undefined) {
     const isExternal = /^https?:\/\//.test(product.href);
     return (
       <a
-        href={product.href}
+        href={isExternal ? product.href : internalUrl(product.href)}
         aria-label={`Visit ${product.name}`}
         className={cardClassName}
         {...(isExternal

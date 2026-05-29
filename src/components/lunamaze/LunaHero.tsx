@@ -2,6 +2,7 @@
 
 import type { JSX } from 'react';
 import LunaConstellation from './LunaConstellation';
+import DotGrid from '@/components/backgrounds/DotGrid';
 
 interface LunaHeroProps {
   readonly title?: string;
@@ -45,7 +46,10 @@ export default function LunaHero({
       id="hero"
       className="relative min-h-screen md:min-h-screen flex items-center justify-center overflow-hidden px-6 sm:px-8 lg:px-16"
     >
-      {/* Background motif: constellation behind everything */}
+      {/* Background motif: subtle dot grid, then constellation on top */}
+      <div className="absolute inset-0 z-0 opacity-40 pointer-events-none">
+        <DotGrid gap={34} dotRadius={1.3} influence={140} />
+      </div>
       <div className="absolute inset-0 z-0 opacity-90 pointer-events-none">
         <LunaConstellation className="absolute inset-0 w-full h-full" />
       </div>

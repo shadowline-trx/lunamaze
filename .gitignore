@@ -2,6 +2,9 @@
 /dist/
 /.next/
 
+# Original (pre-optimization) image backups kept locally, not in the repo
+public/images/*.orig
+
 # Dependencies
 /node_modules/
 
