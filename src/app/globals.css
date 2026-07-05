@@ -265,6 +265,110 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
+/* --------------------------------------------------------------------------
+   Long-form legal prose (privacy policy, terms). Scoped under
+   `.lunamaze-prose` so it never leaks into the marketing sections. All colors
+   reference the :root tokens above. `scroll-margin-top` keeps anchored
+   headings clear of the fixed ProductNav when deep-linked (e.g. /privacy/#axiom).
+   -------------------------------------------------------------------------- */
+.lunamaze-prose {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.lunamaze-prose > * + * {
+  margin-top: 1.15rem;
+}
+
+.lunamaze-prose h2 {
+  color: var(--text-primary);
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  margin-top: 3.5rem;
+  padding-top: 2.25rem;
+  border-top: 1px solid var(--border);
+  scroll-margin-top: 6rem;
+}
+
+.lunamaze-prose h2:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+.lunamaze-prose h3 {
+  color: var(--text-primary);
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  scroll-margin-top: 6rem;
+}
+
+.lunamaze-prose strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.lunamaze-prose a {
+  color: var(--primary-light);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s ease;
+}
+
+.lunamaze-prose a:hover {
+  color: #A48CFF;
+}
+
+.lunamaze-prose ul {
+  list-style: none;
+  margin-top: 1rem;
+  padding: 0;
+}
+
+.lunamaze-prose ul li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-top: 0.6rem;
+  color: var(--text-secondary);
+}
+
+.lunamaze-prose ul li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--primary-light);
+}
+
+.lunamaze-prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.25rem;
+  font-size: 0.95rem;
+}
+
+.lunamaze-prose th,
+.lunamaze-prose td {
+  border: 1px solid var(--border);
+  padding: 0.7rem 0.9rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.lunamaze-prose th {
+  color: var(--text-primary);
+  background: var(--bg-surface);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
 /* Respect users who prefer reduced motion: disable named animations used by
    Luna Maze sections and shrink global transition durations to a sliver so
    state changes still settle without animating. */

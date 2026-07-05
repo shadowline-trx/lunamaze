@@ -69,6 +69,12 @@ export default function LunaFooter(): JSX.Element {
           >
             Contact
           </a>
+          <a
+            href={internalUrl('/axiom/privacy/')}
+            className="text-lunamaze-textSecondary hover:text-lunamaze-violetLight transition-colors duration-200"
+          >
+            Privacy
+          </a>
         </nav>
         <div className="flex flex-wrap items-center gap-3">
           {founderSocials
