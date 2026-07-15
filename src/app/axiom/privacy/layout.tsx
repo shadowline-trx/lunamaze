@@ -4,14 +4,14 @@ import type { ReactNode } from 'react';
 export const metadata: Metadata = {
   title: 'Axiom Privacy Policy — Luna Maze',
   description:
-    'How Luna Maze handles your data in Axiom. Local-first, no tracking, no ads — privacy by design.',
+    'How Luna Maze handles your data in Axiom (iOS & Android). Local-first, no third-party tracking, no ads — privacy by design.',
   alternates: {
     canonical: 'https://lunamaze.com/axiom/privacy/',
   },
   openGraph: {
     title: 'Axiom Privacy Policy — Luna Maze',
     description:
-      'Local-first, no tracking, no ads. How Luna Maze handles your data in Axiom.',
+      'Local-first, no third-party tracking, no ads. How Luna Maze handles your data in Axiom.',
     type: 'website',
   },
 };
