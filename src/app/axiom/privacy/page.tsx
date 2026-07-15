@@ -400,7 +400,7 @@ export default function PrivacyPage(): JSX.Element {
             </li>
             <li>
               <strong>{'Developer: '}</strong>
-              {'Luna Maze, India'}
+              {'Luna Maze, a studio of Harikrishnan V (shadowline), India'}
             </li>
           </ul>
         </article>
