@@ -79,6 +79,16 @@ export const products: ReadonlyArray<Product> = [
     tag: 'Product 03',
     imageHref: '/images/drift-mark.svg',
   },
+  {
+    id: 'adbhub',
+    name: 'ADB Hub',
+    description:
+      'An enterprise-grade Android device control center for Windows — QR-code wireless pairing, screen mirroring, logcat, shell, and file & app management, with adb and scrcpy bundled. Free download.',
+    status: 'live',
+    href: '/adbhub/',
+    tag: 'Product 04',
+    imageHref: '/images/adbhub-icon.png',
+  },
 ];
 
 export const capabilities: ReadonlyArray<Capability> = [
