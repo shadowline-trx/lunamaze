@@ -1,12 +1,12 @@
 import type { ReactNode } from 'react';
 
 const DOWNLOAD_URL =
-  'https://github.com/shadowline-trx/adbhub/releases/download/v0.1.0/ADB-Hub-0.1.0-x64-setup.exe';
-const RELEASES_URL = 'https://github.com/shadowline-trx/adbhub/releases/latest';
-const GITHUB_URL = 'https://github.com/shadowline-trx/adbhub';
+  'https://github.com/shadowline-trx/tether-adb/releases/download/v0.1.0/Tether-ADB-0.1.0-x64-setup.exe';
+const RELEASES_URL = 'https://github.com/shadowline-trx/tether-adb/releases/latest';
+const GITHUB_URL = 'https://github.com/shadowline-trx/tether-adb';
 const VERSION = 'v0.1.0';
 const SIZE = '10 MB';
-const PAGE_URL = 'https://lunamaze.com/adbhub/';
+const PAGE_URL = 'https://lunamaze.com/tether-adb/';
 
 // ── tiny inline icon set (stroke, currentColor) ─────────────────────────────
 type IconProps = { className?: string };
@@ -137,7 +137,7 @@ const steps: ReadonlyArray<{ n: string; title: string; desc: string }> = [
   {
     n: '1',
     title: 'Open the QR tab',
-    desc: 'In ADB Hub, click Wireless → QR code. A fresh pairing code appears instantly.',
+    desc: 'In Tether ADB, click Wireless → QR code. A fresh pairing code appears instantly.',
   },
   {
     n: '2',
@@ -147,22 +147,22 @@ const steps: ReadonlyArray<{ n: string; title: string; desc: string }> = [
   {
     n: '3',
     title: 'It connects itself',
-    desc: 'ADB Hub detects your phone over the network and pairs automatically — nothing to type.',
+    desc: 'Tether ADB detects your phone over the network and pairs automatically — nothing to type.',
   },
 ];
 
 const faqs: ReadonlyArray<{ q: string; a: string }> = [
   {
     q: 'Do I need to install the Android SDK, adb, or scrcpy?',
-    a: 'No. ADB Hub bundles adb and scrcpy inside the installer, so every feature — including screen mirroring — works out of the box with nothing else to install.',
+    a: 'No. Tether ADB bundles adb and scrcpy inside the installer, so every feature — including screen mirroring — works out of the box with nothing else to install.',
   },
   {
-    q: 'Is ADB Hub free?',
-    a: 'Yes, ADB Hub is free to download and use. It is proprietary software — © Luna Maze, all rights reserved.',
+    q: 'Is Tether ADB free?',
+    a: 'Yes, Tether ADB is free to download and use. It is proprietary software — © Luna Maze, all rights reserved.',
   },
   {
     q: 'Which platforms are supported?',
-    a: 'ADB Hub runs on Windows 10 and 11 (64-bit). It installs per-user with no administrator rights and adds a searchable Start-menu entry and a desktop shortcut.',
+    a: 'Tether ADB runs on Windows 10 and 11 (64-bit). It installs per-user with no administrator rights and adds a searchable Start-menu entry and a desktop shortcut.',
   },
   {
     q: 'Why does Windows show a SmartScreen warning?',
@@ -170,7 +170,7 @@ const faqs: ReadonlyArray<{ q: string; a: string }> = [
   },
   {
     q: 'How does QR-code wireless pairing work?',
-    a: 'ADB Hub generates an Android-compatible pairing QR. When you scan it from your phone’s Wireless debugging screen, ADB Hub discovers the device on your network and runs the pairing automatically — no codes to type.',
+    a: 'Tether ADB generates an Android-compatible pairing QR. When you scan it from your phone’s Wireless debugging screen, Tether ADB discovers the device on your network and runs the pairing automatically — no codes to type.',
   },
 ];
 
@@ -179,7 +179,7 @@ const jsonLd = {
   '@graph': [
     {
       '@type': 'SoftwareApplication',
-      name: 'ADB Hub',
+      name: 'Tether ADB',
       operatingSystem: 'Windows 10, Windows 11',
       applicationCategory: 'DeveloperApplication',
       description:
@@ -188,7 +188,7 @@ const jsonLd = {
       downloadUrl: DOWNLOAD_URL,
       softwareVersion: '0.1.0',
       fileSize: '10MB',
-      image: 'https://lunamaze.com/images/adbhub-og.png',
+      image: 'https://lunamaze.com/images/tether-adb-og.png',
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
       publisher: { '@type': 'Organization', name: 'Luna Maze', url: 'https://lunamaze.com' },
     },
@@ -237,8 +237,8 @@ export default function AdbHubPage() {
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
         <a href="/" className="flex items-center gap-3">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/adbhub-icon.png" alt="ADB Hub" width={34} height={34} className="rounded-lg" />
-          <span className="text-[15px] font-semibold tracking-tight">ADB Hub</span>
+          <img src="/images/tether-adb-icon.png" alt="Tether ADB" width={34} height={34} className="rounded-lg" />
+          <span className="text-[15px] font-semibold tracking-tight">Tether</span>
         </a>
         <nav className="flex items-center gap-3">
           <a
@@ -271,7 +271,7 @@ export default function AdbHubPage() {
             .
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-pretty text-[16.5px] leading-relaxed text-lunamaze-textSecondary">
-            ADB Hub is an enterprise-grade Android device hub for your desktop. Pair over Wi-Fi with a{' '}
+            Tether ADB is an enterprise-grade Android device hub for your desktop. Pair over Wi-Fi with a{' '}
             <span className="text-lunamaze-textPrimary">QR code</span>, mirror and control the screen, tail logcat,
             run a shell, and manage files &amp; apps — all in one stunning app.
           </p>
@@ -309,8 +309,8 @@ export default function AdbHubPage() {
           <div className="overflow-hidden rounded-2xl border border-lunamaze-border bg-lunamaze-bgSurface shadow-2xl shadow-black/50">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/images/adbhub-app.png"
-              alt="ADB Hub app — device dashboard with bundled adb and scrcpy"
+              src="/images/tether-adb-app.png"
+              alt="Tether ADB app — device dashboard with bundled adb and scrcpy"
               width={1300}
               height={840}
               className="h-auto w-full"
@@ -356,7 +356,7 @@ export default function AdbHubPage() {
               </span>
               <h2 className="mt-5 text-3xl font-bold tracking-tight sm:text-4xl">Pair with a QR code in seconds</h2>
               <p className="mt-4 text-[15.5px] leading-relaxed text-lunamaze-textSecondary">
-                Wireless debugging usually means typing IP addresses and six-digit codes. ADB Hub makes it a scan:
+                Wireless debugging usually means typing IP addresses and six-digit codes. Tether ADB makes it a scan:
                 point your phone at the code and it connects itself.
               </p>
               <ol className="mt-8 space-y-5">
@@ -396,7 +396,7 @@ export default function AdbHubPage() {
 
       {/* download CTA */}
       <section id="download" className="mx-auto max-w-3xl scroll-mt-20 px-6 py-16 text-center sm:py-24">
-        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Get ADB Hub</h2>
+        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Get Tether ADB</h2>
         <p className="mx-auto mt-4 max-w-xl text-[16px] leading-relaxed text-lunamaze-textSecondary">
           One installer, everything included. Installs per-user with a desktop shortcut and a searchable Start-menu
           entry — no admin, no SDK.
@@ -443,8 +443,8 @@ export default function AdbHubPage() {
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-8 sm:flex-row">
           <div className="flex items-center gap-2.5 text-[13.5px] text-lunamaze-textSecondary">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/adbhub-icon.png" alt="" width={22} height={22} className="rounded-md" />
-            ADB Hub — © 2026 Luna Maze. All rights reserved.
+            <img src="/images/tether-adb-icon.png" alt="" width={22} height={22} className="rounded-md" />
+            Tether ADB — © 2026 Luna Maze. All rights reserved.
           </div>
           <div className="flex items-center gap-5 text-[13.5px] text-lunamaze-textSecondary">
             <a href={GITHUB_URL} className="transition hover:text-lunamaze-textPrimary">

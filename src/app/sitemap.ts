@@ -13,7 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
   const routes: Array<{ path: string; priority: number; changeFrequency: MetadataRoute.Sitemap[number]['changeFrequency'] }> = [
     { path: '/', priority: 1.0, changeFrequency: 'monthly' },
-    { path: '/adbhub/', priority: 0.9, changeFrequency: 'weekly' },
+    { path: '/tether-adb/', priority: 0.9, changeFrequency: 'weekly' },
     { path: '/axiom/', priority: 0.8, changeFrequency: 'monthly' },
     { path: '/typecrt/', priority: 0.7, changeFrequency: 'monthly' },
     { path: '/drift/', priority: 0.5, changeFrequency: 'monthly' },

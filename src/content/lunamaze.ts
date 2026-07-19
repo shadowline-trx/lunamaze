@@ -80,14 +80,14 @@ export const products: ReadonlyArray<Product> = [
     imageHref: '/images/drift-mark.svg',
   },
   {
-    id: 'adbhub',
-    name: 'ADB Hub',
+    id: 'tether-adb',
+    name: 'Tether ADB',
     description:
-      'An enterprise-grade Android device control center for Windows — QR-code wireless pairing, screen mirroring, logcat, shell, and file & app management, with adb and scrcpy bundled. Free download.',
+      'An enterprise-grade Android device control center for Windows — QR-code wireless ADB pairing, screen mirroring, logcat, shell, and file & app management, with adb and scrcpy bundled. Free download.',
     status: 'live',
-    href: '/adbhub/',
+    href: '/tether-adb/',
     tag: 'Product 04',
-    imageHref: '/images/adbhub-icon.png',
+    imageHref: '/images/tether-adb-icon.png',
   },
 ];
 

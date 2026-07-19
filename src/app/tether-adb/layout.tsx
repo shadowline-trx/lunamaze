@@ -1,20 +1,20 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 
-const title = 'ADB Hub — Android Device Control for Windows (Wired & Wireless)';
+const title = 'Tether ADB — Wireless ADB, Screen Mirror & Device Control for Windows';
 const description =
-  'ADB Hub is an enterprise-grade Android device manager for Windows. QR-code wireless pairing, screen mirroring, logcat, shell, and file & app management — with adb and scrcpy bundled. Free download.';
-const url = 'https://lunamaze.com/adbhub/';
-const ogImage = 'https://lunamaze.com/images/adbhub-og.png';
+  'Tether ADB is an enterprise-grade Android device manager for Windows. QR-code wireless ADB pairing, screen mirroring, logcat, shell, and file & app management — with adb and scrcpy bundled. Free download.';
+const url = 'https://lunamaze.com/tether-adb/';
+const ogImage = 'https://lunamaze.com/images/tether-adb-og.png';
 
 export const metadata: Metadata = {
   title,
   description,
   keywords: [
-    'ADB Hub',
-    'adb gui',
+    'Tether ADB',
     'wireless adb',
     'adb over wifi',
+    'adb gui',
     'qr code adb pairing',
     'scrcpy gui',
     'android screen mirror windows',
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
         url: ogImage,
         width: 1200,
         height: 630,
-        alt: 'ADB Hub — Android device control for Windows',
+        alt: 'Tether ADB — wireless ADB and Android device control for Windows',
       },
     ],
   },
@@ -54,10 +54,10 @@ export const metadata: Metadata = {
   category: 'technology',
 };
 
-interface AdbHubLayoutProps {
+interface TetherAdbLayoutProps {
   children: ReactNode;
 }
 
-export default function AdbHubLayout({ children }: AdbHubLayoutProps) {
+export default function TetherAdbLayout({ children }: TetherAdbLayoutProps) {
   return <div className="bg-lunamaze-bgDeep text-lunamaze-textPrimary">{children}</div>;
 }
