@@ -17,6 +17,8 @@ deploy_log.txt
 .env
 .env.*
 !.env.example
+# Per-machine MCP config (points at local secret env files)
+.mcp.json
 
 # IDE / agent memory (per-machine, not shareable)
 AGENT.md
@@ -50,3 +52,10 @@ tsconfig.tsbuildinfo
 
 # Local symlinks to other Luna Maze project source trees (read-only refs)
 .refs/
+
+# Auto-generated agent rules (personalized per developer)
+.brainsync/agent-rules.md
+
+# Auto-generated AI agent exclusions
+.clineRules
+.cline/

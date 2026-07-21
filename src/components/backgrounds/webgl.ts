@@ -39,6 +39,14 @@ export interface ShaderBackgroundOptions {
 }
 
 export interface ShaderBackgroundHandle {
+  /**
+   * Update a custom uniform after creation, for values that change over the
+   * page's life (scroll progress, section state). The name must have been
+   * present in `options.uniforms` at creation — that is when locations are
+   * resolved — otherwise the call is ignored. Unknown names are a no-op
+   * rather than a throw, so a renamed shader uniform degrades quietly.
+   */
+  setUniform(name: string, value: UniformValue): void;
   /** Tear down listeners, observers, the rAF loop, and the GL context. */
   destroy(): void;
 }
@@ -69,6 +77,11 @@ function compileShader(
   gl.shaderSource(shader, source);
   gl.compileShader(shader);
   if (gl.getShaderParameter(shader, gl.COMPILE_STATUS) !== true) {
+    // Production still fails silently to the CSS fallback, but a shader that
+    // does not compile is invisible and maddening to debug — surface it in dev.
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('[webgl] shader compile failed:', gl.getShaderInfoLog(shader));
+    }
     gl.deleteShader(shader);
     return null;
   }
@@ -141,7 +154,9 @@ export function createShaderBackground(
 
   const animate = options.animate ?? true;
   const dprCap = options.dprCap ?? 1.5;
-  const customUniforms = options.uniforms ?? {};
+  // Mutable working copy: `setUniform` writes here and the frame loop reads it,
+  // so callers can animate uniforms without rebuilding the GL context.
+  const customUniforms: Record<string, UniformValue> = { ...(options.uniforms ?? {}) };
 
   // Full-screen quad (two triangles).
   const buffer = gl.createBuffer();
@@ -296,6 +311,14 @@ export function createShaderBackground(
   if (animate) start();
 
   return {
+    setUniform(name: string, value: UniformValue): void {
+      if (disposed) return;
+      if (!(name in customUniforms)) return;
+      customUniforms[name] = value;
+      // When the loop is not running (reduced motion / paused), repaint once so
+      // the new value is actually visible rather than waiting for a resume.
+      if (!animate) renderFrame();
+    },
     destroy(): void {
       disposed = true;
       stop();

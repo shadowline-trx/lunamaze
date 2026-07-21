@@ -146,6 +146,14 @@ body {
   pointer-events: none;
 }
 
+/* AXIOM page: display headings use Fraunces (the serif voice). Scoped to
+   .axiom-root so it never touches the Luna Maze studio pages. */
+.axiom-root h1,
+.axiom-root h2 {
+  font-family: var(--font-display), Georgia, 'Times New Roman', serif;
+  letter-spacing: -0.02em;
+}
+
 /* Grid background */
 .grid-bg {
   background-image:
