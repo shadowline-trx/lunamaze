@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next';
+import { ALL_ARTICLES } from '@/content/blog';
 
 // Required for `output: 'export'` (static hosting on GitHub Pages).
 export const dynamic = 'force-static';
@@ -19,12 +20,29 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/drift/', priority: 0.5, changeFrequency: 'monthly' },
     { path: '/axiom/privacy/', priority: 0.3, changeFrequency: 'yearly' },
     { path: '/axiom/terms/', priority: 0.3, changeFrequency: 'yearly' },
+    { path: '/axiom/blog/', priority: 0.7, changeFrequency: 'weekly' },
   ];
 
-  return routes.map((r) => ({
-    url: `${BASE}${r.path}`,
-    lastModified: now,
-    changeFrequency: r.changeFrequency,
-    priority: r.priority,
+  // Every blog article in every language, derived from the content registry.
+  const articleRoutes = ALL_ARTICLES.map((a) => ({
+    path: `/axiom/blog/${a.lang}/${a.slug}/`,
+    priority: a.lang === 'en' ? 0.7 : 0.6,
+    changeFrequency: 'monthly' as const,
+    lastModified: new Date(a.dateModified),
   }));
+
+  return [
+    ...routes.map((r) => ({
+      url: `${BASE}${r.path}`,
+      lastModified: now,
+      changeFrequency: r.changeFrequency,
+      priority: r.priority,
+    })),
+    ...articleRoutes.map((r) => ({
+      url: `${BASE}${r.path}`,
+      lastModified: r.lastModified,
+      changeFrequency: r.changeFrequency,
+      priority: r.priority,
+    })),
+  ];
 }
