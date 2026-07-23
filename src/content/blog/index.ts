@@ -8,6 +8,10 @@ import rewireId from './rewire-timeline/id';
 import rewirePtBr from './rewire-timeline/pt-br';
 import rewireEs from './rewire-timeline/es';
 import rewireAr from './rewire-timeline/ar';
+import rewireFr from './rewire-timeline/fr';
+import rewireDe from './rewire-timeline/de';
+import rewireRu from './rewire-timeline/ru';
+import rewireTr from './rewire-timeline/tr';
 
 import flatlineEn from './flatline/en';
 import flatlineHi from './flatline/hi';
@@ -17,6 +21,10 @@ import flatlineId from './flatline/id';
 import flatlinePtBr from './flatline/pt-br';
 import flatlineEs from './flatline/es';
 import flatlineAr from './flatline/ar';
+import flatlineFr from './flatline/fr';
+import flatlineDe from './flatline/de';
+import flatlineRu from './flatline/ru';
+import flatlineTr from './flatline/tr';
 
 /**
  * Central registry of every blog article in every language. Routes, hreflang
@@ -32,6 +40,10 @@ export const ALL_ARTICLES: ReadonlyArray<BlogArticle> = [
   rewirePtBr,
   rewireEs,
   rewireAr,
+  rewireFr,
+  rewireDe,
+  rewireRu,
+  rewireTr,
   flatlineEn,
   flatlineHi,
   flatlineTa,
@@ -40,6 +52,10 @@ export const ALL_ARTICLES: ReadonlyArray<BlogArticle> = [
   flatlinePtBr,
   flatlineEs,
   flatlineAr,
+  flatlineFr,
+  flatlineDe,
+  flatlineRu,
+  flatlineTr,
 ];
 
 /** All language versions of one article, keyed by lang. */

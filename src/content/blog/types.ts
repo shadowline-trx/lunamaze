@@ -55,4 +55,8 @@ export const BLOG_LANGUAGES: Readonly<Record<string, BlogLanguageMeta>> = {
   'pt-br': { nativeName: 'Português (BR)', englishName: 'Portuguese (Brazil)' },
   es: { nativeName: 'Español', englishName: 'Spanish' },
   ar: { nativeName: 'العربية', englishName: 'Arabic' },
+  fr: { nativeName: 'Français', englishName: 'French' },
+  de: { nativeName: 'Deutsch', englishName: 'German' },
+  ru: { nativeName: 'Русский', englishName: 'Russian' },
+  tr: { nativeName: 'Türkçe', englishName: 'Turkish' },
 };
