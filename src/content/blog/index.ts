@@ -39,6 +39,8 @@ import nightDe from './night-urges/de';
 import nightRu from './night-urges/ru';
 import nightTr from './night-urges/tr';
 
+import quittrBreachEn from './quittr-breach/en';
+
 /**
  * Central registry of every blog article in every language. Routes, hreflang
  * alternates and the sitemap are all derived from this — adding a language is
@@ -81,6 +83,7 @@ export const ALL_ARTICLES: ReadonlyArray<BlogArticle> = [
   nightDe,
   nightRu,
   nightTr,
+  quittrBreachEn,
 ];
 
 /** All language versions of one article, keyed by lang. */

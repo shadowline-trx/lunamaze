@@ -139,6 +139,26 @@ function Block({ block }: { block: BlogBlock }): JSX.Element {
           ))}
         </>
       );
+    case 'sources':
+      return (
+        <div className="rounded-xl border border-lunamaze-border bg-lunamaze-bgSurface/40 px-5 py-4">
+          <p className="font-semibold text-lunamaze-textPrimary mb-2">Sources</p>
+          <ul className="space-y-1 text-sm">
+            {block.items.map((item) => (
+              <li key={item.url}>
+                <a
+                  href={item.url}
+                  rel="noopener noreferrer nofollow"
+                  target="_blank"
+                  className="underline decoration-lunamaze-border underline-offset-4 text-lunamaze-textSecondary hover:text-lunamaze-signal"
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      );
   }
 }
 

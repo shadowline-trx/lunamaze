@@ -16,7 +16,9 @@ export type BlogBlock =
   | { kind: 'list'; items: ReadonlyArray<string> }
   | { kind: 'quote'; text: string }
   | { kind: 'callout'; title: string; text: string }
-  | { kind: 'faq'; items: ReadonlyArray<{ q: string; a: string }> };
+  | { kind: 'faq'; items: ReadonlyArray<{ q: string; a: string }> }
+  /** Cited external sources — required for any article making factual claims about third parties. */
+  | { kind: 'sources'; items: ReadonlyArray<{ label: string; url: string }> };
 
 export interface BlogArticle {
   /** Shared across languages; used in the URL and for hreflang grouping. */
