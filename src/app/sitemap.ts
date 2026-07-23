@@ -25,6 +25,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/axiom/tools/severity-test/', priority: 0.8, changeFrequency: 'monthly' },
     { path: '/axiom/tools/rewire-calculator/', priority: 0.8, changeFrequency: 'monthly' },
     { path: '/axiom/tools/panic/', priority: 0.8, changeFrequency: 'monthly' },
+    { path: '/axiom/tools/wallpaper/', priority: 0.7, changeFrequency: 'monthly' },
   ];
 
   // Every blog article in every language, derived from the content registry.

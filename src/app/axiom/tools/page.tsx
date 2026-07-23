@@ -92,14 +92,21 @@ export default function ToolsHubPage(): JSX.Element {
             <p className="mt-4 text-sm text-lunamaze-textDim">for urge emergencies · anonymous · works instantly</p>
           </article>
 
-          <article className="rounded-2xl border border-lunamaze-border bg-lunamaze-bgSurface/40 p-8">
-            <h2 className="text-xl font-bold leading-snug text-lunamaze-textSecondary">
-              Coming next
+          <article className="rounded-2xl border border-lunamaze-border bg-lunamaze-bgSurface/60 p-8 backdrop-blur-sm">
+            <h2 className="text-xl sm:text-2xl font-bold leading-snug">
+              <Link
+                href="/axiom/tools/wallpaper/"
+                className="hover:text-lunamaze-signal transition-colors"
+              >
+                Streak Wallpaper Generator
+              </Link>
             </h2>
             <p className="mt-3 text-lunamaze-textSecondary leading-relaxed">
-              A streak wallpaper generator — abstract art for your day count that shares to any
-              chat without naming the topic. Same rules: free, anonymous, in-browser.
+              Abstract art for your day count — a lock screen that reminds you what you’re
+              building, and shares to any chat without naming the topic. Three styles, PNG
+              download.
             </p>
+            <p className="mt-4 text-sm text-lunamaze-textDim">instant · anonymous · runs in your browser</p>
           </article>
 
           <p className="text-sm text-lunamaze-textSecondary">
