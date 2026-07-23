@@ -75,13 +75,30 @@ export default function ToolsHubPage(): JSX.Element {
             <p className="mt-4 text-sm text-lunamaze-textDim">1 min · anonymous · runs in your browser</p>
           </article>
 
+          <article className="rounded-2xl border border-lunamaze-border bg-lunamaze-bgSurface/60 p-8 backdrop-blur-sm">
+            <h2 className="text-xl sm:text-2xl font-bold leading-snug">
+              <Link
+                href="/axiom/tools/panic/"
+                className="hover:text-lunamaze-signal transition-colors"
+              >
+                Panic Button
+              </Link>
+            </h2>
+            <p className="mt-3 text-lunamaze-textSecondary leading-relaxed">
+              For the moment the urge is up: a breathing pacer, a ten-minute ride-it-out timer,
+              and a grounding sequence. Bookmark it, or send it to a friend who’s struggling —
+              no account, no judgment.
+            </p>
+            <p className="mt-4 text-sm text-lunamaze-textDim">for urge emergencies · anonymous · works instantly</p>
+          </article>
+
           <article className="rounded-2xl border border-lunamaze-border bg-lunamaze-bgSurface/40 p-8">
             <h2 className="text-xl font-bold leading-snug text-lunamaze-textSecondary">
               Coming next
             </h2>
             <p className="mt-3 text-lunamaze-textSecondary leading-relaxed">
-              A web panic button for urge emergencies and a streak wallpaper generator. Same
-              rules: free, anonymous, in-browser.
+              A streak wallpaper generator — abstract art for your day count that shares to any
+              chat without naming the topic. Same rules: free, anonymous, in-browser.
             </p>
           </article>
 
