@@ -9,6 +9,15 @@ import rewirePtBr from './rewire-timeline/pt-br';
 import rewireEs from './rewire-timeline/es';
 import rewireAr from './rewire-timeline/ar';
 
+import flatlineEn from './flatline/en';
+import flatlineHi from './flatline/hi';
+import flatlineTa from './flatline/ta';
+import flatlineMl from './flatline/ml';
+import flatlineId from './flatline/id';
+import flatlinePtBr from './flatline/pt-br';
+import flatlineEs from './flatline/es';
+import flatlineAr from './flatline/ar';
+
 /**
  * Central registry of every blog article in every language. Routes, hreflang
  * alternates and the sitemap are all derived from this — adding a language is
@@ -23,6 +32,14 @@ export const ALL_ARTICLES: ReadonlyArray<BlogArticle> = [
   rewirePtBr,
   rewireEs,
   rewireAr,
+  flatlineEn,
+  flatlineHi,
+  flatlineTa,
+  flatlineMl,
+  flatlineId,
+  flatlinePtBr,
+  flatlineEs,
+  flatlineAr,
 ];
 
 /** All language versions of one article, keyed by lang. */
