@@ -252,7 +252,13 @@ export default function SeverityTest(): JSX.Element {
             </p>
           )}
           <p className="mt-4 text-sm text-lunamaze-textSecondary">
-            The full stage-by-stage map, including the flatline nobody warns you about:{' '}
+            <Link
+              href="/axiom/tools/rewire-calculator/"
+              className="underline decoration-lunamaze-border underline-offset-4 hover:text-lunamaze-signal"
+            >
+              Turn this into a day-by-day map
+            </Link>
+            {' '}· or read the full stages, including the flatline nobody warns you about:{' '}
             <Link
               href="/axiom/blog/en/rewire-timeline/"
               className="underline decoration-lunamaze-border underline-offset-4 hover:text-lunamaze-signal"

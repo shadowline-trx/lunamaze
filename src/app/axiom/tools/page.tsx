@@ -58,13 +58,30 @@ export default function ToolsHubPage(): JSX.Element {
             <p className="mt-4 text-sm text-lunamaze-textDim">2 min · anonymous · runs in your browser</p>
           </article>
 
+          <article className="rounded-2xl border border-lunamaze-border bg-lunamaze-bgSurface/60 p-8 backdrop-blur-sm">
+            <h2 className="text-xl sm:text-2xl font-bold leading-snug">
+              <Link
+                href="/axiom/tools/rewire-calculator/"
+                className="hover:text-lunamaze-signal transition-colors"
+              >
+                Rewire Timeline Calculator
+              </Link>
+            </h2>
+            <p className="mt-3 text-lunamaze-textSecondary leading-relaxed">
+              Three questions about your history → a day-by-day recovery map stretched to your
+              situation: the loud start, the flatline window, first returns, day 90 and beyond.
+              Ranges, not promises.
+            </p>
+            <p className="mt-4 text-sm text-lunamaze-textDim">1 min · anonymous · runs in your browser</p>
+          </article>
+
           <article className="rounded-2xl border border-lunamaze-border bg-lunamaze-bgSurface/40 p-8">
             <h2 className="text-xl font-bold leading-snug text-lunamaze-textSecondary">
               Coming next
             </h2>
             <p className="mt-3 text-lunamaze-textSecondary leading-relaxed">
-              A rewire timeline calculator (your history → a day-by-day milestone map) and a
-              web panic button for urge emergencies. Same rules: free, anonymous, in-browser.
+              A web panic button for urge emergencies and a streak wallpaper generator. Same
+              rules: free, anonymous, in-browser.
             </p>
           </article>
 
