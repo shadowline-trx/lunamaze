@@ -21,6 +21,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/axiom/privacy/', priority: 0.3, changeFrequency: 'yearly' },
     { path: '/axiom/terms/', priority: 0.3, changeFrequency: 'yearly' },
     { path: '/axiom/blog/', priority: 0.7, changeFrequency: 'weekly' },
+    { path: '/axiom/tools/', priority: 0.7, changeFrequency: 'weekly' },
+    { path: '/axiom/tools/severity-test/', priority: 0.8, changeFrequency: 'monthly' },
   ];
 
   // Every blog article in every language, derived from the content registry.

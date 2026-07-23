@@ -82,6 +82,17 @@ export default function BlogIndexPage(): JSX.Element {
               </article>
             );
           })}
+
+          <p className="text-sm text-lunamaze-textSecondary">
+            Wondering where you stand?{' '}
+            <Link
+              href="/axiom/tools/severity-test/"
+              className="underline decoration-lunamaze-border underline-offset-4 hover:text-lunamaze-signal"
+            >
+              Take the free 2-minute severity self-test
+            </Link>{' '}
+            — anonymous, runs entirely in your browser.
+          </p>
         </div>
       </section>
 
