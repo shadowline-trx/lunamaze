@@ -16,32 +16,45 @@ type StyleKey = 'aurora' | 'ember' | 'mono';
 
 interface StyleDef {
   readonly name: string;
-  readonly bgTop: string;
-  readonly bgBottom: string;
-  readonly orbs: ReadonlyArray<string>;
+  /** Four-stop vertical background gradient (t, color). */
+  readonly bg: ReadonlyArray<readonly [number, string]>;
+  /** Aurora ribbon colors, drawn top to bottom. */
+  readonly ribbons: ReadonlyArray<string>;
   readonly accent: string;
 }
 
 const STYLES: Readonly<Record<StyleKey, StyleDef>> = {
   aurora: {
     name: 'Aurora',
-    bgTop: '#070812',
-    bgBottom: '#141033',
-    orbs: ['#5b4dff', '#2dd4bf', '#8b5cf6', '#22d3ee'],
+    bg: [
+      [0, '#050610'],
+      [0.45, '#0c0a22'],
+      [0.8, '#180e34'],
+      [1, '#0a0718'],
+    ],
+    ribbons: ['#5b4dff', '#2dd4bf', '#8b5cf6'],
     accent: '#a5b4fc',
   },
   ember: {
     name: 'Ember',
-    bgTop: '#0c0705',
-    bgBottom: '#2a1208',
-    orbs: ['#f97316', '#f43f5e', '#facc15', '#fb7185'],
+    bg: [
+      [0, '#0a0605'],
+      [0.5, '#1c0c0a'],
+      [0.85, '#36140c'],
+      [1, '#100806'],
+    ],
+    ribbons: ['#f97316', '#e11d48', '#ff783c'],
     accent: '#fdba74',
   },
   mono: {
     name: 'Mono',
-    bgTop: '#05060a',
-    bgBottom: '#11141d',
-    orbs: ['#94a3b8', '#e2e8f0', '#475569', '#cbd5e1'],
+    bg: [
+      [0, '#05060a'],
+      [0.5, '#0d1018'],
+      [0.85, '#181c28'],
+      [1, '#080a10'],
+    ],
+    ribbons: ['#94a3b8', '#e2e8f0', '#64748b'],
     accent: '#e2e8f0',
   },
 };
@@ -61,71 +74,142 @@ function mulberry32(seed: number): () => number {
   };
 }
 
+/** One flowing aurora ribbon: a blurred sine-wave band, screen-blended. */
+function drawRibbon(
+  ctx: CanvasRenderingContext2D,
+  rand: () => number,
+  color: string,
+  yCenter: number,
+  amp: number,
+  thickness: number,
+): void {
+  const phase = rand() * Math.PI * 2;
+  const freq = 0.8 + rand() * 0.8;
+  const tilt = -0.25 + rand() * 0.5;
+  ctx.save();
+  ctx.globalCompositeOperation = 'screen';
+  ctx.globalAlpha = 0.5;
+  ctx.filter = 'blur(90px)';
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  const steps = 40;
+  for (let i = 0; i <= steps; i += 1) {
+    const t = i / steps;
+    const x = t * W;
+    const y = yCenter + tilt * (t - 0.5) * H + Math.sin(phase + t * freq * Math.PI * 2) * amp;
+    const th = thickness * (0.6 + 0.4 * Math.sin(t * Math.PI));
+    if (i === 0) ctx.moveTo(x, y - th / 2);
+    else ctx.lineTo(x, y - th / 2);
+  }
+  for (let i = steps; i >= 0; i -= 1) {
+    const t = i / steps;
+    const x = t * W;
+    const y = yCenter + tilt * (t - 0.5) * H + Math.sin(phase + t * freq * Math.PI * 2) * amp;
+    const th = thickness * (0.6 + 0.4 * Math.sin(t * Math.PI));
+    ctx.lineTo(x, y + th / 2);
+  }
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+}
+
 function draw(canvas: HTMLCanvasElement, day: number, styleKey: StyleKey, showLabel: boolean): void {
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
   const style = STYLES[styleKey];
   const rand = mulberry32(day * 7919 + styleKey.length * 104729);
 
-  // Background gradient
+  // Background: four-stop vertical gradient
   const bg = ctx.createLinearGradient(0, 0, 0, H);
-  bg.addColorStop(0, style.bgTop);
-  bg.addColorStop(1, style.bgBottom);
+  for (const [t, c] of style.bg) bg.addColorStop(t, c);
   ctx.fillStyle = bg;
   ctx.fillRect(0, 0, W, H);
 
-  // Soft orbs — count grows slowly with the streak, capped for taste.
-  const orbCount = Math.min(24, 6 + Math.floor(day / 7));
+  // Aurora ribbons across the upper two thirds — the main event.
+  for (let i = 0; i < style.ribbons.length; i += 1) {
+    drawRibbon(
+      ctx,
+      rand,
+      style.ribbons[i],
+      H * (0.22 + 0.16 * i + (rand() - 0.5) * 0.06),
+      H * (0.04 + rand() * 0.05),
+      H * (0.1 + rand() * 0.06),
+    );
+  }
+
+  // Depth orbs: few, large, soft, additive. Count grows gently with streak.
+  const orbCount = 4 + Math.min(6, Math.floor(day / 15));
+  ctx.save();
+  ctx.globalCompositeOperation = 'screen';
   for (let i = 0; i < orbCount; i += 1) {
     const x = rand() * W;
-    const y = rand() * H;
-    const r = 60 + rand() * 260;
-    const color = style.orbs[Math.floor(rand() * style.orbs.length)];
+    const y = H * (0.05 + rand() * 0.85);
+    const r = 80 + rand() * 180;
+    const color = style.ribbons[i % style.ribbons.length];
     const g = ctx.createRadialGradient(x, y, 0, x, y, r);
-    g.addColorStop(0, `${color}55`);
+    g.addColorStop(0, `${color}38`);
     g.addColorStop(1, `${color}00`);
     ctx.fillStyle = g;
     ctx.beginPath();
     ctx.arc(x, y, r, 0, Math.PI * 2);
     ctx.fill();
   }
+  ctx.restore();
 
   // Fine star grain
   ctx.fillStyle = '#ffffff';
-  for (let i = 0; i < 140; i += 1) {
-    ctx.globalAlpha = 0.08 + rand() * 0.35;
-    const s = rand() < 0.92 ? 1.5 : 3;
+  for (let i = 0; i < 240; i += 1) {
+    ctx.globalAlpha = 0.1 + rand() * 0.4;
+    const s = rand() < 0.9 ? 2 : 4;
     ctx.fillRect(rand() * W, rand() * H, s, s);
   }
   ctx.globalAlpha = 1;
 
-  // Progress ring toward the next 90-day landmark
   const cx = W / 2;
-  const cy = H * 0.42;
-  const radius = W * 0.3;
-  const progress = (day % 90) / 90;
-  ctx.lineWidth = 10;
-  ctx.strokeStyle = `${style.accent}33`;
-  ctx.beginPath();
-  ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-  ctx.stroke();
-  ctx.strokeStyle = style.accent;
-  ctx.lineCap = 'round';
-  ctx.beginPath();
-  ctx.arc(cx, cy, radius, -Math.PI / 2, -Math.PI / 2 + progress * Math.PI * 2);
-  ctx.stroke();
 
   if (showLabel) {
+    // Big serif number, centered in the lower third.
+    const numY = H * 0.745;
     ctx.textAlign = 'center';
-    ctx.fillStyle = '#ffffff';
-    ctx.font = '700 200px system-ui, -apple-system, sans-serif';
-    ctx.fillText(String(day), cx, cy + 70);
-    ctx.fillStyle = `${style.accent}cc`;
-    ctx.font = '500 54px system-ui, -apple-system, sans-serif';
-    ctx.letterSpacing = '18px';
-    ctx.fillText('DAYS', cx, cy + 170);
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = 'rgba(255,255,255,0.94)';
+    ctx.font = `700 ${Math.round(W * 0.4)}px Georgia, 'Times New Roman', serif`;
+    const num = String(day);
+    ctx.fillText(num, cx, numY);
+    const metrics = ctx.measureText(num);
+    const numBottom = numY + metrics.actualBoundingBoxDescent;
+
+    // "D A Y S" label with real spacing, clear of the digits.
+    const labelY = numBottom + H * 0.03;
+    ctx.fillStyle = `${style.accent}d2`;
+    ctx.font = `500 ${Math.round(W * 0.04)}px 'JetBrains Mono', Consolas, monospace`;
+    ctx.letterSpacing = `${Math.round(W * 0.022)}px`;
+    ctx.fillText('DAYS', cx + Math.round(W * 0.011), labelY);
     ctx.letterSpacing = '0px';
+
+    // Progress ticks toward the next 90-day landmark.
+    const ticks = 30;
+    const filled = Math.floor(((day % 90) / 90) * ticks);
+    const span = W * 0.56;
+    const gap = span / (ticks - 1);
+    const x0 = cx - span / 2;
+    const ty = labelY + H * 0.035;
+    ctx.lineWidth = 4;
+    for (let i = 0; i < ticks; i += 1) {
+      ctx.strokeStyle = i < filled ? `${style.accent}eb` : `${style.accent}46`;
+      ctx.beginPath();
+      ctx.moveTo(x0 + i * gap, ty);
+      ctx.lineTo(x0 + i * gap, ty + 24);
+      ctx.stroke();
+    }
   }
+
+  // Vignette: gentle darkening toward the edges.
+  const vin = ctx.createRadialGradient(cx, H * 0.5, W * 0.4, cx, H * 0.5, H * 0.72);
+  vin.addColorStop(0, 'rgba(0,0,0,0)');
+  vin.addColorStop(1, 'rgba(0,0,0,0.42)');
+  ctx.fillStyle = vin;
+  ctx.fillRect(0, 0, W, H);
 }
 
 export default function WallpaperGenerator(): JSX.Element {
@@ -140,6 +224,14 @@ export default function WallpaperGenerator(): JSX.Element {
 
   useEffect(() => {
     render();
+    // Re-render once web fonts land so the label uses the real mono face.
+    let cancelled = false;
+    void document.fonts.ready.then(() => {
+      if (!cancelled) render();
+    });
+    return () => {
+      cancelled = true;
+    };
   }, [render]);
 
   function download(): void {
