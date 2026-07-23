@@ -23,7 +23,7 @@ const article: BlogArticle = {
     },
     {
       kind: 'p',
-      text: 'Das ist die Flatline. Sie ist vermutlich die am wenigsten besprochene und am meisten missverstandene Phase des ganzen Prozesses, und sie beendet mehr Erholungen als der Drang selbst. Nicht weil sie wehtut — weil sie überzeugend ist. Sie kommt im Arztkittel herein und erklärt dir ganz ruhig, dass du dich dauerhaft kaputt gemacht hast und besser mal prüfen solltest, ob noch alles funktioniert.',
+      text: 'Das ist die Flatline. Sie ist vermutlich die am wenigsten besprochene und am meisten missverstandene Phase des ganzen Prozesses, und sie beendet mehr Genesungsversuche als der Drang selbst. Nicht weil sie wehtut — weil sie überzeugend ist. Sie kommt im Arztkittel herein und erklärt dir ganz ruhig, dass du dich dauerhaft kaputt gemacht hast und besser mal prüfen solltest, ob noch alles funktioniert.',
     },
     {
       kind: 'p',
@@ -40,12 +40,12 @@ const article: BlogArticle = {
     },
     {
       kind: 'p',
-      text: 'So betrachtet ist die Flatline keine Fehlfunktion. Sie ist das Tal der Erholungskurve — der Tiefpunkt, den es genau deshalb gibt, weil die Reparatur läuft. Ein Gehirn, an dem nichts verstellt wäre, hätte nichts zu rekalibrieren.',
+      text: 'So betrachtet ist die Flatline keine Fehlfunktion. Sie ist das Tal der Genesungskurve — der Tiefpunkt, den es genau deshalb gibt, weil die Reparatur läuft. Ein Gehirn, an dem nichts verstellt wäre, hätte nichts zu rekalibrieren.',
     },
     {
       kind: 'callout',
       title: 'Die Ein-Satz-Version',
-      text: 'Die Flatline ist dein Gehirn, das sich im Stillen neu kalibriert. Eine Zeit lang nichts zu fühlen ist das, wonach sich die Mitte der Erholung anfühlt — nicht das, wonach sich Schaden anfühlt.',
+      text: 'Die Flatline ist dein Gehirn, das sich im Stillen neu kalibriert. Eine Zeit lang nichts zu fühlen ist das, wonach sich die Mitte der Genesung anfühlt — nicht das, wonach sich Schaden anfühlt.',
     },
     { kind: 'h2', text: 'Wie es sich von innen anfühlt' },
     {
@@ -126,7 +126,7 @@ const article: BlogArticle = {
         },
         {
           q: 'Kann eine Flatline spät beginnen — nach Monat zwei oder drei?',
-          a: 'Ja. Spät einsetzende und zweite Flatlines werden häufig berichtet, besonders nach einer Phase, in der es einem besser ging. Eine späte graue Strecke bedeutet nicht, dass du zurückgefallen bist. Die Erholungskurve ist keine gerade Linie, und Einbrüche innerhalb eines insgesamt steigenden Trends sind normal.',
+          a: 'Ja. Spät einsetzende und zweite Flatlines werden häufig berichtet, besonders nach einer Phase, in der es einem besser ging. Eine späte graue Strecke bedeutet nicht, dass du zurückgefallen bist. Die Genesungskurve ist keine gerade Linie, und Einbrüche innerhalb eines insgesamt steigenden Trends sind normal.',
         },
         {
           q: 'Setzt ein Rückfall während der Flatline alles zurück?',

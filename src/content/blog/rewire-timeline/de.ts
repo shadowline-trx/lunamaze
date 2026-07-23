@@ -15,7 +15,7 @@ const article: BlogArticle = {
   readingMinutes: 9,
   ctaLabel: 'So funktioniert Axiom',
   ctaText:
-    'Axiom verfolgt deine Erholung entlang genau dieses Zeitplans — privat. Nichts, was du einträgst, verlässt jemals dein Handy.',
+    'Axiom verfolgt deine Genesung entlang genau dieses Zeitplans — privat. Nichts, was du einträgst, verlässt jemals dein Handy.',
   blocks: [
     {
       kind: 'p',
@@ -47,7 +47,7 @@ const article: BlogArticle = {
     { kind: 'h3', text: 'Woche 2–6: die Flatline (lies diesen Teil zweimal)' },
     {
       kind: 'p',
-      text: 'Irgendwo in diesem Fenster treffen viele auf das, was mehr Erholungen zerstört als der Drang je könnte: die Flatline. Die Libido fällt auf null. Die Stimmung wird grau. Du fühlst nichts — keine Versuchung, keine Motivation, nur Beige. Und dein Gehirn, das noch nicht auf deiner Seite ist, bietet dir eine hilfreiche Theorie an: „Du hast dich kaputt gemacht, das ist der Beweis — prüf lieber mal, ob noch alles funktioniert.“',
+      text: 'Irgendwo in diesem Fenster treffen viele auf das, was mehr Genesungsversuche zerstört als der Drang je könnte: die Flatline. Die Libido fällt auf null. Die Stimmung wird grau. Du fühlst nichts — keine Versuchung, keine Motivation, nur Beige. Und dein Gehirn, das noch nicht auf deiner Seite ist, bietet dir eine hilfreiche Theorie an: „Du hast dich kaputt gemacht, das ist der Beweis — prüf lieber mal, ob noch alles funktioniert.“',
     },
     {
       kind: 'p',

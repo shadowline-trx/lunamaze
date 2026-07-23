@@ -26,6 +26,19 @@ import flatlineDe from './flatline/de';
 import flatlineRu from './flatline/ru';
 import flatlineTr from './flatline/tr';
 
+import nightEn from './night-urges/en';
+import nightHi from './night-urges/hi';
+import nightTa from './night-urges/ta';
+import nightMl from './night-urges/ml';
+import nightId from './night-urges/id';
+import nightPtBr from './night-urges/pt-br';
+import nightEs from './night-urges/es';
+import nightAr from './night-urges/ar';
+import nightFr from './night-urges/fr';
+import nightDe from './night-urges/de';
+import nightRu from './night-urges/ru';
+import nightTr from './night-urges/tr';
+
 /**
  * Central registry of every blog article in every language. Routes, hreflang
  * alternates and the sitemap are all derived from this — adding a language is
@@ -56,6 +69,18 @@ export const ALL_ARTICLES: ReadonlyArray<BlogArticle> = [
   flatlineDe,
   flatlineRu,
   flatlineTr,
+  nightEn,
+  nightHi,
+  nightTa,
+  nightMl,
+  nightId,
+  nightPtBr,
+  nightEs,
+  nightAr,
+  nightFr,
+  nightDe,
+  nightRu,
+  nightTr,
 ];
 
 /** All language versions of one article, keyed by lang. */
