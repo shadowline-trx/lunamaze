@@ -1,10 +1,12 @@
 import type { ReactNode } from 'react';
 
+// Points at the stable, unversioned asset name so every release ships the
+// current build here without this page needing an edit.
 const DOWNLOAD_URL =
-  'https://github.com/shadowline-trx/tether-adb/releases/download/v0.1.0/Tether-ADB-0.1.0-x64-setup.exe';
+  'https://github.com/shadowline-trx/tether-adb/releases/latest/download/Tether-ADB-x64-setup.exe';
 const RELEASES_URL = 'https://github.com/shadowline-trx/tether-adb/releases/latest';
 const GITHUB_URL = 'https://github.com/shadowline-trx/tether-adb';
-const VERSION = 'v0.1.0';
+const VERSION = 'v0.1.1';
 const SIZE = '10 MB';
 const PAGE_URL = 'https://lunamaze.com/tether-adb/';
 
@@ -186,7 +188,7 @@ const jsonLd = {
         'Enterprise-grade Android device control center for Windows: QR-code wireless pairing, screen mirroring, logcat, shell, file and app management, and automation. adb and scrcpy bundled.',
       url: PAGE_URL,
       downloadUrl: DOWNLOAD_URL,
-      softwareVersion: '0.1.0',
+      softwareVersion: '0.1.1',
       fileSize: '10MB',
       image: 'https://lunamaze.com/images/tether-adb-og.png',
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
