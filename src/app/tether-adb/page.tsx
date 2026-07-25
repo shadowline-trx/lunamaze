@@ -6,7 +6,7 @@ const DOWNLOAD_URL =
   'https://github.com/shadowline-trx/tether-adb/releases/latest/download/Tether-ADB-x64-setup.exe';
 const RELEASES_URL = 'https://github.com/shadowline-trx/tether-adb/releases/latest';
 const GITHUB_URL = 'https://github.com/shadowline-trx/tether-adb';
-const VERSION = 'v0.1.1';
+const VERSION = 'v0.1.2';
 const SIZE = '10 MB';
 const PAGE_URL = 'https://lunamaze.com/tether-adb/';
 
@@ -174,6 +174,26 @@ const faqs: ReadonlyArray<{ q: string; a: string }> = [
     q: 'How does QR-code wireless pairing work?',
     a: 'Tether ADB generates an Android-compatible pairing QR. When you scan it from your phone’s Wireless debugging screen, Tether ADB discovers the device on your network and runs the pairing automatically — no codes to type.',
   },
+  {
+    q: 'Can I use ADB over Wi-Fi without a USB cable?',
+    a: 'Yes. On Android 11 and newer, Wireless debugging lets you pair and connect with no cable at all — scan the QR code in Tether ADB and you are connected. On older devices, plug in once over USB and use “Go wireless”, which switches adb to TCP mode and connects over the network; the cable can then come out.',
+  },
+  {
+    q: 'My phone is stuck on “pairing” forever. How do I fix it?',
+    a: 'That almost always means the pairing request never reached your phone, so nothing ever completed the handshake — retrying against the same screen cannot help, because an Android pairing screen is only good for one attempt. It is usually caused by mDNS discovery failing silently, which is common on Windows machines that have virtual network adapters from VirtualBox, WSL, Hyper-V or a VPN: the discovery query goes out the wrong adapter and the phone is never seen. Tether ADB works around this by doing its own mDNS discovery across every network interface rather than relying on adb’s. If discovery is blocked entirely on your network, use “Pair device with pairing code” on the phone and enter the address and code in Tether ADB’s Pair tab — that path needs no discovery at all.',
+  },
+  {
+    q: 'adb says “Successfully paired” but the device never appears. Why?',
+    a: 'Pairing and connecting are two different steps. “adb pair” only establishes trust between your PC and the phone — the device does not appear in the device list until something connects to its connect endpoint, which listens on a different port from the pairing one. adb normally does that itself using mDNS discovery, so when discovery fails you get a successful pairing and no device anywhere. Tether ADB connects for you after pairing, and tells you exactly what to do if it cannot find the endpoint.',
+  },
+  {
+    q: 'Wireless debugging shows nothing / “adb mdns services” is empty. Does Tether ADB still work?',
+    a: 'Yes. adb’s bundled mDNS discovery is unreliable on Windows — it can return an empty list while your phone is plainly advertising, and its daemon sometimes dies outright with “mdns daemon unavailable”. Tether ADB browses mDNS itself on every network interface instead of trusting adb, and its built-in Connection Troubleshooter shows you exactly what is on the wire: adb health, the live discovery backend, every endpoint found, and a real reachability probe with latency for each.',
+  },
+  {
+    q: 'Is there a GUI for scrcpy?',
+    a: 'Yes — Tether ADB is a full graphical front-end for both adb and scrcpy, with scrcpy bundled. You get low-latency screen mirroring and control with quality presets, plus screenshots and screen recording, without touching a command line or installing anything else.',
+  },
 ];
 
 const jsonLd = {
@@ -188,7 +208,7 @@ const jsonLd = {
         'Enterprise-grade Android device control center for Windows: QR-code wireless pairing, screen mirroring, logcat, shell, file and app management, and automation. adb and scrcpy bundled.',
       url: PAGE_URL,
       downloadUrl: DOWNLOAD_URL,
-      softwareVersion: '0.1.1',
+      softwareVersion: '0.1.2',
       fileSize: '10MB',
       image: 'https://lunamaze.com/images/tether-adb-og.png',
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
