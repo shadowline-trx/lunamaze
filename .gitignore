@@ -59,3 +59,6 @@ tsconfig.tsbuildinfo
 # Auto-generated AI agent exclusions
 .clineRules
 .cline/
+
+# design-review screenshots (see shot.js)
+shot-*.png
