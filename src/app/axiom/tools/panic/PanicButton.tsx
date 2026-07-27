@@ -1,6 +1,6 @@
 'use client';
 
-import type { JSX } from 'react';
+import type { CSSProperties, JSX } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 
@@ -9,7 +9,52 @@ import Link from 'next/link';
  * without acting. Three instruments: a breathing pacer, a ride-it-out timer,
  * and a 5-4-3-2-1 grounding sequence — plus honest context about what the
  * urge is doing. No sound, no autoplay, no account, no network calls.
+ *
+ * Surfaces: the page previously stacked five identical panels bordered in
+ * #22264A, which on #06081A is effectively invisible — everything read flat and
+ * interchangeable. Panels now take their edge from the page accent at low alpha
+ * (the same approach as ToolCard), and the three instruments carry a left rail
+ * so they read as one numbered sequence instead of five equal boxes.
+ *
+ * Nothing added here moves on its own. This page is opened mid-crisis, so the
+ * only motion in it remains the breathing circle the visitor starts themselves.
  */
+
+/** Amber = urgency that stays warm; ember marks the after-a-slip panel. */
+const ACCENT = '#FFD27A';
+const ACCENT_ALT = '#FF9E7A';
+
+/** #RRGGBB + alpha → rgba(). Module-private in ToolCard/AuroraField too; this
+ *  client component shouldn't import unrelated modules for four lines of maths. */
+function hexA(hex: string, alpha: number): string {
+  const h = hex.replace('#', '');
+  const r = parseInt(h.slice(0, 2), 16);
+  const g = parseInt(h.slice(2, 4), 16);
+  const b = parseInt(h.slice(4, 6), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
+/** Accent-edged panel: a real border, an accent-tinted wash, a hairline lift. */
+function panel(accent: string, tint: number, edge: number): CSSProperties {
+  return {
+    borderColor: hexA(accent, edge),
+    background: `linear-gradient(160deg, ${hexA(accent, tint)} 0%, rgba(18,23,55,0.72) 45%)`,
+    boxShadow: `0 1px 0 0 ${hexA(accent, 0.12)} inset`,
+  };
+}
+
+/** Vertical accent rail that binds the three instrument panels into a sequence. */
+function StepRail(): JSX.Element {
+  return (
+    <span
+      aria-hidden="true"
+      className="absolute inset-y-7 left-0 w-[3px] rounded-full"
+      style={{
+        background: `linear-gradient(180deg, ${hexA(ACCENT, 0.85)} 0%, ${hexA(ACCENT_ALT, 0.4)} 55%, transparent 100%)`,
+      }}
+    />
+  );
+}
 
 type BreathPhase = 'in' | 'hold' | 'out';
 
@@ -59,8 +104,19 @@ export default function PanicButton(): JSX.Element {
   return (
     <div className="space-y-6">
       {/* --- What is happening right now --- */}
-      <div className="rounded-2xl border border-lunamaze-border bg-lunamaze-bgSurface/60 p-8 backdrop-blur-sm">
-        <h2 className="text-2xl font-bold leading-snug">
+      <div
+        className="relative overflow-hidden rounded-3xl border p-8 backdrop-blur-sm sm:p-10"
+        style={panel(ACCENT, 0.1, 0.32)}
+      >
+        {/* Lit top edge: the one panel that should read as the headline. */}
+        <span
+          aria-hidden="true"
+          className="absolute inset-x-0 top-0 h-px"
+          style={{
+            background: `linear-gradient(90deg, transparent 0%, ${hexA(ACCENT, 0.75)} 28%, ${hexA(ACCENT_ALT, 0.5)} 72%, transparent 100%)`,
+          }}
+        />
+        <h2 className="text-2xl font-bold leading-snug sm:text-[1.75rem]">
           What you’re feeling is a wave. It crests and passes in 10–20 minutes — whether or not
           you act on it.
         </h2>
@@ -78,17 +134,33 @@ export default function PanicButton(): JSX.Element {
       </div>
 
       {/* --- Breathing pacer --- */}
-      <div className="rounded-2xl border border-lunamaze-border bg-lunamaze-bgSurface/60 p-8 backdrop-blur-sm">
+      <div
+        className="relative overflow-hidden rounded-3xl border p-8 backdrop-blur-sm"
+        style={panel(ACCENT, 0.06, 0.24)}
+      >
+        <StepRail />
         <h3 className="text-xl font-bold">1 · Slow the body down</h3>
         <p className="mt-3 text-lunamaze-textSecondary leading-relaxed">
           The urge rides on arousal — a revved-up nervous system. Long, slow exhales are the
           fastest manual override you have. Follow the circle for at least six rounds.
         </p>
         <div className="mt-8 flex flex-col items-center">
-          <div className="flex h-56 w-56 items-center justify-center">
+          <div className="relative flex h-56 w-56 items-center justify-center">
+            {/* Static halo. It gives the pacer depth without adding motion:
+                only the circle itself moves, and only when the visitor starts it. */}
             <div
-              className="flex h-full w-full items-center justify-center rounded-full border border-lunamaze-signal/40 bg-lunamaze-signal/10"
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-[-18%] rounded-full blur-2xl"
               style={{
+                background: `radial-gradient(circle, ${hexA(ACCENT, 0.16)} 0%, ${hexA(ACCENT_ALT, 0.07)} 45%, transparent 72%)`,
+              }}
+            />
+            <div
+              className="relative flex h-full w-full items-center justify-center rounded-full border"
+              style={{
+                borderColor: hexA(ACCENT, 0.45),
+                background: `radial-gradient(circle at 50% 35%, ${hexA(ACCENT, 0.18)} 0%, ${hexA(ACCENT, 0.07)} 55%, rgba(18,23,55,0.55) 100%)`,
+                boxShadow: `0 0 40px -12px ${hexA(ACCENT, 0.55)}, 0 1px 0 0 ${hexA(ACCENT, 0.25)} inset`,
                 transform: `scale(${circleScale})`,
                 transition: `transform ${circleDuration}s ease-in-out`,
               }}
@@ -104,7 +176,7 @@ export default function PanicButton(): JSX.Element {
               setPhase('in');
               setBreathing((b) => !b);
             }}
-            className="mt-6 rounded-xl border border-lunamaze-border px-6 py-3 font-semibold transition-colors hover:border-lunamaze-signal hover:text-lunamaze-signal"
+            className="mt-6 rounded-2xl border border-lunamaze-signal/30 bg-lunamaze-signal/[0.06] px-6 py-3 font-semibold transition-colors hover:border-lunamaze-signal/70 hover:text-lunamaze-signal"
           >
             {breathing ? 'Stop' : 'Start breathing with the circle'}
           </button>
@@ -112,7 +184,11 @@ export default function PanicButton(): JSX.Element {
       </div>
 
       {/* --- Ride-it-out timer --- */}
-      <div className="rounded-2xl border border-lunamaze-border bg-lunamaze-bgSurface/60 p-8 backdrop-blur-sm">
+      <div
+        className="relative overflow-hidden rounded-3xl border p-8 backdrop-blur-sm"
+        style={panel(ACCENT, 0.06, 0.24)}
+      >
+        <StepRail />
         <h3 className="text-xl font-bold">2 · Ride out ten minutes</h3>
         <p className="mt-3 text-lunamaze-textSecondary leading-relaxed">
           You don’t have to hold out forever — only long enough for the wave to crest. Start
@@ -124,7 +200,8 @@ export default function PanicButton(): JSX.Element {
             <button
               type="button"
               onClick={() => setSecondsLeft(RIDE_MINUTES * 60)}
-              className="rounded-xl bg-lunamaze-signal px-8 py-4 font-semibold text-lunamaze-bgDeep transition-opacity hover:opacity-90"
+              className="rounded-2xl bg-lunamaze-signal px-8 py-4 font-semibold text-lunamaze-bgDeep transition-opacity hover:opacity-90"
+              style={{ boxShadow: `0 10px 40px -14px ${hexA(ACCENT, 0.9)}` }}
             >
               Start the {RIDE_MINUTES} minutes
             </button>
@@ -145,31 +222,48 @@ export default function PanicButton(): JSX.Element {
               </button>
             </div>
           ) : (
-            <p className="font-mono text-6xl font-bold tabular-nums">
-              {minutes}:{seconds.toString().padStart(2, '0')}
-            </p>
+            <div
+              className="rounded-3xl border px-10 py-6"
+              style={{
+                borderColor: hexA(ACCENT, 0.3),
+                background: `radial-gradient(circle at 50% 0%, ${hexA(ACCENT, 0.12)} 0%, rgba(10,14,39,0.6) 70%)`,
+              }}
+            >
+              <p className="font-mono text-6xl font-bold tabular-nums">
+                {minutes}:{seconds.toString().padStart(2, '0')}
+              </p>
+            </div>
           )}
         </div>
       </div>
 
       {/* --- Grounding --- */}
-      <div className="rounded-2xl border border-lunamaze-border bg-lunamaze-bgSurface/60 p-8 backdrop-blur-sm">
+      <div
+        className="relative overflow-hidden rounded-3xl border p-8 backdrop-blur-sm"
+        style={panel(ACCENT, 0.06, 0.24)}
+      >
+        <StepRail />
         <h3 className="text-xl font-bold">3 · Come back to the room</h3>
         <p className="mt-3 text-lunamaze-textSecondary leading-relaxed">
           Urges live in imagination; senses live in the room. Slowly, actually do this — don’t
           just read it:
         </p>
-        <ul className="mt-5 space-y-3 text-lunamaze-textSecondary">
-          <li><span className="font-mono text-lunamaze-signal">5</span> — name five things you can see, out loud or in your head.</li>
-          <li><span className="font-mono text-lunamaze-signal">4</span> — four things you can physically feel (feet on floor, air, fabric, chair).</li>
-          <li><span className="font-mono text-lunamaze-signal">3</span> — three things you can hear.</li>
-          <li><span className="font-mono text-lunamaze-signal">2</span> — two things you can smell.</li>
-          <li><span className="font-mono text-lunamaze-signal">1</span> — one thing you’re glad about, however small.</li>
+        <ul className="mt-5 space-y-3.5 leading-relaxed text-lunamaze-textSecondary">
+          <li><span className="mr-0.5 inline-flex h-6 w-6 items-center justify-center rounded-md border border-lunamaze-signal/40 bg-lunamaze-signal/10 align-middle font-mono text-sm text-lunamaze-signal">5</span> — name five things you can see, out loud or in your head.</li>
+          <li><span className="mr-0.5 inline-flex h-6 w-6 items-center justify-center rounded-md border border-lunamaze-signal/40 bg-lunamaze-signal/10 align-middle font-mono text-sm text-lunamaze-signal">4</span> — four things you can physically feel (feet on floor, air, fabric, chair).</li>
+          <li><span className="mr-0.5 inline-flex h-6 w-6 items-center justify-center rounded-md border border-lunamaze-signal/40 bg-lunamaze-signal/10 align-middle font-mono text-sm text-lunamaze-signal">3</span> — three things you can hear.</li>
+          <li><span className="mr-0.5 inline-flex h-6 w-6 items-center justify-center rounded-md border border-lunamaze-signal/40 bg-lunamaze-signal/10 align-middle font-mono text-sm text-lunamaze-signal">2</span> — two things you can smell.</li>
+          <li><span className="mr-0.5 inline-flex h-6 w-6 items-center justify-center rounded-md border border-lunamaze-signal/40 bg-lunamaze-signal/10 align-middle font-mono text-sm text-lunamaze-signal">1</span> — one thing you’re glad about, however small.</li>
         </ul>
       </div>
 
-      {/* --- If you already slipped --- */}
-      <div className="rounded-2xl border border-lunamaze-border bg-lunamaze-bgSurface/60 p-8 backdrop-blur-sm">
+      {/* --- If you already slipped ---
+          Ember rather than amber, and no step rail: this is a different mode,
+          not a fourth instrument. */}
+      <div
+        className="relative overflow-hidden rounded-3xl border p-8 backdrop-blur-sm"
+        style={panel(ACCENT_ALT, 0.08, 0.26)}
+      >
         <h3 className="text-xl font-bold">If you already slipped tonight</h3>
         <p className="mt-3 text-lunamaze-textSecondary leading-relaxed">
           Then this page has one different job: stop the spiral. The binge that follows a slip
@@ -180,8 +274,11 @@ export default function PanicButton(): JSX.Element {
         </p>
       </div>
 
-      {/* --- Quiet footer links --- */}
-      <div className="rounded-2xl border border-lunamaze-border bg-lunamaze-bgSurface/40 p-8">
+      {/* --- Quiet footer links: the one surface that should recede. --- */}
+      <div
+        className="rounded-3xl border bg-lunamaze-bgSurface/40 p-7 sm:p-8"
+        style={{ borderColor: hexA(ACCENT, 0.16) }}
+      >
         <p className="text-sm text-lunamaze-textSecondary leading-relaxed">
           Bookmark this page — it works offline-fast, needs no account, and you can send the
           link to a friend who’s struggling without either of you saying a word more.
@@ -190,21 +287,21 @@ export default function PanicButton(): JSX.Element {
           When the wave is down:{' '}
           <Link
             href="/axiom/blog/en/night-urges/"
-            className="underline decoration-lunamaze-border underline-offset-4 hover:text-lunamaze-signal"
+            className="underline decoration-lunamaze-signal/40 underline-offset-4 hover:text-lunamaze-signal"
           >
             why urges peak at night
           </Link>
           {' '}·{' '}
           <Link
             href="/axiom/tools/severity-test/"
-            className="underline decoration-lunamaze-border underline-offset-4 hover:text-lunamaze-signal"
+            className="underline decoration-lunamaze-signal/40 underline-offset-4 hover:text-lunamaze-signal"
           >
             the 2-minute self-test
           </Link>
           {' '}·{' '}
           <Link
             href="/axiom/"
-            className="underline decoration-lunamaze-border underline-offset-4 hover:text-lunamaze-signal"
+            className="underline decoration-lunamaze-signal/40 underline-offset-4 hover:text-lunamaze-signal"
           >
             Axiom, the private tracker
           </Link>

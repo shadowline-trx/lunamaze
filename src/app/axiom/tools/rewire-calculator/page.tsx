@@ -3,6 +3,7 @@ import type { JSX } from 'react';
 import Link from 'next/link';
 import ProductNav from '@/components/lunamaze/ProductNav';
 import LunaFooter from '@/components/lunamaze/LunaFooter';
+import AuroraField from '@/components/lunamaze/AuroraField';
 import RewireCalculator from './RewireCalculator';
 
 /**
@@ -10,6 +11,12 @@ import RewireCalculator from './RewireCalculator';
  * Target queries: "porn reboot timeline calculator", "how long to reboot",
  * "rewire timeline". Competitors farm this topic with static blog posts;
  * an interactive, history-adjusted map beats them.
+ *
+ * Visual identity: cyan is the site's colour for time and progression, so this
+ * page carries it end to end — the hero aurora, the eyebrow, the card edges.
+ * The old grid-bg hero plus #22264A borders rendered as a flat wall of
+ * identical rectangles; the accent borders below give every surface a real
+ * edge on #06081A, which the token border never had.
  */
 
 const CANONICAL = 'https://lunamaze.com/axiom/tools/rewire-calculator/';
@@ -66,6 +73,9 @@ function jsonLd(): string {
   });
 }
 
+/** Page accent = cyan (time / progression), matching this tool's hub card. */
+const ACCENT_RGB = '0, 210, 255';
+
 export default function RewireCalculatorPage(): JSX.Element {
   return (
     <main className="relative min-h-screen bg-lunamaze-bgDeep text-lunamaze-textPrimary">
@@ -76,16 +86,17 @@ export default function RewireCalculatorPage(): JSX.Element {
       />
       <ProductNav product="Axiom" />
 
-      <header className="relative overflow-hidden px-6 sm:px-8 lg:px-16 pt-32 pb-12 lunamaze-grid-bg lunamaze-noise">
+      <header className="relative overflow-hidden px-6 sm:px-8 lg:px-16 pt-32 pb-10 lunamaze-noise">
+        <AuroraField accent="#00D2FF" accentAlt="#7B5CFF" />
         <div className="relative z-10 max-w-3xl mx-auto">
-          <span className="inline-flex items-center gap-2 rounded-full border border-lunamaze-border bg-lunamaze-bgSurface/60 px-4 py-2 text-xs uppercase tracking-[0.3em] text-lunamaze-signal mb-8">
-            <span className="w-1.5 h-1.5 rounded-full bg-lunamaze-signal" aria-hidden="true" />
+          <span className="inline-flex items-center gap-2 rounded-full border border-axiom-calm/40 bg-axiom-calm/10 px-4 py-2 text-xs uppercase tracking-[0.3em] text-axiom-calm mb-8">
+            <span className="w-1.5 h-1.5 rounded-full bg-axiom-calm" aria-hidden="true" />
             Free tool · Anonymous
           </span>
-          <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight leading-[1.05]">
+          <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight leading-[1.03]">
             Your rewiring timeline, <span className="lunamaze-text-gradient">day by day.</span>
           </h1>
-          <p className="mt-6 text-lg text-lunamaze-textSecondary leading-relaxed">
+          <p className="mt-6 text-lg sm:text-xl text-lunamaze-textSecondary leading-relaxed max-w-2xl">
             {
               'The recovery arc has a known shape — the loud start, the flatline, the returns — but its length depends on your history. Answer three questions and get the map stretched to yours. No promises, no sign-up, and nothing you select leaves your browser.'
             }
@@ -93,7 +104,7 @@ export default function RewireCalculatorPage(): JSX.Element {
         </div>
       </header>
 
-      <section className="relative px-6 sm:px-8 lg:px-16 py-12 sm:py-16">
+      <section className="relative px-6 sm:px-8 lg:px-16 pt-4 pb-14 sm:pt-6 sm:pb-16">
         <div className="max-w-3xl mx-auto">
           <RewireCalculator />
         </div>
@@ -101,13 +112,31 @@ export default function RewireCalculatorPage(): JSX.Element {
 
       <section className="relative px-6 sm:px-8 lg:px-16 pb-20">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-2xl font-bold">Common questions</h2>
-          <div className="mt-6 space-y-6">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Common questions</h2>
+          <span
+            aria-hidden="true"
+            className="mt-4 block h-px w-24"
+            style={{ background: `linear-gradient(90deg, rgba(${ACCENT_RGB}, 0.8), transparent)` }}
+          />
+          <div className="mt-6 space-y-4">
             {FAQ.map((f) => (
               <div
                 key={f.q}
-                className="rounded-2xl border border-lunamaze-border bg-lunamaze-bgSurface/60 p-6 backdrop-blur-sm"
+                className="relative overflow-hidden rounded-3xl border p-6 sm:p-7 backdrop-blur-sm"
+                style={{
+                  borderColor: `rgba(${ACCENT_RGB}, 0.22)`,
+                  background: `linear-gradient(150deg, rgba(${ACCENT_RGB}, 0.06) 0%, rgba(18, 23, 55, 0.7) 55%)`,
+                }}
               >
+                {/* Vertical hairline instead of another top band: the FAQ should
+                    read as a quieter tier than the result cards above. */}
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-y-0 left-0 w-px"
+                  style={{
+                    background: `linear-gradient(to bottom, transparent, rgba(${ACCENT_RGB}, 0.55), transparent)`,
+                  }}
+                />
                 <h3 className="font-semibold">{f.q}</h3>
                 <p className="mt-2 text-lunamaze-textSecondary leading-relaxed">{f.a}</p>
               </div>
@@ -117,7 +146,7 @@ export default function RewireCalculatorPage(): JSX.Element {
             The full written version, with sources and the honest caveats:{' '}
             <Link
               href="/axiom/blog/en/rewire-timeline/"
-              className="underline decoration-lunamaze-border underline-offset-4 hover:text-lunamaze-signal"
+              className="underline decoration-axiom-calm/50 underline-offset-4 hover:text-axiom-calm"
             >
               How long does it take to rewire your brain?
             </Link>

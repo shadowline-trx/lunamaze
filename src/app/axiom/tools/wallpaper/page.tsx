@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import type { JSX } from 'react';
 import ProductNav from '@/components/lunamaze/ProductNav';
 import LunaFooter from '@/components/lunamaze/LunaFooter';
+import AuroraField from '@/components/lunamaze/AuroraField';
 import WallpaperGenerator from './WallpaperGenerator';
 
 /**
@@ -43,13 +44,14 @@ export default function WallpaperPage(): JSX.Element {
       />
       <ProductNav product="Axiom" />
 
-      <header className="relative overflow-hidden px-6 sm:px-8 lg:px-16 pt-32 pb-12 lunamaze-grid-bg lunamaze-noise">
+      <header className="relative overflow-hidden px-6 sm:px-8 lg:px-16 pt-32 pb-10 lunamaze-noise">
+        <AuroraField accent="#A48CFF" accentAlt="#00D2FF" />
         <div className="relative z-10 max-w-4xl mx-auto">
-          <span className="inline-flex items-center gap-2 rounded-full border border-lunamaze-border bg-lunamaze-bgSurface/60 px-4 py-2 text-xs uppercase tracking-[0.3em] text-lunamaze-signal mb-8">
-            <span className="w-1.5 h-1.5 rounded-full bg-lunamaze-signal" aria-hidden="true" />
+          <span className="inline-flex items-center gap-2 rounded-full border border-lunamaze-violetLight/40 bg-lunamaze-violetLight/10 px-4 py-2 text-xs uppercase tracking-[0.3em] text-lunamaze-violetLight mb-8">
+            <span className="w-1.5 h-1.5 rounded-full bg-lunamaze-violetLight" aria-hidden="true" />
             Free tool · Anonymous
           </span>
-          <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight leading-[1.05]">
+          <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight leading-[1.03]">
             Your streak, as <span className="lunamaze-text-gradient">art.</span>
           </h1>
           <p className="mt-6 text-lg text-lunamaze-textSecondary leading-relaxed max-w-2xl">
@@ -60,7 +62,7 @@ export default function WallpaperPage(): JSX.Element {
         </div>
       </header>
 
-      <section className="relative px-6 sm:px-8 lg:px-16 py-12 sm:py-16">
+      <section className="relative px-6 sm:px-8 lg:px-16 pb-20">
         <div className="max-w-4xl mx-auto">
           <WallpaperGenerator />
         </div>

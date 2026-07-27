@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import type { JSX } from 'react';
 import ProductNav from '@/components/lunamaze/ProductNav';
 import LunaFooter from '@/components/lunamaze/LunaFooter';
+import AuroraField from '@/components/lunamaze/AuroraField';
 import PanicButton from './PanicButton';
 
 /**
@@ -9,6 +10,10 @@ import PanicButton from './PanicButton';
  * right now", "how to stop an urge", "panic button porn urge". Captures the
  * single highest-intent moment in the niche; deliberately serves first and
  * sells almost nothing.
+ *
+ * Visual note: this page is read mid-crisis, so the aurora is amber (urgency
+ * that stays warm rather than alarming) and deliberately quiet — one static
+ * wash, nothing that pulses, flashes or competes with the instruments below.
  */
 
 const CANONICAL = 'https://lunamaze.com/axiom/tools/panic/';
@@ -44,13 +49,14 @@ export default function PanicPage(): JSX.Element {
       />
       <ProductNav product="Axiom" />
 
-      <header className="relative overflow-hidden px-6 sm:px-8 lg:px-16 pt-32 pb-10 lunamaze-grid-bg lunamaze-noise">
+      <header className="relative overflow-hidden px-6 sm:px-8 lg:px-16 pt-32 pb-10 lunamaze-noise">
+        <AuroraField accent="#FFD27A" accentAlt="#FF9E7A" intensity={0.85} />
         <div className="relative z-10 max-w-3xl mx-auto">
-          <span className="inline-flex items-center gap-2 rounded-full border border-lunamaze-border bg-lunamaze-bgSurface/60 px-4 py-2 text-xs uppercase tracking-[0.3em] text-lunamaze-signal mb-8">
+          <span className="inline-flex items-center gap-2 rounded-full border border-lunamaze-signal/40 bg-lunamaze-signal/10 px-4 py-2 text-xs uppercase tracking-[0.3em] text-lunamaze-signal mb-7">
             <span className="w-1.5 h-1.5 rounded-full bg-lunamaze-signal" aria-hidden="true" />
             Urge emergency
           </span>
-          <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight leading-[1.05]">
+          <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight leading-[1.03]">
             You’re here. <span className="lunamaze-text-gradient">That was the hard part.</span>
           </h1>
           <p className="mt-6 text-lg text-lunamaze-textSecondary leading-relaxed">
@@ -61,7 +67,7 @@ export default function PanicPage(): JSX.Element {
         </div>
       </header>
 
-      <section className="relative px-6 sm:px-8 lg:px-16 py-10 sm:py-14">
+      <section className="relative px-6 sm:px-8 lg:px-16 pt-2 pb-16 sm:pb-20">
         <div className="max-w-3xl mx-auto">
           <PanicButton />
         </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import type { JSX } from 'react';
+import type { CSSProperties, JSX } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 
@@ -61,6 +61,31 @@ const STYLES: Readonly<Record<StyleKey, StyleDef>> = {
 
 const W = 1080;
 const H = 2340;
+
+/* --------------------------------------------------------------------------
+   UI chrome. Separate from the canvas palette above: this is the accent the
+   tools hub gives the wallpaper card, so the page and its card match.
+   Borders use the accent at low alpha because the neutral token (#22264A on
+   #06081A) is effectively invisible and made every panel read as flat.
+   -------------------------------------------------------------------------- */
+const UI_ACCENT = '#A48CFF';
+const UI_ACCENT_ALT = '#00D2FF';
+
+/** #RRGGBB + alpha → rgba(), so panels can tint from the accent token. */
+function accentA(hex: string, alpha: number): string {
+  const h = hex.replace('#', '');
+  const r = parseInt(h.slice(0, 2), 16);
+  const g = parseInt(h.slice(2, 4), 16);
+  const b = parseInt(h.slice(4, 6), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
+/** Shared face for the control panels: real edge, accent-tinted glass. */
+const PANEL_STYLE: CSSProperties = {
+  borderColor: accentA(UI_ACCENT, 0.28),
+  background: `linear-gradient(160deg, ${accentA(UI_ACCENT, 0.09)} 0%, rgba(18,23,55,0.75) 45%)`,
+  boxShadow: `0 1px 0 0 ${accentA(UI_ACCENT, 0.14)} inset`,
+};
 
 /** Deterministic PRNG so the same day+style always renders the same art. */
 function mulberry32(seed: number): () => number {
@@ -250,18 +275,31 @@ export default function WallpaperGenerator(): JSX.Element {
 
   return (
     <div className="grid gap-8 lg:grid-cols-[1fr_320px]">
-      <div className="flex justify-center">
+      <div className="relative flex justify-center">
+        {/* The preview is the hero of this page, so it gets a bloom of its own
+            instead of sitting on flat background like a form field. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute left-1/2 top-1/2 h-[70%] w-[80%] max-w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[80px]"
+          style={{
+            background: `radial-gradient(circle, ${accentA(UI_ACCENT, 0.3)} 0%, ${accentA(UI_ACCENT_ALT, 0.12)} 45%, transparent 72%)`,
+          }}
+        />
         <canvas
           ref={canvasRef}
           width={W}
           height={H}
-          className="w-full max-w-[320px] rounded-3xl border border-lunamaze-border shadow-2xl"
+          className="relative w-full max-w-[320px] rounded-3xl border"
+          style={{
+            borderColor: accentA(UI_ACCENT, 0.32),
+            boxShadow: `0 30px 70px -20px rgba(0,0,0,0.85), 0 0 0 1px ${accentA(UI_ACCENT, 0.08)}`,
+          }}
           aria-label={`Wallpaper preview: day ${day}`}
         />
       </div>
 
       <div className="space-y-6">
-        <div className="rounded-2xl border border-lunamaze-border bg-lunamaze-bgSurface/60 p-6 backdrop-blur-sm">
+        <div className="rounded-3xl border p-6 backdrop-blur-sm" style={PANEL_STYLE}>
           <label htmlFor="day-input" className="block font-semibold">
             Your day count
           </label>
@@ -275,37 +313,51 @@ export default function WallpaperGenerator(): JSX.Element {
               const v = Number.parseInt(e.target.value, 10);
               setDay(Number.isNaN(v) ? 0 : Math.max(0, Math.min(9999, v)));
             }}
-            className="mt-3 w-full rounded-xl border border-lunamaze-border bg-lunamaze-bgDeep px-4 py-3 text-lg font-mono focus:outline-none focus-visible:ring-2 focus-visible:ring-lunamaze-signal"
+            className="mt-3 w-full rounded-xl border bg-lunamaze-bgDeep/80 px-4 py-3 text-lg font-mono focus:outline-none focus-visible:ring-2 focus-visible:ring-lunamaze-violetLight"
+            style={{ borderColor: accentA(UI_ACCENT, 0.24) }}
           />
           <p className="mt-2 text-xs text-lunamaze-textDim">
             The ring shows progress toward your next 90-day landmark.
           </p>
         </div>
 
-        <div className="rounded-2xl border border-lunamaze-border bg-lunamaze-bgSurface/60 p-6 backdrop-blur-sm">
+        <div className="rounded-3xl border p-6 backdrop-blur-sm" style={PANEL_STYLE}>
           <p className="font-semibold">Style</p>
           <div className="mt-3 grid grid-cols-3 gap-2">
-            {(Object.keys(STYLES) as StyleKey[]).map((key) => (
-              <button
-                key={key}
-                type="button"
-                onClick={() => setStyleKey(key)}
-                className={`rounded-xl border px-3 py-2 text-sm transition-colors ${
-                  styleKey === key
-                    ? 'border-lunamaze-signal text-lunamaze-signal'
-                    : 'border-lunamaze-border hover:border-lunamaze-signal'
-                }`}
-              >
-                {STYLES[key].name}
-              </button>
-            ))}
+            {(Object.keys(STYLES) as StyleKey[]).map((key) => {
+              const selected = styleKey === key;
+              return (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => setStyleKey(key)}
+                  aria-pressed={selected}
+                  className="rounded-xl border px-3 py-2 text-sm transition-all duration-200 hover:-translate-y-0.5"
+                  style={
+                    selected
+                      ? {
+                          borderColor: accentA(UI_ACCENT, 0.75),
+                          background: accentA(UI_ACCENT, 0.16),
+                          color: UI_ACCENT,
+                        }
+                      : {
+                          borderColor: accentA(UI_ACCENT, 0.2),
+                          background: accentA(UI_ACCENT, 0.04),
+                        }
+                  }
+                >
+                  {STYLES[key].name}
+                </button>
+              );
+            })}
           </div>
           <label className="mt-4 flex items-center gap-3 text-sm text-lunamaze-textSecondary">
             <input
               type="checkbox"
               checked={showLabel}
               onChange={(e) => setShowLabel(e.target.checked)}
-              className="h-4 w-4 accent-current"
+              className="h-4 w-4"
+              style={{ accentColor: UI_ACCENT }}
             />
             Show the day number on the art
           </label>
@@ -314,7 +366,11 @@ export default function WallpaperGenerator(): JSX.Element {
         <button
           type="button"
           onClick={download}
-          className="w-full rounded-xl bg-lunamaze-signal px-6 py-4 font-semibold text-lunamaze-bgDeep transition-opacity hover:opacity-90"
+          className="w-full rounded-2xl px-6 py-4 font-semibold text-lunamaze-bgDeep transition-all duration-200 hover:-translate-y-0.5 hover:opacity-95"
+          style={{
+            background: `linear-gradient(115deg, ${UI_ACCENT} 0%, ${UI_ACCENT_ALT} 100%)`,
+            boxShadow: `0 14px 40px -14px ${accentA(UI_ACCENT, 0.85)}`,
+          }}
         >
           Download wallpaper (PNG)
         </button>
@@ -329,7 +385,7 @@ export default function WallpaperGenerator(): JSX.Element {
           Want the count to update itself?{' '}
           <Link
             href="/axiom/"
-            className="underline decoration-lunamaze-border underline-offset-4 hover:text-lunamaze-signal"
+            className="underline decoration-lunamaze-violetLight/50 underline-offset-4 hover:text-lunamaze-violetLight"
           >
             Axiom
           </Link>{' '}
