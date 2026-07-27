@@ -1,4 +1,5 @@
 import type { JSX } from 'react';
+import { hexA } from '@/lib/color';
 
 /**
  * Layered aurora wash for hero sections.
@@ -52,13 +53,4 @@ export default function AuroraField({
       <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-lunamaze-bgDeep" />
     </div>
   );
-}
-
-/** #RRGGBB + alpha → rgba(), so callers can pass plain hex tokens. */
-function hexA(hex: string, alpha: number): string {
-  const h = hex.replace('#', '');
-  const r = parseInt(h.slice(0, 2), 16);
-  const g = parseInt(h.slice(2, 4), 16);
-  const b = parseInt(h.slice(4, 6), 16);
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }

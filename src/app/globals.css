@@ -274,31 +274,37 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   Long-form legal prose (privacy policy, terms). Scoped under
+   Long-form prose: the legal pages and the recovery library. Scoped under
    `.lunamaze-prose` so it never leaks into the marketing sections. All colors
    reference the :root tokens above. `scroll-margin-top` keeps anchored
-   headings clear of the fixed ProductNav when deep-linked (e.g. /privacy/#axiom).
+   headings clear of the fixed ProductNav when deep-linked (e.g. /privacy/#axiom
+   or a library contents jump).
+
+   Sizing is set for sustained reading rather than scanning: 17px at 1.8 gives
+   roughly 70 characters per line inside the 42rem article measure, which is the
+   band people actually read comfortably. Legal pages inherit the same comfort.
    -------------------------------------------------------------------------- */
 .lunamaze-prose {
   color: var(--text-secondary);
-  font-size: 1rem;
-  line-height: 1.75;
+  font-size: 1.0625rem;
+  line-height: 1.8;
 }
 
 .lunamaze-prose > * + * {
-  margin-top: 1.15rem;
+  margin-top: 1.3rem;
 }
 
 .lunamaze-prose h2 {
   color: var(--text-primary);
-  font-size: 1.6rem;
+  font-size: 1.75rem;
   font-weight: 700;
-  letter-spacing: -0.01em;
-  line-height: 1.2;
-  margin-top: 3.5rem;
+  letter-spacing: -0.015em;
+  line-height: 1.22;
+  margin-top: 3.75rem;
   padding-top: 2.25rem;
   border-top: 1px solid var(--border);
   scroll-margin-top: 6rem;
+  text-wrap: balance;
 }
 
 .lunamaze-prose h2:first-child {
@@ -309,10 +315,27 @@ body {
 
 .lunamaze-prose h3 {
   color: var(--text-primary);
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   font-weight: 600;
-  margin-top: 2rem;
+  line-height: 1.35;
+  margin-top: 2.25rem;
   scroll-margin-top: 6rem;
+  text-wrap: balance;
+}
+
+/* A heading that opens a section should sit close to the text it introduces,
+   not float exactly halfway between two paragraphs. */
+.lunamaze-prose h2 + *,
+.lunamaze-prose h3 + * {
+  margin-top: 0.85rem;
+}
+
+/* Give the opening paragraph a little more presence than body copy — it is the
+   line that decides whether the rest gets read. */
+.lunamaze-prose > p:first-child {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: var(--text-primary);
 }
 
 .lunamaze-prose strong {
@@ -337,9 +360,11 @@ body {
   padding: 0;
 }
 
+/* Logical properties, not left/right: the Arabic articles render RTL, and a
+   hard-coded `left` puts the bullet on the wrong side of the text. */
 .lunamaze-prose ul li {
   position: relative;
-  padding-left: 1.5rem;
+  padding-inline-start: 1.5rem;
   margin-top: 0.6rem;
   color: var(--text-secondary);
 }
@@ -347,8 +372,8 @@ body {
 .lunamaze-prose ul li::before {
   content: '';
   position: absolute;
-  left: 0;
-  top: 0.62em;
+  inset-inline-start: 0;
+  top: 0.7em;
   width: 6px;
   height: 6px;
   border-radius: 9999px;

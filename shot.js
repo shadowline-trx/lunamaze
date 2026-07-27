@@ -37,7 +37,7 @@ function serve() {
 (async () => {
   // Pass the route WITHOUT a leading slash: Git Bash rewrites a leading "/"
   // into a Windows path before node ever sees it.
-  const [, , raw = '', out = 'out.png', width = '430', full = ''] = process.argv;
+  const [, , raw = '', out = 'out.png', width = '430', full = '', scroll = '0'] = process.argv;
   const urlPath = '/' + raw.replace(/^\/+/, '');
   const server = serve();
   const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
@@ -48,6 +48,15 @@ function serve() {
     deviceScaleFactor: 2,
   });
   await page.goto(`http://localhost:${PORT}${urlPath}`, { waitUntil: 'networkidle0' });
+  // A full-page shot of a long article is unreadable when scaled down, so allow
+  // jumping to an offset and shooting one viewport of it instead.
+  const y = parseInt(scroll, 10);
+  if (y > 0) {
+    // 'instant' matters: the site sets scroll-behavior: smooth, so a plain
+    // scrollTo animates and the shot lands wherever the tween happens to be.
+    await page.evaluate((top) => window.scrollTo({ top, behavior: 'instant' }), y);
+    await new Promise((r) => setTimeout(r, 300));
+  }
   await new Promise((r) => setTimeout(r, 600));
   await page.screenshot({ path: out, fullPage: full === 'full' });
   await browser.close();
