@@ -18,7 +18,7 @@ import { contactEmail } from '@/content/lunamaze';
  * shared `LunaFooter`. Long-form copy uses the scoped `.lunamaze-prose` styles.
  */
 
-const LAST_UPDATED = 'July 15, 2026';
+const LAST_UPDATED = 'July 28, 2026';
 const CONTACT_MAILTO = `mailto:${contactEmail}`;
 
 interface Principle {
@@ -382,6 +382,53 @@ export default function PrivacyPage(): JSX.Element {
               'We are based in India, and our infrastructure providers may process and store data on servers located outside your country, with appropriate safeguards where required.'
             }
           </p>
+
+          {/* ---------------------------------------------------------------- */}
+          {/* The site otherwise collects nothing, so the one exception has to be
+              stated outright rather than left for someone to discover. */}
+          <h2 id="website">This website</h2>
+          <p>
+            {
+              'The pages on lunamaze.com carry no analytics, no advertising pixels, and no third-party trackers. The free tools (severity test, rewire calculator, panic button, wallpaper maker) run entirely inside your browser: your answers are never transmitted to us and never stored anywhere. You can disconnect from the internet and they still work.'
+            }
+          </p>
+
+          <h3>Launch notification list</h3>
+          <p>
+            {
+              'There is one exception, and it is opt-in. If you ask to be told when Axiom reaches the App Store, we store the email address you type, which page you submitted it from, the platform you asked about, and your browser’s language setting. We do not store your IP address, your device details, or anything that identifies you beyond the address itself.'
+            }
+          </p>
+          <ul>
+            <li>
+              {
+                'Purpose: to send you one message when the app becomes available. We do not send a newsletter, marketing, or anything else to this list.'
+              }
+            </li>
+            <li>
+              {
+                'The subject line and body of that message will not name the subject matter this app addresses. The list is single opt-in, so it may contain an address someone else typed, and a message that named the topic could land in the wrong inbox.'
+              }
+            </li>
+            <li>
+              {
+                'Sharing: never. The list is not sold, rented, shared, or used to build an audience on any advertising platform.'
+              }
+            </li>
+            <li>
+              {
+                'Separation: this list is kept apart from app data and is never linked to an Axiom account, a device, or anything you log in the app.'
+              }
+            </li>
+            <li>
+              {
+                'Retention: the list is deleted within 90 days of the launch message being sent, or sooner on request. Every message includes an unsubscribe link.'
+              }
+            </li>
+            <li>
+              {'Removal at any time: email us and the address is deleted, no questions asked.'}
+            </li>
+          </ul>
 
           {/* ---------------------------------------------------------------- */}
           <h2>Changes to this policy</h2>

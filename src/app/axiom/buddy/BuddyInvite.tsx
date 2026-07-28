@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import type { JSX } from 'react';
+import Link from 'next/link';
 import { appStoreUrl, playStoreUrl } from '@/lib/storeLinks';
 
 const CODE_PATTERN = /^[ABCDEFGHJKMNPQRSTUVWXYZ23456789]{6}$/;
@@ -125,9 +126,19 @@ export default function BuddyInvite(): JSX.Element {
             Download Axiom on the App Store
           </a>
         ) : (
-          <p className="rounded-xl border border-dashed border-lunamaze-border px-6 py-4 text-center text-sm text-lunamaze-textDim">
-            iPhone version is in review — not available to install yet.
-          </p>
+          // Someone was invited by a friend and owns an iPhone: the highest
+          // intent this site ever sees. Leaving them with a grey "no" wastes it.
+          <div className="rounded-xl border border-dashed border-lunamaze-border px-6 py-5 text-center">
+            <p className="text-sm text-lunamaze-textDim">
+              iPhone version is in review — not available to install yet.
+            </p>
+            <Link
+              href="/axiom/ios/"
+              className="mt-3 inline-block text-sm font-semibold text-lunamaze-signal underline underline-offset-4 hover:opacity-80"
+            >
+              Get told the day it lands
+            </Link>
+          </div>
         )}
       </div>
 

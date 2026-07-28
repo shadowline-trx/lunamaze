@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import type { JSX } from 'react';
+import Link from 'next/link';
 import { appStoreUrl, playStoreUrl } from '@/lib/storeLinks';
 
 type Phase = 'detecting' | 'redirecting' | 'choose';
@@ -69,9 +70,20 @@ export default function StoreRedirect({ source }: StoreRedirectProps): JSX.Eleme
             Download on the App Store
           </a>
         ) : (
-          <p className="rounded-xl border border-dashed border-lunamaze-border px-6 py-4 text-sm text-lunamaze-textDim">
-            iPhone version is in review — not available to install yet.
-          </p>
+          // An Apple visitor cannot act on anything above, so this is the whole
+          // page for them. A dead end here spends the site's most valuable
+          // traffic for nothing.
+          <div className="rounded-xl border border-dashed border-lunamaze-border px-6 py-5 text-left">
+            <p className="text-sm text-lunamaze-textDim">
+              iPhone version is in review — not available to install yet.
+            </p>
+            <Link
+              href="/axiom/ios/"
+              className="mt-3 inline-block text-sm font-semibold text-lunamaze-signal underline underline-offset-4 hover:opacity-80"
+            >
+              Get told when it lands, and use the free tools meanwhile
+            </Link>
+          </div>
         )}
       </div>
 

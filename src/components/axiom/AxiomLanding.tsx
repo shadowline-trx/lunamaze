@@ -274,10 +274,16 @@ function Hero() {
             <Icon.Play className="h-4 w-4" />
             Get it on Google Play
           </a>
-          <span className="flex items-center gap-2 rounded-full border border-axiom-border px-7 py-3.5 font-medium text-axiom-textSecondary">
+          {/* Was a dead <span>. An iPhone visitor reaching the hero CTA is the
+              best traffic this page gets, and "coming soon" gave them nothing
+              to do with that. */}
+          <a
+            href={internalUrl('/axiom/ios/')}
+            className="flex items-center gap-2 rounded-full border border-axiom-border px-7 py-3.5 font-medium text-axiom-textSecondary transition-colors hover:border-axiom-primaryLight hover:text-axiom-textPrimary"
+          >
             <Icon.Apple className="h-4 w-4" />
-            iOS coming soon
-          </span>
+            iOS — notify me
+          </a>
         </motion.div>
       </motion.div>
     </section>
@@ -558,10 +564,13 @@ function FinalCTA() {
               <Icon.Play className="h-4 w-4" />
               Get it on Google Play
             </a>
-            <span className="flex items-center gap-2 rounded-full border border-axiom-border px-8 py-4 font-medium text-axiom-textSecondary">
+            <a
+              href={internalUrl('/axiom/ios/')}
+              className="flex items-center gap-2 rounded-full border border-axiom-border px-8 py-4 font-medium text-axiom-textSecondary transition-colors hover:border-axiom-primaryLight hover:text-axiom-textPrimary"
+            >
               <Icon.Apple className="h-4 w-4" />
-              iOS coming soon
-            </span>
+              iOS — notify me
+            </a>
           </div>
         </Reveal>
       </div>

@@ -16,6 +16,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/', priority: 1.0, changeFrequency: 'monthly' },
     { path: '/tether-adb/', priority: 0.9, changeFrequency: 'weekly' },
     { path: '/axiom/', priority: 0.8, changeFrequency: 'monthly' },
+    // Weekly while the listing status is in flux; this page's copy changes the
+    // day Apple approves.
+    { path: '/axiom/ios/', priority: 0.8, changeFrequency: 'weekly' },
     { path: '/typecrt/', priority: 0.7, changeFrequency: 'monthly' },
     { path: '/drift/', priority: 0.5, changeFrequency: 'monthly' },
     { path: '/axiom/privacy/', priority: 0.3, changeFrequency: 'yearly' },
