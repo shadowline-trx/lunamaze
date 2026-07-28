@@ -28,6 +28,9 @@ const BY_SLUG: Readonly<Record<string, BlogAccent>> = {
   'night-urges': { accent: '#FFD27A', accentAlt: '#FF9E7A' },
   /** The breach write-up is reporting, not coaching: steel, deliberately cooler. */
   'quittr-breach': { accent: '#C7CCE0', accentAlt: '#7B5CFF' },
+  // Sibling of the breach article, so it shares its silver; the warmer alt
+  // separates the two cards on the index without breaking the pairing.
+  'quittr-alternative': { accent: '#C7CCE0', accentAlt: '#00D2FF' },
 };
 
 export function blogAccent(slug: string): BlogAccent {

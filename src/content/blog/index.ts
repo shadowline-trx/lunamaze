@@ -40,6 +40,7 @@ import nightRu from './night-urges/ru';
 import nightTr from './night-urges/tr';
 
 import quittrBreachEn from './quittr-breach/en';
+import quittrAlternativeEn from './quittr-alternative/en';
 
 /**
  * Central registry of every blog article in every language. Routes, hreflang
@@ -84,6 +85,7 @@ export const ALL_ARTICLES: ReadonlyArray<BlogArticle> = [
   nightRu,
   nightTr,
   quittrBreachEn,
+  quittrAlternativeEn,
 ];
 
 /** All language versions of one article, keyed by lang. */
