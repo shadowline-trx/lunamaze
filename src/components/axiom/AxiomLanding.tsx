@@ -282,7 +282,7 @@ function Hero() {
             className="flex items-center gap-2 rounded-full border border-axiom-border px-7 py-3.5 font-medium text-axiom-textSecondary transition-colors hover:border-axiom-primaryLight hover:text-axiom-textPrimary"
           >
             <Icon.Apple className="h-4 w-4" />
-            iOS — notify me
+            iOS — join the beta
           </a>
         </motion.div>
       </motion.div>
@@ -569,7 +569,7 @@ function FinalCTA() {
               className="flex items-center gap-2 rounded-full border border-axiom-border px-8 py-4 font-medium text-axiom-textSecondary transition-colors hover:border-axiom-primaryLight hover:text-axiom-textPrimary"
             >
               <Icon.Apple className="h-4 w-4" />
-              iOS — notify me
+              iOS — join the beta
             </a>
           </div>
         </Reveal>

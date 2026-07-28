@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import type { JSX } from 'react';
 import Link from 'next/link';
-import { appStoreUrl, playStoreUrl } from '@/lib/storeLinks';
+import { appStoreUrl, iosBetaUrl, playStoreUrl } from '@/lib/storeLinks';
 
 type Phase = 'detecting' | 'redirecting' | 'choose';
 
@@ -25,6 +25,7 @@ export default function StoreRedirect({ source }: StoreRedirectProps): JSX.Eleme
 
   const play = playStoreUrl(source);
   const apple = appStoreUrl(source);
+  const beta = iosBetaUrl();
 
   useEffect(() => {
     const ua = navigator.userAgent;
@@ -54,6 +55,12 @@ export default function StoreRedirect({ source }: StoreRedirectProps): JSX.Eleme
             : 'Taking you to Axiom…'}
       </p>
 
+      {phase === 'choose' && apple === null && beta !== null && (
+        <p className="mt-3 text-sm text-lunamaze-textDim">
+          {'iPhone is in review, so it installs through TestFlight for now.'}
+        </p>
+      )}
+
       <div className="mt-8 flex flex-col gap-3">
         <a
           href={play}
@@ -68,6 +75,16 @@ export default function StoreRedirect({ source }: StoreRedirectProps): JSX.Eleme
             className="rounded-xl border border-lunamaze-border bg-lunamaze-bgSurface/60 px-6 py-4 font-semibold hover:border-lunamaze-signal transition-colors"
           >
             Download on the App Store
+          </a>
+        ) : beta !== null ? (
+          // Deliberately a visible button rather than an auto-redirect target:
+          // TestFlight is a second install, and bouncing someone into it
+          // without asking is a worse first impression than saying so.
+          <a
+            href={beta}
+            className="rounded-xl border border-lunamaze-border bg-lunamaze-bgSurface/60 px-6 py-4 font-semibold transition-colors hover:border-lunamaze-signal"
+          >
+            Join the iPhone beta
           </a>
         ) : (
           // An Apple visitor cannot act on anything above, so this is the whole

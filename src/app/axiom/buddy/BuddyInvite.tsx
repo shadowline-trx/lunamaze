@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import type { JSX } from 'react';
 import Link from 'next/link';
-import { appStoreUrl, playStoreUrl } from '@/lib/storeLinks';
+import { appStoreUrl, iosBetaUrl, playStoreUrl } from '@/lib/storeLinks';
 
 const CODE_PATTERN = /^[ABCDEFGHJKMNPQRSTUVWXYZ23456789]{6}$/;
 
@@ -27,6 +27,7 @@ export default function BuddyInvite(): JSX.Element {
 
   const play = playStoreUrl('buddy');
   const apple = appStoreUrl('buddy');
+  const beta = iosBetaUrl();
 
   return (
     <div className="max-w-2xl mx-auto">
@@ -125,9 +126,19 @@ export default function BuddyInvite(): JSX.Element {
           >
             Download Axiom on the App Store
           </a>
-        ) : (
+        ) : beta !== null ? (
           // Someone was invited by a friend and owns an iPhone: the highest
-          // intent this site ever sees. Leaving them with a grey "no" wastes it.
+          // intent this site ever sees. Now that there is something to install,
+          // it goes here rather than behind another page.
+          <div className="rounded-xl border border-lunamaze-border bg-lunamaze-bgSurface/60 px-6 py-5 text-center">
+            <a href={beta} className="font-semibold hover:text-lunamaze-signal">
+              Join the iPhone beta on TestFlight
+            </a>
+            <p className="mt-2 text-xs text-lunamaze-textDim">
+              {'The App Store version is still in review. The beta is the finished build.'}
+            </p>
+          </div>
+        ) : (
           <div className="rounded-xl border border-dashed border-lunamaze-border px-6 py-5 text-center">
             <p className="text-sm text-lunamaze-textDim">
               iPhone version is in review — not available to install yet.

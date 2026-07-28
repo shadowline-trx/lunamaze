@@ -22,6 +22,34 @@ export const PLAY_PACKAGE = 'com.axiomapp.app';
 export const APP_STORE_ID: string | null = null;
 
 /**
+ * Public TestFlight link for the iOS beta.
+ *
+ * This exists because "in review" was costing us every iPhone visitor. The beta
+ * is build 28 — the same binary sitting with Apple for review, not an early
+ * alpha — so sending people to it is honest and it converts a visitor who would
+ * otherwise have left into a user today.
+ *
+ * Deliberately not routed through `/go/reddit` or any redirect: r/TestFlight
+ * bans shortened and redirected links, and this is the URL that gets posted
+ * there. It also cannot carry campaign parameters — TestFlight ignores them —
+ * so beta installs are attributed by the counter in App Store Connect instead,
+ * which was zero when this shipped.
+ */
+export const TESTFLIGHT_URL = 'https://testflight.apple.com/join/pb2NWh6B';
+
+/**
+ * The beta link while it is still the best thing we can offer an iPhone
+ * visitor, and `null` once it is not.
+ *
+ * Reads from APP_STORE_ID so this retires itself: the day the real listing goes
+ * live, pointing people at a 90-day beta build instead would be actively worse,
+ * and nobody has to remember to come back and remove it.
+ */
+export function iosBetaUrl(): string | null {
+  return APP_STORE_ID === null ? TESTFLIGHT_URL : null;
+}
+
+/**
  * Play Store URL tagged for `source`. The `referrer` value is a single
  * URL-encoded query string; Play requires the inner `&` separators to be
  * encoded or it silently drops everything after the first pair.

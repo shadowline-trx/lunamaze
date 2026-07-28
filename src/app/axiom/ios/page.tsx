@@ -5,7 +5,7 @@ import ProductNav from '@/components/lunamaze/ProductNav';
 import LunaFooter from '@/components/lunamaze/LunaFooter';
 import AuroraField from '@/components/lunamaze/AuroraField';
 import WaitlistForm from '@/components/lunamaze/WaitlistForm';
-import { appStoreUrl } from '@/lib/storeLinks';
+import { appStoreUrl, iosBetaUrl } from '@/lib/storeLinks';
 
 /**
  * /axiom/ios/ — the landing page for iPhone visitors, and the link to hand out
@@ -16,12 +16,14 @@ import { appStoreUrl } from '@/lib/storeLinks';
  * review and then offered them nothing. Those are the most valuable visitors the
  * site gets and they were being spent for free.
  *
- * The order here is deliberate. Tools first, waitlist second. Someone who cannot
- * install anything should still leave with something that worked, and an email
- * ask reads very differently after that than before it.
+ * The order changed once the TestFlight public link went live. A visitor who can
+ * install the app today should be offered that first — the waitlist was only
+ * ever a consolation for having nothing to give them. It now sits underneath,
+ * for people who will not install a second app to get a first one.
  *
  * When Apple approves, filling APP_STORE_ID in src/lib/storeLinks.ts flips this
- * page from a waitlist to a download page. Nothing else needs editing.
+ * page to a plain download page and retires both the beta and the waitlist.
+ * Nothing else needs editing.
  */
 
 const CANONICAL = 'https://lunamaze.com/axiom/ios/';
@@ -64,6 +66,7 @@ const TOOLS: ReadonlyArray<Tool> = [
 
 export default function IosPage(): JSX.Element {
   const apple = appStoreUrl('ios-page');
+  const beta = iosBetaUrl();
 
   return (
     <main className="relative min-h-screen bg-lunamaze-bgDeep text-lunamaze-textPrimary">
@@ -77,16 +80,29 @@ export default function IosPage(): JSX.Element {
               className="h-1.5 w-1.5 rounded-full bg-lunamaze-violetLight"
               aria-hidden="true"
             />
-            {apple === null ? 'iPhone — in review' : 'iPhone — available now'}
+            {apple !== null
+              ? 'iPhone — available now'
+              : beta !== null
+                ? 'iPhone — open beta'
+                : 'iPhone — in review'}
           </span>
           <h1 className="text-4xl font-extrabold leading-[1.03] tracking-tight sm:text-6xl">
-            Axiom is coming to{' '}
-            <span className="lunamaze-text-gradient">iPhone.</span>
+            {beta !== null && apple === null ? (
+              <>
+                Axiom is on iPhone.{' '}
+                <span className="lunamaze-text-gradient">Early, but real.</span>
+              </>
+            ) : (
+              <>
+                Axiom is coming to{' '}
+                <span className="lunamaze-text-gradient">iPhone.</span>
+              </>
+            )}
           </h1>
           <p className="mt-6 text-lg leading-relaxed text-lunamaze-textSecondary">
-            {
-              'A recovery tracker that keeps your history on your phone rather than on our servers. It has been on Android for a while. The iPhone build is with Apple now.'
-            }
+            {beta !== null && apple === null
+              ? 'A recovery tracker that keeps your history on your phone rather than on our servers. The App Store listing is still with Apple, but the build is finished and you can install it today through TestFlight.'
+              : 'A recovery tracker that keeps your history on your phone rather than on our servers. It has been on Android for a while. The iPhone build is with Apple now.'}
           </p>
         </div>
       </header>
@@ -108,8 +124,38 @@ export default function IosPage(): JSX.Element {
             </div>
           ) : null}
 
+          {beta !== null && apple === null ? (
+            <div className="rounded-2xl border border-lunamaze-violetLight/30 bg-lunamaze-violet/[0.07] p-6 backdrop-blur-sm sm:p-8">
+              <h2 className="text-xl font-bold">Install it now, through TestFlight</h2>
+              <p className="mt-3 leading-relaxed text-lunamaze-textSecondary">
+                {
+                  'This is the finished build — the same one sitting with Apple for review, not an early alpha. It is free, it needs no account, and nothing you log in it leaves your phone.'
+                }
+              </p>
+              <a
+                href={beta}
+                className="mt-5 inline-block rounded-xl bg-lunamaze-signal px-6 py-3 font-semibold text-lunamaze-bgDeep transition-opacity hover:opacity-90"
+              >
+                Join the beta on TestFlight
+              </a>
+              {/* The friction is real and stating it costs nothing. Someone who
+                  finds out about the second install only after tapping is more
+                  annoyed than someone who was told. */}
+              <p className="mt-4 text-xs leading-relaxed text-lunamaze-textDim">
+                TestFlight is Apple&apos;s own beta app, so this takes two installs rather than
+                one. Beta builds expire after 90 days; when the App Store listing goes live you
+                move across and keep your history. Apple does not share your name or email with
+                us when you join by link.
+              </p>
+            </div>
+          ) : null}
+
           <div className="rounded-2xl border border-lunamaze-border bg-lunamaze-bgSurface/60 p-6 backdrop-blur-sm sm:p-8">
-            <h2 className="text-xl font-bold">These already work on your iPhone</h2>
+            <h2 className="text-xl font-bold">
+              {beta !== null && apple === null
+                ? 'Not ready to install anything?'
+                : 'These already work on your iPhone'}
+            </h2>
             <p className="mt-3 leading-relaxed text-lunamaze-textSecondary">
               No install, no account, no sign-up. They run inside this browser tab and send
               nothing anywhere — you can turn off your connection and they still work.
@@ -137,8 +183,14 @@ export default function IosPage(): JSX.Element {
             <WaitlistForm
               source="ios-page"
               platform="ios"
-              heading="Tell me when it lands"
-              blurb="Apple review takes as long as it takes. Leave an email and you get one message the day it goes live — no countdown, no reminders in between."
+              heading={
+                beta !== null ? 'Or wait for the App Store version' : 'Tell me when it lands'
+              }
+              blurb={
+                beta !== null
+                  ? 'If you would rather not install a beta, that is fair. Leave an email and you get one message the day the App Store listing goes live.'
+                  : 'Apple review takes as long as it takes. Leave an email and you get one message the day it goes live — no countdown, no reminders in between.'
+              }
             />
           ) : null}
 
