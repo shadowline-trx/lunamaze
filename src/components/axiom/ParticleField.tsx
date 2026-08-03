@@ -389,8 +389,8 @@ const ParticleField = forwardRef<ParticleFieldHandle, ParticleFieldProps>(
         ? 6000
         : small || coarse
           ? lowPower
-            ? 7000
-            : 11000
+            ? 5000
+            : 9000
           : lowPower
             ? 14000
             : 26000;
@@ -468,14 +468,30 @@ const ParticleField = forwardRef<ParticleFieldHandle, ParticleFieldProps>(
       gl.blendFuncSeparate(gl.ONE, gl.ONE, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
       gl.clearColor(0, 0, 0, 0);
 
-      const dpr = Math.min(window.devicePixelRatio || 1, small ? 1.6 : 2);
+      const dpr = Math.min(window.devicePixelRatio || 1, small || coarse ? 1.3 : 2);
+      // Adaptive quality governor: phones are fill-rate limited and lie about
+      // their GPUs, so instead of guessing we measure. Sustained slow frames
+      // step the tier down — fewer points, then lower resolution, then
+      // half-rate — and it never steps back up (no oscillation).
+      let tier = 0;
+      let drawCount = COUNT;
+      let dprCurrent = dpr;
       const resize = (): void => {
         const w = canvas.clientWidth;
         const h = canvas.clientHeight;
         if (w === 0 || h === 0) return;
-        canvas.width = Math.round(w * dpr);
-        canvas.height = Math.round(h * dpr);
+        canvas.width = Math.round(w * dprCurrent);
+        canvas.height = Math.round(h * dprCurrent);
         gl.viewport(0, 0, canvas.width, canvas.height);
+      };
+      const applyTier = (t: number): void => {
+        tier = t;
+        drawCount = t === 0 ? COUNT : t === 1 ? Math.floor(COUNT * 0.6) : Math.floor(COUNT * 0.38);
+        const nextDpr = t === 0 ? dpr : t === 1 ? Math.min(dpr, 1.15) : 1;
+        if (nextDpr !== dprCurrent) {
+          dprCurrent = nextDpr;
+          resize();
+        }
       };
       resize();
       const ro = new ResizeObserver(resize);
@@ -495,6 +511,7 @@ const ParticleField = forwardRef<ParticleFieldHandle, ParticleFieldProps>(
 
       let raf = 0;
       let lost = false;
+      let mainLoop: ((t: number) => void) | null = null;
       const onLost = (e: Event): void => {
         e.preventDefault();
         lost = true;
@@ -520,7 +537,7 @@ const ParticleField = forwardRef<ParticleFieldHandle, ParticleFieldProps>(
         gl.uniform2f(uni.scale, (m / w) * zoom, (m / h) * zoom);
         gl.uniform1f(uni.blend, blend);
         gl.uniform1f(uni.time, timeMs * 0.001);
-        gl.uniform1f(uni.pointBase, (small ? 2.1 : 2.5) * dpr);
+        gl.uniform1f(uni.pointBase, (small ? 2.1 : 2.5) * dprCurrent);
         gl.uniform1f(uni.opacity, s.opacity);
         gl.uniform1f(uni.brightness, s.brightness);
 
@@ -531,7 +548,7 @@ const ParticleField = forwardRef<ParticleFieldHandle, ParticleFieldProps>(
         gl.uniform1f(uni.mouseStrength, 0.35 + mouse.energy * 0.65);
 
         gl.clear(gl.COLOR_BUFFER_BIT);
-        gl.drawArrays(gl.POINTS, 0, COUNT);
+        gl.drawArrays(gl.POINTS, 0, drawCount);
       };
 
       if (reduce) {
@@ -540,30 +557,48 @@ const ParticleField = forwardRef<ParticleFieldHandle, ParticleFieldProps>(
         stateRef.current.opacity = 0.55;
         draw(0);
       } else {
-        // While the field is dimmed behind content sections, render at half
-        // rate — invisible to the eye at 16% alpha, real GPU/battery savings
-        // across the long reading stretch of the page.
+        // Frame budget accounting for the governor, plus two saving modes:
+        // near-invisible opacity skips rendering entirely (one clear, then
+        // idle), and dimmed/degraded states render at half rate.
         let frame = 0;
+        let lastT = 0;
+        let strikes = 0;
+        let hiddenCleared = false;
         const loop = (t: number): void => {
-          if (!lost) {
-            frame++;
-            if (stateRef.current.opacity >= 0.3 || frame % 2 === 0) draw(t);
-            raf = requestAnimationFrame(loop);
+          if (lost) return;
+          frame++;
+          const dt = t - lastT;
+          lastT = t;
+          if (dt > 4 && dt < 200) {
+            if (dt > 26) strikes += 1;
+            else strikes = Math.max(0, strikes - 0.5);
+            if (strikes >= 8 && tier < 2) {
+              applyTier(tier + 1);
+              strikes = 0;
+            }
           }
+          const s = stateRef.current;
+          if (s.opacity < 0.075) {
+            if (!hiddenCleared) {
+              gl.clear(gl.COLOR_BUFFER_BIT);
+              hiddenCleared = true;
+            }
+          } else {
+            hiddenCleared = false;
+            const halfRate = s.opacity < 0.3 || tier >= 2;
+            if (!halfRate || frame % 2 === 0) draw(t);
+          }
+          raf = requestAnimationFrame(loop);
         };
+        mainLoop = loop;
         raf = requestAnimationFrame(loop);
       }
 
       const onVisibility = (): void => {
         if (reduce || lost) return;
         cancelAnimationFrame(raf);
-        if (!document.hidden) {
-          raf = requestAnimationFrame(function loop(t) {
-            if (!lost) {
-              draw(t);
-              raf = requestAnimationFrame(loop);
-            }
-          });
+        if (!document.hidden && mainLoop) {
+          raf = requestAnimationFrame(mainLoop);
         }
       };
       document.addEventListener('visibilitychange', onVisibility);

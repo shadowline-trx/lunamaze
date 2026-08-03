@@ -456,12 +456,15 @@ export default function AxiomLanding() {
           });
 
           // Field stays lit through the marquee, dims as the audit begins.
+          // On phones it dims to effectively-off: below the field's 0.075
+          // render threshold, the GPU goes idle through the whole reading
+          // stretch and wakes again for the finale.
           if (st) {
             gsap.fromTo(
               st,
               { opacity: 1 },
               {
-                opacity: 0.16,
+                opacity: window.matchMedia('(pointer: coarse)').matches ? 0.05 : 0.16,
                 ease: 'none',
                 scrollTrigger: {
                   trigger: '[data-audit-intro]',
