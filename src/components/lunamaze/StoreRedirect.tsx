@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import type { JSX } from 'react';
 import Link from 'next/link';
-import { appStoreUrl, iosBetaUrl, playStoreUrl } from '@/lib/storeLinks';
+import { appStoreUrl, iosBetaUrl, playIsBlockedHere, playStoreUrl } from '@/lib/storeLinks';
 
 type Phase = 'detecting' | 'redirecting' | 'choose';
 
@@ -22,6 +22,7 @@ interface StoreRedirectProps {
  */
 export default function StoreRedirect({ source }: StoreRedirectProps): JSX.Element {
   const [phase, setPhase] = useState<Phase>('detecting');
+  const [playBlocked, setPlayBlocked] = useState(false);
 
   const play = playStoreUrl(source);
   const apple = appStoreUrl(source);
@@ -32,9 +33,16 @@ export default function StoreRedirect({ source }: StoreRedirectProps): JSX.Eleme
     const isApple = /iPhone|iPad|iPod/i.test(ua);
     const isAndroid = /Android/i.test(ua);
 
+    // Play is dark in the US and Australia, which is the bulk of the audience
+    // Reddit sends. Auto-redirecting an Android visitor there lands them on a
+    // 404 that reads as "the app does not exist", and it fails silently — so
+    // those two markets get the page instead of the bounce.
+    const blocked = isAndroid && playIsBlockedHere();
+    setPlayBlocked(blocked);
+
     // An Apple visitor with no live iOS listing must not be bounced to Play —
     // they'd land on a store page they cannot install from.
-    const target = isApple ? apple : isAndroid ? play : null;
+    const target = isApple ? apple : isAndroid && !blocked ? play : null;
 
     if (target === null) {
       setPhase('choose');
@@ -51,23 +59,59 @@ export default function StoreRedirect({ source }: StoreRedirectProps): JSX.Eleme
         {phase === 'redirecting'
           ? 'Opening your app store…'
           : phase === 'choose'
-            ? 'Pick your platform:'
+            ? playBlocked
+              ? 'Google Play is not serving Axiom in your country yet.'
+              : 'Pick your platform:'
             : 'Taking you to Axiom…'}
       </p>
 
-      {phase === 'choose' && apple === null && beta !== null && (
+      {phase === 'choose' && playBlocked && (
+        // This visitor came to get the app and cannot have it. Saying so and
+        // handing over something that works in the same breath beats letting
+        // them conclude the app does not exist.
+        <p className="mt-3 text-sm text-lunamaze-textDim">
+          The tools below need no install and no account.
+        </p>
+      )}
+
+      {phase === 'choose' && apple === null && beta !== null && !playBlocked && (
         <p className="mt-3 text-sm text-lunamaze-textDim">
           {'iPhone is in review, so it installs through TestFlight for now.'}
         </p>
       )}
 
       <div className="mt-8 flex flex-col gap-3">
-        <a
-          href={play}
-          className="rounded-xl border border-lunamaze-border bg-lunamaze-bgSurface/60 px-6 py-4 font-semibold hover:border-lunamaze-signal transition-colors"
-        >
-          Get it on Google Play
-        </a>
+        {playBlocked ? (
+          <>
+            <div className="rounded-xl border border-lunamaze-signal/40 bg-lunamaze-bgSurface/60 px-6 py-5 text-left">
+              <Link
+                href="/axiom/tools/"
+                className="font-semibold text-lunamaze-signal underline underline-offset-4 hover:opacity-80"
+              >
+                Open the free tools
+              </Link>
+              <p className="mt-2 text-sm text-lunamaze-textDim">
+                Severity self-test, rewire timeline, panic button — all in the browser.
+              </p>
+            </div>
+
+            {/* Kept, demoted and labelled honestly: time-zone detection can be
+                wrong, and a misdetected visitor must still reach the store. */}
+            <a
+              href={play}
+              className="text-sm text-lunamaze-textDim underline underline-offset-4 hover:text-lunamaze-signal"
+            >
+              Open the Play listing anyway
+            </a>
+          </>
+        ) : (
+          <a
+            href={play}
+            className="rounded-xl border border-lunamaze-border bg-lunamaze-bgSurface/60 px-6 py-4 font-semibold hover:border-lunamaze-signal transition-colors"
+          >
+            Get it on Google Play
+          </a>
+        )}
 
         {apple !== null ? (
           <a
@@ -80,11 +124,19 @@ export default function StoreRedirect({ source }: StoreRedirectProps): JSX.Eleme
           // Deliberately a visible button rather than an auto-redirect target:
           // TestFlight is a second install, and bouncing someone into it
           // without asking is a worse first impression than saying so.
+          //
+          // `playBlocked` is only ever true for an Android visitor, so giving
+          // the iPhone beta full button weight there would make the loudest
+          // thing on the page the one option they cannot take.
           <a
             href={beta}
-            className="rounded-xl border border-lunamaze-border bg-lunamaze-bgSurface/60 px-6 py-4 font-semibold transition-colors hover:border-lunamaze-signal"
+            className={
+              playBlocked
+                ? 'text-sm text-lunamaze-textDim underline underline-offset-4 hover:text-lunamaze-signal'
+                : 'rounded-xl border border-lunamaze-border bg-lunamaze-bgSurface/60 px-6 py-4 font-semibold transition-colors hover:border-lunamaze-signal'
+            }
           >
-            Join the iPhone beta
+            {playBlocked ? 'On an iPhone instead? Join the beta' : 'Join the iPhone beta'}
           </a>
         ) : (
           // An Apple visitor cannot act on anything above, so this is the whole
@@ -104,13 +156,17 @@ export default function StoreRedirect({ source }: StoreRedirectProps): JSX.Eleme
         )}
       </div>
 
-      <p className="mt-8 text-sm text-lunamaze-textDim">
-        Not redirecting?{' '}
-        <a href={play} className="underline hover:text-lunamaze-signal">
-          Open the store directly
-        </a>
-        .
-      </p>
+      {/* Only meaningful when a redirect was actually attempted — and in a
+          blocked market it would be a link straight back to the 404. */}
+      {!playBlocked && (
+        <p className="mt-8 text-sm text-lunamaze-textDim">
+          Not redirecting?{' '}
+          <a href={play} className="underline hover:text-lunamaze-signal">
+            Open the store directly
+          </a>
+          .
+        </p>
+      )}
     </div>
   );
 }

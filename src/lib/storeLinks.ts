@@ -65,6 +65,87 @@ export function playStoreUrl(source: string): string {
 }
 
 /**
+ * Territories where the Play listing exists but cannot be installed from.
+ *
+ * The trademark strike took the listing down in exactly these two markets.
+ * Verified 2026-08-02 by requesting the listing with `gl` set to 17 territories:
+ * only `us` and `au` returned 404 — gb, ca, nz, ie, in, de, fr, nl, br, id, ph,
+ * za, sg, ae and jp all returned 200. This list changes when the dispute is
+ * resolved, not on a schedule, so re-run that check before trusting it.
+ */
+export const PLAY_BLOCKED_TERRITORIES = ['US', 'AU'] as const;
+
+/**
+ * IANA zones for the United States, including the legacy `US/*` aliases some
+ * browsers still report.
+ *
+ * Australia gets a prefix match instead, because `Australia/` belongs to one
+ * country. The US cannot: `America/` also covers Canada, Mexico and all of
+ * Latin America, so redirecting on that prefix would strand visitors in markets
+ * where Play works fine.
+ */
+const US_TIME_ZONES: ReadonlySet<string> = new Set([
+  'America/New_York',
+  'America/Detroit',
+  'America/Kentucky/Louisville',
+  'America/Kentucky/Monticello',
+  'America/Indiana/Indianapolis',
+  'America/Indiana/Vincennes',
+  'America/Indiana/Winamac',
+  'America/Indiana/Marengo',
+  'America/Indiana/Petersburg',
+  'America/Indiana/Vevay',
+  'America/Indiana/Tell_City',
+  'America/Indiana/Knox',
+  'America/Chicago',
+  'America/Menominee',
+  'America/North_Dakota/Center',
+  'America/North_Dakota/New_Salem',
+  'America/North_Dakota/Beulah',
+  'America/Denver',
+  'America/Boise',
+  'America/Phoenix',
+  'America/Los_Angeles',
+  'America/Anchorage',
+  'America/Juneau',
+  'America/Sitka',
+  'America/Metlakatla',
+  'America/Yakutat',
+  'America/Nome',
+  'America/Adak',
+  'America/Shiprock',
+  'Pacific/Honolulu',
+  'Navajo',
+]);
+
+/**
+ * Whether this visitor is somewhere the Play listing will 404. Browser only —
+ * it reads the device time zone, so it must be called from an effect, never
+ * during render or the static export.
+ *
+ * Time zone rather than `navigator.language`: `en-US` is the default locale on
+ * devices all over the world, so matching on it would suppress the Play
+ * redirect far outside the two markets that are actually dark.
+ */
+export function playIsBlockedHere(): boolean {
+  let zone: string | undefined;
+  try {
+    zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  } catch {
+    zone = undefined;
+  }
+
+  // An unreadable location counts as blocked on purpose. The two mistakes are
+  // not equally expensive: showing a working page to someone who could have
+  // been auto-redirected costs one tap, while auto-redirecting a US or
+  // Australian visitor drops them on a 404 that reads as "this app does not
+  // exist" — and we never find out it happened.
+  if (zone === undefined || zone === '') return true;
+
+  return zone.startsWith('Australia/') || zone.startsWith('US/') || US_TIME_ZONES.has(zone);
+}
+
+/**
  * App Store URL tagged for `source`, or `null` while iOS is unreleased.
  *
  * `ct` is Apple's campaign token. Full App Analytics attribution also wants the
