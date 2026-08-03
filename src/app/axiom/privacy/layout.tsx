@@ -21,9 +21,8 @@ interface PrivacyLayoutProps {
 }
 
 export default function PrivacyLayout({ children }: PrivacyLayoutProps) {
-  return (
-    <div className="bg-lunamaze-bgDeep text-lunamaze-textPrimary">
-      {children}
-    </div>
-  );
+  // No wrapper background: the page's fixed v3 stage sits at -z-10, and an
+  // ancestor's opaque background would paint over it. <body> supplies the
+  // base colour.
+  return <>{children}</>;
 }

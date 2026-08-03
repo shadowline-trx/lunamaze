@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import type { JSX } from 'react';
+import Link from 'next/link';
 import BuddyInvite from './BuddyInvite';
+import { internalUrl } from '@/lib/paths';
 
 /**
  * /axiom/buddy/?c=CODE — the landing page a buddy invite link points at.
@@ -38,10 +40,65 @@ export const metadata: Metadata = {
   },
 };
 
+const MONO = 'ax-mono';
+
 export default function BuddyInvitePage(): JSX.Element {
   return (
-    <main className="relative min-h-screen bg-lunamaze-bgDeep text-lunamaze-textPrimary px-6 sm:px-8 lg:px-16 py-20 sm:py-28 lunamaze-noise">
-      <BuddyInvite />
-    </main>
+    <div className="axiom-v3 relative min-h-screen">
+      {/* Static stage: same look as the main landing, zero JS cost. */}
+      <div aria-hidden className="pointer-events-none fixed inset-0 -z-10">
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              'radial-gradient(120% 90% at 50% 0%, #131318 0%, #0a0a0d 52%, #070709 100%)',
+          }}
+        />
+        <div className="ax-cage absolute inset-0" />
+        <div className="ax-shafts" />
+      </div>
+
+      {/* Minimal nav */}
+      <header
+        className="fixed inset-x-0 top-0 z-50"
+        style={{ background: 'linear-gradient(to bottom, rgba(10,10,13,0.72), transparent)' }}
+      >
+        <nav className="mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
+          <Link href="/axiom/" className="flex items-center gap-3">
+            <img
+              src={internalUrl('/images/axiom/logo.webp')}
+              alt=""
+              width={34}
+              height={34}
+              className="h-[34px] w-[34px] rounded-xl"
+            />
+            <span className={`${MONO} text-sm font-medium tracking-[0.34em] text-[#e8e6f0]`}>
+              AXIOM
+            </span>
+          </Link>
+          {/* The recipient has never heard of the app, so the back link
+              invites rather than assumes. */}
+          <Link
+            href="/axiom/"
+            className={`${MONO} text-[11px] uppercase tracking-[0.22em] text-[#9b98ad] transition-colors hover:text-[#e8e6f0]`}
+          >
+            ← What is AXIOM?
+          </Link>
+        </nav>
+      </header>
+
+      <main className="relative mx-auto max-w-3xl px-6 pb-28 pt-36">
+        <BuddyInvite />
+      </main>
+
+      <footer className="relative border-t border-white/[0.06] bg-[#08080a] py-10">
+        <p className={`${MONO} text-center text-[11px] uppercase tracking-[0.2em] text-[#8f8ca1]`}>
+          A recovery app by{' '}
+          <a href={internalUrl('/')} className="text-[#c9c6d8] underline underline-offset-2 transition-colors hover:text-[#e8e6f0]">
+            Luna Maze
+          </a>
+        </p>
+      </footer>
+    </div>
   );
 }

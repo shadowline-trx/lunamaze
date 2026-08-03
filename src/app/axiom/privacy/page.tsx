@@ -1,7 +1,7 @@
 import type { JSX } from 'react';
-import ProductNav from '@/components/lunamaze/ProductNav';
-import LunaFooter from '@/components/lunamaze/LunaFooter';
+import Link from 'next/link';
 import { contactEmail } from '@/content/lunamaze';
+import { internalUrl } from '@/lib/paths';
 
 /**
  * Luna Maze privacy policy.
@@ -13,9 +13,10 @@ import { contactEmail } from '@/content/lunamaze';
  * source kept at github.com/shadowline-trx/axiom-privacy (the in-app link
  * fallback). Both must stay in sync and must match what the app actually does.
  *
- * Layout, tokens, and accessibility conventions mirror the Luna Maze product
- * pages: a fixed `ProductNav`, brand grid/noise backdrop on the header, and the
- * shared `LunaFooter`. Long-form copy uses the scoped `.lunamaze-prose` styles.
+ * Chrome restyled 2026-08-03 to the AXIOM v3 "Silver Studio" language (static
+ * CSS stage, minimal fixed nav, `.ax-prose` long-form styles). The legal
+ * wording, section structure, anchors, and the "Last updated" date are
+ * untouched — only the shell around them changed.
  */
 
 const LAST_UPDATED = 'July 28, 2026';
@@ -49,57 +50,87 @@ const PRINCIPLES: ReadonlyArray<Principle> = [
   },
 ];
 
+const MONO = 'ax-mono';
+
 export default function PrivacyPage(): JSX.Element {
   return (
-    <main className="relative min-h-screen bg-lunamaze-bgDeep text-lunamaze-textPrimary">
-      <ProductNav product="Privacy" />
+    <div className="axiom-v3 relative min-h-screen">
+      {/* Static stage: same look as the main landing, zero JS cost. */}
+      <div aria-hidden className="pointer-events-none fixed inset-0 -z-10">
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              'radial-gradient(120% 90% at 50% 0%, #131318 0%, #0a0a0d 52%, #070709 100%)',
+          }}
+        />
+        <div className="ax-cage absolute inset-0" />
+        <div className="ax-shafts" />
+      </div>
 
-      {/* Header over the brand grid/noise backdrop. */}
-      <header className="relative overflow-hidden px-6 sm:px-8 lg:px-16 pt-32 pb-16 lunamaze-grid-bg lunamaze-noise">
-        <div className="relative z-10 max-w-3xl mx-auto">
-          <span className="inline-flex items-center gap-2 rounded-full border border-lunamaze-border bg-lunamaze-bgSurface/60 px-4 py-2 text-xs uppercase tracking-[0.3em] text-lunamaze-signal mb-8">
-            <span
-              className="w-1.5 h-1.5 rounded-full bg-lunamaze-signal"
-              aria-hidden="true"
+      {/* Minimal nav */}
+      <header
+        className="fixed inset-x-0 top-0 z-50"
+        style={{ background: 'linear-gradient(to bottom, rgba(10,10,13,0.72), transparent)' }}
+      >
+        <nav className="mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
+          <Link href="/axiom/" className="flex items-center gap-3">
+            <img
+              src={internalUrl('/images/axiom/logo.webp')}
+              alt=""
+              width={34}
+              height={34}
+              className="h-[34px] w-[34px] rounded-xl"
             />
-            Legal
-          </span>
-          <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight leading-[1.05]">
-            <span className="lunamaze-text-gradient">Privacy Policy</span>
-          </h1>
-          <p className="mt-6 text-lg sm:text-xl text-lunamaze-textSecondary leading-relaxed">
-            {
-              'Luna Maze builds privacy-first software. Our products keep your data on your device, use no third-party tracking or ads, and ask for the least we can. This page explains exactly what that means for each app.'
-            }
-          </p>
-          <p className="mt-6 text-sm text-lunamaze-textDim">
-            Last updated: {LAST_UPDATED}
-          </p>
-        </div>
+            <span className={`${MONO} text-sm font-medium tracking-[0.34em] text-[#e8e6f0]`}>
+              AXIOM
+            </span>
+          </Link>
+          <Link
+            href="/axiom/"
+            className={`${MONO} text-[11px] uppercase tracking-[0.22em] text-[#9b98ad] transition-colors hover:text-[#e8e6f0]`}
+          >
+            ← The full story
+          </Link>
+        </nav>
       </header>
 
-      {/* Studio-wide privacy principles. */}
-      <section className="relative px-6 sm:px-8 lg:px-16 pb-4">
-        <div className="max-w-6xl mx-auto grid sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+      <main className="relative mx-auto max-w-3xl px-6 pb-28 pt-36">
+        {/* Hero */}
+        <div
+          className={`${MONO} mb-8 inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-black/30 px-4 py-1.5 text-[10px] uppercase tracking-[0.24em] text-[#9b98ad] backdrop-blur-md`}
+        >
+          <span className="h-1.5 w-1.5 rounded-full bg-[#8b7cf7] shadow-[0_0_12px_rgba(139,124,247,0.8)]" />
+          Legal
+        </div>
+        <h1 className="text-[clamp(2.4rem,6vw,4.2rem)] font-semibold leading-[1.02] tracking-[-0.03em] text-[#f2f1f7]">
+          Privacy <span className="ax-serif ax-grad-violet pr-1 font-normal">Policy</span>
+        </h1>
+        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[#a6a3b8]">
+          {
+            'Luna Maze builds privacy-first software. Our products keep your data on your device, use no third-party tracking or ads, and ask for the least we can. This page explains exactly what that means for each app.'
+          }
+        </p>
+        <p className={`${MONO} mt-6 text-[11px] tracking-[0.12em] text-[#8f8ca1]`}>
+          Last updated: {LAST_UPDATED}
+        </p>
+
+        {/* Studio-wide privacy principles. */}
+        <div className="mt-12 grid gap-4 sm:grid-cols-2">
           {PRINCIPLES.map((principle) => (
-            <div
-              key={principle.title}
-              className="rounded-2xl border border-lunamaze-border bg-lunamaze-bgSurface/60 p-6 backdrop-blur-sm"
-            >
-              <p className="text-base font-semibold text-lunamaze-textPrimary mb-2">
+            <div key={principle.title} className="ax-card p-6">
+              <p className="mb-2 text-base font-semibold text-[#f2f1f7]">
                 {principle.title}
               </p>
-              <p className="text-sm text-lunamaze-textSecondary leading-relaxed">
+              <p className="text-sm leading-relaxed text-[#a6a3b8]">
                 {principle.description}
               </p>
             </div>
           ))}
         </div>
-      </section>
 
-      {/* Full policy prose. */}
-      <section className="relative px-6 sm:px-8 lg:px-16 py-16 sm:py-20">
-        <article className="lunamaze-prose max-w-3xl mx-auto">
+        {/* Full policy prose. */}
+        <article className="ax-prose mt-16">
           <h2>Introduction</h2>
           <p>
             {
@@ -119,7 +150,7 @@ export default function PrivacyPage(): JSX.Element {
               'Axiom ("the App") is a personal wellbeing and habit-tracking app that supports brain recovery, dopamine detox, and digital wellbeing. This section applies to Axiom on both the Apple App Store (iOS) and Google Play (Android). The same policy governs both; the only differences are the store that processes your payment and the sign-in options on each platform.'
             }
           </p>
-          <div className="rounded-xl border border-lunamaze-violet/30 bg-lunamaze-violet/5 px-5 py-4 text-lunamaze-textPrimary">
+          <div className="rounded-2xl border border-[#8b7cf7]/30 bg-[#8b7cf7]/[0.06] px-5 py-4 text-[#e8e6f0]">
             {
               'Axiom is built local-first. Your recovery data stays on your device by default, and your journal, trigger names, and reset reasons never leave it.'
             }
@@ -451,9 +482,16 @@ export default function PrivacyPage(): JSX.Element {
             </li>
           </ul>
         </article>
-      </section>
+      </main>
 
-      <LunaFooter />
-    </main>
+      <footer className="relative border-t border-white/[0.06] bg-[#08080a] py-10">
+        <p className={`${MONO} text-center text-[11px] uppercase tracking-[0.2em] text-[#8f8ca1]`}>
+          A recovery app by{' '}
+          <a href={internalUrl('/')} className="text-[#c9c6d8] underline underline-offset-2 transition-colors hover:text-[#e8e6f0]">
+            Luna Maze
+          </a>
+        </p>
+      </footer>
+    </div>
   );
 }

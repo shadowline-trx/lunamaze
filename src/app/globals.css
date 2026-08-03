@@ -420,3 +420,345 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ==========================================================================
+   AXIOM v3 — "Silver Studio" landing utilities
+   Scoped to .axiom-v3 (the 2026-08 cinematic rebuild). The stage is a warm
+   near-black studio with soft silver light shafts; violet stays as the
+   accent spine only.
+   ========================================================================== */
+
+.axiom-v3 {
+  --ax-stage: #0a0a0d;
+  --ax-stage-2: #101014;
+  --ax-silver: #e8e6f0;
+  --ax-silver-dim: #9b98ad;
+  --ax-faint: #57546a;
+  --ax-violet: #8b7cf7;
+  --ax-line: rgba(232, 230, 240, 0.09);
+  /* NO background here: the fixed stage (particles/shafts) lives at -z-10
+     inside this element — an opaque background on the root would paint over
+     every negative-z descendant and bury the WebGL field. The body supplies
+     the base colour. */
+  color: var(--ax-silver);
+  font-family: var(--font-grotesk), 'Inter', system-ui, sans-serif;
+}
+
+/* The rebuild headlines are grotesk-first; Fraunces is opt-in via .ax-serif. */
+.axiom-v3 h1,
+.axiom-v3 h2,
+.axiom-v3 h3 {
+  font-family: var(--font-grotesk), 'Inter', system-ui, sans-serif;
+  letter-spacing: -0.03em;
+}
+
+.ax-serif {
+  font-family: var(--font-display), Georgia, serif;
+  font-style: italic;
+  font-weight: 420;
+  letter-spacing: -0.01em;
+}
+
+.ax-mono {
+  font-family: var(--font-mono), ui-monospace, monospace;
+}
+
+/* Soft volumetric light shafts (the Auralis silver-studio look). Pure CSS:
+   angled linear gradients, heavily blurred, masked to fade downward. */
+.ax-shafts {
+  position: absolute;
+  inset: -20% -10% 0;
+  pointer-events: none;
+  background:
+    linear-gradient(112deg, transparent 22%, rgba(232, 230, 240, 0.055) 34%, transparent 44%),
+    linear-gradient(104deg, transparent 42%, rgba(200, 195, 225, 0.045) 56%, transparent 66%),
+    linear-gradient(118deg, transparent 62%, rgba(180, 170, 220, 0.05) 74%, transparent 86%);
+  filter: blur(28px);
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 45%, transparent 92%);
+  mask-image: linear-gradient(to bottom, black 0%, black 45%, transparent 92%);
+}
+
+/* Faint architectural cage grid behind the particle formation. */
+.ax-cage {
+  background-image:
+    linear-gradient(rgba(232, 230, 240, 0.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(232, 230, 240, 0.028) 1px, transparent 1px);
+  background-size: 72px 72px;
+  -webkit-mask-image: radial-gradient(ellipse 62% 55% at 50% 46%, black 30%, transparent 78%);
+  mask-image: radial-gradient(ellipse 62% 55% at 50% 46%, black 30%, transparent 78%);
+}
+
+/* Ghost-outline display type (the IMAGINE / MANIFEST voice). */
+.ax-outline {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(232, 230, 240, 0.48);
+}
+
+/* Hairline divider that draws itself (scaleX from GSAP). */
+.ax-rule {
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(232, 230, 240, 0.22), transparent);
+  transform-origin: left center;
+}
+
+/* Buttons */
+.ax-btn-primary {
+  background: var(--ax-silver);
+  color: #0b0b0e;
+  border-radius: 999px;
+  font-weight: 600;
+  transition: box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ax-btn-primary:hover {
+  box-shadow: 0 0 0 1px rgba(232, 230, 240, 0.25), 0 8px 40px rgba(180, 170, 220, 0.28);
+}
+.ax-btn-ghost {
+  border: 1px solid rgba(232, 230, 240, 0.18);
+  color: var(--ax-silver-dim);
+  border-radius: 999px;
+  font-weight: 500;
+  transition: border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
+}
+.ax-btn-ghost:hover {
+  border-color: rgba(232, 230, 240, 0.45);
+  color: var(--ax-silver);
+  background: rgba(232, 230, 240, 0.04);
+}
+
+/* Card surface — quiet glass on the dark stage. */
+.ax-card {
+  background: linear-gradient(180deg, rgba(232, 230, 240, 0.045), rgba(232, 230, 240, 0.012));
+  border: 1px solid var(--ax-line);
+  border-radius: 24px;
+}
+
+/* Split-line reveal helper: each SplitText line gets its own clip window. */
+.ax-clip-line {
+  overflow: hidden;
+  display: block;
+}
+
+.axiom-v3 ::selection {
+  background: rgba(139, 124, 247, 0.35);
+  color: #f4f3fa;
+}
+
+/* Gradient accent words. SplitText breaks background-clip:text on the parent
+   span (chars become child spans), so the same gradient is re-applied at char
+   level via charsClass: 'ax-char'. Both states render correctly. */
+.ax-grad-violet,
+.ax-grad-violet .ax-char {
+  background: linear-gradient(100deg, #cdc7ee 8%, #8b7cf7 52%, #cdc7ee 95%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.ax-grad-dawn,
+.ax-grad-dawn .ax-char {
+  background: linear-gradient(100deg, #cdc7ee 5%, #ffb397 48%, #7ef7c2 95%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Per-section pattern identities — each act gets its own quiet texture so
+   the long scroll never feels templated. All decorative, all sub-6% alpha. */
+
+/* Chart-room ruled rows (the Arc). */
+.ax-rows {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(232, 230, 240, 0.035) 0px,
+    rgba(232, 230, 240, 0.035) 1px,
+    transparent 1px,
+    transparent 56px
+  );
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, black 20%, transparent 80%);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, black 20%, transparent 80%);
+}
+
+/* Dot matrix (the Tools). */
+.ax-dots {
+  background-image: radial-gradient(rgba(232, 230, 240, 0.05) 1px, transparent 1.5px);
+  background-size: 26px 26px;
+  -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 50%, black 25%, transparent 82%);
+  mask-image: radial-gradient(ellipse 75% 65% at 50% 50%, black 25%, transparent 82%);
+}
+
+/* Concentric orbit rings (Pricing). */
+.ax-ring {
+  position: absolute;
+  border: 1px solid rgba(139, 124, 247, 0.10);
+  border-radius: 9999px;
+  pointer-events: none;
+}
+
+/* Ghost section numeral — top-right pagination rhythm. */
+.ax-ghost-num {
+  position: absolute;
+  top: 2rem;
+  right: 1.5rem;
+  font-weight: 600;
+  line-height: 1;
+  font-size: clamp(5rem, 12vw, 11rem);
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(232, 230, 240, 0.07);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Wall of sealed noise (Privacy backdrop). Rendered as an SVG background
+   texture, NOT text nodes: it is decoration, and real text at 4% alpha would
+   (rightly) fail every contrast audit. */
+.ax-noise-wall {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='560' height='128'%3E%3Cg fill='%23e8e6f0' fill-opacity='0.05' font-family='monospace' font-size='12' letter-spacing='5'%3E%3Ctext x='0' y='24'%3E9f2e a71c 04b8 d3f6 e92a 77c1 b0e5 18d4%3C/text%3E%3Ctext x='-90' y='64'%3Ef36b c25e a90d 41f7 8c3a d5e2 4c8b e19f%3C/text%3E%3Ctext x='-45' y='104'%3E72d0 a3c6 f51e 08b9 d64a 27f3 c90e b1d8%3C/text%3E%3C/g%3E%3C/svg%3E");
+  background-size: 560px 128px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 20%, transparent 85%);
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 20%, transparent 85%);
+}
+
+/* Scroll cue: only on viewports tall enough that it cannot collide with the
+   hero's trust line. */
+.ax-cue { display: none; }
+@media (min-width: 640px) and (min-height: 960px) {
+  .ax-cue { display: flex; }
+}
+
+/* Boot guard: an inline script sets data-ax-boot on <html> before first paint so
+   intro elements never flash before GSAP takes over. The landing effect
+   removes the attribute the moment it runs (and re-hides via inline styles in the
+   same tick). If JS never hydrates, the delayed animation force-releases
+   everything — no-JS visitors and crawlers always get a full page. */
+html[data-ax-boot] .axiom-v3 [data-intro] {
+  opacity: 0;
+  visibility: hidden;
+  animation: axBootRelease 0.8s ease 2.5s forwards;
+}
+@keyframes axBootRelease {
+  to {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+/* Chapter display words: stronger stroke + soft bloom so the word stays
+   readable behind the particle formations. */
+.ax-outline-strong {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(232, 230, 240, 0.72);
+  filter: drop-shadow(0 0 18px rgba(190, 180, 230, 0.28));
+}
+
+/* --------------------------------------------------------------------------
+   Long-form prose on the v3 stage: the legal pages. Mirrors the rhythm and
+   measure of `.lunamaze-prose` exactly (so restyling never forces a wording
+   or markup change) with the Silver Studio palette. `scroll-margin-top`
+   keeps the `#axiom` / `#website` store deep-links clear of the fixed nav.
+   -------------------------------------------------------------------------- */
+.ax-prose {
+  color: #a6a3b8;
+  font-size: 1.0625rem;
+  line-height: 1.8;
+}
+
+.ax-prose > * + * {
+  margin-top: 1.3rem;
+}
+
+.ax-prose h2 {
+  color: #f2f1f7;
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1.22;
+  margin-top: 3.75rem;
+  padding-top: 2.25rem;
+  border-top: 1px solid var(--ax-line);
+  scroll-margin-top: 6rem;
+  text-wrap: balance;
+}
+
+.ax-prose h2:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+.ax-prose h3 {
+  color: #f2f1f7;
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1.35;
+  margin-top: 2.25rem;
+  scroll-margin-top: 6rem;
+  text-wrap: balance;
+}
+
+.ax-prose h2 + *,
+.ax-prose h3 + * {
+  margin-top: 0.85rem;
+}
+
+.ax-prose strong {
+  color: #e8e6f0;
+  font-weight: 600;
+}
+
+.ax-prose a {
+  color: #b3a7fb;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s ease;
+}
+
+.ax-prose a:hover {
+  color: #cdc7ee;
+}
+
+.ax-prose ul {
+  list-style: none;
+  margin-top: 1rem;
+  padding: 0;
+}
+
+/* Logical properties, not left/right — same RTL-safety rule as the library. */
+.ax-prose ul li {
+  position: relative;
+  padding-inline-start: 1.5rem;
+  margin-top: 0.6rem;
+}
+
+.ax-prose ul li::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0.7em;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: rgba(139, 124, 247, 0.75);
+}
+
+.ax-prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.25rem;
+  font-size: 0.95rem;
+}
+
+.ax-prose th,
+.ax-prose td {
+  border: 1px solid var(--ax-line);
+  padding: 0.7rem 0.9rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.ax-prose th {
+  color: #f2f1f7;
+  background: rgba(232, 230, 240, 0.04);
+  font-weight: 600;
+  white-space: nowrap;
+}
