@@ -964,7 +964,7 @@ function StickyCTA() {
       className="fixed inset-x-3 bottom-3 z-50 md:hidden"
       style={{ transform: 'translateY(140%)' }}
     >
-      <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-[#101014]/90 p-3 shadow-[0_12px_48px_rgba(0,0,0,0.6)] backdrop-blur-xl">
+      <div className="ax-blur-desk flex items-center gap-3 rounded-2xl border border-white/10 bg-[#101014]/95 p-3 shadow-[0_12px_48px_rgba(0,0,0,0.6)]">
         <img
           src={internalUrl('/images/axiom/logo.webp')}
           alt=""
@@ -1011,7 +1011,7 @@ function Hero() {
         <div
           data-hero-badge
           data-intro
-          className={`${MONO} mb-9 inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-black/30 px-4 py-1.5 text-[10px] uppercase tracking-[0.24em] text-[#9b98ad] backdrop-blur-md`}
+          className={`${MONO} ax-blur-desk mb-9 inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-black/40 px-4 py-1.5 text-[10px] uppercase tracking-[0.24em] text-[#9b98ad]`}
         >
           <span className="h-1.5 w-1.5 rounded-full bg-[#7ef7c2] shadow-[0_0_12px_rgba(126,247,194,0.8)]" />
           <span data-hero-badge-text>{HERO_BADGE}</span>
@@ -1123,7 +1123,7 @@ function StoryAct() {
 function Marquee() {
   const strip = [...MARQUEE_WORDS, ...MARQUEE_WORDS];
   return (
-    <div className="relative overflow-hidden border-y border-white/[0.06] bg-[#0a0a0d]/80 py-5 backdrop-blur-sm">
+    <div className="ax-blur-desk relative overflow-hidden border-y border-white/[0.06] bg-[#0a0a0d]/85 py-5">
       <div data-marquee-track className={`${MONO} flex w-max items-center gap-10 text-[12px] uppercase tracking-[0.3em] text-[#8f8ca1]`}>
         {strip.map((w, i) => (
           <span key={`${w}-${i}`} className="flex items-center gap-10 whitespace-nowrap">

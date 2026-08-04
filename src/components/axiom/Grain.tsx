@@ -5,7 +5,15 @@
  *
  * The single cheapest layer that makes a dark page read as "film," not "web"
  * (the Basement/Darkroom tell). Static tiled fractal-noise SVG at low opacity,
- * `mix-blend-overlay`, pointer-events-none, above content. No per-frame cost.
+ * pointer-events-none, above content.
+ *
+ * The blend mode is desktop-only, and that is load-bearing: `mix-blend-mode`
+ * on a full-viewport layer makes the compositor re-read and re-blend the whole
+ * screen on every frame anything underneath changes — and the particle canvas
+ * underneath changes 60×/s. On a phone GPU that alone eats the frame budget
+ * through the entire hero and story act, so touch devices drop the layer
+ * entirely — at phone pixel density the grain is imperceptible anyway. See
+ * `.ax-grain` in globals.css.
  */
 
 const NOISE =
@@ -15,7 +23,7 @@ export default function Grain() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none fixed inset-0 z-[90] opacity-[0.05] mix-blend-overlay"
+      className="ax-grain pointer-events-none fixed inset-0 z-[90]"
       style={{ backgroundImage: NOISE, backgroundSize: '200px 200px' }}
     />
   );

@@ -478,6 +478,60 @@ body {
   mask-image: linear-gradient(to bottom, black 0%, black 45%, transparent 92%);
 }
 
+/* Film-grain overlay (see Grain.tsx).
+
+   MOBILE PERFORMANCE, DO NOT "SIMPLIFY" BACK:
+   `mix-blend-mode` on a fixed, full-viewport layer forces the compositor to
+   read back and re-blend the entire screen on every frame that anything below
+   it changes. The particle canvas below changes every frame, so on a phone GPU
+   this single rule costs more than the 9,000-point cloud it sits on top of —
+   it is what made the hero and story act stutter while the rest of the page
+   (where the field is dimmed to idle) stayed smooth.
+
+   Phones drop the layer outright rather than falling back to `normal`: at ~3×
+   pixel density a 200px-tiled 5% grain is imperceptible, and `normal` blending
+   would lift the near-black background into grey — paying a visible cost for
+   an invisible texture. */
+.ax-grain {
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+}
+
+/* Backdrop blur, desktop only — same reasoning as .ax-grain. Every element
+   using this floats above the animating particle canvas, so the blurred region
+   has to be recomputed each frame on a changing backdrop. Over a near-black
+   field the blur is nearly invisible anyway; the translucent background alone
+   carries the look.
+
+   Write the standard property only and let the build add prefixes: supplying
+   `-webkit-backdrop-filter` by hand makes lightningcss collapse the pair and
+   keep just the prefixed form, which Chrome does not implement at all — the
+   blur then silently vanishes everywhere. */
+.ax-blur-desk {
+  backdrop-filter: blur(14px);
+}
+
+@media (pointer: coarse) {
+  .ax-grain {
+    display: none;
+  }
+
+  .ax-blur-desk {
+    backdrop-filter: none;
+  }
+
+  /* The shaft blur is static, but a 28px filter over a full-viewport layer
+     still costs a large offscreen texture on phones. Softer gradient stops
+     reach the same look without the filter. */
+  .ax-shafts {
+    filter: none;
+    background:
+      linear-gradient(112deg, transparent 8%, rgba(232, 230, 240, 0.05) 34%, transparent 58%),
+      linear-gradient(104deg, transparent 28%, rgba(200, 195, 225, 0.04) 56%, transparent 80%),
+      linear-gradient(118deg, transparent 48%, rgba(180, 170, 220, 0.045) 74%, transparent 96%);
+  }
+}
+
 /* Faint architectural cage grid behind the particle formation. */
 .ax-cage {
   background-image:

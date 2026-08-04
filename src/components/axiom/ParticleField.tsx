@@ -476,10 +476,30 @@ const ParticleField = forwardRef<ParticleFieldHandle, ParticleFieldProps>(
       let tier = 0;
       let drawCount = COUNT;
       let dprCurrent = dpr;
-      const resize = (): void => {
-        const w = canvas.clientWidth;
-        const h = canvas.clientHeight;
+      let lastW = 0;
+      let lastH = 0;
+      // Live CSS size of the stage, kept up to date from the ResizeObserver
+      // entry (free — no layout read). The aspect ratio is derived from this
+      // rather than from the drawing buffer, so the shapes stay correctly
+      // proportioned even when the buffer itself is deliberately left stale.
+      let cssW = 1;
+      let cssH = 1;
+      const resize = (force: boolean): void => {
+        const w = cssW;
+        const h = cssH;
         if (w === 0 || h === 0) return;
+        // Mobile browsers collapse the URL bar on the first scroll gesture,
+        // which changes the fixed stage's height and fires this observer
+        // mid-scroll — sometimes repeatedly, as the bar animates. Reallocating
+        // the GL drawing buffer is a synchronous GPU stall, so doing it while
+        // the user is flicking through the hero is a guaranteed hitch right
+        // where the field is busiest. Height-only jitter is therefore ignored
+        // on touch: the canvas simply stretches a few percent, which is
+        // invisible on a cloud of 2px points. Width changes (rotation) and
+        // deliberate DPR changes still go through.
+        if (!force && coarse && w === lastW && Math.abs(h - lastH) < 220) return;
+        lastW = w;
+        lastH = h;
         canvas.width = Math.round(w * dprCurrent);
         canvas.height = Math.round(h * dprCurrent);
         gl.viewport(0, 0, canvas.width, canvas.height);
@@ -490,11 +510,20 @@ const ParticleField = forwardRef<ParticleFieldHandle, ParticleFieldProps>(
         const nextDpr = t === 0 ? dpr : t === 1 ? Math.min(dpr, 1.15) : 1;
         if (nextDpr !== dprCurrent) {
           dprCurrent = nextDpr;
-          resize();
+          resize(true);
         }
       };
-      resize();
-      const ro = new ResizeObserver(resize);
+      cssW = canvas.clientWidth;
+      cssH = canvas.clientHeight;
+      resize(true);
+      const ro = new ResizeObserver((entries) => {
+        const box = entries[0]?.contentRect;
+        if (box && box.width > 0 && box.height > 0) {
+          cssW = box.width;
+          cssH = box.height;
+        }
+        resize(false);
+      });
       ro.observe(canvas);
 
       // Pointer state, smoothed in the loop.
@@ -530,11 +559,11 @@ const ParticleField = forwardRef<ParticleFieldHandle, ParticleFieldProps>(
         gl.bindBuffer(gl.ARRAY_BUFFER, buffers[Math.min(seg + 1, shapes.length - 1)]);
         gl.vertexAttribPointer(locTo, 3, gl.FLOAT, false, 0, 0);
 
-        const w = canvas.width;
-        const h = canvas.height;
-        const m = Math.min(w, h);
+        // Aspect from the CSS box, not the drawing buffer: on touch the buffer
+        // is intentionally left stale through URL-bar height changes.
+        const m = Math.min(cssW, cssH);
         const zoom = small ? 1.02 : 1.16;
-        gl.uniform2f(uni.scale, (m / w) * zoom, (m / h) * zoom);
+        gl.uniform2f(uni.scale, (m / cssW) * zoom, (m / cssH) * zoom);
         gl.uniform1f(uni.blend, blend);
         gl.uniform1f(uni.time, timeMs * 0.001);
         gl.uniform1f(uni.pointBase, (small ? 2.1 : 2.5) * dprCurrent);
