@@ -5,8 +5,14 @@
  *
  * One continuous cinematic scroll. The protagonist is a WebGL particle field
  * (see ParticleField) that keeps changing what it is — chaos assembles into
- * the AXIOM monogram on load, then a pinned story act morphs it brain →
- * shield → tree, which IS the product story: rewire, sealed, become.
+ * the AXIOM monogram on load, then a story act morphs it brain → shield →
+ * tree, which IS the product story: rewire, sealed, become.
+ *
+ * Every pinned set piece is desktop-only, deliberately. Pinning on touch means
+ * position:fixed while the browser scrolls on the compositor thread, so the
+ * pinned box lags the finger and — being 100svh — sits short of the viewport
+ * once the URL bar hides. Each pinned scene therefore has a stacked, unpinned
+ * counterpart under `(max-width: 767px)`.
  *
  * Post-story, every section is its own set piece rather than an info grid:
  *   · The Audit    — pinned theater; each category lie appears huge, gets
@@ -285,6 +291,17 @@ export default function AxiomLanding() {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const fine = window.matchMedia('(pointer: fine)').matches;
 
+    // Phones are not scrolled the way a trackpad is. A real thumb goes
+    // flick → lift → touch → flick, and every one of those lift/touch cycles
+    // shows or hides the browser's URL bar. That resizes the viewport, and by
+    // default ScrollTrigger treats a viewport resize as a reason to refresh —
+    // recalculating every trigger's start/end in the middle of the gesture,
+    // which reads as jitter and as the page not answering the finger. Scroll
+    // at a constant speed and the bar never moves, so it behaves like desktop:
+    // exactly the symptom that pointed here. Ignoring mobile resizes keeps the
+    // measurements taken at load, which is what the whole page is built on.
+    ScrollTrigger.config({ ignoreMobileResize: true });
+
     let lenis: Lenis | null = null;
     let tick: ((time: number) => void) | null = null;
     if (!reduce) {
@@ -403,56 +420,125 @@ export default function AxiomLanding() {
             },
           });
 
-          // ── story act: pinned morph brain → shield → tree ────────
+          // ── story act: morph brain → shield → tree ───────────────
           const chapters = gsap.utils.toArray<HTMLElement>('[data-chapter]');
-          const story = gsap.timeline({
-            scrollTrigger: {
-              trigger: '[data-story]',
-              start: 'top top',
-              end: '+=340%',
-              pin: true,
-              scrub: 1,
-              anticipatePin: 1,
-              onEnter: () => assembly?.kill(),
-              onLeave: () => assembly?.kill(),
-            },
-          });
-          chapters.forEach((ch, i) => {
-            const word = ch.querySelector<HTMLElement>('[data-chapter-word]');
-            const at = i;
-            if (st) {
-              story.to(
-                st,
-                { progress: 2 + i, duration: 0.5, ease: 'power1.inOut' },
-                at + 0.02,
-              );
-            }
-            story.fromTo(
-              ch,
-              { autoAlpha: 0 },
-              { autoAlpha: 1, duration: 0.14 },
-              i === 0 ? 0.02 : at + 0.08,
-            );
-            if (word) {
+          mmG.add('(min-width: 768px)', () => {
+            const story = gsap.timeline({
+              scrollTrigger: {
+                trigger: '[data-story]',
+                start: 'top top',
+                end: '+=340%',
+                pin: true,
+                scrub: 1,
+                anticipatePin: 1,
+                onEnter: () => assembly?.kill(),
+                onLeave: () => assembly?.kill(),
+              },
+            });
+            chapters.forEach((ch, i) => {
+              const word = ch.querySelector<HTMLElement>('[data-chapter-word]');
+              const at = i;
+              if (st) {
+                story.to(
+                  st,
+                  { progress: 2 + i, duration: 0.5, ease: 'power1.inOut' },
+                  at + 0.02,
+                );
+              }
               story.fromTo(
-                word,
-                { scale: 1.06, letterSpacing: '0.28em' },
-                { scale: 1, letterSpacing: '0.06em', duration: 0.5, ease: 'power2.out' },
-                at + 0.06,
+                ch,
+                { autoAlpha: 0 },
+                { autoAlpha: 1, duration: 0.14 },
+                i === 0 ? 0.02 : at + 0.08,
               );
+              if (word) {
+                story.fromTo(
+                  word,
+                  { scale: 1.06, letterSpacing: '0.28em' },
+                  { scale: 1, letterSpacing: '0.06em', duration: 0.5, ease: 'power2.out' },
+                  at + 0.06,
+                );
+              }
+              const meta = ch.querySelectorAll<HTMLElement>('[data-chapter-meta]');
+              story.fromTo(
+                meta,
+                { y: 34, autoAlpha: 0 },
+                { y: 0, autoAlpha: 1, duration: 0.2, stagger: 0.05 },
+                i === 0 ? 0.08 : at + 0.14,
+              );
+              story.to(
+                ch,
+                { autoAlpha: 0, y: -46, duration: 0.15 },
+                i === chapters.length - 1 ? at + 0.92 : at + 0.8,
+              );
+            });
+          });
+
+          // Touch: no pin (see StoryAct). The three chapters are real panels
+          // that scroll past on their own, so the only scrubbed thing is the
+          // particle morph — driven by ONE timeline across the whole section
+          // rather than a tween per chapter, because independent scrubs all
+          // write the same `progress` property and fight each other outside
+          // their own ranges.
+          mmG.add('(max-width: 767px)', () => {
+            if (st) {
+              const morph = gsap.timeline({
+                defaults: { ease: 'none' },
+                scrollTrigger: {
+                  trigger: '[data-story]',
+                  start: 'top 85%',
+                  end: 'bottom bottom',
+                  // Direct, not smoothed. A numeric scrub keeps easing toward
+                  // the scroll position after the gesture ends, so a flick
+                  // leaves the field still morphing under a stopped thumb —
+                  // the exact "not responding" feel. Tied 1:1 to scroll, the
+                  // shape is always wherever the finger left it.
+                  scrub: true,
+                  onEnter: () => assembly?.kill(),
+                },
+              });
+              // One unit per chapter; each shape settles early in its panel and
+              // holds while that chapter is read.
+              morph.to(st, { progress: 2, duration: 0.55 }, 0.05);
+              morph.to(st, { progress: 3, duration: 0.55 }, 1.05);
+              morph.to(st, { progress: 4, duration: 0.55 }, 2.05);
+              morph.to({}, { duration: 0.4 }, 2.6);
             }
-            const meta = ch.querySelectorAll<HTMLElement>('[data-chapter-meta]');
-            story.fromTo(
-              meta,
-              { y: 34, autoAlpha: 0 },
-              { y: 0, autoAlpha: 1, duration: 0.2, stagger: 0.05 },
-              i === 0 ? 0.08 : at + 0.14,
-            );
-            story.to(
-              ch,
-              { autoAlpha: 0, y: -46, duration: 0.15 },
-              i === chapters.length - 1 ? at + 0.92 : at + 0.8,
-            );
+            chapters.forEach((ch) => {
+              const word = ch.querySelector<HTMLElement>('[data-chapter-word]');
+              const meta = ch.querySelectorAll<HTMLElement>('[data-chapter-meta]');
+              const reveal = gsap.timeline({
+                scrollTrigger: {
+                  trigger: ch,
+                  // Fire off the panel's CENTRE, not its top edge: the panel is
+                  // a full screen tall, so "top 72%" fires while the word is
+                  // still below the fold. This plays as the word rises into
+                  // view and finishes near the middle of the screen.
+                  start: 'center 92%',
+                  // A flick can cross the whole trigger between two scroll
+                  // events; fastScrollEnd lands it in the finished state
+                  // instead of stranding it half-played, and not reversing
+                  // stops it flickering when the thumb goes back the other way.
+                  fastScrollEnd: true,
+                  toggleActions: 'play none none none',
+                },
+              });
+              reveal.fromTo(ch, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5 }, 0);
+              if (word) {
+                reveal.fromTo(
+                  word,
+                  { scale: 1.06, letterSpacing: '0.22em' },
+                  { scale: 1, letterSpacing: '0.05em', duration: 0.9, ease: 'power2.out' },
+                  0,
+                );
+              }
+              reveal.fromTo(
+                meta,
+                { y: 26, autoAlpha: 0 },
+                { y: 0, autoAlpha: 1, duration: 0.55, stagger: 0.1 },
+                0.12,
+              );
+            });
           });
 
           // Field stays lit through the marquee, dims as the audit begins.
@@ -730,13 +816,18 @@ export default function AxiomLanding() {
 
           // ── generic reveals ──────────────────────────────────────
           ScrollTrigger.batch('[data-reveal]', {
-            start: 'top 86%',
+            // Touch fires later and moves quicker. At 86% the element has only
+            // just cleared the bottom edge, so on a phone a thumb flick can
+            // carry it right across the screen while the reveal is still
+            // playing — you never see it arrive. Waiting until it is properly
+            // in view puts the animation where it can actually be read.
+            start: fine ? 'top 86%' : 'top 78%',
             onEnter: (batch) =>
               gsap.to(batch, {
                 autoAlpha: 1,
                 y: 0,
-                duration: 0.9,
-                stagger: 0.09,
+                duration: fine ? 0.9 : 0.6,
+                stagger: fine ? 0.09 : 0.06,
                 ease: 'power3.out',
                 overwrite: true,
               }),
@@ -1081,34 +1172,46 @@ function Hero() {
   );
 }
 
-// ── the pinned story act ─────────────────────────────────────────────
+// ── the story act (pinned on desktop, stacked panels on touch) ───────
 function StoryAct() {
   return (
-    <section data-story className="relative h-[100svh] overflow-hidden">
+    // Desktop pins this section and cross-fades the three chapters in place.
+    // Phones cannot: a pinned box is position:fixed while the browser scrolls
+    // on the compositor thread, so it visibly lags the finger — and at 100svh
+    // it is shorter than the viewport once the URL bar hides, which parks the
+    // "centered" content high with dead space under it. On touch each chapter
+    // is therefore a real full-height panel in normal flow, stacked and
+    // centred, with the metadata in the column instead of pinned to the
+    // corners. Same story, no fixed positioning.
+    <section data-story className="relative overflow-hidden md:h-[100svh]">
       {CHAPTERS.map((ch, i) => (
         <div
           key={ch.word}
           data-chapter
-          className="absolute inset-0 flex items-center justify-center opacity-0"
+          // Touch keeps the desktop composition rather than bunching the text
+          // in the middle: label at the top, the outline word over the particle
+          // shape, copy at the bottom. The vertical padding is what keeps the
+          // paragraph off the particles and clear of the sticky CTA.
+          className="relative flex min-h-[100svh] flex-col items-center justify-between gap-6 px-7 pb-[17svh] pt-[15svh] text-center opacity-0 md:absolute md:inset-0 md:block md:min-h-0 md:gap-0 md:p-0 md:text-left"
         >
+          <div
+            data-chapter-meta
+            className={`${MONO} text-[11px] uppercase tracking-[0.3em] text-[#9b98ad] md:absolute md:top-[16vh] ${
+              i === 1 ? 'md:right-[12vw] md:text-right' : 'md:left-[12vw]'
+            }`}
+          >
+            {ch.index} / {ch.label}
+          </div>
           <span
             data-chapter-word
-            className="ax-outline-strong pointer-events-none select-none text-[clamp(4rem,17vw,14rem)] font-semibold leading-none"
+            className="ax-outline-strong pointer-events-none select-none text-[clamp(4rem,17vw,14rem)] font-semibold leading-none md:absolute md:inset-0 md:flex md:items-center md:justify-center"
           >
             {ch.word}
           </span>
           <div
             data-chapter-meta
-            className={`${MONO} absolute top-[16vh] text-[11px] uppercase tracking-[0.3em] text-[#9b98ad] ${
-              i === 1 ? 'right-8 text-right md:right-[12vw]' : 'left-8 md:left-[12vw]'
-            }`}
-          >
-            {ch.index} / {ch.label}
-          </div>
-          <div
-            data-chapter-meta
-            className={`absolute bottom-[12vh] max-w-md px-8 md:px-0 ${
-              i === 1 ? 'left-8 md:left-[12vw]' : 'right-8 text-right md:right-[12vw]'
+            className={`max-w-md md:absolute md:bottom-[12vh] ${
+              i === 1 ? 'md:left-[12vw] md:text-left' : 'md:right-[12vw] md:text-right'
             }`}
           >
             <p className="text-base leading-relaxed text-[#d8d5e4] [text-shadow:0_1px_18px_rgba(7,7,9,0.9),0_0_44px_rgba(7,7,9,0.7)] md:text-lg">{ch.copy}</p>
