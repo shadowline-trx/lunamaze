@@ -321,7 +321,12 @@ export default function AxiomLanding() {
 
     let lenis: Lenis | null = null;
     let tick: ((time: number) => void) | null = null;
-    if (!reduce) {
+    // Desktop only, deliberately. A phone already has momentum scrolling tuned
+    // by the OS, and it is what the thumb expects; layering a JS lerp over it
+    // is the single most common reason a site "scrolls weird on mobile."
+    // Every serious Lenis integration gates it this way — the library's own
+    // touch-sync option is off by default for the same reason.
+    if (!reduce && fine) {
       lenis = new Lenis({ lerp: 0.09, smoothWheel: true });
       lenis.on('scroll', ScrollTrigger.update);
       tick = (time: number) => lenis?.raf(time * 1000);
@@ -331,15 +336,21 @@ export default function AxiomLanding() {
       (window as Window & { __axLenis?: Lenis }).__axLenis = lenis;
     }
 
-    // In-page anchors ride the smoothed scroller instead of jumping.
+    // In-page anchors ride the smoothed scroller on desktop. Without Lenis
+    // (touch) they fall back to the browser's own smooth scroll, which is the
+    // same thing the OS gives every other site.
     const onAnchorClick = (e: MouseEvent): void => {
-      if (!lenis) return;
       const link = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[href^="#"]');
       if (!link) return;
       const target = document.querySelector<HTMLElement>(link.getAttribute('href') ?? '');
       if (!target) return;
       e.preventDefault();
-      lenis.scrollTo(target, { offset: -64, duration: 1.5 });
+      if (lenis) {
+        lenis.scrollTo(target, { offset: -64, duration: 1.5 });
+        return;
+      }
+      const top = target.getBoundingClientRect().top + window.scrollY - 64;
+      window.scrollTo({ top, behavior: reduce ? 'auto' : 'smooth' });
     };
     root.addEventListener('click', onAnchorClick);
 
@@ -511,8 +522,13 @@ export default function AxiomLanding() {
               const morph = gsap.timeline({
                 defaults: { ease: 'none' },
                 scrollTrigger: {
+                  // 'top bottom' → 'bottom bottom' over a 300svh section makes
+                  // exactly one timeline unit per chapter, so unit N is the
+                  // moment chapter N fills the screen. That alignment is the
+                  // whole trick: the shape is finished by the time its chapter
+                  // is readable, without the page ever having to stop.
                   trigger: '[data-story]',
-                  start: 'top 85%',
+                  start: 'top bottom',
                   end: 'bottom bottom',
                   // Direct, not smoothed. A numeric scrub keeps easing toward
                   // the scroll position after the gesture ends, so a flick
@@ -523,12 +539,12 @@ export default function AxiomLanding() {
                   onEnter: () => assembly?.kill(),
                 },
               });
-              // One unit per chapter; each shape settles early in its panel and
-              // holds while that chapter is read.
-              morph.to(st, { progress: 2, duration: 0.55 }, 0.05);
-              morph.to(st, { progress: 3, duration: 0.55 }, 1.05);
-              morph.to(st, { progress: 4, duration: 0.55 }, 2.05);
-              morph.to({}, { duration: 0.4 }, 2.6);
+              // Each morph runs over the 60svh before its chapter lands, then
+              // the shape sits still while that chapter is on screen.
+              morph.to(st, { progress: 2, duration: 0.6 }, 0.35);
+              morph.to(st, { progress: 3, duration: 0.6 }, 1.35);
+              morph.to(st, { progress: 4, duration: 0.6 }, 2.35);
+              morph.to({}, { duration: 0.05 }, 2.95);
             }
             chapters.forEach((ch) => {
               const word = ch.querySelector<HTMLElement>('[data-chapter-word]');
@@ -549,8 +565,10 @@ export default function AxiomLanding() {
                   // when it starts performing. At 80% it played out down in the
                   // last fifth of the display and had finished long before it
                   // reached its resting place — so all you saw was a finished
-                  // block of text sliding up. At 55% it comes alive on approach
-                  // and settles as it locks.
+                  // block of text sliding up. At 55% it comes alive on the way
+                  // in and settles as the chapter fills the screen. With no
+                  // hold anywhere on the page, this entrance is the only thing
+                  // carrying the act, so it has to land in the readable half.
                   start: 'top 55%',
                   toggleActions: 'play none none reverse',
                 },
@@ -573,16 +591,19 @@ export default function AxiomLanding() {
               // Departure dissolves instead of sliding off, which crossfades it
               // against the next chapter arriving underneath. Scrubbed on
               // purpose here — a fade-out has to track the scroll or a chapter
-              // can be left half-lit above the fold. Applied to the sticky
+              // can be left half-lit above the fold. Applied to the inner
               // stage, not the panel, so it cannot fight the reveal's autoAlpha.
+              // Starts only once the chapter is well past centre: a 100svh
+              // panel is composed for a short window, so fading any earlier
+              // takes it away while it is still the thing being read.
               if (stage) {
                 gsap.to(stage, {
                   autoAlpha: 0,
                   ease: 'none',
                   scrollTrigger: {
                     trigger: ch,
-                    start: 'bottom 92%',
-                    end: 'bottom 28%',
+                    start: 'bottom 58%',
+                    end: 'bottom 6%',
                     scrub: true,
                   },
                 });
@@ -1242,35 +1263,27 @@ function Hero() {
 function StoryAct() {
   return (
     // Desktop pins this section and cross-fades the three chapters in place.
-    // Phones cannot: a pinned box is position:fixed while the browser scrolls
-    // on the compositor thread, so it visibly lags the finger — and at 100svh
-    // it is shorter than the viewport once the URL bar hides, which parks the
-    // "centered" content high with dead space under it. Touch gets the same
-    // beat from CSS sticky instead (see below).
-    // NOTE: no overflow-hidden on touch — it would make this a scroll
-    // container and break the sticky children below.
+    //
+    // Touch does NOT hold the page — not with a pin, and not with CSS sticky
+    // either. Both were tried and both feel broken on a phone for the same
+    // reason: a thumb scrolls in flicks of 800–1500px, so any hold means you
+    // flick and nothing moves. That reads as the page being stuck, not as a
+    // cinematic beat. This is why pinned scroll scenes are a desktop-only
+    // convention across the industry — on a phone the chapters are three
+    // ordinary full-height sections in normal document flow, and the drama
+    // comes from what animates on ENTRY, never from stopping the scroll.
     <section data-story className="relative md:h-[100svh] md:overflow-hidden">
       {CHAPTERS.map((ch, i) => (
         <div
           key={ch.word}
           data-chapter
-          // Each chapter is a tall panel whose content sticks to the viewport
-          // while the panel scrolls through it. That restores the desktop
-          // act's character — the scene HOLDS while the particle shape morphs
-          // under it, then hands over — which plain stacked panels lost, since
-          // they just slide past. CSS sticky is the right tool rather than a
-          // ScrollTrigger pin: the compositor handles it natively, so there is
-          // no position:fixed lagging the finger and nothing to recalculate
-          // when the URL bar moves.
-          // 175svh against a 100svh sticky child = 75svh of hold per chapter,
-          // which is the beat the desktop pin gives it. Any shorter and the
-          // scene starts sliding away before its shape has finished morphing.
-          className="relative min-h-[175svh] opacity-0 md:absolute md:inset-0 md:block md:min-h-0"
+          className="relative opacity-0 md:absolute md:inset-0 md:block"
         >
           <div
             // Composition matches desktop: label top, outline word over the
             // particle shape, copy at the bottom clear of the sticky CTA.
-            className="sticky top-0 flex h-[100svh] flex-col items-center justify-between gap-6 px-7 pb-[17svh] pt-[15svh] text-center md:static md:block md:h-auto md:gap-0 md:p-0 md:text-left"
+            // min-h rather than h so a long chapter grows instead of clipping.
+            className="flex min-h-[100svh] flex-col items-center justify-between gap-6 px-7 pb-[17svh] pt-[15svh] text-center md:block md:min-h-0 md:gap-0 md:p-0 md:text-left"
           >
             <div
               data-chapter-meta
