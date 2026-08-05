@@ -532,6 +532,36 @@ body {
   }
 }
 
+/* Recovery-curve markers. `r` is in viewBox units and the box is 1000 wide
+   rendered at roughly a third of that on a phone, so the authored r:5 arrived
+   as a 1.7px speck. Strokes solve this with vector-effect; radius cannot, so
+   it is scaled here instead. */
+@media (max-width: 767px) {
+  .axiom-v3 [data-curve-dot] {
+    r: 12px;
+  }
+}
+
+/* Reduced motion: the story act's three chapters are stacked in the same box
+   and shown one at a time by the scroll timeline. With no timeline they have
+   to become three ordinary full-height blocks instead — otherwise desktop
+   paints REWIRE, SEALED and BECOME over each other, and the tall panels
+   phones use to pace the morph would hold on a shape that never changes.
+   Their opacity is restored in AxiomLanding's `reduce` branch; this is only
+   the layout half. Specificity 0,1,1 beats Tailwind's md: utilities, so the
+   rule wins at every width without !important. */
+@media (prefers-reduced-motion: reduce) {
+  .axiom-v3 [data-story] {
+    height: auto;
+    overflow: visible;
+  }
+  .axiom-v3 [data-chapter] {
+    position: relative;
+    inset: auto;
+    min-height: 100svh;
+  }
+}
+
 /* Faint architectural cage grid behind the particle formation. */
 .ax-cage {
   background-image:

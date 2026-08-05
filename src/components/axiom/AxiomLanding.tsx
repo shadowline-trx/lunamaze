@@ -55,6 +55,16 @@ gsap.registerPlugin(
 );
 
 const MONO = 'ax-mono';
+/**
+ * Halo for copy that sits directly over the particle field.
+ *
+ * The tight 6px layer is the one doing the work: the field's points are white
+ * and the finale runs it at brightness 1.75, so a soft wide glow alone leaves
+ * the glyph edges competing with particles and the line reads as smudged.
+ * The wider layers only sink the surrounding area so the block holds together.
+ */
+const OVER_FIELD =
+  '[text-shadow:0_0_6px_rgba(7,7,9,0.98),0_1px_16px_rgba(7,7,9,0.94),0_0_44px_rgba(7,7,9,0.8)]';
 const PLAY_URL =
   'https://play.google.com/store/apps/details?id=com.axiomapp.app';
 
@@ -272,6 +282,13 @@ const CURVE_PHASES = [
   { x: 900, y: 98, w: 'WEEK 8+', t: 'Stability', d: 'New baseline. Urges become rare, quiet, survivable.' },
 ] as const;
 
+// The recovery curve itself (viewBox 1000×400). Shared so the stroke, the
+// halo behind it and the filled area under it can never drift apart.
+const CURVE_D =
+  'M20,150 C90,160 130,240 180,300 C220,345 260,332 320,330 C400,328 440,335 520,322 C600,308 660,220 760,150 C830,102 900,96 980,92';
+// Where along the draw each phase's dot sits (0–1 of the path).
+const CURVE_FRACS = [0.17, 0.42, 0.67, 0.92] as const;
+
 // Label anchors as % of the SVG box (viewBox 1000×400).
 const CURVE_LABEL_POS = [
   { left: '18%', top: '80%' },
@@ -329,6 +346,15 @@ export default function AxiomLanding() {
     const ctx = gsap.context(() => {
       if (reduce) {
         document.documentElement.removeAttribute('data-ax-boot');
+        // Nothing below this branch runs, so anything the animations would
+        // have revealed has to be shown outright. These blocks start at
+        // opacity-0 in markup and are otherwise invisible for the entire
+        // visit — that silently costs a reduced-motion reader the three story
+        // chapters and the whole AXIOM terms list, not just some polish.
+        gsap.set(
+          '[data-chapter], [data-term-line], [data-void], [data-honest-stamp], [data-seal-chip]',
+          { autoAlpha: 1 },
+        );
         const st = fieldRef.current?.state;
         if (st) {
           st.progress = 1;
@@ -507,20 +533,26 @@ export default function AxiomLanding() {
             chapters.forEach((ch) => {
               const word = ch.querySelector<HTMLElement>('[data-chapter-word]');
               const meta = ch.querySelectorAll<HTMLElement>('[data-chapter-meta]');
+              const stage = ch.firstElementChild;
               const reveal = gsap.timeline({
                 scrollTrigger: {
                   trigger: ch,
-                  // Fire off the panel's CENTRE, not its top edge: the panel is
-                  // a full screen tall, so "top 72%" fires while the word is
-                  // still below the fold. This plays as the word rises into
-                  // view and finishes near the middle of the screen.
-                  start: 'center 92%',
-                  // A flick can cross the whole trigger between two scroll
-                  // events; fastScrollEnd lands it in the finished state
-                  // instead of stranding it half-played, and not reversing
-                  // stops it flickering when the thumb goes back the other way.
-                  fastScrollEnd: true,
-                  toggleActions: 'play none none none',
+                  // Time-based and eased, deliberately NOT scrubbed: a scrub
+                  // ties the reveal to scroll position, which flattens the
+                  // easing into plain linear motion and reads as the text
+                  // sliding up rather than performing.
+                  // (fastScrollEnd is deliberately absent too: by design it
+                  // snaps straight to the end state on a quick flick, which is
+                  // what made everything appear with no animation at all.)
+                  // 55%, not 80%: the panel's content sits at its top edge, so
+                  // the trigger percentage IS where on the screen the scene is
+                  // when it starts performing. At 80% it played out down in the
+                  // last fifth of the display and had finished long before it
+                  // reached its resting place — so all you saw was a finished
+                  // block of text sliding up. At 55% it comes alive on approach
+                  // and settles as it locks.
+                  start: 'top 55%',
+                  toggleActions: 'play none none reverse',
                 },
               });
               reveal.fromTo(ch, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5 }, 0);
@@ -538,6 +570,23 @@ export default function AxiomLanding() {
                 { y: 0, autoAlpha: 1, duration: 0.55, stagger: 0.1 },
                 0.12,
               );
+              // Departure dissolves instead of sliding off, which crossfades it
+              // against the next chapter arriving underneath. Scrubbed on
+              // purpose here — a fade-out has to track the scroll or a chapter
+              // can be left half-lit above the fold. Applied to the sticky
+              // stage, not the panel, so it cannot fight the reveal's autoAlpha.
+              if (stage) {
+                gsap.to(stage, {
+                  autoAlpha: 0,
+                  ease: 'none',
+                  scrollTrigger: {
+                    trigger: ch,
+                    start: 'bottom 92%',
+                    end: 'bottom 28%',
+                    scrub: true,
+                  },
+                });
+              }
             });
           });
 
@@ -705,10 +754,9 @@ export default function AxiomLanding() {
               },
               0,
             );
-            const fracs = [0.17, 0.42, 0.67, 0.92];
             const dots = gsap.utils.toArray<SVGCircleElement>('[data-curve-dot]');
             gsap.utils.toArray<HTMLElement>('[data-curve-phase]').forEach((el, i) => {
-              const at = Math.max(0, fracs[i] - 0.04);
+              const at = Math.max(0, CURVE_FRACS[i] - 0.04);
               arc.fromTo(
                 el,
                 { autoAlpha: 0, y: 16 },
@@ -727,26 +775,44 @@ export default function AxiomLanding() {
             arc.to({}, { duration: 0.12 }); // settle beat before unpin
           });
           mmG.add('(max-width: 767px)', () => {
-            gsap.from('[data-curve-path]', {
-              drawSVG: '0%',
-              ease: 'none',
+            // The draw used to be mapped to the WHOLE section, but the chart
+            // only occupies its first slice — so the curve was still being
+            // drawn long after it had left the top of the screen, and was
+            // never seen finished. Map it to the chart's own approach to
+            // centre instead: it completes exactly as the chart settles into
+            // the middle of the display.
+            const arcM = gsap.timeline({
+              defaults: { ease: 'none' },
               scrollTrigger: {
-                trigger: '[data-arc]',
-                start: 'top 70%',
-                end: 'bottom 75%',
-                scrub: 1,
+                trigger: '[data-curve-stage]',
+                start: 'top 88%',
+                end: 'center 48%',
+                scrub: true,
               },
             });
-            gsap.utils.toArray<HTMLElement>('[data-curve-phase]').forEach((el, i) => {
+            // Frame first, then the line drawn onto it — the axis is the thing
+            // the curve is being measured against, so it cannot arrive after.
+            arcM.fromTo('[data-curve-axis]', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.14 }, 0);
+            arcM.from('[data-curve-path]', { drawSVG: '0%', duration: 1 }, 0);
+            gsap.utils.toArray<SVGCircleElement>('[data-curve-dot]').forEach((dot, i) => {
+              arcM.fromTo(
+                dot,
+                { autoAlpha: 0, scale: 0, transformOrigin: '50% 50%' },
+                { autoAlpha: 1, scale: 1, duration: 0.05, ease: 'back.out(3)' },
+                Math.max(0, CURVE_FRACS[i] - 0.04),
+              );
+            });
+            // Phase cards read as a list below the chart; scrubbed to the card
+            // itself so a fast flick still shows them animating in.
+            gsap.utils.toArray<HTMLElement>('[data-curve-phase]').forEach((el) => {
               gsap.fromTo(
                 el,
                 { autoAlpha: 0, y: 18 },
                 {
                   autoAlpha: 1,
                   y: 0,
-                  duration: 0.6,
-                  ease: 'power3.out',
-                  scrollTrigger: { trigger: el, start: 'top 88%' },
+                  ease: 'none',
+                  scrollTrigger: { trigger: el, start: 'top 92%', end: 'top 68%', scrub: true },
                 },
               );
             });
@@ -1124,7 +1190,7 @@ function Hero() {
         <p
           data-hero-sub
           data-intro
-          className="mx-auto mt-8 max-w-xl text-base leading-relaxed text-[#a6a3b8] [text-shadow:0_1px_18px_rgba(7,7,9,0.9)] sm:text-lg"
+          className={`mx-auto mt-8 max-w-xl text-base leading-relaxed text-[#a6a3b8] ${OVER_FIELD} sm:text-lg`}
         >
           A calm, honest recovery companion grounded in real neuroscience.
           No shame, no fake countdowns, no selling your story.
@@ -1179,42 +1245,55 @@ function StoryAct() {
     // Phones cannot: a pinned box is position:fixed while the browser scrolls
     // on the compositor thread, so it visibly lags the finger — and at 100svh
     // it is shorter than the viewport once the URL bar hides, which parks the
-    // "centered" content high with dead space under it. On touch each chapter
-    // is therefore a real full-height panel in normal flow, stacked and
-    // centred, with the metadata in the column instead of pinned to the
-    // corners. Same story, no fixed positioning.
-    <section data-story className="relative overflow-hidden md:h-[100svh]">
+    // "centered" content high with dead space under it. Touch gets the same
+    // beat from CSS sticky instead (see below).
+    // NOTE: no overflow-hidden on touch — it would make this a scroll
+    // container and break the sticky children below.
+    <section data-story className="relative md:h-[100svh] md:overflow-hidden">
       {CHAPTERS.map((ch, i) => (
         <div
           key={ch.word}
           data-chapter
-          // Touch keeps the desktop composition rather than bunching the text
-          // in the middle: label at the top, the outline word over the particle
-          // shape, copy at the bottom. The vertical padding is what keeps the
-          // paragraph off the particles and clear of the sticky CTA.
-          className="relative flex min-h-[100svh] flex-col items-center justify-between gap-6 px-7 pb-[17svh] pt-[15svh] text-center opacity-0 md:absolute md:inset-0 md:block md:min-h-0 md:gap-0 md:p-0 md:text-left"
+          // Each chapter is a tall panel whose content sticks to the viewport
+          // while the panel scrolls through it. That restores the desktop
+          // act's character — the scene HOLDS while the particle shape morphs
+          // under it, then hands over — which plain stacked panels lost, since
+          // they just slide past. CSS sticky is the right tool rather than a
+          // ScrollTrigger pin: the compositor handles it natively, so there is
+          // no position:fixed lagging the finger and nothing to recalculate
+          // when the URL bar moves.
+          // 175svh against a 100svh sticky child = 75svh of hold per chapter,
+          // which is the beat the desktop pin gives it. Any shorter and the
+          // scene starts sliding away before its shape has finished morphing.
+          className="relative min-h-[175svh] opacity-0 md:absolute md:inset-0 md:block md:min-h-0"
         >
           <div
-            data-chapter-meta
-            className={`${MONO} text-[11px] uppercase tracking-[0.3em] text-[#9b98ad] md:absolute md:top-[16vh] ${
-              i === 1 ? 'md:right-[12vw] md:text-right' : 'md:left-[12vw]'
-            }`}
+            // Composition matches desktop: label top, outline word over the
+            // particle shape, copy at the bottom clear of the sticky CTA.
+            className="sticky top-0 flex h-[100svh] flex-col items-center justify-between gap-6 px-7 pb-[17svh] pt-[15svh] text-center md:static md:block md:h-auto md:gap-0 md:p-0 md:text-left"
           >
-            {ch.index} / {ch.label}
-          </div>
-          <span
-            data-chapter-word
-            className="ax-outline-strong pointer-events-none select-none text-[clamp(4rem,17vw,14rem)] font-semibold leading-none md:absolute md:inset-0 md:flex md:items-center md:justify-center"
-          >
-            {ch.word}
-          </span>
-          <div
-            data-chapter-meta
-            className={`max-w-md md:absolute md:bottom-[12vh] ${
-              i === 1 ? 'md:left-[12vw] md:text-left' : 'md:right-[12vw] md:text-right'
-            }`}
-          >
-            <p className="text-base leading-relaxed text-[#d8d5e4] [text-shadow:0_1px_18px_rgba(7,7,9,0.9),0_0_44px_rgba(7,7,9,0.7)] md:text-lg">{ch.copy}</p>
+            <div
+              data-chapter-meta
+              className={`${MONO} text-[11px] uppercase tracking-[0.3em] text-[#9b98ad] md:absolute md:top-[16vh] ${
+                i === 1 ? 'md:right-[12vw] md:text-right' : 'md:left-[12vw]'
+              }`}
+            >
+              {ch.index} / {ch.label}
+            </div>
+            <span
+              data-chapter-word
+              className="ax-outline-strong pointer-events-none select-none text-[clamp(4rem,17vw,14rem)] font-semibold leading-none md:absolute md:inset-0 md:flex md:items-center md:justify-center"
+            >
+              {ch.word}
+            </span>
+            <div
+              data-chapter-meta
+              className={`max-w-md md:absolute md:bottom-[12vh] ${
+                i === 1 ? 'md:left-[12vw] md:text-left' : 'md:right-[12vw] md:text-right'
+              }`}
+            >
+              <p className={`text-base leading-relaxed text-[#d8d5e4] ${OVER_FIELD} md:text-lg`}>{ch.copy}</p>
+            </div>
           </div>
         </div>
       ))}
@@ -1394,7 +1473,10 @@ function Audit() {
 // ── the arc: pinned recovery curve + comet ───────────────────────────
 function Arc() {
   return (
-    <section id="arc" data-arc className="relative bg-[#0c0c10]/90 py-28 md:flex md:h-[100svh] md:flex-col md:justify-center md:py-0">
+    // md:pt-16 keeps the eyebrow out from under the fixed nav: the pinned
+    // section centres its content, and at 100svh the content is tall enough
+    // that centring parked the eyebrow behind the header.
+    <section id="arc" data-arc className="relative bg-[#0c0c10]/90 py-28 md:flex md:h-[100svh] md:flex-col md:justify-center md:pb-0 md:pt-16">
       <div aria-hidden className="ax-rows absolute inset-0" />
       <span aria-hidden className={`${MONO} ax-ghost-num`}>05</span>
       <div className="relative mx-auto w-full max-w-6xl px-6">
@@ -1404,29 +1486,106 @@ function Arc() {
           <span className="ax-serif text-[#cdc7ee]">actually</span> looks like.
         </h2>
         <div className="relative mt-12 md:mt-16">
-          <svg viewBox="0 0 1000 400" fill="none" className="w-full" aria-hidden>
-            <defs>
-              <linearGradient id="ax-curve-grad" x1="0" y1="0" x2="1000" y2="0" gradientUnits="userSpaceOnUse">
-                <stop offset="0" stopColor="#5a5470" />
-                <stop offset="0.45" stopColor="#8b7cf7" />
-                <stop offset="1" stopColor="#7ef7c2" />
-              </linearGradient>
-            </defs>
-            <line x1="20" y1="150" x2="980" y2="150" stroke="rgba(232,230,240,0.08)" strokeDasharray="3 7" />
-            <text x="24" y="138" className={MONO} fill="rgba(232,230,240,0.22)" fontSize="13" letterSpacing="2">
-              BASELINE — WHERE YOU STARTED
-            </text>
-            <path
-              data-curve-path
-              d="M20,150 C90,160 130,240 180,300 C220,345 260,332 320,330 C400,328 440,335 520,322 C600,308 660,220 760,150 C830,102 900,96 980,92"
-              stroke="url(#ax-curve-grad)"
-              strokeWidth="3"
-              strokeLinecap="round"
-            />
-            {CURVE_PHASES.map((p) => (
-              <circle key={p.w} data-curve-dot cx={p.x} cy={p.y} r="5" fill="#0a0a0d" stroke="#e8e6f0" strokeWidth="1.6" />
-            ))}
-          </svg>
+          {/* On touch the chart gets its own centred moment instead of being
+              squeezed under the heading, and the draw is timed to finish as it
+              settles here. Desktop is unchanged: block, no min-height. */}
+          <div data-curve-stage className="flex min-h-[38svh] items-center md:block md:min-h-0">
+            <div className="relative w-full">
+              <svg viewBox="0 0 1000 400" fill="none" className="w-full" aria-hidden>
+                <defs>
+                  <linearGradient id="ax-curve-grad" x1="0" y1="0" x2="1000" y2="0" gradientUnits="userSpaceOnUse">
+                    <stop offset="0" stopColor="#5a5470" />
+                    <stop offset="0.45" stopColor="#8b7cf7" />
+                    <stop offset="1" stopColor="#7ef7c2" />
+                  </linearGradient>
+                </defs>
+                {/* Every stroke is non-scaling: the viewBox is 1000 wide but
+                    renders ~350px on a phone, so an authored strokeWidth of 3
+                    was arriving as a 1px hairline. */}
+                <line
+                  x1="20"
+                  y1="150"
+                  x2="980"
+                  y2="150"
+                  stroke="rgba(232,230,240,0.13)"
+                  strokeDasharray="2 8"
+                  vectorEffect="non-scaling-stroke"
+                />
+                {/* Time axis — touch only. On desktop the four phase cards are
+                    absolutely positioned over this exact band (see
+                    CURVE_LABEL_POS) and each already carries its own week, so
+                    the curve is read against them. On a phone those cards
+                    collapse to a list underneath and the chart was left as a
+                    line floating in space with nothing to measure it by. */}
+                <g data-curve-axis className="md:hidden">
+                  <line
+                    x1="20"
+                    y1="370"
+                    x2="980"
+                    y2="370"
+                    stroke="rgba(232,230,240,0.16)"
+                    vectorEffect="non-scaling-stroke"
+                  />
+                  {CURVE_PHASES.map((p) => (
+                    <line
+                      key={`tick-${p.w}`}
+                      x1={p.x}
+                      y1="364"
+                      x2={p.x}
+                      y2="376"
+                      stroke="rgba(232,230,240,0.36)"
+                      vectorEffect="non-scaling-stroke"
+                    />
+                  ))}
+                </g>
+                <path
+                  data-curve-path
+                  d={CURVE_D}
+                  stroke="url(#ax-curve-grad)"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  vectorEffect="non-scaling-stroke"
+                />
+                {CURVE_PHASES.map((p) => (
+                  <circle
+                    key={p.w}
+                    data-curve-dot
+                    cx={p.x}
+                    cy={p.y}
+                    r="5"
+                    fill="#0c0c10"
+                    stroke="#e8e6f0"
+                    strokeWidth="1.6"
+                    vectorEffect="non-scaling-stroke"
+                  />
+                ))}
+              </svg>
+              {/* HTML, not <text>: inside the viewBox this scaled down to a
+                  ~4px smudge on a phone. */}
+              <span
+                aria-hidden
+                className={`${MONO} pointer-events-none absolute left-0 text-[9px] uppercase tracking-[0.22em] text-[#8f8ca1] sm:text-[10px]`}
+                style={{ top: '37.5%', transform: 'translateY(-165%)' }}
+              >
+                Baseline — where you started
+              </span>
+              {/* Week labels for the axis above. Same reason as the baseline
+                  caption: <text> inside a 1000-unit viewBox rendered at ~350px
+                  is unreadable. Positioned by the phase's own x so the label,
+                  the tick and the dot are guaranteed to line up. */}
+              <div data-curve-axis aria-hidden className="md:hidden">
+                {CURVE_PHASES.map((p) => (
+                  <span
+                    key={`wk-${p.w}`}
+                    className={`${MONO} pointer-events-none absolute whitespace-nowrap text-[8px] uppercase tracking-[0.16em] text-[#8f8ca1]`}
+                    style={{ left: `${p.x / 10}%`, top: '95%', transform: 'translateX(-50%)' }}
+                  >
+                    {p.w}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
           {/* The comet that rides the curve (desktop pin). */}
           <div
             data-comet
@@ -1449,7 +1608,7 @@ function Arc() {
             ))}
           </div>
         </div>
-        <p data-reveal className={`${MONO} mt-10 text-[11px] uppercase tracking-[0.18em] text-[#8f8ca1] md:mt-32`}>
+        <p data-reveal className={`${MONO} mt-10 text-[11px] uppercase tracking-[0.18em] text-[#8f8ca1] md:mt-24`}>
           Timelines vary by person — this is the typical arc. The app maps yours.
         </p>
       </div>
@@ -1472,11 +1631,14 @@ function Privacy() {
         <div className="mt-16 grid items-stretch gap-6 text-left md:grid-cols-[1fr_auto_1fr]">
           {/* Your phone */}
           <div data-reveal className="ax-card flex flex-col p-8">
-            <div className={`${MONO} mb-6 flex items-center justify-between gap-3 text-[10px] uppercase tracking-[0.22em] text-[#9b98ad]`}>
+            {/* Stacked below sm: the label and the status pill are both long,
+                and side by side on a 390px card the label was squeezed into a
+                four-line column against the pill. */}
+            <div className={`${MONO} mb-6 flex flex-col items-start gap-2.5 text-[10px] uppercase tracking-[0.22em] text-[#9b98ad] sm:flex-row sm:items-center sm:justify-between sm:gap-3`}>
               <span>Your phone — journal, 23:47</span>
               <span
                 data-seal-chip
-                className="flex shrink-0 items-center gap-1.5 rounded-full border border-[#7ef7c2]/25 bg-[#7ef7c2]/10 px-2.5 py-1 text-[#7ef7c2] opacity-0"
+                className="flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-[#7ef7c2]/25 bg-[#7ef7c2]/10 px-2.5 py-1 text-[#7ef7c2] opacity-0"
               >
                 <Icon.Lock className="h-3 w-3" />
                 Key stays here
@@ -1496,9 +1658,12 @@ function Privacy() {
           </div>
           {/* Our servers */}
           <div data-reveal className="ax-card flex flex-col p-8" style={{ borderColor: 'rgba(126,247,194,0.12)' }}>
-            <div className={`${MONO} mb-6 flex items-center justify-between gap-3 text-[10px] uppercase tracking-[0.22em] text-[#9b98ad]`}>
+            {/* Stacked below sm: the label and the status pill are both long,
+                and side by side on a 390px card the label was squeezed into a
+                four-line column against the pill. */}
+            <div className={`${MONO} mb-6 flex flex-col items-start gap-2.5 text-[10px] uppercase tracking-[0.22em] text-[#9b98ad] sm:flex-row sm:items-center sm:justify-between sm:gap-3`}>
               <span>Our servers — the same entry</span>
-              <span className="flex shrink-0 items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[#9b98ad]">
+              <span className="flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[#9b98ad]">
                 <Icon.Unlock className="h-3 w-3" />
                 No key · cannot decrypt
               </span>
@@ -1838,7 +2003,7 @@ function Finale() {
             when you decide.
           </span>
         </h2>
-        <p data-reveal className="mx-auto mt-7 max-w-xl text-lg text-[#b3b0c4] [text-shadow:0_1px_18px_rgba(7,7,9,0.95),0_0_40px_rgba(7,7,9,0.8)]">
+        <p data-reveal className={`mx-auto mt-7 max-w-xl text-lg text-[#c2bfd2] ${OVER_FIELD}`}>
           Not a habit tracker with a counter and a quote. A private, honest
           system for the person you are becoming.
         </p>
@@ -1862,7 +2027,10 @@ function Finale() {
             iOS — join the beta
           </a>
         </div>
-        <p data-reveal className={`${MONO} mt-8 text-[10px] uppercase tracking-[0.24em] text-[#8f8ca1]`}>
+        <p
+          data-reveal
+          className={`${MONO} mt-8 text-[10px] uppercase tracking-[0.24em] text-[#a8a5b8] ${OVER_FIELD}`}
+        >
           Free core forever · panic tools never paywalled
         </p>
       </div>
@@ -1873,7 +2041,9 @@ function Finale() {
 // ── footer ───────────────────────────────────────────────────────────
 function Footer() {
   return (
-    <footer className="relative border-t border-white/[0.06] bg-[#08080a] py-14">
+    // pb-32 below sm: the mobile sticky CTA bar is fixed over the last ~80px
+    // of the viewport, and at py-14 it sat on top of the footer's bottom row.
+    <footer className="relative border-t border-white/[0.06] bg-[#08080a] pb-32 pt-14 sm:pb-14">
       <div className="mx-auto flex max-w-6xl flex-col gap-8 px-6 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="flex items-center gap-3">
