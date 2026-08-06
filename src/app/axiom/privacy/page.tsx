@@ -19,7 +19,7 @@ import { internalUrl } from '@/lib/paths';
  * untouched — only the shell around them changed.
  */
 
-const LAST_UPDATED = 'July 28, 2026';
+const LAST_UPDATED = 'August 6, 2026';
 const CONTACT_MAILTO = `mailto:${contactEmail}`;
 
 interface Principle {
@@ -188,7 +188,7 @@ export default function PrivacyPage(): JSX.Element {
             <li>
               <strong>{'What is recorded: '}</strong>
               {
-                'app opens, which screens you visit and for how long, feature-usage signals (for example, that a breathing session completed and how long it ran), onboarding progress as lengths and counts only, and paywall interactions. Events also carry coarse context: app version, a device performance tier (a high / mid / low bucket, not a device ID), your language setting, and a coarse install-month cohort.'
+                'app opens, which screens you visit and for how long, feature-usage signals (for example, that a breathing session completed and how long it ran), onboarding progress as lengths and counts only, and paywall interactions. Events also carry coarse context: app version, a device performance tier (a high / mid / low bucket, not a device ID), your language setting, a coarse install-month cohort, and your device’s UTC time offset in minutes. The time offset is what lets us tell a 2am session from a 2pm one in your local time rather than ours, which matters because late nights are when this app is needed most. It is a clock offset, not a location: a single number shared by everyone in a whole band of the world, it does not narrow you to a country, and it is never combined with anything that would.'
               }
             </li>
             <li>
