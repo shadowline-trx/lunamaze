@@ -18,7 +18,7 @@ const article: BlogArticle = {
   readingMinutes: 7,
   ctaLabel: 'See how Axiom works',
   ctaText:
-    'Axiom learns your personal danger hour from your own honest logs and warns you before it arrives — privately. Nothing you track ever leaves your phone.',
+    'Axiom takes the danger hour you name yourself and meets you there, privately — and after dark it dims and slows itself down. Nothing readable about your recovery leaves your phone.',
   blocks: [
     {
       kind: 'p',

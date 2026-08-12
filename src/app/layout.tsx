@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 import { Inter } from 'next/font/google';
 import './globals.css';
@@ -12,6 +12,21 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: 'Luna Maze',
   description: 'Luna Maze studio site.',
+};
+
+/**
+ * `viewportFit: 'cover'` is what makes `env(safe-area-inset-*)` resolve to
+ * anything other than 0 — without it the sticky action bars on the tools
+ * pages would sit underneath the iPhone home indicator. `maximumScale` and
+ * `userScalable` are deliberately left at their defaults: capping zoom is an
+ * accessibility failure, and `touch-action: manipulation` already removes the
+ * tap latency that capping zoom is usually (wrongly) reached for.
+ */
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+  themeColor: '#050510',
 };
 
 interface RootLayoutProps {

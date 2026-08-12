@@ -299,7 +299,7 @@ export default function WallpaperGenerator(): JSX.Element {
       </div>
 
       <div className="space-y-6">
-        <div className="rounded-3xl border p-6 backdrop-blur-sm" style={PANEL_STYLE}>
+        <div className="rounded-3xl border p-5 backdrop-blur-sm sm:p-6" style={PANEL_STYLE}>
           <label htmlFor="day-input" className="block font-semibold">
             Your day count
           </label>
@@ -321,7 +321,7 @@ export default function WallpaperGenerator(): JSX.Element {
           </p>
         </div>
 
-        <div className="rounded-3xl border p-6 backdrop-blur-sm" style={PANEL_STYLE}>
+        <div className="rounded-3xl border p-5 backdrop-blur-sm sm:p-6" style={PANEL_STYLE}>
           <p className="font-semibold">Style</p>
           <div className="mt-3 grid grid-cols-3 gap-2">
             {(Object.keys(STYLES) as StyleKey[]).map((key) => {
@@ -332,7 +332,9 @@ export default function WallpaperGenerator(): JSX.Element {
                   type="button"
                   onClick={() => setStyleKey(key)}
                   aria-pressed={selected}
-                  className="rounded-xl border px-3 py-2 text-sm transition-all duration-200 hover:-translate-y-0.5"
+                  /* py-3, not py-2: at three-across on a phone these were ~34px
+                     tall, comfortably under the 44px minimum for a thumb. */
+                  className="ax-press rounded-xl border px-3 py-3 text-sm hover:-translate-y-0.5"
                   style={
                     selected
                       ? {
@@ -366,7 +368,7 @@ export default function WallpaperGenerator(): JSX.Element {
         <button
           type="button"
           onClick={download}
-          className="w-full rounded-2xl px-6 py-4 font-semibold text-lunamaze-bgDeep transition-all duration-200 hover:-translate-y-0.5 hover:opacity-95"
+          className="ax-press w-full rounded-2xl px-6 py-4 font-semibold text-lunamaze-bgDeep hover:opacity-95"
           style={{
             background: `linear-gradient(115deg, ${UI_ACCENT} 0%, ${UI_ACCENT_ALT} 100%)`,
             boxShadow: `0 14px 40px -14px ${accentA(UI_ACCENT, 0.85)}`,

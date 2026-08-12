@@ -77,7 +77,7 @@ export default function SeverityTestPage(): JSX.Element {
       />
       <ProductNav product="Axiom" />
 
-      <header className="relative overflow-hidden px-6 sm:px-8 lg:px-16 pt-32 pb-12 lunamaze-noise">
+      <header className="relative overflow-hidden px-4 sm:px-8 lg:px-16 pt-24 sm:pt-32 pb-12 lunamaze-noise">
         <AuroraField accent="#7B5CFF" accentAlt="#A48CFF" />
         <div className="relative z-10 max-w-3xl mx-auto">
           <span className="inline-flex items-center gap-2 rounded-full border border-lunamaze-violet/40 bg-lunamaze-violet/10 px-4 py-2 text-xs uppercase tracking-[0.3em] text-lunamaze-violetLight mb-8">
@@ -95,13 +95,13 @@ export default function SeverityTestPage(): JSX.Element {
         </div>
       </header>
 
-      <section className="relative px-6 sm:px-8 lg:px-16 py-12 sm:py-16">
+      <section className="relative px-4 sm:px-8 lg:px-16 py-12 sm:py-16">
         <div className="max-w-3xl mx-auto">
           <SeverityTest />
         </div>
       </section>
 
-      <section className="relative px-6 sm:px-8 lg:px-16 pb-20">
+      <section className="relative px-4 sm:px-8 lg:px-16 pb-20">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-2xl font-bold">Common questions</h2>
           <div className="mt-6 space-y-6">

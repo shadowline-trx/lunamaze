@@ -23,9 +23,9 @@ import { internalUrl } from '@/lib/paths';
 const CANONICAL = 'https://lunamaze.com/axiom/ios/';
 
 export const metadata: Metadata = {
-  title: 'AXIOM for iPhone — install the beta today',
+  title: 'AXIOM for iPhone — download on the App Store',
   description:
-    'AXIOM is a private, honest porn-recovery companion for iPhone. Install the finished build today through TestFlight — free, no account, and nothing you log leaves your phone.',
+    'AXIOM is a private, honest porn-recovery companion for iPhone. Free on the App Store — no account needed, and nothing you log leaves your phone readable.',
   alternates: { canonical: CANONICAL },
 };
 
@@ -64,7 +64,7 @@ const APP_POINTS = [
   'The Rewire Map — your recovery in real dopamine phases',
   'Panic toolkit and guided breathing, never paywalled',
   'A journal sealed with your key — we cannot read it',
-  'A pattern engine that learns your triggers and risk hours',
+  'Your triggers and risk hours, gathered back into one place',
   'Light on day one, as deep as you want later',
 ] as const;
 

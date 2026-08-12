@@ -38,7 +38,9 @@ export default function ToolCard({
   return (
     <Link
       href={href}
-      className="group relative block overflow-hidden rounded-3xl border transition-all duration-300 hover:-translate-y-1"
+      /* `hover:-translate-y-1` is the card's only interactive feedback, and it
+         never fires on a touch screen — `ax-press-wide` is the phone half. */
+      className="ax-press-wide group relative block overflow-hidden rounded-3xl border transition-all duration-300 hover:-translate-y-1"
       style={{
         borderColor: hexA(accent, 0.28),
         background: `linear-gradient(160deg, ${hexA(accent, 0.09)} 0%, rgba(18,23,55,0.75) 45%)`,

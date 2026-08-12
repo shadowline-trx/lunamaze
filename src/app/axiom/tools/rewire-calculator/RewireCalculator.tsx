@@ -1,7 +1,7 @@
 'use client';
 
 import type { CSSProperties, JSX } from 'react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 
 /**
@@ -161,6 +161,10 @@ const CTA_PANEL: CSSProperties = {
   boxShadow: `0 1px 0 0 rgba(${ACCENT_ALT_RGB}, 0.2) inset`,
 };
 
+/** Height of the fixed ProductNav (h-16) plus breathing room, so the revealed
+ *  result lands below the header rather than tucked under it. */
+const NAV_CLEARANCE_PX = 80;
+
 /** Big day-range readout: gradient text, cyan → violet-light. */
 const NUMBER_GRADIENT: CSSProperties = {
   background: `linear-gradient(120deg, ${ACCENT} 0%, #A48CFF 100%)`,
@@ -182,8 +186,55 @@ export default function RewireCalculator(): JSX.Element {
     return computeResult(answers.years, answers.daily, answers.age);
   }, [answers]);
 
+  const answeredCount = INPUTS.filter((q) => answers[q.id] !== null).length;
+
+  const resultRef = useRef<HTMLDivElement | null>(null);
+  /** Guards the scroll so it fires once, on the transition from "no result" to
+   *  "result" — never again when the visitor edits an answer afterwards, which
+   *  would yank the page out from under them mid-read. */
+  const hasRevealed = useRef<boolean>(false);
+
+  /**
+   * The whole point of the page appears BELOW the question panel. On a desktop
+   * the result lands in view; on a phone it renders ~1665px down — two full
+   * screens — so answering the third question produced no visible change at
+   * all. The visitor taps the last option, sees nothing happen, and leaves.
+   * This was the single biggest conversion defect on the tool.
+   *
+   * Two measured constraints shaped how the scroll is performed:
+   *
+   * 1. `element.scrollIntoView` does not scroll at all on this site. It gets
+   *    called with a correct target and the page stays at 0. An explicit
+   *    `window.scrollTo` with the same computed target works every time.
+   * 2. A SMOOTH scroll issued from a React effect never starts here either —
+   *    scrollY sits at 0 for the full animation window, on this tool and on
+   *    the severity test independently. `'instant'` works from both. (Note
+   *    `'auto'` is not a synonym for instant: it defers to the CSS
+   *    `scroll-behavior`, which is `smooth` globally, so it fails the same way.)
+   *
+   * So the reveal is an instant jump. It reads as a step transition rather than
+   * a scroll, which suits the destination: the result panel is the loudest
+   * surface on the page — aurora band, bloom, gradient day-range — so there is
+   * no ambiguity about where the visitor has landed or what they are looking at.
+   */
+  useEffect(() => {
+    if (!result || hasRevealed.current) return;
+    hasRevealed.current = true;
+    // Next frame: the result panel mounts in the same commit that sets
+    // `result`, so its geometry isn't measurable until after paint.
+    const id = window.requestAnimationFrame(() => {
+      const el = resultRef.current;
+      if (!el) return;
+      window.scrollTo({
+        top: window.scrollY + el.getBoundingClientRect().top - NAV_CLEARANCE_PX,
+        behavior: 'instant',
+      });
+    });
+    return () => window.cancelAnimationFrame(id);
+  }, [result]);
+
   const optionButton = (selected: boolean): string =>
-    `rounded-xl border px-4 py-3 text-left text-sm transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-axiom-calm/70 ${
+    `ax-press-wide rounded-xl border px-4 py-3.5 text-left text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-axiom-calm/70 ${
       selected
         ? 'border-axiom-calm/70 bg-axiom-calm/10 text-axiom-calm shadow-[0_0_24px_-10px_rgba(0,210,255,0.95)]'
         : 'border-axiom-calm/20 bg-lunamaze-bgSurface/50 hover:border-axiom-calm/50 hover:bg-axiom-calm/5'
@@ -192,7 +243,7 @@ export default function RewireCalculator(): JSX.Element {
   return (
     <div className="space-y-5">
       <div
-        className="relative overflow-hidden rounded-3xl border p-7 sm:p-9 backdrop-blur-sm"
+        className="relative overflow-hidden rounded-3xl border p-5 backdrop-blur-sm sm:p-9"
         style={panel(0.05, 0.22)}
       >
         <div
@@ -206,9 +257,17 @@ export default function RewireCalculator(): JSX.Element {
             Everything runs in your browser — nothing you select is sent or stored anywhere.
           </p>
           <div className="mt-8 space-y-8">
-            {INPUTS.map((q) => (
+            {INPUTS.map((q, qi) => (
               <div key={q.id}>
-                <p className="font-semibold">{q.label}</p>
+                {/* Numbering the questions is what turns three unlabelled
+                    blocks into a flow with a visible end. On a phone only one
+                    question is ever on screen, so without it the visitor has
+                    no idea how much is left — the commonest reason to abandon
+                    a form is not knowing whether it's nearly over. */}
+                <p className="font-semibold">
+                  <span className="mr-2 font-mono text-sm text-axiom-calm">{qi + 1}/{INPUTS.length}</span>
+                  {q.label}
+                </p>
                 <div className="mt-3 grid gap-3 sm:grid-cols-2">
                   {q.options.map((label, i) => (
                     <button
@@ -224,13 +283,24 @@ export default function RewireCalculator(): JSX.Element {
               </div>
             ))}
           </div>
+          {/* Standing in for the result until it exists: the panel is a full
+              screen tall on a phone, so without this the last thing under the
+              final option row is empty space. */}
+          {!result && (
+            <p className="mt-8 text-sm text-lunamaze-textDim">
+              {answeredCount === 0
+                ? 'Answer all three and your map appears here.'
+                : `${INPUTS.length - answeredCount} to go — then your map appears.`}
+            </p>
+          )}
         </div>
       </div>
 
       {result && (
         <>
           <div
-            className="relative overflow-hidden rounded-3xl border backdrop-blur-sm"
+            ref={resultRef}
+            className="relative scroll-mt-20 overflow-hidden rounded-3xl border backdrop-blur-sm"
             style={RESULT_PANEL}
           >
             {/* The one loud surface on the page: this is the answer the visitor
@@ -247,7 +317,7 @@ export default function RewireCalculator(): JSX.Element {
               className="pointer-events-none absolute -top-24 right-[-10%] h-64 w-64 rounded-full blur-3xl"
               style={{ background: `radial-gradient(circle, rgba(${ACCENT_RGB}, 0.3) 0%, transparent 70%)` }}
             />
-            <div className="relative p-7 sm:p-9">
+            <div className="relative p-5 sm:p-9">
               <p className="text-xs uppercase tracking-[0.3em] text-axiom-calm">Your realistic window</p>
               <p
                 className="mt-4 text-4xl sm:text-5xl font-extrabold tracking-tight"
@@ -278,7 +348,7 @@ export default function RewireCalculator(): JSX.Element {
           </div>
 
           <div
-            className="relative overflow-hidden rounded-3xl border p-7 sm:p-9 backdrop-blur-sm"
+            className="relative overflow-hidden rounded-3xl border p-5 backdrop-blur-sm sm:p-9"
             style={panel(0.05, 0.24)}
           >
             <h3 className="text-xl sm:text-2xl font-bold tracking-tight">
@@ -331,16 +401,21 @@ export default function RewireCalculator(): JSX.Element {
               className="pointer-events-none absolute -bottom-28 -right-16 h-64 w-64 rounded-full blur-3xl"
               style={{ background: `radial-gradient(circle, rgba(${ACCENT_ALT_RGB}, 0.3) 0%, transparent 70%)` }}
             />
-            <div className="relative p-7 sm:p-9">
+            <div className="relative p-5 sm:p-9">
               <h3 className="text-xl sm:text-2xl font-bold tracking-tight">Walk the map with company</h3>
               <p className="mt-4 text-lunamaze-textSecondary leading-relaxed">
                 Axiom tracks your recovery against this exact arc — including the flatline window
                 and your personal danger hour — privately. Nothing you log ever leaves your phone.
               </p>
-              <div className="mt-7 flex flex-wrap items-center gap-4">
+              {/* `hover:-translate-y-0.5` was the only feedback these two
+                  carried, and hover does not exist on the devices that see
+                  90% of this page. Stacked full-bleed under `sm` as well —
+                  the second label is long enough to wrap into a two-line
+                  button sitting beside a one-line button. */}
+              <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
                 <Link
                   href="/axiom/"
-                  className="rounded-xl px-6 py-3 font-semibold text-lunamaze-bgDeep transition-transform duration-200 hover:-translate-y-0.5"
+                  className="ax-press rounded-xl px-6 py-4 text-center font-semibold text-lunamaze-bgDeep sm:py-3"
                   style={{
                     background: `linear-gradient(120deg, ${ACCENT} 0%, #6FD9FF 100%)`,
                     boxShadow: `0 14px 40px -18px rgba(${ACCENT_RGB}, 0.95)`,
@@ -350,7 +425,7 @@ export default function RewireCalculator(): JSX.Element {
                 </Link>
                 <Link
                   href="/axiom/tools/severity-test/"
-                  className="rounded-xl border px-6 py-3 font-semibold transition-colors hover:border-lunamaze-violetLight hover:text-lunamaze-violetLight"
+                  className="ax-press rounded-xl border px-6 py-4 text-center font-semibold hover:border-lunamaze-violetLight hover:text-lunamaze-violetLight sm:py-3"
                   style={{ borderColor: `rgba(${ACCENT_ALT_RGB}, 0.45)` }}
                 >
                   Not sure how heavy it is? Take the test

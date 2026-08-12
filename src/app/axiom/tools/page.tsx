@@ -82,7 +82,7 @@ export default function ToolsHubPage(): JSX.Element {
         className="fixed inset-x-0 top-0 z-50"
         style={{ background: 'linear-gradient(to bottom, rgba(10,10,13,0.72), transparent)' }}
       >
-        <nav className="mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
+        <nav className="mx-auto flex max-w-5xl items-center justify-between px-4 py-5 sm:px-6">
           <Link href="/axiom/" className="flex items-center gap-3">
             <img
               src={internalUrl('/images/axiom/logo.webp')}
@@ -104,7 +104,7 @@ export default function ToolsHubPage(): JSX.Element {
         </nav>
       </header>
 
-      <main className="relative mx-auto max-w-3xl px-6 pb-28 pt-36">
+      <main className="relative mx-auto max-w-3xl px-4 pb-28 pt-28 sm:px-6 sm:pt-36">
         {/* Hero */}
         <div
           className={`${MONO} mb-8 inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-black/30 px-4 py-1.5 text-[10px] uppercase tracking-[0.24em] text-[#9b98ad] backdrop-blur-md`}

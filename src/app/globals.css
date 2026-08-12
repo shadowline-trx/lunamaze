@@ -586,27 +586,47 @@ body {
 }
 
 /* Buttons */
+/* Every store CTA on the landing page wears one of these two classes, so the
+   press state belongs here rather than at eight call sites. Both previously
+   carried hover-only feedback, which means the app's own download buttons were
+   the least responsive controls on the site for the visitors most likely to
+   install — the ones already holding a phone. */
 .ax-btn-primary {
   background: var(--ax-silver);
   color: #0b0b0e;
   border-radius: 999px;
   font-weight: 600;
-  transition: box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition:
+    box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    scale 240ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .ax-btn-primary:hover {
   box-shadow: 0 0 0 1px rgba(232, 230, 240, 0.25), 0 8px 40px rgba(180, 170, 220, 0.28);
+}
+.ax-btn-primary:active {
+  scale: 0.97;
+  transition-duration: 60ms;
 }
 .ax-btn-ghost {
   border: 1px solid rgba(232, 230, 240, 0.18);
   color: var(--ax-silver-dim);
   border-radius: 999px;
   font-weight: 500;
-  transition: border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
+  transition:
+    border-color 0.3s ease,
+    color 0.3s ease,
+    background 0.3s ease,
+    scale 240ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .ax-btn-ghost:hover {
   border-color: rgba(232, 230, 240, 0.45);
   color: var(--ax-silver);
   background: rgba(232, 230, 240, 0.04);
+}
+.ax-btn-ghost:active {
+  scale: 0.97;
+  border-color: rgba(232, 230, 240, 0.45);
+  transition-duration: 60ms;
 }
 
 /* Card surface — quiet glass on the dark stage. */
@@ -845,4 +865,141 @@ html[data-ax-boot] .axiom-v3 [data-intro] {
   background: rgba(232, 230, 240, 0.04);
   font-weight: 600;
   white-space: nowrap;
+}
+
+/* ==========================================================================
+   Touch foundation
+
+   Over 90% of this site's traffic is phones, and `hover:` never fires on a
+   touch screen. Before this block every button on the site was styled with
+   hover-only feedback, which means a tap produced no visual response at all
+   until the DOM changed underneath it — worst on the 18-step severity test,
+   where the reward for tapping was a silent question swap that reads as a
+   stutter rather than as progress.
+
+   The fix is a press state, not an animation: `:active` fires on pointer-DOWN,
+   so it costs zero JavaScript and zero latency. Press in fast, release slow —
+   the asymmetry is what makes a button feel physical rather than animated.
+   ========================================================================== */
+
+html {
+  /* iOS Safari otherwise inflates body text when a phone is turned sideways,
+     which silently breaks every clamp() and every carefully-set measure. */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* We supply our own press feedback everywhere below, so the platform's grey
+   flash is now double feedback — and it lags ours by a frame. */
+a,
+button,
+[role='button'],
+summary,
+label[for] {
+  -webkit-tap-highlight-color: transparent;
+  /* Opts out of double-tap-to-zoom, which is what the legacy ~300ms click
+     delay was reserving time for. Pinch zoom is unaffected. */
+  touch-action: manipulation;
+}
+
+/* The press primitive.
+   Scale is the honest signal — it reads as the surface physically taking the
+   load, and it stays on the compositor, so it never costs a layout on a
+   mid-range Android.
+
+   It uses the INDEPENDENT `scale` property rather than `transform: scale()`
+   deliberately. The landing page's magnetic CTAs are driven by GSAP, which
+   writes an inline `transform: translate(...)`; an inline transform beats any
+   class rule, so a `transform`-based press would silently do nothing on those
+   exact buttons. `scale` composes with `transform` instead of replacing it, so
+   the two effects coexist and the press works on every button on the site.
+
+   No `will-change`: this class lands on dozens of elements per page (every
+   option row, every tool card), and permanently promoting all of them costs
+   real memory on the low-end phones this is meant to help. */
+.ax-press {
+  transition:
+    scale 240ms cubic-bezier(0.16, 1, 0.3, 1),
+    filter 240ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ax-press:active {
+  scale: 0.97;
+  filter: brightness(1.08);
+  /* Press-in must feel instantaneous; only the release gets to be graceful. */
+  transition-duration: 60ms;
+}
+
+/* Wide surfaces (full-bleed option rows, cards) need a much smaller ratio —
+   0.97 on a 340px-wide row reads as the row collapsing, not depressing. */
+.ax-press-wide {
+  transition:
+    scale 240ms cubic-bezier(0.16, 1, 0.3, 1),
+    filter 240ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ax-press-wide:active {
+  scale: 0.985;
+  filter: brightness(1.12);
+  transition-duration: 60ms;
+}
+
+/* Anything a thumb must hit clears Apple's 44px minimum. Applied to the small
+   text links ("Back", "Retake", "Reset") that were ~18px tall targets. */
+.ax-tap {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Sticky action bars sit above the iPhone home indicator rather than under it. */
+.ax-safe-b {
+  padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  /* Reduced motion means a gentler signal, not a missing one: keep the press
+     legible via brightness and drop only the movement. */
+  .ax-press:active,
+  .ax-press-wide:active {
+    scale: 1;
+    filter: brightness(1.18);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Transparency and contrast preferences
+
+   The site leans hard on backdrop-filter glass. Two OS-level settings ask us
+   to stop, and neither was handled: iOS "Reduce Transparency" and the
+   high-contrast settings on every platform. Both are legibility settings, and
+   ignoring them makes body copy on a translucent panel genuinely unreadable.
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-transparency: reduce) {
+  .glass,
+  .glass-strong,
+  [class*='backdrop-blur'] {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background-color: var(--bg-surface) !important;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .glass,
+  .glass-strong,
+  [class*='backdrop-blur'] {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background-color: var(--bg-deep) !important;
+    border-color: var(--text-secondary) !important;
+  }
+
+  .ax-prose a {
+    color: #d9d2ff;
+  }
 }

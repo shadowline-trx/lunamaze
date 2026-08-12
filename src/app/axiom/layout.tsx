@@ -100,10 +100,11 @@ const JSON_LD = {
         'A calm, honest porn-recovery companion grounded in real neuroscience. Zero-knowledge encryption: your journal and history never leave your phone readable.',
       url: 'https://lunamaze.com/axiom/',
       image: 'https://lunamaze.com/images/axiom/og.jpg',
-      operatingSystem: 'Android',
+      operatingSystem: 'Android, iOS',
       applicationCategory: 'HealthApplication',
       installUrl:
         'https://play.google.com/store/apps/details?id=com.axiomapp.app',
+      sameAs: ['https://apps.apple.com/app/id6791180351'],
       offers: {
         '@type': 'Offer',
         price: '0',
@@ -182,7 +183,7 @@ const JSON_LD = {
           name: 'Is AXIOM on iPhone?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'Android is live on Google Play. iOS is in open beta — join from the iOS page and it installs through TestFlight today.',
+            text: 'Both. Android is on Google Play and iPhone is on the App Store — same app, same free core, same sealed journal.',
           },
         },
         {

@@ -86,7 +86,7 @@ export default function RewireCalculatorPage(): JSX.Element {
       />
       <ProductNav product="Axiom" />
 
-      <header className="relative overflow-hidden px-6 sm:px-8 lg:px-16 pt-32 pb-10 lunamaze-noise">
+      <header className="relative overflow-hidden px-4 sm:px-8 lg:px-16 pt-24 sm:pt-32 pb-10 lunamaze-noise">
         <AuroraField accent="#00D2FF" accentAlt="#7B5CFF" />
         <div className="relative z-10 max-w-3xl mx-auto">
           <span className="inline-flex items-center gap-2 rounded-full border border-axiom-calm/40 bg-axiom-calm/10 px-4 py-2 text-xs uppercase tracking-[0.3em] text-axiom-calm mb-8">
@@ -104,13 +104,13 @@ export default function RewireCalculatorPage(): JSX.Element {
         </div>
       </header>
 
-      <section className="relative px-6 sm:px-8 lg:px-16 pt-4 pb-14 sm:pt-6 sm:pb-16">
+      <section className="relative px-4 sm:px-8 lg:px-16 pt-4 pb-14 sm:pt-6 sm:pb-16">
         <div className="max-w-3xl mx-auto">
           <RewireCalculator />
         </div>
       </section>
 
-      <section className="relative px-6 sm:px-8 lg:px-16 pb-20">
+      <section className="relative px-4 sm:px-8 lg:px-16 pb-20">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Common questions</h2>
           <span

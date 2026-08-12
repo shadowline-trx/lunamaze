@@ -60,9 +60,9 @@ const RESOURCES: ReadonlyArray<Resource> = [
 
 const FEATURES: ReadonlyArray<Feature> = [
   {
-    title: 'Zero-latency engine',
+    title: 'No framework in the way',
     description:
-      'A smooth caret engine renders every keystroke instantly — no input lag between you and the page.',
+      'Built in vanilla TypeScript with no framework and no virtual DOM, so a keystroke updates the character it belongs to and nothing else.',
   },
   {
     title: '80 themes',
@@ -116,10 +116,10 @@ export default function TypeCrtPage(): JSX.Element {
             <span className="lunamaze-text-gradient">TypeCrt</span>
           </h1>
           <p className="mt-6 text-xl sm:text-2xl text-lunamaze-textPrimary font-medium max-w-2xl mx-auto">
-            A zero-latency typing test with a CRT soul.
+            A typing test with a CRT soul.
           </p>
           <p className="mt-6 text-base sm:text-lg text-lunamaze-textSecondary max-w-2xl mx-auto leading-relaxed">
-            Aesthetic, fast, and built in pure TypeScript. 80 themes, smart
+            Aesthetic and built in pure TypeScript. 80 themes, smart
             practice on your weak keys, a command palette, and a profile
             dashboard that tracks every gain.
           </p>

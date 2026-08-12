@@ -1,7 +1,7 @@
 'use client';
 
 import type { JSX } from 'react';
-import { useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 
 /**
@@ -119,6 +119,21 @@ function dopamineAge(score: number, yearsIdx: number, dailyIdx: number): number 
   return Math.min(80, Math.round(raw));
 }
 
+/**
+ * How long the chosen option stays lit before the next question replaces it.
+ *
+ * This is NOT input latency — the press state paints on pointer-down, with no
+ * delay at all. This is a confirmation beat: without it the only evidence a tap
+ * registered is the question silently changing, which over eighteen taps reads
+ * as a glitchy page rather than as progress, and provokes the double-tap that
+ * skips a question. Long enough to see, short enough never to feel like a wait.
+ */
+const CONFIRM_MS = 160;
+
+/** Height of the fixed ProductNav (h-16) plus a little breathing room, so a
+ *  repositioned card lands below the header rather than under it. */
+const NAV_CLEARANCE_PX = 80;
+
 export default function SeverityTest(): JSX.Element {
   const [step, setStep] = useState<number>(-1); // -1 = intro screen
   const [coreAnswers, setCoreAnswers] = useState<ReadonlyArray<number | null>>(
@@ -128,6 +143,22 @@ export default function SeverityTest(): JSX.Element {
     PROFILE_QUESTIONS.map(() => null),
   );
   const [copied, setCopied] = useState<boolean>(false);
+  /** Index of the option lit during the confirmation beat; also the re-entry
+   *  guard that stops a fast double-tap from answering two questions. */
+  const [pending, setPending] = useState<number | null>(null);
+
+  const cardRef = useRef<HTMLDivElement | null>(null);
+  const advanceRef = useRef<number | null>(null);
+  const ctaRef = useRef<HTMLDivElement | null>(null);
+  /** Whether the real CTA panel is on screen — the sticky bar hides when it is,
+   *  so the visitor is never shown two competing versions of the same action. */
+  const [ctaOnScreen, setCtaOnScreen] = useState<boolean>(false);
+
+  useEffect(() => {
+    return () => {
+      if (advanceRef.current !== null) window.clearTimeout(advanceRef.current);
+    };
+  }, []);
 
   const answeredAll =
     coreAnswers.every((a) => a !== null) && profileAnswers.every((a) => a !== null);
@@ -148,17 +179,81 @@ export default function SeverityTest(): JSX.Element {
 
   const showResult = step >= TOTAL_STEPS && result !== null;
 
-  function answerCore(index: number, value: number): void {
-    setCoreAnswers((prev) => prev.map((a, i) => (i === index ? value : a)));
-    setStep((s) => s + 1);
-  }
+  /**
+   * Parks the question card at the top of the viewport for the whole flow.
+   *
+   * Two separate problems, one fix. Entering the quiz, the page's hero occupies
+   * the first ~470px, so question one renders with only two of its four options
+   * above the fold — the visitor has to scroll before they can answer anything.
+   * Then, once answering, the card drifts upward out of view. Aligning on every
+   * step change means the card — counter, progress bar, question and every
+   * option — sits fully on screen for all eighteen steps with no scrolling at
+   * all.
+   *
+   * The band check keeps this from being obnoxious on desktop, where the card
+   * is usually already well placed: it only corrects when the card is actually
+   * off-position, never on a step where it is already sitting comfortably.
+   */
+  useEffect(() => {
+    if (step < 0 || showResult) return;
+    const el = cardRef.current;
+    if (!el) return;
+    const { top } = el.getBoundingClientRect();
+    if (top >= 0 && top <= 120) return; // already well placed
 
-  function answerProfile(index: number, value: number): void {
-    setProfileAnswers((prev) => prev.map((a, i) => (i === index ? value : a)));
-    setStep((s) => s + 1);
+    // `behavior: 'instant'`, NOT `'auto'`: per spec `'auto'` means "use the
+    // CSS scroll-behavior", which is `smooth` globally on this site, so `auto`
+    // animates. That animation is ~500ms while this flow advances every ~1.5s,
+    // and the in-flight scroll from one step was still running when the next
+    // step's effect measured position — leaving the first questions parked
+    // with half their options below the fold. `'instant'` is also the honest
+    // choice here: the card's entire contents are replaced between steps, so
+    // there is no continuous object whose movement a smooth scroll describes.
+    window.scrollTo({ top: scrollY + top - NAV_CLEARANCE_PX, behavior: 'instant' });
+  }, [step, showResult]);
+
+  useEffect(() => {
+    const el = ctaRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => setCtaOnScreen(entry.isIntersecting),
+      { rootMargin: '0px 0px -25% 0px' },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [showResult]);
+
+  const answer = useCallback(
+    (value: number): void => {
+      if (pending !== null) return; // confirmation beat in flight
+      setPending(value);
+      // `step` is captured from the render that owns this button, so the
+      // question being answered is unambiguous — no updater needs to read it,
+      // and each setter stays a pure function of its own previous state.
+      const current = step;
+      advanceRef.current = window.setTimeout(() => {
+        if (current < CORE_QUESTIONS.length) {
+          setCoreAnswers((prev) => prev.map((a, i) => (i === current ? value : a)));
+        } else {
+          const p = current - CORE_QUESTIONS.length;
+          setProfileAnswers((prev) => prev.map((a, i) => (i === p ? value : a)));
+        }
+        setStep(current + 1);
+        setPending(null);
+      }, CONFIRM_MS);
+    },
+    [pending, step],
+  );
+
+  function goBack(): void {
+    if (advanceRef.current !== null) window.clearTimeout(advanceRef.current);
+    setPending(null);
+    setStep((s) => s - 1);
   }
 
   function restart(): void {
+    if (advanceRef.current !== null) window.clearTimeout(advanceRef.current);
+    setPending(null);
     setStep(-1);
     setCoreAnswers(CORE_QUESTIONS.map(() => null));
     setProfileAnswers(PROFILE_QUESTIONS.map(() => null));
@@ -181,13 +276,18 @@ export default function SeverityTest(): JSX.Element {
     }
   }
 
-  const optionButton =
-    'w-full rounded-xl border border-lunamaze-border bg-lunamaze-bgSurface/60 px-5 py-4 text-left text-base transition-colors hover:border-lunamaze-signal hover:text-lunamaze-signal focus:outline-none focus-visible:ring-2 focus-visible:ring-lunamaze-signal';
+  /** `lit` = chosen, held for the confirmation beat before the flow advances. */
+  const optionButton = (lit: boolean): string =>
+    `ax-press-wide w-full rounded-xl border px-5 py-4 text-left text-base focus:outline-none focus-visible:ring-2 focus-visible:ring-lunamaze-signal ${
+      lit
+        ? 'border-lunamaze-signal bg-lunamaze-signal/15 text-lunamaze-signal'
+        : 'border-lunamaze-border bg-lunamaze-bgSurface/60 hover:border-lunamaze-signal hover:text-lunamaze-signal'
+    }`;
 
   // ---------- Intro ----------
   if (step === -1) {
     return (
-      <div className="rounded-2xl border border-lunamaze-border bg-lunamaze-bgSurface/60 p-8 backdrop-blur-sm">
+      <div className="rounded-2xl border border-lunamaze-border bg-lunamaze-bgSurface/60 p-5 backdrop-blur-sm sm:p-8">
         <h2 className="text-2xl font-bold">18 questions. About 2 minutes.</h2>
         <p className="mt-4 text-lunamaze-textSecondary leading-relaxed">
           Answer honestly — nobody is watching. This page runs entirely in your browser:
@@ -198,10 +298,12 @@ export default function SeverityTest(): JSX.Element {
           You’ll get a Compulsion Load score out of 100, your Dopamine Age, and an honest
           read of what the number does — and doesn’t — mean.
         </p>
+        {/* Full-bleed on phones: the single most important tap on the page should
+            not be a 150px target floating in a 390px viewport. */}
         <button
           type="button"
           onClick={() => setStep(0)}
-          className="mt-8 rounded-xl bg-lunamaze-signal px-8 py-4 font-semibold text-lunamaze-bgDeep transition-opacity hover:opacity-90"
+          className="ax-press mt-8 w-full rounded-xl bg-lunamaze-signal px-8 py-4 font-semibold text-lunamaze-bgDeep sm:w-auto"
         >
           Start the test
         </button>
@@ -217,16 +319,20 @@ export default function SeverityTest(): JSX.Element {
   // ---------- Result ----------
   if (showResult && result) {
     return (
-      <div className="space-y-6">
-        <div className="rounded-2xl border border-lunamaze-border bg-lunamaze-bgSurface/60 p-8 backdrop-blur-sm">
+      <div className="space-y-6 pb-24 sm:pb-0">
+        <div className="rounded-2xl border border-lunamaze-border bg-lunamaze-bgSurface/60 p-5 backdrop-blur-sm sm:p-8">
           <p className="text-xs uppercase tracking-[0.3em] text-lunamaze-signal">Your result</p>
-          <div className="mt-6 flex flex-wrap gap-10">
+          {/* A two-column grid, not wrapping flex: at 390px the old `gap-10`
+              row broke "Dopamine Age" onto its own line about half the time,
+              so the two headline numbers landed at different sizes and the
+              result read as one number plus an afterthought. */}
+          <div className="mt-6 grid grid-cols-2 gap-4">
             <div>
-              <p className="text-5xl font-extrabold">{result.score}<span className="text-2xl text-lunamaze-textDim">/100</span></p>
+              <p className="text-4xl font-extrabold sm:text-5xl">{result.score}<span className="text-xl text-lunamaze-textDim sm:text-2xl">/100</span></p>
               <p className="mt-2 text-sm text-lunamaze-textSecondary">Compulsion Load</p>
             </div>
             <div>
-              <p className="text-5xl font-extrabold">{result.age}</p>
+              <p className="text-4xl font-extrabold sm:text-5xl">{result.age}</p>
               <p className="mt-2 text-sm text-lunamaze-textSecondary">Dopamine Age</p>
             </div>
           </div>
@@ -241,7 +347,7 @@ export default function SeverityTest(): JSX.Element {
           </p>
         </div>
 
-        <div className="rounded-2xl border border-lunamaze-border bg-lunamaze-bgSurface/60 p-8 backdrop-blur-sm">
+        <div className="rounded-2xl border border-lunamaze-border bg-lunamaze-bgSurface/60 p-5 backdrop-blur-sm sm:p-8">
           <h3 className="text-xl font-bold">What your timeline likely looks like</h3>
           <p className="mt-4 text-lunamaze-textSecondary leading-relaxed">{result.band.timelineNote}</p>
           {result.longHabit && (
@@ -275,31 +381,38 @@ export default function SeverityTest(): JSX.Element {
           </p>
         </div>
 
-        <div className="rounded-2xl border border-lunamaze-border bg-lunamaze-bgSurface/60 p-8 backdrop-blur-sm">
+        <div
+          ref={ctaRef}
+          className="rounded-2xl border border-lunamaze-border bg-lunamaze-bgSurface/60 p-5 backdrop-blur-sm sm:p-8"
+        >
           <h3 className="text-xl font-bold">If you want to act on this</h3>
           <p className="mt-4 text-lunamaze-textSecondary leading-relaxed">
             Axiom is our recovery companion: it tracks your pattern (including your personal
             danger hour), maps your progress against the honest timeline, and keeps everything
             on your phone — nothing you log ever leaves it.
           </p>
-          <div className="mt-6 flex flex-wrap items-center gap-4">
+          {/* Stacked and full-bleed under `sm`. The old wrapping row put the
+              primary CTA, a share button and a text link on one line, which on
+              a phone collapsed into three ragged rows with the least important
+              action often widest. */}
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
             <Link
               href="/axiom/"
-              className="rounded-xl bg-lunamaze-signal px-6 py-3 font-semibold text-lunamaze-bgDeep transition-opacity hover:opacity-90"
+              className="ax-press rounded-xl bg-lunamaze-signal px-6 py-4 text-center font-semibold text-lunamaze-bgDeep sm:py-3"
             >
               See how Axiom works
             </Link>
             <button
               type="button"
               onClick={() => void share()}
-              className="rounded-xl border border-lunamaze-border px-6 py-3 font-semibold transition-colors hover:border-lunamaze-signal hover:text-lunamaze-signal"
+              className="ax-press rounded-xl border border-lunamaze-border px-6 py-4 font-semibold hover:border-lunamaze-signal hover:text-lunamaze-signal sm:py-3"
             >
               {copied ? 'Copied!' : 'Share your Dopamine Age'}
             </button>
             <button
               type="button"
               onClick={restart}
-              className="text-sm text-lunamaze-textDim underline underline-offset-4 hover:text-lunamaze-textPrimary"
+              className="ax-tap justify-center text-sm text-lunamaze-textDim underline underline-offset-4 hover:text-lunamaze-textPrimary"
             >
               Retake
             </button>
@@ -307,6 +420,25 @@ export default function SeverityTest(): JSX.Element {
           <p className="mt-4 text-xs text-lunamaze-textDim">
             The share text mentions only your Dopamine Age — not this topic.
           </p>
+        </div>
+
+        {/* Sticky conversion bar, phones only.
+            The result is three long panels; on a 390px screen the CTA is roughly
+            two full screens below the score the visitor came for, and the moment
+            of highest intent is the moment they read the number. The bar carries
+            that action with them and retires itself as soon as the real CTA
+            panel is on screen. */}
+        <div
+          className={`ax-safe-b fixed inset-x-0 bottom-0 z-40 border-t border-lunamaze-border bg-lunamaze-bgPrimary/90 px-4 pt-3 backdrop-blur-md transition-opacity duration-300 sm:hidden ${
+            ctaOnScreen ? 'pointer-events-none opacity-0' : 'opacity-100'
+          }`}
+        >
+          <Link
+            href="/axiom/"
+            className="ax-press block rounded-xl bg-lunamaze-signal px-6 py-3.5 text-center font-semibold text-lunamaze-bgDeep"
+          >
+            See how Axiom works
+          </Link>
         </div>
       </div>
     );
@@ -323,16 +455,26 @@ export default function SeverityTest(): JSX.Element {
     : PROFILE_QUESTIONS[profileIdx].options;
 
   return (
-    <div className="rounded-2xl border border-lunamaze-border bg-lunamaze-bgSurface/60 p-8 backdrop-blur-sm">
-      <div className="flex items-center justify-between text-xs text-lunamaze-textDim">
+    <div
+      ref={cardRef}
+      /* scroll-mt clears the 64px fixed ProductNav — without it `block: 'start'`
+         parks the counter and progress bar underneath the header. */
+      className="scroll-mt-20 rounded-2xl border border-lunamaze-border bg-lunamaze-bgSurface/60 p-5 backdrop-blur-sm sm:p-8"
+    >
+      {/* Fixed height: "Back" only exists from step two, and giving it a 44px
+          tap target made this row grow by 28px the moment it appeared —
+          shunting every option down by that much between question one and
+          two. Reserving the row's full height keeps the card identical at
+          every step. */}
+      <div className="flex min-h-[44px] items-center justify-between text-xs text-lunamaze-textDim">
         <span>
           {step + 1} / {TOTAL_STEPS}
         </span>
         {step > 0 && (
           <button
             type="button"
-            onClick={() => setStep((s) => s - 1)}
-            className="underline underline-offset-4 hover:text-lunamaze-textPrimary"
+            onClick={goBack}
+            className="ax-tap underline underline-offset-4 hover:text-lunamaze-textPrimary"
           >
             Back
           </button>
@@ -340,18 +482,32 @@ export default function SeverityTest(): JSX.Element {
       </div>
       <div className="mt-3 h-1 w-full overflow-hidden rounded-full bg-lunamaze-border">
         <div
-          className="h-full rounded-full bg-lunamaze-signal transition-all"
-          style={{ width: `${(step / TOTAL_STEPS) * 100}%` }}
+          className="h-full rounded-full bg-lunamaze-signal transition-[width] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
+          /* min-width keeps a visible sliver at question one — a literally
+             zero-width bar reads as a broken element, not as "no progress". */
+          style={{ width: `max(0.25rem, ${(step / TOTAL_STEPS) * 100}%)` }}
         />
       </div>
-      <p className="mt-8 text-xl font-semibold leading-snug">{questionText}</p>
+      {/* Reserved height, set to the measured worst case rather than a guess:
+          at both 360px and 390px the eighteen questions render at 28, 55, 83 or
+          110px (one to four lines). Reserving the full 110 keeps the option
+          rows at a fixed y for the entire flow — without it they shift by up to
+          82px between steps, directly under a thumb already travelling toward
+          the next tap. The dead space under a short question is the cheaper
+          half of that trade. */}
+      <p
+        aria-live="polite"
+        className="mt-8 min-h-[7rem] text-xl font-semibold leading-snug sm:min-h-[4rem]"
+      >
+        {questionText}
+      </p>
       <div className="mt-6 space-y-3">
         {options.map((label, i) => (
           <button
             key={label}
             type="button"
-            className={optionButton}
-            onClick={() => (isCore ? answerCore(step, i) : answerProfile(profileIdx, i))}
+            className={optionButton(pending === i)}
+            onClick={() => answer(i)}
           >
             {label}
           </button>

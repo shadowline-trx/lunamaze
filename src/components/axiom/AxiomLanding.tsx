@@ -40,6 +40,7 @@ import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
 import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
 import { internalUrl } from '@/lib/paths';
+import { appStoreUrl } from '@/lib/storeLinks';
 import ParticleField, {
   type ParticleFieldHandle,
 } from '@/components/axiom/ParticleField';
@@ -67,6 +68,11 @@ const OVER_FIELD =
   '[text-shadow:0_0_6px_rgba(7,7,9,0.98),0_1px_16px_rgba(7,7,9,0.94),0_0_44px_rgba(7,7,9,0.8)]';
 const PLAY_URL =
   'https://play.google.com/store/apps/details?id=com.axiomapp.app';
+/**
+ * The App Store listing, campaign-tagged. Falls back to /axiom/ios/ if the ID
+ * is ever cleared in storeLinks, so the Apple button is never a dead link.
+ */
+const APP_STORE_URL = appStoreUrl('site-landing') ?? internalUrl('/axiom/ios/');
 
 const HERO_BADGE = 'ZERO-KNOWLEDGE · WE CANNOT READ YOUR DATA';
 const JOURNAL_PLAIN =
@@ -230,7 +236,7 @@ const FEATURES: Feature[] = [
   { icon: Icon.Pulse, title: 'The Rewire Map', body: 'Watch your dopamine recovery unfold in real, neuroscience-based phases. Not a novelty counter — a living picture of your brain healing.', accent: 'text-[#8b7cf7]' },
   { icon: Icon.Life, title: 'Panic toolkit', body: 'Urge timer, grounding, and a breath pacer one tap from anywhere — built for the 90 seconds that decide everything.', accent: 'text-[#ff8f8f]', badge: 'free' },
   { icon: Icon.Journal, title: 'Sealed journal', body: 'Write the whole truth. Every entry is encrypted with your key before it leaves the screen — even we cannot read it.', accent: 'text-[#cdc7ee]' },
-  { icon: Icon.Compass, title: 'Pattern engine', body: 'It learns your triggers and risk windows from your own check-ins — and warns you before a relapse, not after.', accent: 'text-[#8b7cf7]' },
+  { icon: Icon.Compass, title: 'Pattern engine', body: 'The triggers and risk hours you record come back to you gathered — and the app meets you at those hours instead of only counting them afterwards.', accent: 'text-[#8b7cf7]' },
   { icon: Icon.Wind, title: 'Breathe', body: 'Ride a craving out in about ninety seconds with guided breathing tuned for urge waves, not spa music.', accent: 'text-[#7fd8ff]' },
   { icon: Icon.Spark, title: 'Daily practice', body: 'A streak, a check-in, a daily brief. Small honest reps that compound instead of willpower.', accent: 'text-[#ffd27a]' },
   { icon: Icon.Buddy, title: 'Recovery buddy', body: 'Invite one person you trust. They see whether you are standing — never your journal, never your data.', accent: 'text-[#7fd8ff]' },
@@ -267,7 +273,7 @@ const FAQS = [
   },
   {
     q: 'Is AXIOM on iPhone?',
-    a: 'Android is live on Google Play. iOS is in open beta — join from the iOS page and it installs through TestFlight today.',
+    a: 'Both. Android is on Google Play and iPhone is on the App Store — same app, same free core, same sealed journal.',
   },
   {
     q: 'How is this different from the big-name quit apps?',
@@ -1228,12 +1234,14 @@ function Hero() {
             Start free on Google Play
           </a>
           <a
-            href={internalUrl('/axiom/ios/')}
+            href={APP_STORE_URL}
+            target="_blank"
+            rel="noreferrer"
             data-magnetic
             className="ax-btn-ghost flex items-center gap-2.5 px-8 py-4 text-[15px]"
           >
             <Icon.Apple className="h-4 w-4" />
-            iOS — join the beta
+            Download on the App Store
           </a>
         </div>
         <p
@@ -1937,11 +1945,15 @@ function FaqItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
   return (
     <div data-reveal className="border-b border-white/[0.07]">
+      {/* A row in a bordered stack presses with a background tint, not a scale:
+          scaling would pull the row away from the divider lines above and
+          below it. The tint is untransitioned on the way in so it lands on
+          pointer-down, and fades on release. */}
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        className="flex w-full items-center justify-between gap-6 py-6 text-left"
+        className="-mx-4 flex w-[calc(100%+2rem)] items-center justify-between gap-6 rounded-lg px-4 py-6 text-left transition-colors duration-300 active:bg-white/[0.045] active:duration-0"
       >
         <span className="text-base font-semibold text-[#e8e6f0] sm:text-lg">{q}</span>
         <span
@@ -2032,12 +2044,14 @@ function Finale() {
             Start free on Google Play
           </a>
           <a
-            href={internalUrl('/axiom/ios/')}
+            href={APP_STORE_URL}
+            target="_blank"
+            rel="noreferrer"
             data-magnetic
             className="ax-btn-ghost flex items-center gap-2.5 px-9 py-4"
           >
             <Icon.Apple className="h-4 w-4" />
-            iOS — join the beta
+            Download on the App Store
           </a>
         </div>
         <p

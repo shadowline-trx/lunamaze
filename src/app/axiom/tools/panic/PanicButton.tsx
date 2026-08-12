@@ -105,7 +105,7 @@ export default function PanicButton(): JSX.Element {
     <div className="space-y-6">
       {/* --- What is happening right now --- */}
       <div
-        className="relative overflow-hidden rounded-3xl border p-8 backdrop-blur-sm sm:p-10"
+        className="relative overflow-hidden rounded-3xl border p-5 backdrop-blur-sm sm:p-10"
         style={panel(ACCENT, 0.1, 0.32)}
       >
         {/* Lit top edge: the one panel that should read as the headline. */}
@@ -135,7 +135,7 @@ export default function PanicButton(): JSX.Element {
 
       {/* --- Breathing pacer --- */}
       <div
-        className="relative overflow-hidden rounded-3xl border p-8 backdrop-blur-sm"
+        className="relative overflow-hidden rounded-3xl border p-5 backdrop-blur-sm sm:p-8"
         style={panel(ACCENT, 0.06, 0.24)}
       >
         <StepRail />
@@ -170,13 +170,16 @@ export default function PanicButton(): JSX.Element {
               </span>
             </div>
           </div>
+          {/* Full-bleed on phones. This page is opened one-handed, in the dark,
+              by someone who is not aiming carefully — every instrument control
+              here is a whole-thumb target rather than a centred pill. */}
           <button
             type="button"
             onClick={() => {
               setPhase('in');
               setBreathing((b) => !b);
             }}
-            className="mt-6 rounded-2xl border border-lunamaze-signal/30 bg-lunamaze-signal/[0.06] px-6 py-3 font-semibold transition-colors hover:border-lunamaze-signal/70 hover:text-lunamaze-signal"
+            className="ax-press mt-6 w-full rounded-2xl border border-lunamaze-signal/30 bg-lunamaze-signal/[0.06] px-6 py-4 font-semibold hover:border-lunamaze-signal/70 hover:text-lunamaze-signal sm:w-auto sm:py-3"
           >
             {breathing ? 'Stop' : 'Start breathing with the circle'}
           </button>
@@ -185,7 +188,7 @@ export default function PanicButton(): JSX.Element {
 
       {/* --- Ride-it-out timer --- */}
       <div
-        className="relative overflow-hidden rounded-3xl border p-8 backdrop-blur-sm"
+        className="relative overflow-hidden rounded-3xl border p-5 backdrop-blur-sm sm:p-8"
         style={panel(ACCENT, 0.06, 0.24)}
       >
         <StepRail />
@@ -200,7 +203,7 @@ export default function PanicButton(): JSX.Element {
             <button
               type="button"
               onClick={() => setSecondsLeft(RIDE_MINUTES * 60)}
-              className="rounded-2xl bg-lunamaze-signal px-8 py-4 font-semibold text-lunamaze-bgDeep transition-opacity hover:opacity-90"
+              className="ax-press w-full rounded-2xl bg-lunamaze-signal px-8 py-4 font-semibold text-lunamaze-bgDeep sm:w-auto"
               style={{ boxShadow: `0 10px 40px -14px ${hexA(ACCENT, 0.9)}` }}
             >
               Start the {RIDE_MINUTES} minutes
@@ -216,20 +219,20 @@ export default function PanicButton(): JSX.Element {
               <button
                 type="button"
                 onClick={() => setSecondsLeft(null)}
-                className="mt-5 text-sm text-lunamaze-textDim underline underline-offset-4 hover:text-lunamaze-textPrimary"
+                className="ax-tap mt-5 text-sm text-lunamaze-textDim underline underline-offset-4 hover:text-lunamaze-textPrimary"
               >
                 Reset
               </button>
             </div>
           ) : (
             <div
-              className="rounded-3xl border px-10 py-6"
+              className="w-full rounded-3xl border px-6 py-5 text-center sm:w-auto sm:px-10 sm:py-6"
               style={{
                 borderColor: hexA(ACCENT, 0.3),
                 background: `radial-gradient(circle at 50% 0%, ${hexA(ACCENT, 0.12)} 0%, rgba(10,14,39,0.6) 70%)`,
               }}
             >
-              <p className="font-mono text-6xl font-bold tabular-nums">
+              <p className="font-mono text-5xl font-bold tabular-nums sm:text-6xl">
                 {minutes}:{seconds.toString().padStart(2, '0')}
               </p>
             </div>
@@ -239,7 +242,7 @@ export default function PanicButton(): JSX.Element {
 
       {/* --- Grounding --- */}
       <div
-        className="relative overflow-hidden rounded-3xl border p-8 backdrop-blur-sm"
+        className="relative overflow-hidden rounded-3xl border p-5 backdrop-blur-sm sm:p-8"
         style={panel(ACCENT, 0.06, 0.24)}
       >
         <StepRail />
@@ -261,7 +264,7 @@ export default function PanicButton(): JSX.Element {
           Ember rather than amber, and no step rail: this is a different mode,
           not a fourth instrument. */}
       <div
-        className="relative overflow-hidden rounded-3xl border p-8 backdrop-blur-sm"
+        className="relative overflow-hidden rounded-3xl border p-5 backdrop-blur-sm sm:p-8"
         style={panel(ACCENT_ALT, 0.08, 0.26)}
       >
         <h3 className="text-xl font-bold">If you already slipped tonight</h3>
@@ -276,7 +279,7 @@ export default function PanicButton(): JSX.Element {
 
       {/* --- Quiet footer links: the one surface that should recede. --- */}
       <div
-        className="rounded-3xl border bg-lunamaze-bgSurface/40 p-7 sm:p-8"
+        className="rounded-3xl border bg-lunamaze-bgSurface/40 p-5 sm:p-8"
         style={{ borderColor: hexA(ACCENT, 0.16) }}
       >
         <p className="text-sm text-lunamaze-textSecondary leading-relaxed">

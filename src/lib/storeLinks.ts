@@ -14,12 +14,14 @@ export const PLAY_PACKAGE = 'com.axiomapp.app';
 /**
  * Apple's numeric App Store ID (the digits in `apps.apple.com/app/id123456789`).
  *
- * Stays `null` until the iOS listing is publicly live; while it is null every
- * surface falls back to Android-only and says so honestly rather than shipping
- * a dead Apple link. Fill this in the moment the app is approved — it is the
- * only edit needed to switch iOS on across the site.
+ * Filled 2026-08-09: the listing is live worldwide (0.2.4 READY_FOR_SALE, all
+ * territories). Setting this switches iOS on across every surface and retires
+ * the TestFlight fallback automatically — see `iosBetaUrl` below.
+ *
+ * Back to `null` if the listing is ever pulled: every surface then falls back
+ * to Android-only and says so honestly rather than shipping a dead Apple link.
  */
-export const APP_STORE_ID: string | null = null;
+export const APP_STORE_ID: string | null = '6791180351';
 
 /**
  * Public TestFlight link for the iOS beta.
