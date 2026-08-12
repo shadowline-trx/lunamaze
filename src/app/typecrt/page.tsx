@@ -13,12 +13,50 @@ import GradientBlinds from '@/components/backgrounds/GradientBlinds';
  * Luna Maze landing sections.
  */
 
-const TYPECRT_URL = 'https://www.typecrt.in';
+const TYPECRT_URL = 'https://typecrt.com';
 
 interface Feature {
   readonly title: string;
   readonly description: string;
 }
+
+interface Resource {
+  readonly title: string;
+  readonly description: string;
+  readonly href: string;
+}
+
+/**
+ * Deep links into TypeCrt's documentation and research rather than only the
+ * home page. Each of these is a page that answers a question on its own, so
+ * they are worth surfacing directly instead of hiding behind a single CTA.
+ */
+const RESOURCES: ReadonlyArray<Resource> = [
+  {
+    title: 'The evidence base',
+    description:
+      'Exact figures from the two largest published typing studies — including the average speed of 51.56 WPM across 168,960 people, and the common claims no research supports.',
+    href: `${TYPECRT_URL}/docs/research`,
+  },
+  {
+    title: 'Learn to type',
+    description:
+      'The beginner path: start on a handful of keys and add the next one when the last one sticks.',
+    href: `${TYPECRT_URL}/learn-to-type`,
+  },
+  {
+    title: 'How KeyForge works',
+    description:
+      'The confidence formula behind adaptive practice, the letter unlock order, and how drill words are generated.',
+    href: `${TYPECRT_URL}/docs/keyforge`,
+  },
+  {
+    title: 'Metrics and formulas',
+    description:
+      'Net WPM, raw WPM, accuracy and consistency written out in full, so any score can be recomputed by hand.',
+    href: `${TYPECRT_URL}/docs/metrics`,
+  },
+];
 
 const FEATURES: ReadonlyArray<Feature> = [
   {
@@ -27,9 +65,9 @@ const FEATURES: ReadonlyArray<Feature> = [
       'A smooth caret engine renders every keystroke instantly — no input lag between you and the page.',
   },
   {
-    title: '50+ themes',
+    title: '80 themes',
     description:
-      'From amber phosphor to cool terminal greens, switch the entire palette to match your mood.',
+      'From amber phosphor to cool terminal greens, switch the entire palette to match your mood — every one of them documented.',
   },
   {
     title: 'Smart practice',
@@ -56,7 +94,7 @@ const FEATURES: ReadonlyArray<Feature> = [
 export default function TypeCrtPage(): JSX.Element {
   return (
     <main className="relative min-h-screen bg-lunamaze-bgDeep text-lunamaze-textPrimary">
-      <ProductNav product="TypeCrt" cta={{ label: 'Open typecrt.in', href: TYPECRT_URL }} />
+      <ProductNav product="TypeCrt" cta={{ label: 'Open typecrt.com', href: TYPECRT_URL }} />
 
       {/* Hero over the CRT blinds backdrop. */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-6 sm:px-8 lg:px-16">
@@ -81,7 +119,7 @@ export default function TypeCrtPage(): JSX.Element {
             A zero-latency typing test with a CRT soul.
           </p>
           <p className="mt-6 text-base sm:text-lg text-lunamaze-textSecondary max-w-2xl mx-auto leading-relaxed">
-            Aesthetic, fast, and built in pure TypeScript. 50+ themes, smart
+            Aesthetic, fast, and built in pure TypeScript. 80 themes, smart
             practice on your weak keys, a command palette, and a profile
             dashboard that tracks every gain.
           </p>
@@ -139,6 +177,47 @@ export default function TypeCrtPage(): JSX.Element {
         </div>
       </section>
 
+      {/* Documentation deep links. */}
+      <section className="relative py-24 sm:py-32 px-6 sm:px-8 lg:px-16">
+        <div className="relative z-10 max-w-6xl mx-auto">
+          <span className="block text-xs uppercase tracking-[0.3em] text-lunamaze-signal mb-4">
+            Documentation
+          </span>
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-lunamaze-textPrimary mb-4 max-w-3xl">
+            Nothing here has to be taken on trust.
+          </h2>
+          <p className="text-lg text-lunamaze-textSecondary max-w-2xl mb-16">
+            Every formula is published, every claim about typing in general is
+            traced to a peer-reviewed source, and the claims we could not source
+            are listed as unsupported rather than quietly repeated.
+          </p>
+          <div className="grid sm:grid-cols-2 gap-6 lg:gap-8">
+            {RESOURCES.map((resource) => (
+              <a
+                key={resource.href}
+                href={resource.href}
+                target="_blank"
+                rel="noopener"
+                className="group rounded-2xl border border-lunamaze-border bg-lunamaze-bgSurface/60 p-8 backdrop-blur-sm transition-all duration-300 hover:border-lunamaze-violet/60 hover:bg-lunamaze-bgElevated/70 hover:-translate-y-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lunamaze-violetLight"
+              >
+                <h3 className="text-xl font-semibold text-lunamaze-textPrimary mb-3">
+                  {resource.title}
+                  <span
+                    aria-hidden="true"
+                    className="ml-2 inline-block text-lunamaze-violetLight transition-transform duration-300 group-hover:translate-x-1"
+                  >
+                    ↗
+                  </span>
+                </h3>
+                <p className="text-base text-lunamaze-textSecondary leading-relaxed">
+                  {resource.description}
+                </p>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Closing CTA. */}
       <section className="relative py-24 sm:py-32 px-6 sm:px-8 lg:px-16">
         <div className="max-w-4xl mx-auto text-center">
@@ -154,7 +233,7 @@ export default function TypeCrtPage(): JSX.Element {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-3 rounded-full bg-lunamaze-violet px-8 py-4 text-base font-semibold text-lunamaze-bgDeep transition-all duration-300 hover:bg-lunamaze-violetLight hover:scale-[1.02] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lunamaze-violetLight lunamaze-glow-violet"
           >
-            <span>Open typecrt.in</span>
+            <span>Open typecrt.com</span>
             <span aria-hidden="true">↗</span>
           </a>
         </div>
