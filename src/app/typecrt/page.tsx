@@ -1,4 +1,5 @@
 import type { JSX } from 'react';
+import Link from 'next/link';
 import ProductNav from '@/components/lunamaze/ProductNav';
 import LunaFooter from '@/components/lunamaze/LunaFooter';
 import GradientBlinds from '@/components/backgrounds/GradientBlinds';
@@ -214,6 +215,20 @@ export default function TypeCrtPage(): JSX.Element {
                 </p>
               </a>
             ))}
+          </div>
+
+          {/* The writing library lives on this domain rather than the product's,
+              so it needs a link from here — otherwise the only route to it is
+              the sitemap, and no link equity ever reaches it from the page that
+              has any. */}
+          <div className="mt-10">
+            <Link
+              href="/typecrt/blog/"
+              className="inline-flex items-center gap-2 text-lunamaze-textSecondary underline decoration-lunamaze-border underline-offset-4 transition-colors hover:text-lunamaze-signal"
+            >
+              Long-form writing on measuring typing speed
+              <span aria-hidden="true">→</span>
+            </Link>
           </div>
         </div>
       </section>

@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { ALL_ARTICLES } from '@/content/blog';
+import { TYPECRT_ARTICLES } from '@/content/typecrt';
 
 // Required for `output: 'export'` (static hosting on GitHub Pages).
 export const dynamic = 'force-static';
@@ -20,6 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // day Apple approves.
     { path: '/axiom/ios/', priority: 0.8, changeFrequency: 'weekly' },
     { path: '/typecrt/', priority: 0.7, changeFrequency: 'monthly' },
+    { path: '/typecrt/blog/', priority: 0.7, changeFrequency: 'weekly' },
     { path: '/drift/', priority: 0.5, changeFrequency: 'monthly' },
     { path: '/axiom/privacy/', priority: 0.3, changeFrequency: 'yearly' },
     { path: '/axiom/terms/', priority: 0.3, changeFrequency: 'yearly' },
@@ -30,6 +32,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/axiom/tools/panic/', priority: 0.8, changeFrequency: 'monthly' },
     { path: '/axiom/tools/wallpaper/', priority: 0.7, changeFrequency: 'monthly' },
   ];
+
+  // TypeCrt's writing library. English only — see src/content/typecrt/index.ts.
+  const typecrtRoutes = TYPECRT_ARTICLES.map((a) => ({
+    path: `/typecrt/blog/${a.slug}/`,
+    priority: 0.7,
+    changeFrequency: 'monthly' as const,
+    lastModified: new Date(a.dateModified),
+  }));
 
   // Every blog article in every language, derived from the content registry.
   const articleRoutes = ALL_ARTICLES.map((a) => ({
@@ -47,6 +57,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: r.priority,
     })),
     ...articleRoutes.map((r) => ({
+      url: `${BASE}${r.path}`,
+      lastModified: r.lastModified,
+      changeFrequency: r.changeFrequency,
+      priority: r.priority,
+    })),
+    ...typecrtRoutes.map((r) => ({
       url: `${BASE}${r.path}`,
       lastModified: r.lastModified,
       changeFrequency: r.changeFrequency,
