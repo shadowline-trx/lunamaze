@@ -10,8 +10,6 @@ const grotesk = Instrument_Sans({
   display: 'swap',
   variable: '--font-grotesk',
 });
-// Only the opsz axis: SOFT was never dialled away from default, and dropping
-// it meaningfully shrinks the variable-font payload.
 const fraunces = Fraunces({
   subsets: ['latin'],
   display: 'swap',
@@ -28,24 +26,28 @@ const jetbrains = JetBrains_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://lunamaze.com'),
-  title: 'AXIOM — Quit porn. Rewire your brain. Keep it private.',
+  title: 'AXIOM — Quit Porn App & Neuroscience Rewire Protocol | Zero-Knowledge',
   description:
-    'A calm, honest recovery companion grounded in real neuroscience. No shame, no fake countdowns, no selling your story. Zero-knowledge by design: your recovery never leaves your phone.',
+    'A calm, honest porn addiction recovery companion grounded in neuroscience. Zero-knowledge privacy by design: all journals encrypted on-device. No shame, no paywalled panic tools, no fake countdowns.',
   keywords: [
-    'quit porn',
     'quit porn app',
-    'porn recovery',
-    'porn addiction help',
-    'dopamine detox',
-    'rewire brain',
-    'reboot',
-    'streak tracker',
-    'private recovery app',
-    'zero-knowledge',
-    'no dark patterns',
+    'porn addiction recovery',
+    'dopamine rewire app',
+    'how to stop watching porn',
+    'reboot timeline calculator',
+    'porn induced erectile dysfunction',
+    'compulsive sexual behavior disorder',
+    'ICD-11 CSBD 6C72',
+    'how to stop gooning',
+    'zero-knowledge addiction tracker',
+    'best quit porn app android ios',
+    'deltaFosB dopamine recovery',
+    'porn addiction self test',
+    'dopamine detox tracker',
+    'private habit tracker',
   ],
   alternates: {
-    canonical: '/axiom/',
+    canonical: 'https://lunamaze.com/axiom/',
   },
   robots: {
     index: true,
@@ -55,12 +57,13 @@ export const metadata: Metadata = {
       follow: true,
       'max-image-preview': 'large',
       'max-snippet': -1,
+      'max-video-preview': -1,
     },
   },
   openGraph: {
-    title: 'AXIOM — Quit porn. Rewire your brain. Keep it private.',
+    title: 'AXIOM — Quit Porn App & Neuroscience Rewire Protocol',
     description:
-      'An honest, private recovery app. No shame, no dark patterns, and your data never leaves your phone.',
+      'An honest, private porn addiction recovery app grounded in neuroplasticity. Zero-knowledge client-side encryption — your data never leaves your phone.',
     type: 'website',
     url: 'https://lunamaze.com/axiom/',
     siteName: 'Luna Maze',
@@ -70,23 +73,21 @@ export const metadata: Metadata = {
         url: 'https://lunamaze.com/images/axiom/og.jpg',
         width: 1200,
         height: 630,
-        alt: 'AXIOM — Quit porn. Rewire your brain. Keep it private.',
+        alt: 'AXIOM — Quit Porn App & Neuroscience Rewire Protocol',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'AXIOM — Quit porn. Rewire your brain. Keep it private.',
+    title: 'AXIOM — Quit Porn App & Neuroscience Rewire Protocol',
     description:
-      'An honest, private recovery app. Zero-knowledge by design — your recovery never leaves your phone.',
+      'An honest, private recovery companion. Zero-knowledge encryption by design — your story never leaves your phone readable.',
     images: ['https://lunamaze.com/images/axiom/og.jpg'],
   },
 };
 
 /**
- * Structured data for rich results. Honest by policy: no fabricated
- * aggregateRating, no inflated numbers — app identity, pricing model, and
- * publisher only.
+ * Structured data for rich results (MobileApplication, MedicalWebPage, FAQPage, BreadcrumbList).
  */
 const JSON_LD = {
   '@context': 'https://schema.org',
@@ -95,7 +96,7 @@ const JSON_LD = {
       '@type': 'MobileApplication',
       '@id': 'https://lunamaze.com/axiom/#app',
       name: 'AXIOM',
-      alternateName: 'Axiom — Quit Porn Recovery',
+      alternateName: ['Axiom — Quit Porn Recovery', 'Axiom Habit Tracker'],
       description:
         'A calm, honest porn-recovery companion grounded in real neuroscience. Zero-knowledge encryption: your journal and history never leave your phone readable.',
       url: 'https://lunamaze.com/axiom/',
@@ -110,22 +111,47 @@ const JSON_LD = {
         price: '0',
         priceCurrency: 'USD',
         description:
-          'Free core forever (streak, check-ins, breathing, panic tools). Optional AXIOM Protocol subscription unlocks the full depth.',
+          'Free core forever (streak, check-ins, breathing, panic tools). Optional AXIOM Protocol subscription unlocks full depth.',
       },
       featureList: [
         'Zero-knowledge encrypted journal',
         'Neuroscience-based recovery phases',
-        'Panic tools, free forever',
-        'Guided breathing',
+        'Panic urge tools, free forever',
+        'Guided somatic breathing',
         'Trigger pattern engine',
       ],
       publisher: { '@id': 'https://lunamaze.com/#org' },
+    },
+    {
+      '@type': 'MedicalWebPage',
+      '@id': 'https://lunamaze.com/axiom/#medical',
+      name: 'Axiom Neuroscience Recovery Protocol',
+      url: 'https://lunamaze.com/axiom/',
+      about: [
+        {
+          '@type': 'MedicalCondition',
+          name: 'Compulsive Sexual Behavior Disorder',
+          code: {
+            '@type': 'MedicalCode',
+            code: '6C72',
+            codingSystem: 'ICD-11',
+          },
+        },
+      ],
+      significantLink: [
+        'https://lunamaze.com/axiom/faq/',
+        'https://lunamaze.com/axiom/tools/severity-test/',
+        'https://lunamaze.com/axiom/tools/rewire-calculator/',
+        'https://lunamaze.com/axiom/tools/panic/',
+      ],
     },
     {
       '@type': 'Organization',
       '@id': 'https://lunamaze.com/#org',
       name: 'Luna Maze',
       url: 'https://lunamaze.com/',
+      logo: 'https://lunamaze.com/images/axiom/logo.webp',
+      sameAs: ['https://github.com/shadowline-trx'],
     },
     {
       '@type': 'FAQPage',
@@ -188,10 +214,10 @@ const JSON_LD = {
         },
         {
           '@type': 'Question',
-          name: 'How is this different from the big-name quit apps?',
+          name: 'How is this different from legacy quit apps?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'No fake countdowns, no invented member counts, no panic button behind a paywall — and none of your story stored readable in a cloud.',
+            text: 'No fake countdowns, no invented member counts, no panic button behind a paywall — and zero bytes of your recovery story stored unencrypted in a cloud.',
           },
         },
       ],
@@ -222,10 +248,6 @@ interface AxiomLayoutProps {
 
 export default function AxiomLayout({ children }: AxiomLayoutProps) {
   return (
-    // No background colour here on purpose: the page-wide ParticleField stage
-    // sits at -z-10, and a non-positioned block's background paints AFTER its
-    // negative z-index descendants, so an opaque colour here buries the canvas
-    // completely. <body> supplies the base colour.
     <div
       className={`axiom-root ${grotesk.variable} ${fraunces.variable} ${jetbrains.variable} text-axiom-textPrimary`}
     >
