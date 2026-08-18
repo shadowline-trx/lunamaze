@@ -35,6 +35,16 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/',
   },
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon.png', type: 'image/png', sizes: '32x32' },
+      { url: '/icon-192.png', type: 'image/png', sizes: '192x192' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+  },
   openGraph: {
     title: 'Luna Maze — Independent Product Studio',
     description:
@@ -72,14 +82,6 @@ export const metadata: Metadata = {
   },
 };
 
-/**
- * `viewportFit: 'cover'` is what makes `env(safe-area-inset-*)` resolve to
- * anything other than 0 — without it the sticky action bars on the tools
- * pages would sit underneath the iPhone home indicator. `maximumScale` and
- * `userScalable` are deliberately left at their defaults: capping zoom is an
- * accessibility failure, and `touch-action: manipulation` already removes the
- * tap latency that capping zoom is usually (wrongly) reached for.
- */
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
@@ -93,10 +95,6 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    // suppressHydrationWarning: the AXIOM landing sets a data-ax-boot
-    // attribute on <html> from a parse-time inline script (pre-paint FOUC
-    // guard); React 19 would otherwise report the attribute as a mismatch.
-    // Suppression is shallow — it only covers this element's attributes.
     <html lang="en" className={inter.variable} suppressHydrationWarning>
       <head>
         <Script
