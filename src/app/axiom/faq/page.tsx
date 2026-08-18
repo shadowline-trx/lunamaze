@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import type { JSX } from 'react';
-import Link from 'next/link';
-import { internalUrl } from '@/lib/paths';
+import AxiomFaqClient, { type FaqItem } from '@/components/axiom/AxiomFaqClient';
 
 export const metadata: Metadata = {
   title: 'Porn Addiction & Brain Recovery FAQ — Science, Timelines & Privacy | Axiom',
@@ -32,18 +31,6 @@ export const metadata: Metadata = {
     images: ['https://lunamaze.com/images/axiom/og.jpg'],
   },
 };
-
-const MONO = 'ax-mono';
-
-interface FaqItem {
-  readonly id: string;
-  readonly category: 'Neuroscience' | 'Quitting & Tools' | 'Psychology & Symptoms' | 'Privacy & Law';
-  readonly question: string;
-  readonly shortAnswer: string;
-  readonly detailedAnswer: string;
-  readonly reference?: string;
-  readonly toolLink?: { label: string; href: string };
-}
 
 const FAQ_ITEMS: ReadonlyArray<FaqItem> = [
   {
@@ -195,202 +182,13 @@ const JSON_LD = {
 
 export default function AxiomFaqPage(): JSX.Element {
   return (
-    <div className="axiom-v3 relative min-h-screen bg-[#070709] text-[#f2f1f7]">
-      {/* JSON-LD Schema for Google Rich Snippets & AI Engines */}
+    <>
+      {/* Server-rendered structured data for Google Rich Snippets & AI Engines */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
       />
-
-      {/* Background stage */}
-      <div aria-hidden className="pointer-events-none fixed inset-0 -z-10">
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              'radial-gradient(120% 90% at 50% 0%, #131318 0%, #0a0a0d 52%, #070709 100%)',
-          }}
-        />
-        <div className="ax-cage absolute inset-0 opacity-40" />
-        <div className="ax-shafts opacity-30" />
-      </div>
-
-      {/* Header Navigation */}
-      <header
-        className="fixed inset-x-0 top-0 z-50 backdrop-blur-md"
-        style={{ background: 'linear-gradient(to bottom, rgba(10,10,13,0.85), transparent)' }}
-      >
-        <nav className="mx-auto flex max-w-5xl items-center justify-between px-4 py-5 sm:px-6">
-          <Link href="/axiom/" className="flex items-center gap-3">
-            <img
-              src={internalUrl('/images/axiom/logo.webp')}
-              alt="Axiom Logo"
-              width={34}
-              height={34}
-              className="h-[34px] w-[34px] rounded-xl"
-            />
-            <span className={`${MONO} text-sm font-medium tracking-[0.34em] text-[#e8e6f0]`}>
-              AXIOM
-            </span>
-          </Link>
-          <div className="flex items-center gap-6">
-            <Link
-              href="/axiom/tools/"
-              className={`${MONO} text-[11px] uppercase tracking-[0.22em] text-[#9b98ad] transition-colors hover:text-[#e8e6f0]`}
-            >
-              Free Tools
-            </Link>
-            <Link
-              href="/axiom/"
-              className={`${MONO} text-[11px] uppercase tracking-[0.22em] text-[#9b98ad] transition-colors hover:text-[#e8e6f0]`}
-            >
-              ← Overview
-            </Link>
-          </div>
-        </nav>
-      </header>
-
-      <main className="relative mx-auto max-w-4xl px-4 pb-32 pt-28 sm:px-6 sm:pt-36">
-        {/* Breadcrumb indicator */}
-        <nav aria-label="Breadcrumb" className={`${MONO} mb-8 text-[11px] uppercase tracking-[0.2em] text-[#8f8ca1]`}>
-          <Link href="/axiom/" className="hover:text-[#e8e6f0]">Axiom</Link>
-          <span className="mx-2">/</span>
-          <span className="text-[#cdc7ee]">Frequently Asked Questions</span>
-        </nav>
-
-        {/* Hero Title */}
-        <div
-          className={`${MONO} mb-6 inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-black/40 px-4 py-1.5 text-[10px] uppercase tracking-[0.24em] text-[#9b98ad] backdrop-blur-md`}
-        >
-          <span className="h-1.5 w-1.5 rounded-full bg-[#8b7cf7] shadow-[0_0_12px_rgba(139,124,247,0.8)]" />
-          Evidence-Based FAQ
-        </div>
-
-        <h1 className="text-[clamp(2.4rem,5.5vw,4.2rem)] font-semibold leading-[1.04] tracking-[-0.03em] text-[#f2f1f7]">
-          Porn, Dopamine & Recovery.
-          <br />
-          <span className="ax-serif ax-grad-violet font-normal">Answered with evidence.</span>
-        </h1>
-
-        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[#a6a3b8]">
-          Honest answers to the most common questions on neuroplasticity, timelines, privacy, and
-          practical recovery methods. No shame, no moralizing, and no pseudo-science.
-        </p>
-
-        {/* Quick Anchor Links */}
-        <div className="mt-8 flex flex-wrap gap-2">
-          {['Neuroscience', 'Psychology & Symptoms', 'Quitting & Tools', 'Privacy & Law'].map((cat) => (
-            <a
-              key={cat}
-              href={`#${cat.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
-              className={`${MONO} rounded-lg border border-white/10 bg-white/[0.03] px-3 py-1.5 text-[11px] uppercase tracking-[0.16em] text-[#c9c6d8] transition-colors hover:border-[#8b7cf7]/50 hover:bg-[#8b7cf7]/10 hover:text-white`}
-            >
-              {cat}
-            </a>
-          ))}
-        </div>
-
-        {/* FAQ Sections */}
-        <div className="mt-16 space-y-16">
-          {(['Neuroscience', 'Psychology & Symptoms', 'Quitting & Tools', 'Privacy & Law'] as const).map(
-            (category) => {
-              const categoryItems = FAQ_ITEMS.filter((item) => item.category === category);
-              const sectionId = category.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-
-              return (
-                <section key={category} id={sectionId} className="scroll-mt-28">
-                  <div className="mb-6 flex items-center gap-3 border-b border-white/[0.08] pb-4">
-                    <h2 className={`${MONO} text-xs font-semibold uppercase tracking-[0.28em] text-[#8b7cf7]`}>
-                      {category}
-                    </h2>
-                    <span className="text-xs text-[#5a576e]">({categoryItems.length} questions)</span>
-                  </div>
-
-                  <div className="space-y-4">
-                    {categoryItems.map((item) => (
-                      <article
-                        key={item.id}
-                        id={item.id}
-                        className="ax-card group rounded-2xl border border-white/[0.08] bg-[#0c0c11]/80 p-6 sm:p-7 backdrop-blur-md transition-all duration-200 hover:border-[#8b7cf7]/40"
-                      >
-                        <h3 className="text-xl font-semibold text-[#f2f1f7] leading-snug">
-                          {item.question}
-                        </h3>
-
-                        <p className="mt-3 text-base font-medium text-[#cdc7ee] leading-relaxed">
-                          {item.shortAnswer}
-                        </p>
-
-                        <p className="mt-3 text-sm text-[#9b98ad] leading-relaxed">
-                          {item.detailedAnswer}
-                        </p>
-
-                        {item.reference && (
-                          <p className={`${MONO} mt-4 text-[11px] text-[#716e85] leading-relaxed border-l-2 border-[#8b7cf7]/30 pl-3`}>
-                            <strong className="text-[#8f8ca1]">Evidence / Reference:</strong> {item.reference}
-                          </p>
-                        )}
-
-                        {item.toolLink && (
-                          <div className="mt-5 pt-4 border-t border-white/[0.05]">
-                            <Link
-                              href={item.toolLink.href}
-                              className={`${MONO} inline-flex items-center gap-2 text-xs font-medium text-[#7ef7c2] transition-colors hover:text-[#b4fbe0]`}
-                            >
-                              <span>→ {item.toolLink.label}</span>
-                            </Link>
-                          </div>
-                        )}
-                      </article>
-                    ))}
-                  </div>
-                </section>
-              );
-            }
-          )}
-        </div>
-
-        {/* Bottom CTA Box */}
-        <section className="mt-20 rounded-3xl border border-[#8b7cf7]/30 bg-gradient-to-b from-[#161426] to-[#0d0c17] p-8 sm:p-12 text-center shadow-[0_0_80px_-20px_rgba(139,124,247,0.25)]">
-          <div
-            className={`${MONO} mb-4 inline-flex items-center gap-2 rounded-full border border-[#8b7cf7]/30 bg-[#8b7cf7]/10 px-3.5 py-1 text-[10px] uppercase tracking-[0.24em] text-[#c9c6d8]`}
-          >
-            Zero-Knowledge Recovery
-          </div>
-          <h2 className="text-2xl sm:text-3xl font-semibold text-[#f2f1f7]">
-            Ready to begin an honest, private recovery?
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-[#a6a3b8]">
-            AXIOM is free forever at its core. No ads, no fake countdowns, and your journal never leaves your device readable. Available on iOS and Android.
-          </p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-            <Link
-              href="/axiom/"
-              className={`${MONO} rounded-xl bg-[#8b7cf7] px-6 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-[#070709] transition-transform duration-150 hover:scale-[1.02] hover:bg-[#9d90fb]`}
-            >
-              Explore AXIOM
-            </Link>
-            <Link
-              href="/axiom/tools/severity-test/"
-              className={`${MONO} rounded-xl border border-white/15 bg-white/[0.05] px-6 py-3 text-xs font-medium uppercase tracking-[0.2em] text-[#e8e6f0] transition-colors hover:bg-white/10`}
-            >
-              Take Free Severity Test
-            </Link>
-          </div>
-        </section>
-      </main>
-
-      {/* Footer */}
-      <footer className="relative border-t border-white/[0.06] bg-[#08080a] py-10">
-        <div className="mx-auto max-w-5xl px-4 text-center sm:px-6">
-          <p className={`${MONO} text-[11px] uppercase tracking-[0.2em] text-[#8f8ca1]`}>
-            A recovery app by{' '}
-            <a href={internalUrl('/')} className="text-[#c9c6d8] underline underline-offset-2 transition-colors hover:text-[#e8e6f0]">
-              Luna Maze
-            </a>
-          </p>
-        </div>
-      </footer>
-    </div>
+      <AxiomFaqClient faqs={FAQ_ITEMS} />
+    </>
   );
 }
