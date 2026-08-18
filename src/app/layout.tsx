@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 import { Inter } from 'next/font/google';
+import Script from 'next/script';
 import './globals.css';
 
 const inter = Inter({
@@ -40,6 +41,21 @@ export default function RootLayout({ children }: RootLayoutProps) {
     // guard); React 19 would otherwise report the attribute as a mismatch.
     // Suppression is shallow — it only covers this element's attributes.
     <html lang="en" className={inter.variable} suppressHydrationWarning>
+      <head>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-WW8NXCDK0E"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-WW8NXCDK0E');
+          `}
+        </Script>
+      </head>
       <body className={`${inter.className} min-h-screen`}>{children}</body>
     </html>
   );
