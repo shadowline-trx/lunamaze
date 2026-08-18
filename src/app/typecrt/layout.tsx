@@ -1,23 +1,74 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 
+const title = 'TypeCrt — Zero-latency CRT Typing Test & Terminal Practice';
+const description =
+  'TypeCrt is an aesthetic, zero-latency typing test inspired by vintage CRT monitors. 50+ themes, adaptive weak-key practice, command palette, smooth caret engine, and deep performance analytics. Built in pure TypeScript. Live at typecrt.in.';
+const url = 'https://lunamaze.com/typecrt/';
+const ogImage = 'https://lunamaze.com/images/typecrt-logo.png';
+
 export const metadata: Metadata = {
-  title: 'TypeCrt — Zero-latency typing test',
-  description:
-    'TypeCrt is an aesthetic, zero-latency typing test inspired by CRT terminals. 50+ themes, smart practice on your weak keys, a command palette, a smooth caret engine, and a 3-tier profile dashboard. Built in pure TypeScript. Live at typecrt.in.',
+  title,
+  description,
   keywords: [
+    'TypeCrt',
     'typing test',
-    'typing speed',
-    'CRT',
+    'typing speed test',
+    'CRT typing',
     'monkeytype alternative',
-    'wpm',
+    'wpm test',
     'typing practice',
+    'retro terminal typing',
+    'zero-latency typing',
   ],
+  authors: [{ name: 'Luna Maze', url: 'https://lunamaze.com' }],
+  creator: 'Luna Maze',
+  publisher: 'Luna Maze',
+  alternates: {
+    canonical: url,
+  },
   openGraph: {
-    title: 'TypeCrt — Zero-latency typing test',
-    description:
-      'CRT-styled typing test. 50+ themes, smart practice, command palette. Built in pure TypeScript.',
+    title,
+    description,
+    url,
+    siteName: 'Luna Maze',
     type: 'website',
+    images: [
+      {
+        url: ogImage,
+        width: 1200,
+        height: 630,
+        alt: 'TypeCrt — Zero-latency typing test',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title,
+    description,
+    images: [ogImage],
+  },
+};
+
+const JSON_LD = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  '@id': 'https://lunamaze.com/typecrt/#app',
+  name: 'TypeCrt',
+  url: 'https://lunamaze.com/typecrt/',
+  applicationCategory: 'EducationalApplication',
+  operatingSystem: 'Any modern browser',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+  },
+  description:
+    'Aesthetic, zero-latency typing test inspired by CRT terminals with 50+ themes, adaptive weak-key training, and live stats.',
+  author: {
+    '@type': 'Organization',
+    name: 'Luna Maze',
+    url: 'https://lunamaze.com',
   },
 };
 
@@ -30,6 +81,10 @@ export default function TypeCrtLayout({
 }: TypeCrtLayoutProps) {
   return (
     <div className="bg-lunamaze-bgDeep text-lunamaze-textPrimary">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
+      />
       {children}
     </div>
   );

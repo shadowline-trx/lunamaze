@@ -144,14 +144,21 @@ export default function ToolsHubPage(): JSX.Element {
         </div>
 
         <p className="mt-12 text-sm leading-relaxed text-[#a6a3b8]">
-          Prefer reading first?{' '}
+          Have questions about the science, timelines, or privacy? Read our{' '}
+          <Link
+            href="/axiom/faq/"
+            className="text-[#c9c6d8] underline decoration-[#8b7cf7]/50 underline-offset-4 transition-colors hover:text-[#e8e6f0]"
+          >
+            Evidence-Based FAQ
+          </Link>{' '}
+          or explore{' '}
           <Link
             href="/axiom/blog/"
             className="text-[#c9c6d8] underline decoration-[#8b7cf7]/50 underline-offset-4 transition-colors hover:text-[#e8e6f0]"
           >
             The Recovery Library
           </Link>{' '}
-          covers the honest rewiring timeline, the flatline, and night urges, in 12 languages.
+          for deep dives on the rewiring timeline, flatline, and night urges.
         </p>
       </main>
 

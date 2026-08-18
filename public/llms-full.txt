@@ -1,0 +1,56 @@
+# Luna Maze — Full Architecture & Product Specification
+
+Luna Maze is an independent technology and design studio dedicated to high-craft digital instruments.
+
+## 1. Studio Identity & Overview
+- **Name**: Luna Maze
+- **Type**: Independent Product Studio
+- **Founder**: Thehan (Founder & Principal Engineer)
+- **Primary Domain**: https://lunamaze.com
+- **Philosophy**: "Cognition, focus, and craft. Founder-led. Considered. Quiet on purpose."
+
+## 2. Product Portfolio
+
+### AXIOM (Porn Addiction Recovery & Neuroplasticity Companion)
+- **URL**: https://lunamaze.com/axiom/
+- **Platforms**: iOS (TestFlight / App Store), Android
+- **Core Technology**: Local SQLite, client-side cryptographic keystore, zero-knowledge architecture.
+- **Scientific Foundation**: Neuroplasticity, Dopamine D2 receptor upregulation timelines, prefrontal cortex executive control restoration, deltaFosB half-life clearance models.
+- **Features**:
+  - Encrypted personal reflection journal.
+  - Somatic breath-pacing and urge interception.
+  - Neuroplasticity milestone tracking without shame or gamification streaks.
+  - Companion tools: Severity Assessment, Rewire Timeline Calculator, Panic SOS Mode, Typographic Wallpapers, Evidence-Based Recovery FAQ (https://lunamaze.com/axiom/faq/).
+
+### Tether ADB (Windows Android Device Manager)
+- **URL**: https://lunamaze.com/tether-adb/
+- **Platforms**: Windows 10/11 (64-bit)
+- **Features**:
+  - QR Code Wireless ADB Pairing (Android 11+ pairing port negotiation).
+  - High-framerate screen mirroring with audio forwarding (powered by integrated scrcpy).
+  - Live color-coded Logcat streaming with regex filtering.
+  - Direct ADB terminal shell.
+  - APK drag-and-drop batch installer and storage file browser.
+  - Portable, self-contained binary distribution with ADB and scrcpy bundled.
+
+### TypeCrt (Zero-Latency CRT Typing Test)
+- **URL**: https://lunamaze.com/typecrt/ | Live Application: https://typecrt.in
+- **Platforms**: Modern Web Browsers
+- **Tech Stack**: Pure TypeScript, zero-dependency event loop processing, Canvas/WebGL CRT scanline shaders.
+- **Features**:
+  - Sub-millisecond input response time.
+  - 50+ hand-tuned retro terminal themes.
+  - Adaptive weak-key practice algorithm.
+  - Command palette (`Cmd+K` / `Ctrl+K`) for keyboard-first navigation.
+  - Detailed keystroke velocity and error clustering analytics.
+
+### Drift (Handcrafted Precision Puzzle Game)
+- **URL**: https://lunamaze.com/drift/
+- **Status**: Closed Beta Testing
+- **Description**: A minimalist precision puzzle game exploring momentum, spatial anticipation, and calm aesthetics.
+
+## 3. SEO, AI & Web Discovery Data
+- **Canonical URL**: https://lunamaze.com
+- **Sitemap**: https://lunamaze.com/sitemap.xml
+- **Robots Policy**: Open access for search indexers and AI agents.
+- **Feed/API**: https://lunamaze.com/llms.txt

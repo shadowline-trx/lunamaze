@@ -1,0 +1,33 @@
+# Luna Maze
+
+> Luna Maze is an independent product studio founded by Thehan, building premium tools at the intersection of cognition, focus, and craft. Founder-led, considered, and quiet on purpose.
+
+## Core Products
+
+- [AXIOM](https://lunamaze.com/axiom/): A calm, honest porn and dopamine addiction recovery companion grounded in neuroscience. Zero-knowledge by design — all journal entries and recovery data remain encrypted on-device. No dark patterns, no fake countdowns, no selling user data.
+- [Tether ADB](https://lunamaze.com/tether-adb/): Enterprise-grade Android device control center for Windows. Features QR-code wireless ADB pairing, low-latency screen mirroring (via bundled scrcpy), live logcat streaming, interactive shell, and full file & APK app management.
+- [TypeCrt](https://lunamaze.com/typecrt/): Zero-latency typing test inspired by vintage CRT terminals. Built in pure TypeScript with 50+ themes, adaptive practice targeting weak keys, command palette, smooth caret physics, and rich analytics at [typecrt.in](https://typecrt.in).
+- [Drift](https://lunamaze.com/drift/): Handcrafted precision puzzle game for iOS and Android emphasizing control, timing, and unhurried design over procedural filler.
+
+## Interactive Tools & Resources
+
+- [AXIOM Evidence-Based FAQ](https://lunamaze.com/axiom/faq/): Research-backed answers to 13+ top clinical and practical questions on porn addiction, dopamine recovery, privacy tracking, and legal facts.
+- [AXIOM Severity Assessment](https://lunamaze.com/axiom/tools/severity-test/): Evidence-based compulsive behavior and recovery self-assessment tool.
+- [Neuroplasticity Rewire Calculator](https://lunamaze.com/axiom/tools/rewire-calculator/): Timeline projections of dopamine receptor density recovery and neurobiological adaptation milestones.
+- [AXIOM Panic SOS Mode](https://lunamaze.com/axiom/tools/panic/): Immediate somatic grounding and physiological sigh pacing for urge management.
+- [Focus Wallpapers](https://lunamaze.com/axiom/tools/wallpaper/): High-resolution typographic and minimalist wallpapers designed for intentional device usage.
+- [AXIOM Recovery Blog](https://lunamaze.com/axiom/blog/): Deep-dive research articles on neuroplasticity, deltaFosB accumulation, sleep architecture, and withdrawal management (available in English, Hindi, and Tamil).
+- [TypeCrt Engineering Journal](https://lunamaze.com/typecrt/blog/): Technical essays on typing test latency, keyboard event loops, and adaptive motor learning algorithms.
+
+## Studio Principles
+
+1. **Zero-Knowledge Privacy**: Core tools store data locally with client-side encryption. User vulnerability is never monetized.
+2. **Deep Craft**: Native performance, handcrafted animations, deliberate typography, and zero filler.
+3. **No Dark Patterns**: No fabricated reviews, no manipulative countdown timers, no subscription traps.
+
+## Contact & Links
+
+- Website: https://lunamaze.com
+- Contact: lunamaze.dev@gmail.com
+- Full Index: https://lunamaze.com/llms-full.txt
+- Sitemap: https://lunamaze.com/sitemap.xml
