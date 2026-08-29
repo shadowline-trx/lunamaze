@@ -1,0 +1,121 @@
+/*
+ * Kern's privacy policy.
+ *
+ * Same tokens as the product landing beside it, deliberately duplicated rather than
+ * imported: a legal page that breaks because a marketing stylesheet was refactored is a
+ * compliance problem, not a visual one, and Google Play links to this URL directly.
+ * It is a page of prose, so it needs about a fifth of what the landing needs.
+ */
+.root {
+  --ground: #0a0b0c;
+  --ink: #e4e3df;
+  --soft: #b4b8b8;
+  --faint: #6e7476;
+  --rule: #2a2e30;
+  --accent: #d98368;
+
+  min-height: 100vh;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--kern-jost), sans-serif;
+  font-weight: 300;
+  font-size: 17px;
+  line-height: 1.64;
+  -webkit-font-smoothing: antialiased;
+}
+
+.root * { box-sizing: border-box; }
+.root a { color: var(--accent); text-underline-offset: 3px; }
+
+.header {
+  display: flex;
+  align-items: center;
+  min-height: 80px;
+  padding: 16px clamp(20px, 4vw, 64px);
+  border-bottom: 1px solid var(--rule);
+}
+
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-decoration: none;
+}
+
+.wordmarkIcon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid currentColor;
+  font-family: var(--kern-fraunces), serif;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+}
+
+.main {
+  max-width: 38rem;
+  margin: 0 auto;
+  padding: clamp(56px, 9vw, 104px) clamp(20px, 5vw, 32px) 128px;
+}
+
+.eyebrow {
+  margin: 0 0 20px;
+  color: var(--faint);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+}
+
+.title {
+  margin: 0 0 20px;
+  font-family: var(--kern-fraunces), serif;
+  font-size: clamp(2.6rem, 8vw, 3.8rem);
+  font-weight: 900;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+}
+
+.lede {
+  margin: 0 0 18px;
+  color: var(--soft);
+  font-size: 1.24rem;
+  line-height: 1.5;
+}
+
+.main h2 {
+  margin: 64px 0 14px;
+  padding-top: 30px;
+  border-top: 1px solid var(--rule);
+  font-family: var(--kern-fraunces), serif;
+  font-size: 1.36rem;
+  font-weight: 700;
+  letter-spacing: -0.018em;
+}
+
+.main p { margin: 0 0 18px; }
+.main ul { margin: 0 0 18px; padding-left: 18px; }
+.main li { margin-bottom: 12px; }
+.main strong { color: var(--ink); font-weight: 500; }
+.main li, .main p:not(.lede) { color: var(--soft); }
+
+.stamp {
+  margin-top: 76px;
+  padding-top: 28px;
+  border-top: 1px solid var(--rule);
+  color: var(--faint);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+}
+
+.stamp code {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.95em;
+  letter-spacing: 0;
+}

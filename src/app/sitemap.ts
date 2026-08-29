@@ -20,10 +20,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Weekly while the listing status is in flux; this page's copy changes the
     // day Apple approves.
     { path: '/axiom/ios/', priority: 0.8, changeFrequency: 'weekly' },
+    // Weekly until the Play listing is live and the copy settles.
+    { path: '/kern/', priority: 0.8, changeFrequency: 'weekly' },
     { path: '/typecrt/', priority: 0.7, changeFrequency: 'monthly' },
     { path: '/typecrt/blog/', priority: 0.7, changeFrequency: 'weekly' },
     { path: '/drift/', priority: 0.5, changeFrequency: 'monthly' },
     { path: '/axiom/privacy/', priority: 0.3, changeFrequency: 'yearly' },
+    { path: '/kern/privacy/', priority: 0.3, changeFrequency: 'yearly' },
     { path: '/axiom/terms/', priority: 0.3, changeFrequency: 'yearly' },
     { path: '/axiom/blog/', priority: 0.7, changeFrequency: 'weekly' },
     { path: '/axiom/faq/', priority: 0.8, changeFrequency: 'weekly' },
