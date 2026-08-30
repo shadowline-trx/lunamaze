@@ -20,14 +20,14 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://lunamaze.com'),
   title: 'Kern — A launcher for people who would rather use their phone than look at it',
   description:
-    'A private Android launcher with two-keystroke search, an honest daily ledger, and notes one swipe from home.',
+    'A private, native Android launcher with ranked search, an honest daily ledger, focus sessions, and pages one swipe from home.',
   alternates: {
     canonical: 'https://lunamaze.com/kern/',
   },
   openGraph: {
     title: 'Kern — Use your phone. Do not look at it.',
     description:
-      'Two-keystroke search, an honest daily ledger, and notes one swipe from home. No account and no cloud.',
+      'Ranked local search, an honest daily ledger, focus sessions, and pages one swipe from home. No account and no cloud.',
     type: 'website',
     url: 'https://lunamaze.com/kern/',
     siteName: 'Luna Maze',
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Kern — Use your phone. Do not look at it.',
     description:
-      'Two-keystroke search, an honest daily ledger, and notes one swipe from home. No account and no cloud.',
+      'Ranked local search, an honest daily ledger, focus sessions, and pages one swipe from home. No account and no cloud.',
     images: ['https://lunamaze.com/images/kern/og.png'],
   },
 };
