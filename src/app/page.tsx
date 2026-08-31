@@ -7,6 +7,7 @@ import CapabilitiesSection from '@/components/lunamaze/CapabilitiesSection';
 import FounderSection from '@/components/lunamaze/FounderSection';
 import ContactSection from '@/components/lunamaze/ContactSection';
 import LunaFooter from '@/components/lunamaze/LunaFooter';
+import DotGrid from '@/components/backgrounds/DotGrid';
 import { products, capabilities } from '@/content/lunamaze';
 
 export const metadata: Metadata = {
@@ -144,6 +145,7 @@ export default function LunaMazePage() {
       <main>
         <LunaHero />
         <div className="lunamaze-grid-bg lunamaze-noise relative">
+          <DotGrid />
           <div className="relative z-10">
             <StudioSection />
             <ProductsGrid products={products} />

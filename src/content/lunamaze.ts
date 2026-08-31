@@ -41,9 +41,9 @@ export interface SocialLink {
 export const aboutCopy: string =
   'Luna Maze is an independent product studio building tools at the intersection of cognition, focus, and craft. Founder-led and considered, we ship premium software for the people doing the deepest work — operators, builders, and quiet professionals who want their tools to feel earned. We choose depth over breadth, longevity over launches, and design every surface as if a single person will live inside it for years.';
 
-// buildingCopy: must be in [300, 500] and contain "Luna Maze"
+// buildingCopy: 480 chars (must be in [300, 500] and contain "Luna Maze")
 export const buildingCopy: string =
-  'Luna Maze ships focused software for attention, signal, and craft. Axiom supports brain recovery, Tether ADB controls Android devices from Windows, TypeCrt trains typing at zero latency, and Drift explores precision play. Kern is our private, native Android launcher for fast access, an honest daily record, focus, and capture. Five independent products, one founder, no investors — built carefully and moved forward on purpose.';
+  "Luna Maze is shipping software for attention, signal, and craft. Axiom — our first app — is a habit tracker for brain recovery, live on Google Play. TypeCrt is our zero-latency typing test (CRT-styled, vanilla TypeScript, 50+ themes, smart practice), live at typecrt.in. Drift, a precision puzzle game, is in closed testing on the Play Console. Solo founder, no investors. We move quietly, on purpose.";
 
 /**
  * Real Google Play listing for the Axiom Android app.

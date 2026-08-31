@@ -1,4 +1,7 @@
+'use client';
+
 import type { JSX } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { internalUrl } from '@/lib/paths';
 
 export interface NavAnchor {
@@ -18,33 +21,41 @@ const DEFAULT_ANCHORS: ReadonlyArray<NavAnchor> = [
   { id: 'contact', label: 'Contact' },
 ] as const;
 
-/**
- * CSS-only navigation keeps the home page cinematic without loading the
- * Framer Motion runtime merely to tint a header while scrolling.
- */
 export default function LunaNavbar({
   anchors = DEFAULT_ANCHORS,
 }: LunaNavbarProps = {}): JSX.Element {
+  const { scrollY } = useScroll();
+  const backgroundColor = useTransform(
+    scrollY,
+    [0, 80],
+    ['rgba(6, 8, 26, 0)', 'rgba(6, 8, 26, 0.9)'],
+  );
+  const borderBottomColor = useTransform(
+    scrollY,
+    [0, 80],
+    ['rgba(34, 38, 74, 0)', 'rgba(34, 38, 74, 1)'],
+  );
+
   return (
-    <header className="fixed top-0 inset-x-0 z-50">
-      <div className="lunamaze-nav-surface border-b">
-        <nav
-          className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-16 h-16 flex items-center justify-between"
-          aria-label="Primary navigation"
-        >
+    <motion.header initial={{ y: 0 }} className="fixed top-0 inset-x-0 z-50">
+      <motion.div
+        style={{ backgroundColor, borderBottomColor }}
+        className="border-b backdrop-blur-md"
+      >
+        <nav className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16 h-16 flex items-center justify-between">
           <a
             href="#hero"
-            className="inline-flex min-h-12 items-center text-base font-semibold tracking-tight text-lunamaze-textPrimary hover:text-lunamaze-violetLight transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lunamaze-violetLight rounded"
+            className="text-base font-semibold tracking-tight text-lunamaze-textPrimary hover:text-lunamaze-violetLight transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lunamaze-violetLight rounded"
           >
             Luna Maze
           </a>
 
-          <div className="hidden md:flex items-center gap-7 lg:gap-8">
+          <div className="hidden md:flex items-center gap-8">
             {anchors.map((anchor) => (
               <a
                 key={anchor.id}
                 href={`#${anchor.id}`}
-                className="inline-flex min-h-12 items-center text-sm text-lunamaze-textSecondary hover:text-lunamaze-textPrimary transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lunamaze-violetLight rounded"
+                className="text-sm text-lunamaze-textSecondary hover:text-lunamaze-textPrimary transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lunamaze-violetLight rounded"
               >
                 {anchor.label}
               </a>
@@ -52,15 +63,14 @@ export default function LunaNavbar({
           </div>
 
           <a
-            href={internalUrl('/kern/')}
-            className="inline-flex min-h-12 items-center gap-2 rounded-full border border-lunamaze-border bg-lunamaze-bgSurface/75 px-4 text-xs sm:text-sm font-medium text-lunamaze-textPrimary hover:border-lunamaze-signal/60 hover:text-lunamaze-signal transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lunamaze-violetLight"
+            href={internalUrl('/axiom/')}
+            className="inline-flex items-center gap-2 rounded-full border border-lunamaze-border bg-lunamaze-bgSurface/60 px-4 py-2 text-xs sm:text-sm font-medium text-lunamaze-textPrimary hover:border-lunamaze-violet/60 hover:text-lunamaze-violetLight transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lunamaze-violetLight"
           >
-            <span className="sm:hidden">Kern</span>
-            <span className="hidden sm:inline">Explore Kern</span>
+            <span>Visit Axiom</span>
             <span aria-hidden="true">↗</span>
           </a>
         </nav>
-      </div>
-    </header>
+      </motion.div>
+    </motion.header>
   );
 }

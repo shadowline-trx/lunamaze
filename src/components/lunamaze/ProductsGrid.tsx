@@ -27,7 +27,7 @@ export default function ProductsGrid({
   return (
     <section
       id="products"
-      className="lunamaze-defer relative py-20 sm:py-32 px-5 sm:px-8 lg:px-16"
+      className="relative py-24 sm:py-32 px-6 sm:px-8 lg:px-16"
     >
       <div className="max-w-6xl mx-auto">
         <span className="block text-xs uppercase tracking-[0.3em] text-lunamaze-signal mb-4">
@@ -36,8 +36,8 @@ export default function ProductsGrid({
         <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-lunamaze-textPrimary mb-4 max-w-3xl">
           What we ship.
         </h2>
-        <p className="text-base sm:text-lg text-lunamaze-textSecondary max-w-2xl mb-10 sm:mb-16 leading-relaxed">
-          Five independent products across recovery, Android, writing, play, and the home screen. Each one is built to earn its place in your day.
+        <p className="text-lg text-lunamaze-textSecondary max-w-2xl mb-16">
+          Three products live, Drift in private testing, and Kern in early access. Each released only when the craft is right.
         </p>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {products.map((product) => (

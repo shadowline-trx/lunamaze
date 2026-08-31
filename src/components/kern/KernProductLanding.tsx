@@ -65,6 +65,34 @@ export default function KernProductLanding() {
         </div>
       </section>
 
+      <section id="reflex" className={styles.reflexSection} aria-labelledby="reflex-title">
+        <div className={styles.reflexGhost} aria-hidden>KERN / KERN / KERN /</div>
+        <div className={styles.reflexHeader}>
+          <span>01.5 / THE REFLEX</span>
+          <span>HOME → INTENT</span>
+        </div>
+        <div className={styles.reflexStage}>
+          <div className={styles.reflexCopy} data-reveal>
+            <p>READY BEFORE DISTRACTION GETS A VOTE</p>
+            <h2 id="reflex-title">The shortest route through your phone.</h2>
+          </div>
+          <div className={styles.reflexMetric} data-reveal aria-label="Two keys to reach an action">
+            <strong>02</strong>
+            <span>KEYS<br />TO THERE</span>
+          </div>
+        </div>
+        <div className={styles.reflexRoute} data-reveal aria-label="Kern search route: home, type, open">
+          <div><span>01</span><strong>HOME</strong><em>START</em></div>
+          <i><b /></i>
+          <div><span>02</span><strong>TYPE</strong><em>RANKED</em></div>
+          <i><b /></i>
+          <div><span>03</span><strong>OPEN</strong><em>DONE</em></div>
+        </div>
+        <div className={styles.reflexBars} aria-hidden>
+          {Array.from({ length: 18 }, (_, index) => <i key={index} />)}
+        </div>
+      </section>
+
       <section id="drawer" className={styles.drawerSection}>
         <SectionHead index="02 / THE DRAWER" title="Everything. Under one thumb." note="A complete app drawer that behaves like you already know it." />
         <div className={styles.drawerStage}>
