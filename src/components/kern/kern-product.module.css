@@ -515,6 +515,8 @@
 
 @media (pointer: coarse) {
   .header { backdrop-filter: none; }
+  .heroMechanism::before { animation: none; }
+  .heroMechanism::after { box-shadow: none; }
   .drawerList > div:hover { padding-left: 0; color: inherit; }
 }
 
