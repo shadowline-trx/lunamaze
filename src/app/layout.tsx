@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 import { Inter } from 'next/font/google';
-import Script from 'next/script';
 import './globals.css';
 
 const inter = Inter({
@@ -17,7 +16,7 @@ export const metadata: Metadata = {
     template: '%s | Luna Maze',
   },
   description:
-    'Luna Maze is an independent product studio building premium tools at the intersection of cognition, focus, and craft. Home of Axiom, Tether ADB, TypeCrt, and Drift.',
+    'Luna Maze is an independent product studio building focused software for cognition, Android, writing, play, and everyday speed. Home of Axiom, Tether ADB, TypeCrt, Drift, and Kern.',
   keywords: [
     'Luna Maze',
     'product studio',
@@ -26,6 +25,8 @@ export const metadata: Metadata = {
     'Tether ADB',
     'TypeCrt',
     'Drift game',
+    'Kern Android launcher',
+    'minimal Android launcher',
     'zero-knowledge tools',
     'developer tools',
   ],
@@ -38,7 +39,6 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },
-      { url: '/images/lunamaze-emblem.svg', type: 'image/svg+xml' },
       { url: '/icon.png', type: 'image/png', sizes: '32x32' },
       { url: '/icon-192.png', type: 'image/png', sizes: '192x192' },
     ],
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Luna Maze — Independent Product Studio',
     description:
-      'Premium tools at the intersection of cognition, focus, and craft. Home of Axiom, Tether ADB, TypeCrt, and Drift.',
+      'Focused software for cognition, Android, writing, play, and everyday speed. Home of Axiom, Tether ADB, TypeCrt, Drift, and Kern.',
     url: 'https://lunamaze.com',
     siteName: 'Luna Maze',
     locale: 'en_US',
@@ -67,7 +67,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Luna Maze — Independent Product Studio',
     description:
-      'Premium tools at the intersection of cognition, focus, and craft. Home of Axiom, Tether ADB, TypeCrt, and Drift.',
+      'Focused software for cognition, Android, writing, play, and everyday speed. Home of Axiom, Tether ADB, TypeCrt, Drift, and Kern.',
     images: ['/images/axiom/og.jpg'],
   },
   robots: {
@@ -97,22 +97,34 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" className={inter.variable} suppressHydrationWarning>
-      <head>
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-WW8NXCDK0E"
-          strategy="afterInteractive"
+      <body className={`${inter.className} min-h-screen`}>
+        {children}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (() => {
+                let loaded = false;
+                const loadAnalytics = () => {
+                  if (loaded) return;
+                  loaded = true;
+                  window.dataLayer = window.dataLayer || [];
+                  window.gtag = function(){window.dataLayer.push(arguments);};
+                  window.gtag('js', new Date());
+                  window.gtag('config', 'G-WW8NXCDK0E');
+                  const script = document.createElement('script');
+                  script.async = true;
+                  script.src = 'https://www.googletagmanager.com/gtag/js?id=G-WW8NXCDK0E';
+                  document.head.appendChild(script);
+                };
+                ['pointerdown', 'keydown', 'touchstart', 'scroll'].forEach((event) =>
+                  window.addEventListener(event, loadAnalytics, { once: true, passive: true })
+                );
+                window.setTimeout(loadAnalytics, 15000);
+              })();
+            `,
+          }}
         />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-
-            gtag('config', 'G-WW8NXCDK0E');
-          `}
-        </Script>
-      </head>
-      <body className={`${inter.className} min-h-screen`}>{children}</body>
+      </body>
     </html>
   );
 }

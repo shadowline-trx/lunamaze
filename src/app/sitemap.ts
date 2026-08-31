@@ -12,21 +12,21 @@ const BASE = 'https://lunamaze.com';
  * `src/app`. Uses trailing slashes to match `trailingSlash: true` in next.config.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date();
-  const routes: Array<{ path: string; priority: number; changeFrequency: MetadataRoute.Sitemap[number]['changeFrequency'] }> = [
-    { path: '/', priority: 1.0, changeFrequency: 'monthly' },
+  const routes: Array<{ path: string; priority: number; changeFrequency: MetadataRoute.Sitemap[number]['changeFrequency']; lastModified?: Date }> = [
+    { path: '/', priority: 1.0, changeFrequency: 'monthly', lastModified: new Date('2026-08-31') },
     { path: '/tether-adb/', priority: 0.9, changeFrequency: 'weekly' },
     { path: '/axiom/', priority: 0.8, changeFrequency: 'monthly' },
     // Weekly while the listing status is in flux; this page's copy changes the
     // day Apple approves.
     { path: '/axiom/ios/', priority: 0.8, changeFrequency: 'weekly' },
     // Weekly until the Play listing is live and the copy settles.
-    { path: '/kern/', priority: 0.8, changeFrequency: 'weekly' },
+    { path: '/kern/', priority: 0.9, changeFrequency: 'weekly', lastModified: new Date('2026-08-31') },
+    { path: '/kern/faq/', priority: 0.8, changeFrequency: 'monthly', lastModified: new Date('2026-08-31') },
     { path: '/typecrt/', priority: 0.7, changeFrequency: 'monthly' },
     { path: '/typecrt/blog/', priority: 0.7, changeFrequency: 'weekly' },
     { path: '/drift/', priority: 0.5, changeFrequency: 'monthly' },
     { path: '/axiom/privacy/', priority: 0.3, changeFrequency: 'yearly' },
-    { path: '/kern/privacy/', priority: 0.3, changeFrequency: 'yearly' },
+    { path: '/kern/privacy/', priority: 0.3, changeFrequency: 'yearly', lastModified: new Date('2026-08-29') },
     { path: '/axiom/terms/', priority: 0.3, changeFrequency: 'yearly' },
     { path: '/axiom/blog/', priority: 0.7, changeFrequency: 'weekly' },
     { path: '/axiom/faq/', priority: 0.8, changeFrequency: 'weekly' },
@@ -56,7 +56,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     ...routes.map((r) => ({
       url: `${BASE}${r.path}`,
-      lastModified: now,
+      ...(r.lastModified === undefined ? {} : { lastModified: r.lastModified }),
       changeFrequency: r.changeFrequency,
       priority: r.priority,
     })),

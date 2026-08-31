@@ -7,20 +7,19 @@ import CapabilitiesSection from '@/components/lunamaze/CapabilitiesSection';
 import FounderSection from '@/components/lunamaze/FounderSection';
 import ContactSection from '@/components/lunamaze/ContactSection';
 import LunaFooter from '@/components/lunamaze/LunaFooter';
-import DotGrid from '@/components/backgrounds/DotGrid';
 import { products, capabilities } from '@/content/lunamaze';
 
 export const metadata: Metadata = {
   title: 'Luna Maze — Independent Product Studio',
   description:
-    'Luna Maze is an independent product studio building premium tools at the intersection of cognition, focus, and craft. Founder-led. Considered. Quiet on purpose. Home of Axiom, Tether ADB, TypeCrt, and Drift.',
+    'Luna Maze is an independent product studio building focused software for cognition, Android, writing, play, and everyday speed. Explore Axiom, Tether ADB, TypeCrt, Drift, and Kern.',
   alternates: {
     canonical: 'https://lunamaze.com/',
   },
   openGraph: {
     title: 'Luna Maze — Independent Product Studio',
     description:
-      'Premium tools at the intersection of cognition, focus, and craft. Home of Axiom, Tether ADB, TypeCrt, and Drift.',
+      'Focused software for cognition, Android, writing, play, and everyday speed. Explore Axiom, Tether ADB, TypeCrt, Drift, and Kern.',
     url: 'https://lunamaze.com',
     siteName: 'Luna Maze',
     locale: 'en_US',
@@ -38,7 +37,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Luna Maze — Independent Product Studio',
     description:
-      'Premium tools at the intersection of cognition, focus, and craft. Home of Axiom, Tether ADB, TypeCrt, and Drift.',
+      'Focused software for cognition, Android, writing, play, and everyday speed. Explore Axiom, Tether ADB, TypeCrt, Drift, and Kern.',
     images: ['https://lunamaze.com/images/axiom/og.jpg'],
   },
 };
@@ -65,8 +64,7 @@ const JSON_LD = {
         jobTitle: 'Founder & Principal Engineer',
       },
       sameAs: [
-        'https://github.com/thehan',
-        'https://x.com/thehandev',
+        'https://github.com/shadowline-trx',
       ],
       knowsAbout: [
         'Software Engineering',
@@ -111,6 +109,15 @@ const JSON_LD = {
           applicationCategory: 'GameApplication',
           description: 'A handcrafted precision puzzle game exploring focus and calm design.',
         },
+        {
+          '@type': 'MobileApplication',
+          '@id': 'https://lunamaze.com/kern/#app',
+          name: 'Kern',
+          url: 'https://lunamaze.com/kern/',
+          applicationCategory: 'UtilitiesApplication',
+          operatingSystem: 'Android 8.0 and later',
+          description: 'A private native Android launcher with ranked local search, a daily ledger, focus sessions, and plain-text pages.',
+        },
       ],
     },
     {
@@ -137,7 +144,6 @@ export default function LunaMazePage() {
       <main>
         <LunaHero />
         <div className="lunamaze-grid-bg lunamaze-noise relative">
-          <DotGrid />
           <div className="relative z-10">
             <StudioSection />
             <ProductsGrid products={products} />

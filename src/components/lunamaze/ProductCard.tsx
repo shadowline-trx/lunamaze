@@ -23,8 +23,8 @@ interface ProductCardProps {
 
 const CARD_BASE_CLASS =
   'group relative block rounded-2xl border border-lunamaze-border/80 ' +
-  'bg-lunamaze-bgSurface/80 p-8 backdrop-blur-md ' +
-  'shadow-[0_12px_48px_-20px_rgba(0,0,0,0.85)] ring-1 ring-white/[0.04] ' +
+  'bg-lunamaze-bgSurface/90 p-6 sm:p-8 sm:backdrop-blur-md ' +
+  'shadow-[0_10px_32px_-22px_rgba(0,0,0,0.8)] sm:shadow-[0_12px_48px_-20px_rgba(0,0,0,0.85)] ring-1 ring-white/[0.04] ' +
   'transition-all duration-300';
 
 const CARD_INTERACTIVE_CLASS =
@@ -53,6 +53,13 @@ function getStatusPresentation(status: ProductStatus): StatusPresentation {
         pillClass:
           'bg-lunamaze-violet/15 text-lunamaze-violetLight border border-lunamaze-violet/30',
         dotClass: 'bg-lunamaze-violetLight',
+      };
+    case 'early-access':
+      return {
+        label: 'Early access',
+        pillClass:
+          'bg-lunamaze-signal/10 text-lunamaze-signal border border-lunamaze-signal/30',
+        dotClass: 'bg-lunamaze-signal',
       };
     case 'private-testing':
       return {
@@ -125,7 +132,7 @@ export default function ProductCard({ product }: ProductCardProps): JSX.Element 
               <img
                 src={internalUrl(product.imageHref)}
                 alt=""
-                className="relative max-h-[78%] max-w-[72%] object-contain transition-transform duration-500 group-hover:scale-[1.05]"
+                className="relative max-h-[78%] max-w-[72%] object-contain transition-transform duration-500 motion-safe:group-hover:scale-[1.05]"
                 style={
                   isRaster
                     ? {

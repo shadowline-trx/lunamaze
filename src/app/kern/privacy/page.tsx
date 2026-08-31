@@ -187,6 +187,12 @@ export default function KernPrivacyPage(): JSX.Element {
           <a href="mailto:lunamaze.dev@gmail.com">lunamaze.dev@gmail.com</a>.
         </p>
 
+        <p>
+          For product, compatibility, feature and licence answers, read the{' '}
+          <Link href="/kern/faq/">Kern FAQ</Link>, or{' '}
+          <Link href="/kern/">return to the Kern overview</Link>.
+        </p>
+
         <p className={styles.stamp}>
           KERN · <code>dev.lunamaze.kern</code> · LAST UPDATED {LAST_UPDATED.toUpperCase()}
         </p>

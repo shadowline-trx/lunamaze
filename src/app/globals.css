@@ -402,6 +402,26 @@ body {
   white-space: nowrap;
 }
 
+/* Luna Maze home: keep the navigation legible without shipping an animation
+   runtime, and let the browser defer below-the-fold layout/paint work. */
+.lunamaze-nav-surface {
+  border-color: rgba(34, 38, 74, 0.8);
+  background: rgba(6, 8, 26, 0.88);
+  backdrop-filter: blur(12px);
+}
+
+.lunamaze-defer {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 760px;
+}
+
+@media (pointer: coarse) {
+  .lunamaze-nav-surface {
+    background: rgba(6, 8, 26, 0.96);
+    backdrop-filter: none;
+  }
+}
+
 /* Respect users who prefer reduced motion: disable named animations used by
    Luna Maze sections and shrink global transition durations to a sliver so
    state changes still settle without animating. */

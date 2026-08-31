@@ -1,25 +1,21 @@
-'use client';
-
-import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import type { CSSProperties } from 'react';
+import { internalUrl } from '@/lib/paths';
+import KernClientShell from './KernClientShell';
+import {
+  KernFocusExperience,
+  KernSearchExperience,
+} from './KernInteractiveDemos';
 import styles from './kern-product.module.css';
 
 const ACCESS_MAILTO = 'mailto:lunamaze.dev@gmail.com?subject=Kern%20early%20access';
-
-const searchDemos = [
-  { query: 'plst', kind: 'INITIALS', count: '01', results: [['Play Store', 'APP', 'OPEN'], ['Playlist', 'PAGE', '4 LINES'], ['Private space', 'SETTING', 'OPEN']] },
-  { query: '2400+18%', kind: 'ARITHMETIC', count: '2,832', results: [['2,832', 'ANSWER', 'COPY'], ['2400 × 1.18', 'WORKING', 'LOCAL'], ['Nothing left the device', 'PRIVACY', 'ALWAYS']] },
-  { query: 'whstapp', kind: 'TYPO TOLERANCE', count: '01', results: [['WhatsApp', 'APP', 'OPEN'], ['Message Maya', 'SHORTCUT', 'OPEN'], ['WhatsApp · 17 min', 'LEDGER', 'TODAY']] },
-  { query: 'wifi', kind: 'DEEP SEARCH', count: '03', results: [['Internet', 'SETTING', 'OPEN'], ['Wi-Fi hotspot', 'SETTING', 'OPEN'], ['Home network', 'NOTE', '1 MATCH']] },
-];
 
 const histogram = [12, 7, 4, 3, 2, 4, 9, 22, 16, 11, 7, 12, 24, 18, 15, 9, 13, 27, 31, 18, 12, 8, 5, 3];
 const accentNames = ['RUST', 'SAGE', 'INDIGO', 'OCHRE', 'PLUM'];
 const drawerApps = ['Calculator', 'Calendar', 'Camera', 'Chrome', 'Clock', 'Contacts', 'Drive', 'Gmail', 'Maps', 'Messages', 'Phone', 'Photos', 'Play Store', 'Settings'];
 const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-const focusLengths = [25, 45, 60];
 
 function Wordmark() {
-  return <span className={styles.wordmark}><span className={styles.wordmarkIcon}>K</span><span>KERN</span></span>;
+  return <span className={styles.wordmark}><span className={styles.wordmarkIcon} aria-hidden="true">K</span><span>KERN</span></span>;
 }
 
 function SectionHead({ index, title, note }: { index: string; title: string; note: string }) {
@@ -27,78 +23,10 @@ function SectionHead({ index, title, note }: { index: string; title: string; not
 }
 
 export default function KernProductLanding() {
-  const rootRef = useRef<HTMLElement>(null);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [activeSearch, setActiveSearch] = useState(0);
-  const [focusMinutes, setFocusMinutes] = useState(25);
-  const [focusSeconds, setFocusSeconds] = useState(25 * 60);
-  const [focusRunning, setFocusRunning] = useState(false);
-
-  useEffect(() => {
-    if (!menuOpen) return;
-    const previous = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => { document.body.style.overflow = previous; };
-  }, [menuOpen]);
-
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const timer = window.setInterval(() => setActiveSearch((active) => (active + 1) % searchDemos.length), 2800);
-    return () => window.clearInterval(timer);
-  }, []);
-
-  useEffect(() => {
-    const targets = document.querySelectorAll<HTMLElement>('[data-reveal]');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => { if (entry.isIntersecting) entry.target.classList.add(styles.visible); });
-    }, { threshold: 0.12 });
-    targets.forEach((target) => observer.observe(target));
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const syncProgress = () => {
-      const distance = document.documentElement.scrollHeight - window.innerHeight;
-      rootRef.current?.style.setProperty('--scroll-progress', String(distance > 0 ? window.scrollY / distance : 0));
-    };
-    syncProgress();
-    window.addEventListener('scroll', syncProgress, { passive: true });
-    window.addEventListener('resize', syncProgress);
-    return () => {
-      window.removeEventListener('scroll', syncProgress);
-      window.removeEventListener('resize', syncProgress);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!focusRunning) return;
-    const timer = window.setInterval(() => {
-      setFocusSeconds((remaining) => {
-        if (remaining <= 1) {
-          setFocusRunning(false);
-          return 0;
-        }
-        return remaining - 1;
-      });
-    }, 1000);
-    return () => window.clearInterval(timer);
-  }, [focusRunning]);
-
-  const demo = searchDemos[activeSearch];
-  const focusClock = `${String(Math.floor(focusSeconds / 60)).padStart(2, '0')}:${String(focusSeconds % 60).padStart(2, '0')}`;
-  const focusProgress = 1 - focusSeconds / (focusMinutes * 60);
-
   return (
-    <main ref={rootRef} className={styles.root}>
+    <main className={styles.root} data-kern-root>
       <div className={styles.scrollProgress} aria-hidden><span /></div>
-      <header className={styles.header}>
-        <a href="#top" aria-label="Kern home"><Wordmark /></a>
-        <nav className={`${styles.nav} ${menuOpen ? styles.navOpen : ''}`} aria-label="Primary navigation">
-          <a href="#search" onClick={() => setMenuOpen(false)}>Search</a><a href="#ledger" onClick={() => setMenuOpen(false)}>Ledger</a><a href="#focus" onClick={() => setMenuOpen(false)}>Focus</a><a href="#privacy" onClick={() => setMenuOpen(false)}>Privacy</a>
-        </nav>
-        <a className={styles.headerCta} href={ACCESS_MAILTO}>EARLY ACCESS</a>
-        <button className={`${styles.menu} ${menuOpen ? styles.menuOpen : ''}`} type="button" aria-label={menuOpen ? 'Close menu' : 'Open menu'} aria-expanded={menuOpen} onClick={() => setMenuOpen((open) => !open)}><span /><span /></button>
-      </header>
+      <KernClientShell />
 
       <section id="top" className={styles.hero}>
         <div className={styles.heroMechanism} aria-hidden>
@@ -107,13 +35,13 @@ export default function KernProductLanding() {
           <span>FIND / NOTICE / CAPTURE</span>
         </div>
         <div className={styles.heroIndex} aria-hidden><span>ANDROID 8.0+</span><i /><span>LOCAL / PRIVATE</span></div>
-        <div className={styles.heroCopy} data-reveal>
+        <div className={styles.heroCopy}>
           <p className={styles.label}><span /> ANDROID HOME, RECONSIDERED</p>
           <h1>A launcher for people who would rather <em>use</em> their phone than look at it.</h1>
           <p className={styles.intro}>A quiet home screen is not enough. Kern adds the three things that change the relationship: fast search, an honest record of the day, and somewhere to write things down.</p>
           <a className={styles.primaryAction} href={ACCESS_MAILTO}><span className={styles.filledSquare} /><span>JOIN EARLY ACCESS</span><span aria-hidden>↗</span></a>
         </div>
-        <div className={styles.heroMeasure} data-reveal aria-label="Example notification record">
+        <div className={styles.heroMeasure} aria-label="Example notification record">
           <p>YESTERDAY</p><div><strong>214</strong><span>interruptions</span></div><i><span /></i><div><strong>11</strong><span>opened</span></div><p>IT REPORTS. WHAT TO DO ABOUT IT IS NOT ITS BUSINESS.</p>
         </div>
         <div className={styles.heroFoot}><span>NO ACCOUNT</span><span>NO CLOUD</span><span>NO ANALYTICS</span><span>KOTLIN / COMPOSE</span></div>
@@ -157,17 +85,7 @@ export default function KernProductLanding() {
 
       <section id="search" className={styles.searchSection}>
         <SectionHead index="03 / SEARCH" title="Two keys. Then done." note="Fuzzy, ranked, local, and patient with typos." />
-        <div className={styles.searchStage}>
-          <div className={styles.searchStatement} data-reveal><p className={styles.eyebrow}>ONE FIELD. THE WHOLE PHONE.</p><h3>Type what you mean. Kern works out where it lives.</h3><p>Initials find apps. Names find shortcuts. A setting opens as easily as an app. Plain arithmetic stays plain arithmetic.</p>
-            <div className={styles.searchTabs} aria-label="Search examples">{searchDemos.map((item, index) => <button type="button" key={item.query} className={activeSearch === index ? styles.activeTab : ''} onClick={() => setActiveSearch(index)} aria-pressed={activeSearch === index}>{String(index + 1).padStart(2, '0')}</button>)}</div>
-          </div>
-          <div className={styles.searchDemo} data-reveal aria-live="polite">
-            <div className={styles.searchMeta}><span>{demo.kind}</span><span>{demo.count}</span></div>
-            <div className={styles.queryLine} key={demo.query}><span>›</span><strong>{demo.query}</strong><i /></div>
-            <div className={styles.results} key={`${demo.query}-results`}>{demo.results.map(([title, kind, action], index) => <div key={title} className={index === 0 ? styles.resultActive : ''}><span>{String(index + 1).padStart(2, '0')}</span><strong>{title}</strong><small>{kind}</small><em>{action}</em></div>)}</div>
-            <div className={styles.searchFooter}><span>MATCHED LETTERS STAY LIT</span><span>ENTER TO OPEN</span></div>
-          </div>
-        </div>
+        <KernSearchExperience />
         <div className={styles.searchTicker} aria-hidden><div>APPS · SHORTCUTS · NOTES · SETTINGS · ARITHMETIC · APPS · SHORTCUTS · NOTES · SETTINGS · ARITHMETIC ·&nbsp;</div></div>
       </section>
 
@@ -181,7 +99,7 @@ export default function KernProductLanding() {
       <section id="ledger" className={`${styles.ledgerSection} ${styles.lightSection}`}>
         <SectionHead index="04 / THE LEDGER" title="The day, without judgement." note="144 marks. Ten minutes each. Nothing hidden inside a score." />
         <div className={styles.ledgerIntro} data-reveal><p className={styles.eyebrow}>A RECORD, NOT A REPRIMAND</p><h3>Every ten minutes gets one mark. The result is a day you can actually read.</h3><p>Pickups, longest stretch, time away, first reach, late-night minutes. Kern states what happened and leaves the conclusion with you.</p></div>
-        <div className={styles.dayMarks} data-reveal aria-label="144 ten-minute marks across one day">{Array.from({ length: 144 }, (_, index) => <i key={index} className={(index > 46 && index < 58) || (index > 74 && index < 83) || (index > 106 && index < 124) ? styles.markActive : ''} />)}</div>
+        <div className={styles.dayMarks} data-reveal role="img" aria-label="144 ten-minute marks across one day">{Array.from({ length: 144 }, (_, index) => <i key={index} className={(index > 46 && index < 58) || (index > 74 && index < 83) || (index > 106 && index < 124) ? styles.markActive : ''} />)}</div>
         <div className={styles.ledgerGrid}>
           <article className={styles.curvePanel} data-reveal><div className={styles.panelHead}><span>CUMULATIVE USE</span><span>VS RECENT AVERAGE</span></div>
             <svg viewBox="0 0 720 300" role="img" aria-label="Cumulative phone use compared with recent average"><defs><linearGradient id="kernCurveFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#b4553b" stopOpacity="0.16" /><stop offset="1" stopColor="#b4553b" stopOpacity="0" /></linearGradient></defs><g className={styles.chartGrid}><path d="M0 60H720M0 120H720M0 180H720M0 240H720" /><path d="M120 0V300M240 0V300M360 0V300M480 0V300M600 0V300" /></g><path className={styles.averageLine} d="M0 276 C112 267 148 222 240 204 S364 164 448 142 S596 83 720 54" /><path className={styles.curveFill} d="M0 286 C70 281 97 250 158 246 S238 222 286 204 S371 199 418 171 S494 122 551 116 S633 77 720 47 L720 300 L0 300Z" /><path className={styles.curveLine} d="M0 286 C70 281 97 250 158 246 S238 222 286 204 S371 199 418 171 S494 122 551 116 S633 77 720 47" /></svg>
@@ -210,27 +128,7 @@ export default function KernProductLanding() {
 
       <section id="focus" className={styles.focusSection}>
         <SectionHead index="07 / FOCUS" title="Make one thing the only thing." note="Timed sessions, a stricter exit, and a moment to breathe." />
-        <div className={styles.focusGrid}>
-          <div className={styles.focusCopy} data-reveal>
-            <p className={styles.eyebrow}>FOCUS WITHOUT THE THEATRE</p>
-            <h3>Start a timer. Make leaving deliberate. Stop when you are done.</h3>
-            <p>Regular sessions keep time. Strict mode adds friction to the exit. Breathe gives the space between one block and the next. There is no streak waiting to be protected.</p>
-            <div className={styles.focusModes}>
-              <div><span>01</span><strong>SESSION</strong><em>TIME THE BLOCK</em></div>
-              <div><span>02</span><strong>STRICT</strong><em>DELIBERATE EXIT</em></div>
-              <div><span>03</span><strong>BREATHE</strong><em>PAUSE BETWEEN</em></div>
-            </div>
-          </div>
-          <div className={`${styles.focusTimer} ${focusRunning ? styles.timerRunning : ''}`} data-reveal style={{ '--focus-progress': focusProgress } as CSSProperties}>
-            <div className={styles.timerMeta}><span>FOCUS / SESSION</span><span>{focusRunning ? 'RUNNING' : focusSeconds === 0 ? 'COMPLETE' : 'READY'}</span></div>
-            <div className={styles.timerDial}>
-              <svg viewBox="0 0 200 200" aria-hidden><circle cx="100" cy="100" r="86" /><circle className={styles.focusArc} cx="100" cy="100" r="86" /></svg>
-              <div><small>TIME REMAINING</small><strong>{focusClock}</strong><span>NO SCORE / NO STREAK</span></div>
-            </div>
-            <div className={styles.lengthPicker}>{focusLengths.map((minutes) => <button type="button" key={minutes} className={focusMinutes === minutes ? styles.lengthActive : ''} onClick={() => { setFocusMinutes(minutes); setFocusSeconds(minutes * 60); setFocusRunning(false); }}>{minutes} MIN</button>)}</div>
-            <button className={styles.timerAction} type="button" onClick={() => { if (focusSeconds === 0) setFocusSeconds(focusMinutes * 60); setFocusRunning((running) => !running); }}><span className={styles.filledSquare} />{focusRunning ? 'PAUSE SESSION' : focusSeconds === 0 ? 'START AGAIN' : 'START SESSION'}<em>{focusRunning ? 'Ⅱ' : '→'}</em></button>
-          </div>
-        </div>
+        <KernFocusExperience />
       </section>
 
       <section className={styles.learningSection}>
@@ -251,7 +149,7 @@ export default function KernProductLanding() {
         <SectionHead index="10 / PRIVACY" title="There is no Kern server." note="Not a promise about policy. A description of the architecture." />
         <div className={styles.privacyLead} data-reveal><h3>Your home screen is not an advertising surface.</h3><p>There is no account, sign-in, cloud sync, analytics SDK, ad network, or tracking. Search ranking and daily records are calculated on the device and stay there.</p></div>
         <div className={styles.noList}>{['NO ACCOUNT','NO CLOUD','NO ANALYTICS','NO ADS','NO TRACKING','NO KERN SERVER'].map((item,index) => <div key={item} data-reveal><span>{String(index + 1).padStart(2,'0')}</span><strong>{item}</strong><i /></div>)}</div>
-        <div className={styles.privacyEnd} data-reveal><p className={styles.privacyNote}>Notification history keeps package · hour · outcome. It never stores title · text · sender.</p><a href="/kern/privacy/">READ THE FULL PRIVACY POLICY <span>↗</span></a></div>
+        <div className={styles.privacyEnd} data-reveal><p className={styles.privacyNote}>Notification history keeps package · hour · outcome. It never stores title · text · sender.</p><a href={internalUrl('/kern/privacy/')}>READ THE FULL PRIVACY POLICY <span>↗</span></a></div>
       </section>
 
       <section className={`${styles.pricingSection} ${styles.lightSection}`}>
@@ -266,7 +164,7 @@ export default function KernProductLanding() {
 
       <div className={styles.techMarquee} aria-hidden><div>DEV.LUNAMAZE.KERN · ANDROID 8.0+ · KOTLIN · JETPACK COMPOSE · LOCAL FIRST · DEV.LUNAMAZE.KERN · ANDROID 8.0+ · KOTLIN · JETPACK COMPOSE · LOCAL FIRST ·&nbsp;</div></div>
 
-      <footer className={styles.footer}><div className={styles.footerTop}><Wordmark /><h2>Use your phone.<br /><em>Do not look at it.</em></h2><a className={styles.primaryAction} href={ACCESS_MAILTO}><span className={styles.filledSquare} /><span>JOIN EARLY ACCESS</span><span aria-hidden>↗</span></a></div><div className={styles.footerBottom}><span>BUILT BY LUNA MAZE</span><span>ANDROID 8.0+</span><a href="/kern/privacy/">PRIVACY</a><a href="mailto:lunamaze.dev@gmail.com">CONTACT</a><a href="#top">BACK TO TOP ↑</a></div></footer>
+      <footer className={styles.footer}><div className={styles.footerTop}><Wordmark /><h2>Use your phone.<br /><em>Do not look at it.</em></h2><a className={styles.primaryAction} href={ACCESS_MAILTO}><span className={styles.filledSquare} /><span>JOIN EARLY ACCESS</span><span aria-hidden>↗</span></a></div><div className={styles.footerBottom}><span>BUILT BY LUNA MAZE</span><span>ANDROID 8.0+</span><a href={internalUrl('/kern/faq/')}>FAQ</a><a href={internalUrl('/kern/privacy/')}>PRIVACY</a><a href="mailto:lunamaze.dev@gmail.com">CONTACT</a><a href="#top">BACK TO TOP ↑</a></div></footer>
     </main>
   );
 }

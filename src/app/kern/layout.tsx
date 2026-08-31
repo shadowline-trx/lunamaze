@@ -18,9 +18,20 @@ const fraunces = Fraunces({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://lunamaze.com'),
-  title: 'Kern — A launcher for people who would rather use their phone than look at it',
+  title: 'Kern — Fast, Private Android Launcher',
   description:
-    'A private, native Android launcher with ranked search, an honest daily ledger, focus sessions, and pages one swipe from home.',
+    'Kern is a fast, private Android launcher with ranked local search, a daily activity ledger, focus sessions, and plain-text pages one swipe from home.',
+  applicationName: 'Kern',
+  category: 'technology',
+  keywords: [
+    'Kern launcher',
+    'Android launcher',
+    'minimal Android launcher',
+    'private Android launcher',
+    'fast app launcher',
+    'Android home screen replacement',
+    'local app search',
+  ],
   alternates: {
     canonical: 'https://lunamaze.com/kern/',
   },
@@ -46,6 +57,17 @@ export const metadata: Metadata = {
     description:
       'Ranked local search, an honest daily ledger, focus sessions, and pages one swipe from home. No account and no cloud.',
     images: ['https://lunamaze.com/images/kern/og.png'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-snippet': -1,
+      'max-image-preview': 'large',
+      'max-video-preview': -1,
+    },
   },
 };
 

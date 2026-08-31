@@ -1,8 +1,15 @@
 'use client';
 
 import type { JSX } from 'react';
-import LunaConstellation from './LunaConstellation';
-import DotGrid from '@/components/backgrounds/DotGrid';
+import { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
+
+const LazyLunaConstellation = dynamic(() => import('./LunaConstellation'), {
+  ssr: false,
+});
+const LazyDotGrid = dynamic(() => import('@/components/backgrounds/DotGrid'), {
+  ssr: false,
+});
 
 interface LunaHeroProps {
   readonly title?: string;
@@ -41,18 +48,37 @@ export default function LunaHero({
   tagline = DEFAULT_TAGLINE,
   intro = DEFAULT_INTRO,
 }: LunaHeroProps): JSX.Element {
+  const [showInteractiveBackground, setShowInteractiveBackground] =
+    useState(false);
+
+  useEffect(() => {
+    const query = window.matchMedia(
+      '(min-width: 768px) and (pointer: fine) and (prefers-reduced-motion: no-preference)',
+    );
+    const sync = (): void => setShowInteractiveBackground(query.matches);
+    sync();
+    query.addEventListener('change', sync);
+    return () => query.removeEventListener('change', sync);
+  }, []);
+
   return (
     <section
       id="hero"
-      className="relative min-h-screen md:min-h-screen flex items-center justify-center overflow-hidden px-6 sm:px-8 lg:px-16"
+      className="lunamaze-grid-bg relative min-h-[100svh] flex items-center justify-center overflow-hidden px-5 pb-24 pt-28 sm:px-8 sm:pb-28 sm:pt-32 lg:px-16"
     >
-      {/* Background motif: subtle dot grid, then constellation on top */}
-      <div className="absolute inset-0 z-0 opacity-40 pointer-events-none">
-        <DotGrid gap={34} dotRadius={1.3} influence={140} />
-      </div>
-      <div className="absolute inset-0 z-0 opacity-90 pointer-events-none">
-        <LunaConstellation className="absolute inset-0 w-full h-full" />
-      </div>
+      {showInteractiveBackground && (
+        <>
+          <div className="absolute inset-0 z-0 opacity-40 pointer-events-none">
+            <LazyDotGrid gap={38} dotRadius={1.2} influence={140} />
+          </div>
+          <div className="absolute inset-0 z-0 opacity-90 pointer-events-none">
+            <LazyLunaConstellation
+              nodeCount={20}
+              className="absolute inset-0 w-full h-full"
+            />
+          </div>
+        </>
+      )}
 
       {/* Subtle radial overlay to deepen edges */}
       <div
@@ -65,7 +91,7 @@ export default function LunaHero({
       />
 
       <div className="relative z-10 max-w-5xl mx-auto text-center">
-        <span className="inline-flex items-center gap-2 rounded-full border border-lunamaze-border bg-lunamaze-bgSurface/60 px-4 py-2 text-xs uppercase tracking-[0.3em] text-lunamaze-violetLight mb-8">
+        <span className="inline-flex max-w-full items-center gap-2 rounded-full border border-lunamaze-border bg-lunamaze-bgSurface/75 px-3.5 py-2 text-[0.65rem] uppercase tracking-[0.24em] text-lunamaze-violetLight sm:px-4 sm:text-xs sm:tracking-[0.3em] mb-7 sm:mb-8">
           <span
             className="w-1.5 h-1.5 rounded-full bg-lunamaze-signal"
             aria-hidden="true"
@@ -73,11 +99,11 @@ export default function LunaHero({
           Independent Product Studio
         </span>
 
-        <h1 className="text-5xl sm:text-7xl lg:text-8xl font-extrabold tracking-tight leading-[1.05]">
+        <h1 className="text-[clamp(3rem,15vw,4.5rem)] sm:text-7xl lg:text-8xl font-extrabold tracking-tight leading-[1.02]">
           <span className="lunamaze-text-gradient">{title}</span>
         </h1>
 
-        <p className="mt-6 text-xl sm:text-2xl text-lunamaze-textPrimary font-medium max-w-3xl mx-auto">
+        <p className="mt-5 sm:mt-6 text-lg sm:text-2xl text-lunamaze-textPrimary font-medium max-w-3xl mx-auto">
           {tagline}
         </p>
 
@@ -85,17 +111,17 @@ export default function LunaHero({
           {intro}
         </p>
 
-        <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <div className="mt-9 sm:mt-10 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center">
           <a
             href="#contact"
-            className="inline-flex items-center gap-3 rounded-full bg-lunamaze-violet px-8 py-4 text-base font-semibold text-lunamaze-bgDeep transition-all duration-300 hover:bg-lunamaze-violetLight hover:scale-[1.02] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lunamaze-violetLight lunamaze-glow-violet"
+            className="inline-flex min-h-12 items-center justify-center gap-3 rounded-full bg-lunamaze-violet px-8 py-3 text-base font-semibold text-lunamaze-bgDeep transition-all duration-300 hover:bg-lunamaze-violetLight motion-safe:hover:scale-[1.02] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lunamaze-violetLight lunamaze-glow-violet"
           >
             <span>Get in touch</span>
             <span aria-hidden="true">→</span>
           </a>
           <a
             href="#products"
-            className="inline-flex items-center gap-3 rounded-full border border-lunamaze-border bg-lunamaze-bgSurface/40 px-8 py-4 text-base font-semibold text-lunamaze-textPrimary backdrop-blur-sm transition-all duration-300 hover:border-lunamaze-violet/60 hover:bg-lunamaze-bgElevated/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lunamaze-violetLight"
+            className="inline-flex min-h-12 items-center justify-center gap-3 rounded-full border border-lunamaze-border bg-lunamaze-bgSurface/70 px-8 py-3 text-base font-semibold text-lunamaze-textPrimary sm:backdrop-blur-sm transition-all duration-300 hover:border-lunamaze-violet/60 hover:bg-lunamaze-bgElevated/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lunamaze-violetLight"
           >
             See products
           </a>
@@ -103,7 +129,7 @@ export default function LunaHero({
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
+      <div className="absolute bottom-7 left-1/2 -translate-x-1/2 z-10 hidden sm:block">
         <div className="w-6 h-10 rounded-full border-2 border-lunamaze-border flex items-start justify-center p-2">
           <div className="w-1 h-2 rounded-full bg-lunamaze-violetLight animate-bounce" />
         </div>

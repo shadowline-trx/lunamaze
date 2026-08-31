@@ -52,6 +52,18 @@ export default function LunaFooter(): JSX.Element {
             Axiom
           </a>
           <a
+            href={internalUrl('/kern/')}
+            className="text-lunamaze-textSecondary hover:text-lunamaze-violetLight transition-colors duration-200"
+          >
+            Kern
+          </a>
+          <a
+            href={internalUrl('/kern/faq/')}
+            className="text-lunamaze-textSecondary hover:text-lunamaze-violetLight transition-colors duration-200"
+          >
+            Kern FAQ
+          </a>
+          <a
             href="#studio"
             className="text-lunamaze-textSecondary hover:text-lunamaze-violetLight transition-colors duration-200"
           >

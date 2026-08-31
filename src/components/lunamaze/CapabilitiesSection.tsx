@@ -21,7 +21,7 @@ export default function CapabilitiesSection({
   return (
     <section
       id="capabilities"
-      className="relative py-24 sm:py-32 px-6 sm:px-8 lg:px-16"
+      className="lunamaze-defer relative py-20 sm:py-32 px-5 sm:px-8 lg:px-16"
     >
       <div className="max-w-6xl mx-auto">
         <span className="block text-xs uppercase tracking-[0.3em] text-lunamaze-signal mb-4">
