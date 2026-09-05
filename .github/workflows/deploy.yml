@@ -35,6 +35,28 @@ jobs:
           NEXT_PUBLIC_BASE_PATH: ${{ vars.NEXT_PUBLIC_BASE_PATH }}
         run: npm run build
 
+      - name: Setup Node for Genesis
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install Genesis dependencies
+        run: npm ci --prefix experiments/genesis
+
+      - name: Check Genesis simulation
+        run: node --experimental-strip-types --test experiments/genesis/tests/simulation.test.mjs
+
+      - name: Build Genesis terraforming simulator
+        env:
+          GITHUB_PAGES_BUILD: '1'
+        run: npm run build --prefix experiments/genesis
+
+      - name: Add Genesis to the studio export
+        run: |
+          test -f experiments/genesis/dist/client/index.html
+          mkdir -p dist/genesis
+          cp -a experiments/genesis/dist/client/. dist/genesis/
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 

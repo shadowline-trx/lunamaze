@@ -25,6 +25,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/typecrt/', priority: 0.7, changeFrequency: 'monthly' },
     { path: '/typecrt/blog/', priority: 0.7, changeFrequency: 'weekly' },
     { path: '/drift/', priority: 0.5, changeFrequency: 'monthly' },
+    { path: '/genesis/', priority: 0.8, changeFrequency: 'monthly', lastModified: new Date('2026-09-05') },
     { path: '/axiom/privacy/', priority: 0.3, changeFrequency: 'yearly' },
     { path: '/kern/privacy/', priority: 0.3, changeFrequency: 'yearly', lastModified: new Date('2026-08-29') },
     { path: '/axiom/terms/', priority: 0.3, changeFrequency: 'yearly' },
