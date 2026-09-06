@@ -20,4 +20,12 @@ The browser-local save slot uses `lunamaze-genesis-world-v1`. Shared states are 
 
 ## Agent tools
 
-When `document.modelContext` is available, Genesis registers `read_planet`, `configure_planet`, and `advance_simulation`. All mutating inputs are validated and use the same visible app state. Live WebMCP validation requires a supporting browser; it has not been performed in this environment.
+When `document.modelContext` is available, Genesis registers `read_planet`, `configure_planet`, and `advance_simulation`. All mutating inputs are validated and use the same visible app state. The configure and advance tools were exercised in the supporting in-app browser during the rendering upgrade.
+
+## Rendering and browser checks
+
+The renderer bakes seeded 16-bit elevation, moisture, and cloud data incrementally, then lights it on the GPU. Animation follows requestAnimationFrame with adaptive pixel density, damped orbit and zoom, and background/reduced-motion handling. Climate colors ease toward the model state. Clouds occupy a separate apparent radius and cast surface shadows. Sculpting has a surface cursor; impacts add crater rims and a fading shockwave. Night lights are an illustrative effect for mature biospheres, not a separate civilization model.
+
+Cloud cover and camera position are view preferences, not part of saved simulation snapshots. Ambient sound is synthesized locally and starts only on explicit user interaction. Postcards are generated locally as 1600 × 1200 PNGs with a preview and download link. Terrain edits remain limited to 16 per world.
+
+The upgrade was iterated in-browser at desktop, tablet and 390px phone widths. Checks covered shader startup, temperature changes, thermal/terrain views, impact/undo, save/restore, share-link copying, postcard image generation, and responsive tool placement. A local desktop animation sample reached approximately 142 FPS on a high-refresh display; performance depends on hardware. Real-device multitouch and cross-browser download behavior are not covered by these checks. Additional terrain tests run with `node --experimental-strip-types --test tests/terrain.test.mjs`.
