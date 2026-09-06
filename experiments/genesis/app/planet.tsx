@@ -327,7 +327,7 @@ export default function Planet({
       event.preventDefault();
       camera.current.targetZoom = Math.max(
         0.72,
-        Math.min(1.7, camera.current.targetZoom + event.deltaY * 0.0008),
+        Math.min(1.7, camera.current.targetZoom - event.deltaY * 0.0008),
       );
     };
     el.addEventListener('wheel', wheel, { passive: false });
@@ -409,12 +409,12 @@ export default function Planet({
           const p = pointer.current;
           if (!p) return;
           if (tool === 'orbit') {
-            camera.current.targetX += (e.clientX - p.x) * 0.005;
+            camera.current.targetX -= (e.clientX - p.x) * 0.005;
             camera.current.targetY = Math.max(
               -1.35,
               Math.min(
                 1.35,
-                camera.current.targetY + (e.clientY - p.y) * 0.005,
+                camera.current.targetY - (e.clientY - p.y) * 0.005,
               ),
             );
           }
