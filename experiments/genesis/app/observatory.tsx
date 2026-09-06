@@ -243,9 +243,8 @@ export default function Observatory() {
   }
 
   function sculpt(point: [number, number, number]) {
-    setUndo(world);
-
     if (tool === 'life') {
+      setUndo(world);
       setWorld((w) => ({
         ...w,
         seeded: true,
@@ -253,16 +252,17 @@ export default function Observatory() {
       }));
       record('Life introduced. A stable climate will help it spread.');
       tell('Life seeded. Give it warmth, water and time.');
-      return;
+      return true;
     }
 
     if (world.stamps.length >= 16) {
       tell(
         'This world has 16 terrain edits. Undo the last edit or reset to start a new landscape.',
       );
-      return;
+      return false;
     }
 
+    setUndo(world);
     const strength = tool === 'raise' ? 0.22 : tool === 'impact' ? -0.28 : -0.2;
 
     setWorld((w) => ({
@@ -283,6 +283,7 @@ export default function Observatory() {
           ? 'A new basin reshapes the landscape.'
           : 'An impact heats the planet and damages its biosphere.',
     );
+    return true;
   }
 
   function save() {
@@ -386,29 +387,15 @@ export default function Observatory() {
         </div>
         <section className="observatory" aria-label="Terraforming simulator">
           <aside className="world-story">
-            <div className="eyebrow">
-              <span /> {preset.eyebrow}
-            </div>
-            <h1>
-              Begin with
-              <br />
-              <em>a world.</em>
-            </h1>
-            <p className="story-description">{preset.description}</p>
-            <div className="world-identity">
-              <span className="micro-label">YOU ARE SHAPING</span>
-              <h2>
+            <div className="mission-identity">
+              <span className="eyebrow">
+                TERRAFORMING SANDBOX / {String(world.seed).padStart(4, '0')}
+              </span>
+              <h1>
                 {preset.name}
-                <span>
-                  0
-                  {world.scenario === 'eden'
-                    ? 1
-                    : world.scenario === 'mars'
-                      ? 2
-                      : 3}
-                </span>
-              </h2>
-              <div className="identity-rule" />
+                <span className="mission-orbit"> / LIVE WORLD</span>
+              </h1>
+              <p className="story-description">{preset.description}</p>
             </div>
             <div className="habitat-stat">
               <div className="habitat-head">
@@ -453,7 +440,7 @@ export default function Observatory() {
               </div>
             </div>
             <button className="guide-link" onClick={() => setDialog('guide')}>
-              A small guide to making worlds <ArrowUpRight size={15} />
+              Mission guide <ArrowUpRight size={15} />
             </button>
           </aside>
           <div className="planet-stage">
@@ -552,13 +539,11 @@ export default function Observatory() {
 
           <aside className="control-panel" id="controls">
             <div className="panel-topline">
-              <span className="micro-label">THE CONDITIONS FOR LIFE</span>
+              <span className="micro-label">PLANET SYSTEMS</span>
               <Sun size={17} />
             </div>
             <h2>
-              The art of
-              <br />
-              <em>starting over.</em>
+              Climate lab<span>Adjust. Observe. Discover.</span>
             </h2>
             <Control
               label="Sunlight"
@@ -833,7 +818,7 @@ export default function Observatory() {
             <span className="eyebrow">GENESIS / FIELD GUIDE</span>
             <DialogTitle>
               {dialog === 'guide'
-                ? 'A small guide to making worlds'
+                ? 'Mission guide'
                 : dialog === 'save'
                   ? 'Keep your little world'
                   : dialog === 'reset'

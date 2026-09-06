@@ -44,7 +44,7 @@ jobs:
         run: npm ci --prefix experiments/genesis
 
       - name: Check Genesis simulation
-        run: node --experimental-strip-types --test experiments/genesis/tests/simulation.test.mjs experiments/genesis/tests/terrain.test.mjs
+        run: node --experimental-strip-types --test experiments/genesis/tests/simulation.test.mjs experiments/genesis/tests/terrain.test.mjs experiments/genesis/tests/orbit.test.mjs
 
       - name: Build Genesis terraforming simulator
         env:

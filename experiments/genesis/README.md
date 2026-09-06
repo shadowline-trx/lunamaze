@@ -29,3 +29,10 @@ The renderer bakes seeded 16-bit elevation, moisture, and cloud data incremental
 Cloud cover and camera position are view preferences, not part of saved simulation snapshots. Ambient sound is synthesized locally and starts only on explicit user interaction. Postcards are generated locally as 1600 × 1200 PNGs with a preview and download link. Terrain edits remain limited to 16 per world.
 
 The upgrade was iterated in-browser at desktop, tablet and 390px phone widths. Checks covered shader startup, temperature changes, thermal/terrain views, impact/undo, save/restore, share-link copying, postcard image generation, and responsive tool placement. A local desktop animation sample reached approximately 142 FPS on a high-refresh display; performance depends on hardware. Real-device multitouch and cross-browser download behavior are not covered by these checks. Additional terrain tests run with `node --experimental-strip-types --test tests/terrain.test.mjs`.
+
+
+## Flight deck interaction update
+
+The observatory now uses a telemetry header, wide planet viewport and climate lab. Dragging stops automatic rotation and moves surface landmarks with the pointer. Zoom is bounded to retain the full globe and atmosphere; fit and explicit zoom controls are available. The circular CSS clip is removed. Pointer capture cleanup and pinch continuation prevent stuck gestures; a pinch cannot apply a terrain edit. Rejected terrain edits preserve undo. Terrain detail now bakes progressively up to 2048 pixels, with softer ice relief and cloud self-shading.
+
+Validation: TypeScript, production build and 11 simulation/terrain/orbit checks pass. Browser checks cover left drag, maximum zoom, fit controls, thermal view and responsive 390px/1440px layouts, without console errors. Physical multi-touch remains unverified.

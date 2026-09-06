@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import { Download, Maximize, RotateCw } from 'lucide-react';
+import { Download, Maximize, RotateCw, Scan, Plus, Minus } from 'lucide-react';
+import { clampZoom, dragRotation } from '@/lib/orbit';
 import {
   Dialog,
   DialogContent,
@@ -17,7 +18,7 @@ type Props = {
   tool: Tool;
   running: boolean;
   cloudCover?: number;
-  onSculpt: (point: Point) => void;
+  onSculpt: (point: Point) => boolean;
 };
 const toolNumber = (tool: Tool) =>
   ['orbit', 'raise', 'lower', 'life', 'impact'].indexOf(tool);
@@ -44,6 +45,7 @@ export default function Planet({
   const pointer = useRef<{ x: number; y: number } | null>(null),
     hover = useRef<Point | null>(null);
   const touches = useRef(new Map<number, { x: number; y: number }>());
+  const pinched = useRef(false);
   const effect = useRef({ point: [0, 0, 1] as Point, tool: 0, at: -10000 }),
     capture = useRef(false),
     spinning = useRef(true);
@@ -188,7 +190,7 @@ export default function Planet({
       const low = await bakeTerrain(seed, 256, cancelled);
       if (!low || cancelled()) return;
       upload(low, seed);
-      const high = await bakeTerrain(seed, 1024, cancelled);
+      const high = await bakeTerrain(seed, 2048, cancelled);
       if (!high || cancelled()) return;
       if (cache.size >= 4) cache.delete(cache.keys().next().value!);
       cache.set(seed, high);
@@ -249,7 +251,7 @@ export default function Planet({
         sampleTime = 0;
       }
       const cam = camera.current,
-        ease = reduced ? 1 : 1 - Math.exp(-dt * 11);
+        ease = reduced || pointer.current ? 1 : 1 - Math.exp(-dt * 14);
       if (
         r &&
         spinning.current &&
@@ -325,9 +327,8 @@ export default function Planet({
       };
     const wheel = (event: WheelEvent) => {
       event.preventDefault();
-      camera.current.targetZoom = Math.max(
-        0.72,
-        Math.min(1.7, camera.current.targetZoom - event.deltaY * 0.0008),
+      camera.current.targetZoom = clampZoom(
+        camera.current.targetZoom - event.deltaY * 0.0008,
       );
     };
     el.addEventListener('wheel', wheel, { passive: false });
@@ -368,8 +369,8 @@ export default function Planet({
   }
   function apply(point: Point | null) {
     if (!point || loading) return;
-    effect.current = { point, tool: toolNumber(tool), at: performance.now() };
-    onSculpt(point);
+    if (onSculpt(point))
+      effect.current = { point, tool: toolNumber(tool), at: performance.now() };
   }
   return (
     <div className={`planet-render tool-${tool}`}>
@@ -378,8 +379,12 @@ export default function Planet({
         aria-label="Interactive 3D planet. Drag to rotate. Arrow keys rotate, plus and minus zoom, and Enter applies the selected tool at the center."
         tabIndex={0}
         onPointerDown={(e) => {
+          if (e.button !== 0) return;
           touches.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
           pointer.current = { x: e.clientX, y: e.clientY };
+          if (touches.current.size > 1) pinched.current = true;
+          spinning.current = false;
+          setRotate(false);
           e.currentTarget.setPointerCapture(e.pointerId);
         }}
         onPointerMove={(e) => {
@@ -396,9 +401,8 @@ export default function Planet({
                 next[0].y - next[1].y,
               );
             if (old > 1)
-              camera.current.targetZoom = Math.max(
-                0.72,
-                Math.min(1.7, (camera.current.targetZoom * distance) / old),
+              camera.current.targetZoom = clampZoom(
+                (camera.current.targetZoom * distance) / old,
               );
             pointer.current = null;
             return;
@@ -409,26 +413,43 @@ export default function Planet({
           const p = pointer.current;
           if (!p) return;
           if (tool === 'orbit') {
-            camera.current.targetX -= (e.clientX - p.x) * 0.005;
-            camera.current.targetY = Math.max(
-              -1.35,
-              Math.min(
-                1.35,
-                camera.current.targetY - (e.clientY - p.y) * 0.005,
-              ),
+            const box = e.currentTarget.getBoundingClientRect();
+            const next = dragRotation(
+              camera.current.x,
+              camera.current.y,
+              e.clientX - p.x,
+              e.clientY - p.y,
+              Math.min(box.width, box.height) * 0.79 * camera.current.zoom,
             );
+            camera.current.x = camera.current.targetX = next.x;
+            camera.current.y = camera.current.targetY = next.y;
           }
           p.x = e.clientX;
           p.y = e.clientY;
         }}
         onPointerUp={(e) => {
           touches.current.delete(e.pointerId);
-          if (pointer.current && tool !== 'orbit')
+          if (pointer.current && !pinched.current && tool !== 'orbit')
             apply(hit(e.clientX, e.clientY));
-          pointer.current = null;
+          pointer.current =
+            touches.current.size === 1
+              ? { ...[...touches.current.values()][0] }
+              : null;
+          if (!touches.current.size) pinched.current = false;
+          if (e.currentTarget.hasPointerCapture(e.pointerId))
+            e.currentTarget.releasePointerCapture(e.pointerId);
         }}
         onPointerCancel={(e) => {
           touches.current.delete(e.pointerId);
+          pointer.current = null;
+        }}
+        onLostPointerCapture={(e) => {
+          touches.current.delete(e.pointerId);
+          if (!touches.current.size) pointer.current = null;
+        }}
+        onBlur={() => {
+          touches.current.clear();
+          pinched.current = false;
           pointer.current = null;
         }}
         onPointerLeave={() => {
@@ -448,16 +469,16 @@ export default function Planet({
             ].includes(e.key)
           ) {
             e.preventDefault();
-            if (e.key === 'ArrowLeft') c.targetX -= 0.15;
-            if (e.key === 'ArrowRight') c.targetX += 0.15;
+            spinning.current = false;
+            setRotate(false);
+            if (e.key === 'ArrowLeft') c.targetX += 0.15;
+            if (e.key === 'ArrowRight') c.targetX -= 0.15;
             if (e.key === 'ArrowUp')
-              c.targetY = Math.max(-1.35, c.targetY - 0.15);
-            if (e.key === 'ArrowDown')
               c.targetY = Math.min(1.35, c.targetY + 0.15);
-            if (e.key === '+')
-              c.targetZoom = Math.min(1.7, c.targetZoom + 0.08);
-            if (e.key === '-')
-              c.targetZoom = Math.max(0.72, c.targetZoom - 0.08);
+            if (e.key === 'ArrowDown')
+              c.targetY = Math.max(-1.35, c.targetY - 0.15);
+            if (e.key === '+') c.targetZoom = clampZoom(c.targetZoom + 0.08);
+            if (e.key === '-') c.targetZoom = clampZoom(c.targetZoom - 0.08);
             if (e.key === 'Enter' && tool !== 'orbit') {
               const b = canvas.current!.getBoundingClientRect();
               apply(hit(b.x + b.width / 2, b.y + b.height / 2));
@@ -466,6 +487,38 @@ export default function Planet({
         }}
       />
       <div className="planet-view-actions">
+        <button
+          title="Zoom out"
+          aria-label="Zoom out"
+          onClick={() => {
+            camera.current.targetZoom = clampZoom(
+              camera.current.targetZoom - 0.08,
+            );
+          }}
+        >
+          <Minus size={16} />
+        </button>
+        <button
+          title="Fit planet"
+          aria-label="Fit planet"
+          onClick={() => {
+            camera.current.targetZoom = 1;
+            camera.current.targetY = -0.18;
+          }}
+        >
+          <Scan size={16} />
+        </button>
+        <button
+          title="Zoom in"
+          aria-label="Zoom in"
+          onClick={() => {
+            camera.current.targetZoom = clampZoom(
+              camera.current.targetZoom + 0.08,
+            );
+          }}
+        >
+          <Plus size={16} />
+        </button>
         <button
           title={rotate ? 'Stop planet rotation' : 'Rotate planet'}
           aria-label={rotate ? 'Stop planet rotation' : 'Rotate planet'}

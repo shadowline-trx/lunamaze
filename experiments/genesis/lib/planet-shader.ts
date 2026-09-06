@@ -27,7 +27,7 @@ float localTemp=temperature+10.-pow(abs(p.y),1.4)*35.-elev*65.;
 float ice=(1.-smoothstep(-7.,1.5,localTemp+(moisture-.5)*9.))*smoothstep(4.,35.,water);
 vec3 tangent=normalize(cross(p,abs(p.y)>.95?vec3(1,0,0):vec3(0,1,0))),bitangent=cross(p,tangent);
 float eps=.0035,hx=heightAt(normalize(p+tangent*eps)),hy=heightAt(normalize(p+bitangent*eps));
-float relief=mix(.001,.10,land);relief=mix(relief,.085,ice);
+float relief=mix(.001,.065,land);relief=mix(relief,.022,ice);
 vec3 normal=normalize(p-tangent*(hx-h)/eps*relief-bitangent*(hy-h)/eps*relief);
 float day=dot(p,localLight),diffuse=max(0.,dot(normal,localLight));
 float lush=smoothstep(0.,45.,biomass)*smoothstep(-3.,12.,localTemp)*(1.-smoothstep(30.,49.,localTemp));
@@ -42,7 +42,9 @@ float shadow=cloudAt(normalize(p+localLight*.018));color*=vec3(.025,.04,.065)+di
 vec3 halfVector=normalize(localLight+rotate(vec3(0,0,1)));float spec=pow(max(0.,dot(normal,halfVector)),110.)*(1.-land)*(1.-ice);color+=vec3(.65,.77,.71)*spec*.75;
 float city=step(.972,hash(floor(p*640.)))*smoothstep(.34,.57,moisture)*land*(1.-ice)*smoothstep(48.,85.,biomass)*(1.-smoothstep(-.15,.18,day));color+=vec3(1.,.52,.16)*city*.8;
 float cloudRadius=.803;vec3 cloudN=normalize(vec3(uv,sqrt(max(0.,cloudRadius*cloudRadius-dot(uv,uv)))));float cover=cloudAt(rotate(cloudN));
-color=mix(color,vec3(.90,.94,.94)*(.06+max(0.,dot(cloudN,light))*1.13),cover*.93);
+float cloudShade=cloudAt(normalize(rotate(cloudN)+localLight*.009));
+vec3 cloudColor=vec3(.88,.93,.98)*(.09+max(0.,dot(cloudN,light))*1.03)*(1.-max(0.,cloudShade-cover)*.55);
+color=mix(color,cloudColor,cover*.86);
 float rim=pow(1.-max(0.,n.z),3.4)*air;color+=vec3(.065,.30,.49)*rim*(.10+max(0.,day)*1.1);color=mix(color,vec3(.23,.46,.64),pow(1.-n.z,5.)*air*.30*max(0.,day));
 if(mode>.5&&mode<1.5){float t=clamp((localTemp+40.)/100.,0.,1.);color=mix(vec3(.09,.19,.58),vec3(.10,.68,.62),smoothstep(0.,.5,t));color=mix(color,vec3(.96,.25,.065),smoothstep(.5,1.,t));color*=.25+diffuse*.8;}
 if(mode>1.5){color=mix(vec3(.009,.058,.085),vec3(.38,.57,.35),smoothstep(.3,.65,h));color=mix(color,vec3(.86,.83,.67),smoothstep(.64,.8,h));float contour=1.-smoothstep(.015,.065,abs(fract(h*65.)-.5));color+=contour*.12;color*=.25+diffuse*.9;}
