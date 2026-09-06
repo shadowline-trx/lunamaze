@@ -327,7 +327,7 @@ export default function Planet({
       event.preventDefault();
       camera.current.targetZoom = Math.max(
         0.72,
-        Math.min(1.7, camera.current.targetZoom - event.deltaY * 0.0008),
+        Math.min(1.7, camera.current.targetZoom + event.deltaY * 0.0008),
       );
     };
     el.addEventListener('wheel', wheel, { passive: false });
