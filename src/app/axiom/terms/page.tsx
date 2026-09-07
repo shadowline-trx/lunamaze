@@ -171,7 +171,7 @@ export default function TermsPage(): JSX.Element {
           </p>
           <div className="rounded-2xl border border-[#8b7cf7]/30 bg-[#8b7cf7]/[0.06] px-5 py-4 text-[#e8e6f0]">
             {
-              'If you installed Axiom before this change, the free core you were promised is yours and keeps working on that device. Earlier versions of these Terms said the core of Axiom was free and that you would never be required to pay to keep using it. We are not applying the subscription requirement retroactively to anyone who installed under that promise.'
+              'This is a change from earlier versions of these Terms, which said the core of Axiom was free and that you would never be required to pay to keep using it. That is no longer true, and it applies to existing installs as well as new ones. We are telling you plainly rather than letting you discover it: if you installed Axiom under the earlier terms, a subscription is now required to keep using it. Nothing you wrote is held hostage — your full history can be exported from Settings at any time, with or without a subscription, and deleting your account remains one tap.'
             }
           </div>
 
