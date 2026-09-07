@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://lunamaze.com'),
   title: 'AXIOM — Quit Porn App. Your Phone Never Says So.',
   description:
-    'Every other quit-porn app is named the accusation. On your home screen this one just says AXIOM. Real porn addiction recovery grounded in neuroscience, journal encrypted on your device, free core tools, no account needed to start.',
+    'Every other quit-porn app is named the accusation. On your home screen this one just says AXIOM. Real porn addiction recovery grounded in neuroscience, journal encrypted on your device, one honest price, no account needed to start.',
   keywords: [
     'quit porn app',
     'porn addiction recovery',
@@ -63,7 +63,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'AXIOM — Quit Porn App. Your Phone Never Says So.',
     description:
-      'Every other quit-porn app is named the accusation. On your home screen this one just says AXIOM. Real porn addiction recovery grounded in neuroscience, journal encrypted on your device, free core tools, no account needed to start.',
+      'Every other quit-porn app is named the accusation. On your home screen this one just says AXIOM. Real porn addiction recovery grounded in neuroscience, journal encrypted on your device, one honest price, no account needed to start.',
     type: 'website',
     url: 'https://lunamaze.com/axiom/',
     siteName: 'Luna Maze',
@@ -81,7 +81,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'AXIOM — Quit Porn App. Your Phone Never Says So.',
     description:
-      'Every other quit-porn app is named the accusation. On your home screen this one just says AXIOM. Real porn addiction recovery grounded in neuroscience, journal encrypted on your device, free core tools, no account needed to start.',
+      'Every other quit-porn app is named the accusation. On your home screen this one just says AXIOM. Real porn addiction recovery grounded in neuroscience, journal encrypted on your device, one honest price, no account needed to start.',
     images: ['https://lunamaze.com/images/axiom/og.jpg'],
   },
 };
@@ -111,12 +111,12 @@ const JSON_LD = {
         price: '0',
         priceCurrency: 'USD',
         description:
-          'Free core forever (streak, check-ins, breathing, panic tools). Optional AXIOM Protocol subscription unlocks full depth.',
+          'Free to install. AXIOM Protocol subscription required to use the app; price shown in your own currency before you buy. The Lighthouse urge tool opens for anyone in a crisis, subscribed or not.',
       },
       featureList: [
         'Zero-knowledge encrypted journal',
         'Neuroscience-based recovery phases',
-        'Panic urge tools, free forever',
+        'Lighthouse urge tool, open in a crisis to anyone',
         'Guided somatic breathing',
         'Trigger pattern engine',
       ],
@@ -158,10 +158,10 @@ const JSON_LD = {
       mainEntity: [
         {
           '@type': 'Question',
-          name: 'Is the free core actually usable, or a trial in disguise?',
+          name: 'Is there a free version?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'It is real and permanent. The streak, daily check-in, breathing, the daily brief, and every panic tool are free forever. The Protocol subscription adds depth — it never takes the core away.',
+            text: 'No. AXIOM is a paid app and the price is shown before you install. We tried it the other way and it made a worse product: a free tier funded by nagging the people using it. One exception, and it is not a marketing one — if you are in an urge, the Lighthouse opens whether you have paid or not.',
           },
         },
         {
@@ -209,7 +209,7 @@ const JSON_LD = {
           name: 'Is AXIOM on iPhone?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'Both. Android is on Google Play and iPhone is on the App Store — same app, same free core, same sealed journal.',
+            text: 'Both. Android is on Google Play and iPhone is on the App Store — same app, same price, same sealed journal.',
           },
         },
         {

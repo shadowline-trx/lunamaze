@@ -263,7 +263,7 @@ const DIFF_ROWS = [
   { theirs: 'Your confessions stored readable on their servers.', ours: 'Encrypted on your phone. We hold no key.' },
   { theirs: 'Shame and fear tactics to make you pay.', ours: 'Compassion. A relapse is a reset, never a failure.' },
   { theirs: 'Inflated “join 2 million men” social proof.', ours: 'No inflated numbers. We will not lie to you.' },
-  { theirs: 'Locked out the moment you stop paying.', ours: 'A real free core, forever. Panic tools always free.' },
+  { theirs: 'Locked out the moment you stop paying.', ours: 'Mid-urge, the Lighthouse opens. Subscriber or not.' },
 ] as const;
 
 const MARQUEE_WORDS = [
@@ -280,12 +280,12 @@ type Feature = {
   title: string;
   body: string;
   accent: string;
-  badge?: 'free' | 'soon';
+  badge?: 'urgent' | 'soon';
 };
 
 const FEATURES: Feature[] = [
   { icon: Icon.Pulse, title: 'The Rewire Map', body: 'Watch your dopamine recovery unfold in real, neuroscience-based phases. Not a novelty counter — a living picture of your brain healing.', accent: 'text-[#8b7cf7]' },
-  { icon: Icon.Life, title: 'Panic toolkit', body: 'Urge timer, grounding, and a breath pacer one tap from anywhere — built for the 90 seconds that decide everything.', accent: 'text-[#ff8f8f]', badge: 'free' },
+  { icon: Icon.Life, title: 'Panic toolkit', body: 'Urge timer, grounding, and a breath pacer one tap from anywhere — built for the 90 seconds that decide everything.', accent: 'text-[#ff8f8f]', badge: 'urgent' },
   { icon: Icon.Journal, title: 'Sealed journal', body: 'Write the whole truth. Every entry is encrypted with your key before it leaves the screen — even we cannot read it.', accent: 'text-[#cdc7ee]' },
   { icon: Icon.Compass, title: 'Pattern engine', body: 'The triggers and risk hours you record come back to you gathered — and the app meets you at those hours instead of only counting them afterwards.', accent: 'text-[#8b7cf7]' },
   { icon: Icon.Wind, title: 'Breathe', body: 'Ride a craving out in about ninety seconds with guided breathing tuned for urge waves, not spa music.', accent: 'text-[#7fd8ff]' },
@@ -293,14 +293,14 @@ const FEATURES: Feature[] = [
   { icon: Icon.Buddy, title: 'Recovery buddy', body: 'Invite one person you trust. They see whether you are standing — never your journal, never your data.', accent: 'text-[#7fd8ff]' },
   { icon: Icon.Widget, title: 'Widgets & milestones', body: 'Home-screen widgets that keep the day in sight, and milestone artwork actually worth reaching.', accent: 'text-[#ffd27a]' },
   { icon: Icon.Sound, title: 'Calming soundscapes', body: 'A synthesis engine tuned for urge-surfing — sound sculpted to slow your pulse, not another lo-fi playlist.', accent: 'text-[#7fd8ff]' },
-  { icon: Icon.Export, title: 'Your data, your call', body: 'Export everything free. Delete everything forever. Leaving takes one tap — that is the point.', accent: 'text-[#cdc7ee]' },
+  { icon: Icon.Export, title: 'Your data, your call', body: 'Export everything. Delete everything forever. Leaving takes one tap, subscribed or not — that is the point.', accent: 'text-[#cdc7ee]' },
   { icon: Icon.Shield, title: 'The Shield', body: 'An honest content blocker that is friction, not a cage — and never watches what you browse.', accent: 'text-[#7ef7c2]', badge: 'soon' },
 ];
 
 const FAQS = [
   {
-    q: 'Is the free core actually usable, or a trial in disguise?',
-    a: 'It is real and permanent. The streak, daily check-in, breathing, the daily brief, and every panic tool are free forever. The Protocol subscription adds depth — it never takes the core away.',
+    q: 'Is there a free version?',
+    a: 'No. AXIOM is a paid app and the price is shown before you install. We tried it the other way and it made a worse product: a free tier funded by nagging the people using it. One exception, and it is not a marketing one — if you are in an urge, the Lighthouse opens whether you have paid or not.',
   },
   {
     q: 'Can anyone at AXIOM read my journal?',
@@ -324,7 +324,7 @@ const FAQS = [
   },
   {
     q: 'Is AXIOM on iPhone?',
-    a: 'Both. Android is on Google Play and iPhone is on the App Store — same app, same free core, same sealed journal.',
+    a: 'Both. Android is on Google Play and iPhone is on the App Store — same app, same price, same sealed journal.',
   },
   {
     q: 'How is this different from the big-name quit apps?',
@@ -1210,7 +1210,7 @@ function StickyCTA() {
           className="h-[38px] w-[38px] rounded-xl"
         />
         <div className="min-w-0 flex-1">
-          <p className="truncate text-sm font-semibold text-[#f2f1f7]">AXIOM — free core forever</p>
+          <p className="truncate text-sm font-semibold text-[#f2f1f7]">AXIOM — your phone never says so</p>
           <p className={`${MONO} truncate text-[9px] uppercase tracking-[0.18em] text-[#9b98ad]`}>
             Your phone never says what this is
           </p>
@@ -1221,7 +1221,7 @@ function StickyCTA() {
           rel="noreferrer"
           className="ax-btn-primary shrink-0 px-5 py-2.5 text-sm"
         >
-          Start free
+          Get AXIOM
         </a>
       </div>
     </div>
@@ -1285,7 +1285,7 @@ function Hero() {
             className="ax-btn-primary flex items-center gap-3 px-8 py-4 text-[15px]"
           >
             <Icon.Play className="h-4 w-4" />
-            Start free on Google Play
+            Get AXIOM on Google Play
           </a>
           <a
             href={APP_STORE_URL}
@@ -1303,7 +1303,7 @@ function Hero() {
           data-intro
           className={`${MONO} mt-6 text-[10px] uppercase tracking-[0.22em] text-[#8f8ca1]`}
         >
-          Free core forever · No fake urgency · Cancel anytime
+          One honest price · No fake urgency · Cancel anytime
         </p>
       </div>
       <div
@@ -1813,9 +1813,9 @@ function Tools() {
               <div className="relative mt-auto pt-16">
                 <div className="flex flex-wrap items-center gap-2.5">
                   <h3 className="text-[1.35rem] font-semibold tracking-tight text-[#f2f1f7]">{f.title}</h3>
-                  {f.badge === 'free' && (
+                  {f.badge === 'urgent' && (
                     <span className={`${MONO} rounded-full border border-[#7ef7c2]/25 bg-[#7ef7c2]/10 px-2.5 py-0.5 text-[9px] uppercase tracking-[0.16em] text-[#7ef7c2]`}>
-                      Free forever
+                      Always opens
                     </span>
                   )}
                   {f.badge === 'soon' && (
@@ -1834,7 +1834,7 @@ function Tools() {
           <div className="ax-card relative flex h-full w-full flex-col items-start justify-center overflow-hidden p-8 md:min-h-[340px]">
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[#8b7cf7]/[0.10] to-transparent" />
             <p className={`${MONO} text-[10px] uppercase tracking-[0.26em] text-[#8b7cf7]`}>All of it, in your pocket</p>
-            <p className="mt-3 text-2xl font-semibold text-[#f2f1f7]">Start with the free core today.</p>
+            <p className="mt-3 text-2xl font-semibold text-[#f2f1f7]">Start today.</p>
             <a
               href={PLAY_URL}
               target="_blank"
@@ -1934,17 +1934,18 @@ function Pricing() {
         <div>
           <Eyebrow>09 — honest pricing</Eyebrow>
           <h2 data-reveal className="text-[clamp(2.2rem,5vw,3.9rem)] font-semibold leading-[1.04] text-[#f2f1f7]">
-            A real free core.{' '}
-            <span className="ax-serif text-[#cdc7ee]">A fair way deeper.</span>
+            One price.{' '}
+            <span className="ax-serif text-[#cdc7ee]">Shown before you install.</span>
           </h2>
           <p data-reveal className="mt-6 text-lg leading-relaxed text-[#9b98ad]">
-            The streak, daily check-in, breathing, the daily brief, and the
-            panic tools are free and stay free. The Protocol opens the depth:
-            the full pattern engine, recovery programs, deeper stats, and more.
-            Seven days free, once, no tricks. Cancel in one tap.
+            AXIOM is a paid app. You get the whole of it — the streak, the
+            daily check-in, breathing, the daily brief, the pattern engine,
+            the programs, the full history. There is no tier above the one
+            you bought and nothing inside is still selling to you. Cancel in
+            one tap and your data leaves with you.
           </p>
           <ul className="mt-8 space-y-3.5">
-            {['No fake urgency, ever', 'Price shown honestly, up front', 'One trial per person, no abuse games', 'Cancel any time, keep your data'].map((t) => (
+            {['No fake urgency, ever', 'Price shown honestly, up front', 'No upsell inside the app you bought', 'Cancel any time, keep your data'].map((t) => (
               <li key={t} data-reveal className="flex items-center gap-3.5 text-[#e8e6f0]">
                 <span className="grid h-5 w-5 place-items-center rounded-full border border-[#7ef7c2]/25 bg-[#7ef7c2]/10 text-[#7ef7c2]">
                   <Icon.Check className="h-3 w-3" />
@@ -1963,12 +1964,12 @@ function Pricing() {
                 <p className="mt-2 text-[#9b98ad]">Everything, unlocked.</p>
               </div>
               <span className={`${MONO} rounded-full border border-[#7ef7c2]/25 bg-[#7ef7c2]/10 px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-[#7ef7c2]`}>
-                7 days free
+                One tier
               </span>
             </div>
             <div className="my-8 h-px bg-white/[0.07]" />
             <div className="space-y-3.5">
-              {['The full pattern engine and risk alerts', 'Recovery programs and deeper practice', 'Complete stats and history', 'Everything in the free core, always'].map((t) => (
+              {['The full pattern engine and risk alerts', 'Recovery programs and deeper practice', 'Complete stats and history', 'The Lighthouse, open even to non-subscribers'].map((t) => (
                 <p key={t} className="flex items-start gap-3 text-[#9b98ad]">
                   <span className="mt-0.5 text-[#8b7cf7]">✓</span>
                   {t}
@@ -1982,7 +1983,7 @@ function Pricing() {
               data-magnetic
               className="ax-btn-primary mt-9 block py-4 text-center"
             >
-              Start free on Google Play
+              Get AXIOM on Google Play
             </a>
             <p className={`${MONO} mt-4 text-center text-[10px] uppercase tracking-[0.16em] text-[#8f8ca1]`}>
               Price shown in-app in your currency · cancel anytime
@@ -2095,7 +2096,7 @@ function Finale() {
             className="ax-btn-primary flex items-center gap-3 px-9 py-4"
           >
             <Icon.Play className="h-4 w-4" />
-            Start free on Google Play
+            Get AXIOM on Google Play
           </a>
           <a
             href={APP_STORE_URL}
@@ -2112,7 +2113,7 @@ function Finale() {
           data-reveal
           className={`${MONO} mt-8 text-[10px] uppercase tracking-[0.24em] text-[#a8a5b8] ${OVER_FIELD}`}
         >
-          Free core forever · panic tools never paywalled
+          One honest price · the Lighthouse always opens
         </p>
       </div>
     </section>

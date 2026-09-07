@@ -132,7 +132,7 @@ const FAQ_ITEMS: ReadonlyArray<FaqItem> = [
     shortAnswer:
       'AXIOM is an independent, zero-knowledge recovery companion built on neuroscience. It provides honest phase tracking, free panic tools, and client-side encryption.',
     detailedAnswer:
-      'Unlike legacy quit apps that lock panic buttons behind paywalls, use fabricated countdown timers, or sell user data to advertising brokers, AXIOM was built with strict ethical boundaries: (1) Free Core Forever: streaks, daily check-ins, breathing exercises, and panic tools are completely free; (2) Zero-Knowledge Encryption: all journal entries and recovery logs are encrypted on-device with your personal key — our servers cannot read your story; (3) Neuroscience Framework: tracking based on real dopamine receptor recovery stages, not arbitrary gamification.',
+      'Unlike legacy quit apps that use fabricated countdown timers or sell user data to advertising brokers, AXIOM was built with strict ethical boundaries: (1) One Honest Price: a single subscription covers the entire app, shown in your own currency before you buy, with no higher tier and no upsell inside the app — and the Lighthouse urge tool opens for anyone in a crisis, subscribed or not; (2) Zero-Knowledge Encryption: all journal entries and recovery logs are encrypted on-device with your personal key — our servers cannot read your story; (3) Neuroscience Framework: tracking based on real dopamine receptor recovery stages, not arbitrary gamification.',
     toolLink: { label: 'Learn more about AXIOM', href: '/axiom/' },
   },
   {

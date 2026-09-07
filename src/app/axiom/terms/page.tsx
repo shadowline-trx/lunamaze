@@ -149,7 +149,7 @@ export default function TermsPage(): JSX.Element {
           <h2 id="axiom">Axiom Subscription Terms</h2>
           <p>
             {
-              'Axiom ("the App") is a personal wellbeing and habit-tracking app that supports brain recovery, dopamine detox, and digital wellbeing. Its core is free to use. Axiom Protocol is an optional paid subscription that unlocks the deeper tools. This section applies to Axiom on both the Apple App Store (iOS) and Google Play (Android).'
+              'Axiom ("the App") is a personal wellbeing and habit-tracking app that supports brain recovery, dopamine detox, and digital wellbeing. Axiom is free to download and requires an Axiom Protocol subscription to use. This section applies to Axiom on both the Apple App Store (iOS) and Google Play (Android).'
             }
           </p>
           <div className="rounded-2xl border border-[#8b7cf7]/30 bg-[#8b7cf7]/[0.06] px-5 py-4 text-[#e8e6f0]">
@@ -158,17 +158,22 @@ export default function TermsPage(): JSX.Element {
             }
           </div>
 
-          <h3>Axiom is free to use</h3>
+          <h3>What a subscription covers, and what does not need one</h3>
           <p>
             {
-              'The core of Axiom is free, and stays free: the panic tool, your streak and dashboard, daily check-ins, a breathing exercise, and your daily brief. You are never required to pay to keep using the free core.'
+              'Axiom Protocol is a single subscription that covers the whole app: your streak and dashboard, daily check-ins, breathing, the daily brief, the pattern engine, the full library and the programs. There is no higher tier and nothing inside the app is sold to you separately.'
             }
           </p>
           <p>
             {
-              'Axiom Protocol is an optional paid subscription that unlocks the deeper tools, including advanced insights and the full library and programs. Subscribing is entirely your choice.'
+              'One part of the App never requires a subscription. If you are experiencing an urge, the Lighthouse urge tool can be opened from the subscription screen itself and used without paying. We will not put a payment between a person and that.'
             }
           </p>
+          <div className="rounded-2xl border border-[#8b7cf7]/30 bg-[#8b7cf7]/[0.06] px-5 py-4 text-[#e8e6f0]">
+            {
+              'If you installed Axiom before this change, the free core you were promised is yours and keeps working on that device. Earlier versions of these Terms said the core of Axiom was free and that you would never be required to pay to keep using it. We are not applying the subscription requirement retroactively to anyone who installed under that promise.'
+            }
+          </div>
 
           <h3>What the Protocol costs</h3>
           <ul>
@@ -253,7 +258,7 @@ export default function TermsPage(): JSX.Element {
           </ul>
           <p>
             {
-              'When you cancel, you keep Protocol access until the end of the period you have already paid for. Cancelling a subscription does not delete your data, and the free core of Axiom keeps working.'
+              'When you cancel, you keep Protocol access until the end of the period you have already paid for. Cancelling does not delete your data: you can export everything from Settings at any time, before or after, and deleting your account remains one tap.'
             }
           </p>
 

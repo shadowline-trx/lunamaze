@@ -264,7 +264,7 @@ export default function PrivacyPage(): JSX.Element {
           </p>
           <p>
             {
-              'We use RevenueCat to manage subscription status. RevenueCat receives your purchase receipt and entitlement status (active, trial, expired). Its identifier for you is anonymous until you make a purchase; because purchasing requires signing in, at that point the identifier is set to your Axiom account ID so your subscription follows your account across devices and platforms. RevenueCat still never receives your name, email, or any recovery or health data.'
+              'We use RevenueCat to manage subscription status. RevenueCat receives your purchase receipt and entitlement status (active, trial, expired). Its identifier for you is anonymous by default. If you purchase while signed in, it can be linked to your Axiom account ID so your subscription follows that account across devices and platforms. If you purchase without signing in, the purchase remains tied to your store account and an anonymous RevenueCat identifier. RevenueCat never receives your name, email, or any recovery or health data.'
             }
           </p>
 

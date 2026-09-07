@@ -374,7 +374,7 @@ export default function AxiomFaqClient({ faqs }: AxiomFaqClientProps) {
           </h2>
 
           <p className="mx-auto mt-4 max-w-lg text-sm sm:text-base text-[#a6a3b8] leading-relaxed">
-            AXIOM is an honest habit tracker and neural rewire protocol. Free core forever: daily check-ins, guided breathing, urge panic tools, and your sealed on-device journal.
+            AXIOM is an honest habit tracker and neural rewire protocol. One subscription covers all of it: daily check-ins, guided breathing, the pattern engine, and your sealed on-device journal. The Lighthouse urge tool opens in a crisis whether you subscribe or not.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
