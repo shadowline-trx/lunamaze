@@ -40,7 +40,7 @@ import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
 import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
 import { internalUrl } from '@/lib/paths';
-import { appStoreUrl } from '@/lib/storeLinks';
+import { appStoreUrl, playIsBlockedHere, playStoreUrl } from '@/lib/storeLinks';
 import ParticleField, {
   type ParticleFieldHandle,
 } from '@/components/axiom/ParticleField';
@@ -66,15 +66,66 @@ const MONO = 'ax-mono';
  */
 const OVER_FIELD =
   '[text-shadow:0_0_6px_rgba(7,7,9,0.98),0_1px_16px_rgba(7,7,9,0.94),0_0_44px_rgba(7,7,9,0.8)]';
-const PLAY_URL =
-  'https://play.google.com/store/apps/details?id=com.axiomapp.app';
+/**
+ * The Play listing, campaign-tagged.
+ *
+ * This was a bare hardcoded URL, which quietly cost us every number we had.
+ * `playStoreUrl` exists precisely to bake UTM values into the `referrer`
+ * parameter that Play Console reads for Acquisition -> Traffic source; a link
+ * without it lands in "Organic" and becomes indistinguishable from someone who
+ * found the listing by searching the store. So every install this site has
+ * ever produced was unattributable, and "is the website converting?" had no
+ * answer available — which is the state the site was judged in.
+ */
+const PLAY_URL = playStoreUrl('site-landing');
 /**
  * The App Store listing, campaign-tagged. Falls back to /axiom/ios/ if the ID
  * is ever cleared in storeLinks, so the Apple button is never a dead link.
  */
 const APP_STORE_URL = appStoreUrl('site-landing') ?? internalUrl('/axiom/ios/');
 
-const HERO_BADGE = 'ZERO-KNOWLEDGE · WE CANNOT READ YOUR DATA';
+/**
+ * The right store for the visitor holding the phone.
+ *
+ * WHY THIS EXISTS. Three of the four highest-traffic CTAs on this page — the
+ * nav button, the mobile sticky bar and the footer — were hardcoded to Google
+ * Play. An iPhone visitor was followed down the entire page by a button that
+ * sent them to a store they cannot install from, and iOS appeared only in two
+ * paired badge rows most people never scroll to.
+ *
+ * That was always wrong. It became severe once US and Australia were verified
+ * still 404 on Play (2026-09-06, curl against a control): in those two markets
+ * the App Store is the ONLY way to install Axiom, and every prominent button
+ * on the page pointed away from it.
+ *
+ * Renders Play on the server so the static export keeps a real href for
+ * crawlers and for JS-off visitors, then corrects on mount:
+ *   - iPhone / iPad          -> App Store
+ *   - Android where Play 404s -> App Store is useless to them, so the free
+ *                                browser tools, which need no install at all
+ *   - everyone else          -> Play, campaign-tagged
+ */
+function useStoreHref(): { href: string; label: string } {
+  const [target, setTarget] = useState<{ href: string; label: string }>({
+    href: PLAY_URL,
+    label: 'Get the app',
+  });
+
+  useEffect(() => {
+    const ua = navigator.userAgent;
+    if (/iPhone|iPad|iPod/i.test(ua)) {
+      setTarget({ href: APP_STORE_URL, label: 'Get the app' });
+      return;
+    }
+    if (/Android/i.test(ua) && playIsBlockedHere()) {
+      setTarget({ href: internalUrl('/axiom/tools/'), label: 'Open the free tools' });
+    }
+  }, []);
+
+  return target;
+}
+
+const HERO_BADGE = 'ON YOUR HOME SCREEN, IT JUST SAYS AXIOM';
 const JOURNAL_PLAIN =
   '“I relapsed last night. I don’t want anyone to ever know this.”';
 const JOURNAL_CIPHER =
@@ -1098,6 +1149,7 @@ export default function AxiomLanding() {
 
 // ── navigation ───────────────────────────────────────────────────────
 function Nav() {
+  const store = useStoreHref();
   return (
     <header
       data-nav
@@ -1123,17 +1175,17 @@ function Nav() {
         <div className={`${MONO} hidden items-center gap-9 text-[11px] uppercase tracking-[0.22em] text-[#9b98ad] md:flex`}>
           <a className="transition-colors hover:text-[#e8e6f0]" href="#difference">The audit</a>
           <a className="transition-colors hover:text-[#e8e6f0]" href="#arc">The arc</a>
-          <a className="transition-colors hover:text-[#e8e6f0]" href="#privacy">Privacy</a>
+          <a className="transition-colors hover:text-[#e8e6f0]" href="#privacy">Discretion</a>
           <a className="transition-colors hover:text-[#e8e6f0]" href="#pricing">Pricing</a>
         </div>
         <a
-          href={PLAY_URL}
+          href={store.href}
           target="_blank"
           rel="noreferrer"
           className="ax-btn-primary px-5 py-2 text-sm"
           data-magnetic
         >
-          Get the app
+          {store.label}
         </a>
       </nav>
     </header>
@@ -1142,6 +1194,7 @@ function Nav() {
 
 // ── mobile sticky CTA (appears once the hero scrolls away) ───────────
 function StickyCTA() {
+  const store = useStoreHref();
   return (
     <div
       data-sticky-cta
@@ -1159,11 +1212,11 @@ function StickyCTA() {
         <div className="min-w-0 flex-1">
           <p className="truncate text-sm font-semibold text-[#f2f1f7]">AXIOM — free core forever</p>
           <p className={`${MONO} truncate text-[9px] uppercase tracking-[0.18em] text-[#9b98ad]`}>
-            Private · honest · no fake urgency
+            Your phone never says what this is
           </p>
         </div>
         <a
-          href={PLAY_URL}
+          href={store.href}
           target="_blank"
           rel="noreferrer"
           className="ax-btn-primary shrink-0 px-5 py-2.5 text-sm"
@@ -1207,20 +1260,21 @@ function Hero() {
         >
           Quit porn.
           <br />
+          Your phone{' '}
           <span className="ax-serif ax-grad-violet pr-2 font-normal">
-            Rewire
+            never
           </span>{' '}
-          your brain.
-          <br />
-          Keep it private.
+          says so.
         </h1>
         <p
           data-hero-sub
           data-intro
           className={`mx-auto mt-8 max-w-xl text-base leading-relaxed text-[#a6a3b8] ${OVER_FIELD} sm:text-lg`}
         >
-          A calm, honest recovery companion grounded in real neuroscience.
-          No shame, no fake countdowns, no selling your story.
+          Every other app for this is named the accusation. On your home
+          screen, this one says AXIOM. Its notifications say “Daily brief”.
+          The recovery work underneath is real and grounded in neuroscience,
+          and your journal is encrypted on your device.
         </p>
         <div data-hero-cta className="mt-11 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <a
@@ -2097,6 +2151,7 @@ function Footer() {
           <a href={internalUrl('/axiom/privacy/')} className="transition-colors hover:text-[#e8e6f0]">Privacy</a>
           <a href={internalUrl('/axiom/terms/')} className="transition-colors hover:text-[#e8e6f0]">Terms</a>
           <a href={PLAY_URL} target="_blank" rel="noreferrer" className="transition-colors hover:text-[#e8e6f0]">Google Play</a>
+          <a href={APP_STORE_URL} target="_blank" rel="noreferrer" className="transition-colors hover:text-[#e8e6f0]">App Store</a>
         </div>
       </div>
     </footer>

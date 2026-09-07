@@ -26,9 +26,9 @@ const jetbrains = JetBrains_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://lunamaze.com'),
-  title: 'AXIOM — Quit Porn App & Neuroscience Rewire Protocol | Zero-Knowledge',
+  title: 'AXIOM — Quit Porn App. Your Phone Never Says So.',
   description:
-    'A calm, honest porn addiction recovery companion grounded in neuroscience. Zero-knowledge privacy by design: all journals encrypted on-device. No shame, no paywalled panic tools, no fake countdowns.',
+    'Every other quit-porn app is named the accusation. On your home screen this one just says AXIOM. Real porn addiction recovery grounded in neuroscience, journal encrypted on your device, free core tools, no account needed to start.',
   keywords: [
     'quit porn app',
     'porn addiction recovery',
@@ -61,9 +61,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'AXIOM — Quit Porn App & Neuroscience Rewire Protocol',
+    title: 'AXIOM — Quit Porn App. Your Phone Never Says So.',
     description:
-      'An honest, private porn addiction recovery app grounded in neuroplasticity. Zero-knowledge client-side encryption — your data never leaves your phone.',
+      'Every other quit-porn app is named the accusation. On your home screen this one just says AXIOM. Real porn addiction recovery grounded in neuroscience, journal encrypted on your device, free core tools, no account needed to start.',
     type: 'website',
     url: 'https://lunamaze.com/axiom/',
     siteName: 'Luna Maze',
@@ -79,9 +79,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'AXIOM — Quit Porn App & Neuroscience Rewire Protocol',
+    title: 'AXIOM — Quit Porn App. Your Phone Never Says So.',
     description:
-      'An honest, private recovery companion. Zero-knowledge encryption by design — your story never leaves your phone readable.',
+      'Every other quit-porn app is named the accusation. On your home screen this one just says AXIOM. Real porn addiction recovery grounded in neuroscience, journal encrypted on your device, free core tools, no account needed to start.',
     images: ['https://lunamaze.com/images/axiom/og.jpg'],
   },
 };
