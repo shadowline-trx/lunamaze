@@ -62,7 +62,7 @@ const TOOLS: ReadonlyArray<Tool> = [
 
 const APP_POINTS = [
   'The Rewire Map — your recovery in real dopamine phases',
-  'Panic toolkit and guided breathing, never paywalled',
+  'The Lighthouse urge tool, and the breathing that runs inside it, never paywalled',
   'A journal sealed with your key — we cannot read it',
   'Your triggers and risk hours, gathered back into one place',
   'Light on day one, as deep as you want later',

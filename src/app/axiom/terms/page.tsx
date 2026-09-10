@@ -21,7 +21,7 @@ import { internalUrl } from '@/lib/paths';
  * untouched — only the shell around them changed.
  */
 
-const LAST_UPDATED = 'July 15, 2026';
+const LAST_UPDATED = 'September 10, 2026';
 const CONTACT_MAILTO = `mailto:${contactEmail}`;
 
 interface QuickFact {
@@ -31,9 +31,9 @@ interface QuickFact {
 
 const QUICK_FACTS: ReadonlyArray<QuickFact> = [
   {
-    title: 'Free core',
+    title: 'A paid app',
     description:
-      'The heart of Axiom is free and stays free. A subscription is optional and only unlocks the deeper tools.',
+      'Axiom requires a subscription. There is no free tier and no ad-supported version. The Lighthouse urge tool is the one exception, and it opens whether or not you have paid.',
   },
   {
     title: 'Recurring only',
@@ -41,9 +41,9 @@ const QUICK_FACTS: ReadonlyArray<QuickFact> = [
       'Every plan is a recurring subscription billed by the store. There is no lifetime or one-time purchase.',
   },
   {
-    title: 'Free trial on yearly',
+    title: 'Free trial on monthly',
     description:
-      'A free trial is offered on the yearly plan, so you can decide before you are charged anything.',
+      'The monthly plan starts with a free trial for eligible new subscribers. The yearly plan does not include one. Your store decides eligibility and shows the terms before you confirm.',
   },
   {
     title: 'The store handles billing',
@@ -205,7 +205,7 @@ export default function TermsPage(): JSX.Element {
             <li>
               <strong>{'Free trial: '}</strong>
               {
-                'a free trial is offered on the yearly plan. When a plan includes a free trial, the trial length and the exact date of your first charge are shown before you confirm. If you do not cancel at least 24 hours before the trial ends, the trial automatically converts to a paid subscription and you are charged. Cancel during the trial and you pay nothing.'
+                'the monthly plan is the one that carries a free trial. The yearly plan does not. Whether a trial is offered to you at all is decided by Apple or Google from your store account: if you have used an Axiom trial before you will not be offered another, and the purchase screen will say so. The trial length and the exact date of your first charge are always shown before you confirm. If you do not cancel at least 24 hours before the trial ends, the trial automatically converts to a paid subscription and you are charged. Cancel during the trial and you pay nothing.'
               }
             </li>
             <li>
@@ -299,12 +299,58 @@ export default function TermsPage(): JSX.Element {
           <p>
             <strong>{'Our position. '}</strong>
             {
-              'Aside from the automatic windows the stores provide and any rights the law gives you (see below), subscription payments are generally non-refundable, because the Protocol delivers its value, full access to its content and tools, immediately and for the entire billing period. We built Axiom so you never have to gamble before paying: the entire core is free, and a free trial is offered on the yearly plan, so you can decide whether the Protocol is right for you before, or without, spending anything.'
+              'Aside from the automatic windows the stores provide and any rights the law gives you (see below), subscription payments are generally non-refundable, because the Protocol delivers its value, full access to its content and tools, immediately and for the entire billing period. We would rather you did not have to gamble before paying, so there are two ways to avoid it: the monthly plan starts with a free trial for eligible new subscribers, and if a paid month did not help you, the goodwill extension below covers the next one.'
             }
           </p>
           <p>
             {
               'That said, if you were charged in genuine error, a duplicate charge, a charge after you cancelled, or a technical failure that denied you the access you paid for, email us and we will help you resolve it with the store as quickly as possible.'
+            }
+          </p>
+
+          <h3>The goodwill extension</h3>
+          <p>
+            <strong>
+              {
+                'If a paid month of Axiom did not help you, email us and we will add 30 days to your subscription at no charge. You do not need to explain what happened, and we will not ask.'
+              }
+            </strong>
+          </p>
+          <p>
+            {
+              'The details, stated exactly, because a promise you cannot check is not a promise:'
+            }
+          </p>
+          <ul>
+            <li>
+              {
+                'It adds access. It is not a refund. We cannot refund a store payment: Apple and Google collect every payment and only they can reverse one. What we can do is extend your paid period, so your next renewal date moves and that renewal is not charged. Money already paid stays paid.'
+              }
+            </li>
+            <li>
+              {
+                'It applies to paid subscriptions only. A trial you cancelled before any charge is not eligible, because nothing was paid and there is no subscription to extend.'
+              }
+            </li>
+            <li>
+              {
+                'Up to twice in any rolling 365-day period, per customer. This is not a calendar-year allowance that resets in January. The limit is also set by the stores, not only by us, and any extension already granted to you for any reason counts against it.'
+              }
+            </li>
+            <li>
+              {
+                'You need an active subscription at the time you ask. If it has already lapsed there is nothing to add days to; resubscribe and ask, and we will honour it from there.'
+              }
+            </li>
+            <li>
+              {
+                'Tell us which store you bought on and the email or account you used, so we can find the right subscription. Apple emails you when an extension is applied; Google does not, so on Android we confirm by email ourselves.'
+              }
+            </li>
+          </ul>
+          <p>
+            {
+              'We may decline a request that is plainly outside these limits, and we will say which limit and why. Nothing here replaces your statutory rights below.'
             }
           </p>
 
