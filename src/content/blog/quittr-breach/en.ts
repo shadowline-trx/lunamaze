@@ -17,11 +17,11 @@ const article: BlogArticle = {
   description:
     'A factual guide to the reported Quittr data exposure: what journalists say was accessible, concrete steps to protect yourself, and how to evaluate any recovery app’s privacy before trusting it.',
   datePublished: '2026-07-23',
-  dateModified: '2026-07-23',
+  dateModified: '2026-09-13',
   readingMinutes: 8,
   ctaLabel: 'See how Axiom works',
   ctaText:
-    'Axiom was built so a leak like this is architecturally impossible: what you log is encrypted on your phone and never reaches our servers in readable form. We could not expose your journal, because we never have it.',
+    'Axiom was built so the most personal part of a leak like this cannot happen: your journal, trigger names and reset reasons never leave your phone, and our database is built to refuse them. We could not expose your journal, because we never have it.',
   blocks: [
     {
       kind: 'p',
@@ -79,7 +79,7 @@ const article: BlogArticle = {
     { kind: 'h2', text: 'Where Axiom stands — said plainly' },
     {
       kind: 'p',
-      text: 'We built Axiom zero-knowledge because of exactly the failure mode this story describes. Your streak, your journal, your check-ins, your relapse log — all of it is encrypted on your device, and what reaches our servers we cannot read. This is not a policy choice we could quietly reverse; it is how the system is built. If our database were breached tomorrow, your recovery would not be in it in any readable form.',
+      text: 'We built Axiom around exactly the failure mode this story describes. Your journal, your trigger names and your reset reasons never leave your device: the app does not send them, and our database is built to refuse them if anything ever tried. If you sign in for backup, our servers hold your streak dates and mood scores — encrypted in transit and at rest, readable to us, and our privacy policy says so in plain words. If our database were breached tomorrow, your journal would not be in it, because it was never there.',
     },
     {
       kind: 'p',

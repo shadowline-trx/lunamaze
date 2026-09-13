@@ -110,7 +110,7 @@ export default function TermsPage(): JSX.Element {
         </h1>
         <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[#a6a3b8]">
           {
-            'These terms explain what an Axiom subscription costs, how billing and renewal work, how to cancel, and how refunds are handled. Axiom is free to use, any subscription is recurring and billed by Apple or Google, and the price you pay is always the one shown to you on the purchase screen. This page describes exactly what happens when you subscribe.'
+            'These terms explain what an Axiom subscription costs, how billing and renewal work, how to cancel, and how refunds are handled. Axiom is free to download and requires a subscription, which is recurring and billed by Apple or Google, and the price you pay is always the one shown to you on the purchase screen. This page describes exactly what happens when you subscribe.'
           }
         </p>
         <p className={`${MONO} mt-6 text-[11px] tracking-[0.12em] text-[#8f8ca1]`}>

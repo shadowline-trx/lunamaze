@@ -199,7 +199,7 @@ export default function AxiomFaqClient({ faqs }: AxiomFaqClientProps) {
           </h1>
 
           <p className="mt-6 max-w-2xl text-base leading-[1.75] text-[#a6a3b8] sm:text-lg">
-            A comprehensive clinical reference addressing compulsive pornography use, dopamine receptor density restoration, withdrawal flatlines, and zero-knowledge privacy. Grounded in peer-reviewed neurobiology.
+            A plain-language reference on compulsive pornography use, withdrawal flatlines, dopamine and recovery, and keeping it private. Drawn from peer-reviewed research, with sources.
           </p>
         </div>
 
@@ -366,7 +366,7 @@ export default function AxiomFaqClient({ faqs }: AxiomFaqClientProps) {
         {/* Bottom Studio Recovery CTA */}
         <section className="relative mt-24 rounded-3xl border border-white/[0.08] bg-gradient-to-b from-[#120d28] to-[#070709] p-8 sm:p-12 text-center shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
           <p className={`${MONO} text-[10px] uppercase tracking-[0.28em] text-[#00f5a0] mb-3`}>
-            ZERO-KNOWLEDGE ARCHITECTURE · CRYPTOGRAPHIC ISOLATION
+            YOUR JOURNAL NEVER LEAVES YOUR PHONE
           </p>
 
           <h2 className="text-2xl sm:text-3xl font-light tracking-tight text-[#edeaf5]">
@@ -374,7 +374,7 @@ export default function AxiomFaqClient({ faqs }: AxiomFaqClientProps) {
           </h2>
 
           <p className="mx-auto mt-4 max-w-lg text-sm sm:text-base text-[#a6a3b8] leading-relaxed">
-            AXIOM is an honest habit tracker and neural rewire protocol. One subscription covers all of it: daily check-ins, guided breathing, the pattern engine, and your sealed on-device journal. The Lighthouse urge tool opens in a crisis whether you subscribe or not.
+            AXIOM is an honest habit tracker and recovery protocol. One subscription covers all of it, with a 7-day free trial on the monthly plan: daily check-ins, guided breathing, the pattern engine, and a private journal that never leaves your phone. The Lighthouse urge tool opens in a crisis whether you subscribe or not.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
@@ -410,7 +410,7 @@ export default function AxiomFaqClient({ faqs }: AxiomFaqClientProps) {
             </Link>
           </p>
           <p className="mt-3 text-xs text-[#4e4a60]">
-            © {new Date().getFullYear()} Luna Maze. All recovery reflections sealed client-side.
+            © {new Date().getFullYear()} Luna Maze. Your journal stays on your device.
           </p>
         </div>
       </footer>

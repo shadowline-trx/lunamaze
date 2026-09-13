@@ -61,9 +61,9 @@ const TOOLS: ReadonlyArray<Tool> = [
 ];
 
 const APP_POINTS = [
-  'The Rewire Map — your recovery in real dopamine phases',
+  'The Rewire Map — your recovery laid out in phases',
   'The Lighthouse urge tool, and the breathing that runs inside it, never paywalled',
-  'A journal sealed with your key — we cannot read it',
+  'A private journal that never leaves your phone',
   'Your triggers and risk hours, gathered back into one place',
   'Light on day one, as deep as you want later',
 ] as const;
@@ -141,8 +141,8 @@ export default function IosPage(): JSX.Element {
         </h1>
         <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[#a6a3b8]">
           {betaNow
-            ? 'A private, honest recovery companion that keeps your history on your phone — not on our servers. The App Store listing is still with Apple, but the build is finished and you can install it right now through TestFlight.'
-            : 'A private, honest recovery companion that keeps your history on your phone — not on our servers. It has been on Android for a while; the iPhone build is with Apple now.'}
+            ? 'A private, honest recovery companion that keeps your journal on your phone — not on our servers. The App Store listing is still with Apple, but the build is finished and you can install it right now through TestFlight.'
+            : 'A private, honest recovery companion that keeps your journal on your phone — not on our servers. It has been on Android for a while; the iPhone build is with Apple now.'}
         </p>
 
         {/* Primary action */}
@@ -150,7 +150,8 @@ export default function IosPage(): JSX.Element {
           <div className="ax-card mt-12 p-8" style={{ boxShadow: '0 0 80px rgba(139,124,247,0.10)' }}>
             <p className={`${MONO} text-[11px] uppercase tracking-[0.26em] text-[#8b7cf7]`}>It is live</p>
             <p className="mt-3 leading-relaxed text-[#a6a3b8]">
-              Free to install, and free to use without an account.
+              Free to install, no account needed, and the monthly plan starts
+              with a 7-day free trial for new subscribers.
             </p>
             <a href={apple} className="ax-btn-primary mt-6 inline-block px-8 py-4">
               Download on the App Store
@@ -166,14 +167,14 @@ export default function IosPage(): JSX.Element {
             </p>
             <p className="mt-3 max-w-xl leading-relaxed text-[#c9c6d8]">
               This is the finished build — the same one sitting with Apple for
-              review, not an early alpha. It is free, it needs no account, and
-              nothing you log in it leaves your phone.
+              review, not an early alpha. It needs no account, and your
+              journal never leaves your phone.
             </p>
             <a href={beta ?? '#'} className="ax-btn-primary mt-7 inline-block px-8 py-4">
               Join the beta on TestFlight
             </a>
             <p className={`${MONO} mt-5 text-[10px] uppercase tracking-[0.18em] text-[#8f8ca1]`}>
-              Free · no account · sealed on device
+              No account · journal stays on your phone
             </p>
             {/* The friction is real and stating it costs nothing. */}
             <div className="mt-7 border-t border-white/[0.07] pt-6">
@@ -216,8 +217,9 @@ export default function IosPage(): JSX.Element {
             ))}
           </ul>
           <p className="mt-6 text-sm leading-relaxed text-[#8f8ca1]">
-            Free to use. There is a paid tier, and the things that matter most
-            on a bad night are not behind it.
+            One subscription, with a 7-day free trial on the monthly plan. The
+            thing that matters most on a bad night, the Lighthouse, is never
+            behind it.
           </p>
         </div>
 

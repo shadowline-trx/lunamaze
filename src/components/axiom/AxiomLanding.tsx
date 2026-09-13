@@ -128,10 +128,14 @@ function useStoreHref(): { href: string; label: string } {
 const HERO_BADGE = 'ON YOUR HOME SCREEN, IT JUST SAYS AXIOM';
 const JOURNAL_PLAIN =
   '“I relapsed last night. I don’t want anyone to ever know this.”';
-const JOURNAL_CIPHER =
-  '9f2e▓a71c░04b8▒d3f6█e92a░77c1▒b0e5▓18d4░f36b█c25e▒a90d░41f7▓8c3a░d5e2▒';
-const JOURNAL_CIPHER_ALT =
-  '4c8b░e19f▒72d0█a3c6▓f51e░08b9▒d64a█27f3░c90e▓b1d8▒5a4f█e73c░26d9▓f0a1▒';
+// What the SERVER panel shows. It used to be ciphertext under "No key ·
+// cannot decrypt", which described end-to-end encryption the app does not
+// run: the live backup is readable (streak dates, mood scores) and the
+// encrypted backup path has no call sites. What IS true, and stronger, is
+// that journal text never reaches the server at all: the app strips it and
+// the database refuses it. So the panel shows the absence, still scrambling.
+const JOURNAL_CIPHER = '[ empty ]  no journal text is stored here';
+const JOURNAL_CIPHER_ALT = '[ empty ]  nothing of it to leak, sell or hand over';
 
 // ── tiny inline glyphs (no emoji as UI) ──────────────────────────────
 type IconProps = { className?: string };
@@ -242,13 +246,13 @@ const CHAPTERS = [
     index: '01',
     label: 'NEUROSCIENCE',
     word: 'REWIRE',
-    copy: 'Your brain isn’t broken — it’s plastic. AXIOM maps your recovery in real dopamine phases, so you watch the wiring change week by week.',
+    copy: 'Your brain isn’t broken — it’s plastic. AXIOM lays your recovery out in phases, so you can see how far you have come week by week.',
   },
   {
     index: '02',
     label: 'PRIVACY',
-    word: 'SEALED',
-    copy: 'Everything you tell AXIOM is encrypted on your phone with a key only you hold. Our servers store noise we are mathematically unable to read.',
+    word: 'PRIVATE',
+    copy: 'Your journal, your triggers and your reset reasons never leave your phone. Our servers are built to refuse them, so your journal is never there to read.',
   },
   {
     index: '03',
@@ -260,7 +264,7 @@ const CHAPTERS = [
 
 const DIFF_ROWS = [
   { theirs: 'Fake “80% off” countdowns that reset every visit.', ours: 'One honest price. No countdown, no lie.' },
-  { theirs: 'Your confessions stored readable on their servers.', ours: 'Encrypted on your phone. We hold no key.' },
+  { theirs: 'Your confessions stored readable on their servers.', ours: 'Your journal never leaves your phone.' },
   { theirs: 'Shame and fear tactics to make you pay.', ours: 'Compassion. A relapse is a reset, never a failure.' },
   { theirs: 'Inflated “join 2 million men” social proof.', ours: 'No inflated numbers. We will not lie to you.' },
   { theirs: 'Locked out the moment you stop paying.', ours: 'Mid-urge, the Lighthouse opens. Subscriber or not.' },
@@ -271,7 +275,7 @@ const MARQUEE_WORDS = [
   'NO FAKE COUNTDOWNS',
   'NO DARK PATTERNS',
   'NO SELLING YOUR STORY',
-  'ZERO-KNOWLEDGE',
+  'YOUR JOURNAL STAYS HOME',
   'HONEST BY DESIGN',
 ] as const;
 
@@ -284,9 +288,9 @@ type Feature = {
 };
 
 const FEATURES: Feature[] = [
-  { icon: Icon.Pulse, title: 'The Rewire Map', body: 'Watch your dopamine recovery unfold in real, neuroscience-based phases. Not a novelty counter — a living picture of your brain healing.', accent: 'text-[#8b7cf7]' },
+  { icon: Icon.Pulse, title: 'The Rewire Map', body: 'Your recovery laid out in phases, so every week has a shape instead of a bare count. Not a novelty counter — a picture of the road you are on.', accent: 'text-[#8b7cf7]' },
   { icon: Icon.Life, title: 'Panic toolkit', body: 'Urge timer, grounding, and a breath pacer one tap from anywhere — built for the 90 seconds that decide everything.', accent: 'text-[#ff8f8f]', badge: 'urgent' },
-  { icon: Icon.Journal, title: 'Sealed journal', body: 'Write the whole truth. Every entry is encrypted with your key before it leaves the screen — even we cannot read it.', accent: 'text-[#cdc7ee]' },
+  { icon: Icon.Journal, title: 'Private journal', body: 'Write the whole truth. Your entries never leave your phone — they are not on our servers, so nobody there can read them.', accent: 'text-[#cdc7ee]' },
   { icon: Icon.Compass, title: 'Pattern engine', body: 'The triggers and risk hours you record come back to you gathered — and the app meets you at those hours instead of only counting them afterwards.', accent: 'text-[#8b7cf7]' },
   { icon: Icon.Wind, title: 'Breathe', body: 'Ride a craving out in about ninety seconds with guided breathing tuned for urge waves, not spa music.', accent: 'text-[#7fd8ff]' },
   { icon: Icon.Spark, title: 'Daily practice', body: 'A streak, a check-in, a daily brief. Small honest reps that compound instead of willpower.', accent: 'text-[#ffd27a]' },
@@ -300,11 +304,11 @@ const FEATURES: Feature[] = [
 const FAQS = [
   {
     q: 'Is there a free version?',
-    a: 'No. AXIOM is a paid app and the price is shown before you install. We tried it the other way and it made a worse product: a free tier funded by nagging the people using it. One exception, and it is not a marketing one — if you are in an urge, the Lighthouse opens whether you have paid or not.',
+    a: 'No. AXIOM is a paid app: the monthly plan starts with a 7-day free trial for eligible new subscribers, and the exact price is shown in the app before you pay anything. We tried it the other way and it made a worse product: a free tier funded by nagging the people using it. One exception, and it is not a marketing one — if you are in an urge, the Lighthouse opens whether you have paid or not.',
   },
   {
     q: 'Can anyone at AXIOM read my journal?',
-    a: 'No. Your entries are encrypted on your phone with a key we never see. What our servers store is mathematically unreadable to us — there is nothing to leak, sell, or hand over.',
+    a: 'No. Your journal never leaves your phone. The app does not send it, and our database is built to refuse journal text, trigger names and reset reasons — so there is no journal on our servers to leak, sell, or hand over. If you sign in for backup, only your streak dates and mood scores sync.',
   },
   {
     q: 'What happens when I relapse?',
@@ -312,7 +316,7 @@ const FAQS = [
   },
   {
     q: 'How long does rewiring actually take?',
-    a: 'Honestly: usually longer than the famous ninety days, and different for everyone. Most people feel the flatline lift somewhere in weeks two to six and reach a stable baseline after two to three months. AXIOM maps your arc instead of promising you a date.',
+    a: 'Honestly: usually longer than the famous ninety days, and different for everyone. Many people describe the flatline lifting somewhere in weeks two to six and things steadying after two to three months. AXIOM will not promise you a date.',
   },
   {
     q: 'Do streak counters even work?',
@@ -320,23 +324,23 @@ const FAQS = [
   },
   {
     q: 'Do I need an account or my real name?',
-    a: 'We never ask for your name. The core works on your phone, and anything you choose to sync — for backup or the buddy system — is sealed with your key before it leaves the device. There is no readable story to attach to anyone.',
+    a: 'No account is needed, and your real name is never required. AXIOM works on your phone without signing in. If you choose to sign in for backup, only your streak dates and mood scores sync — your journal never does. A recovery buddy sees whether you are standing, never what you wrote.',
   },
   {
     q: 'Is AXIOM on iPhone?',
-    a: 'Both. Android is on Google Play and iPhone is on the App Store — same app, same price, same sealed journal.',
+    a: 'Both. Android is on Google Play and iPhone is on the App Store — same app, same private journal. The price is shown in the app, in your currency.',
   },
   {
     q: 'How is this different from the big-name quit apps?',
-    a: 'No fake countdowns, no invented member counts, no panic button behind a paywall — and none of your story stored readable in a cloud. Scroll back up to the receipt.',
+    a: 'No fake countdowns, no invented member counts, no panic button behind a paywall — and no journal sitting in a cloud. Scroll back up to the receipt.',
   },
 ] as const;
 
 const CURVE_PHASES = [
   { x: 180, y: 300, w: 'DAYS 1–7', t: 'Withdrawal', d: 'The hardest stretch. Urges peak — this is where the panic tools live.' },
-  { x: 420, y: 330, w: 'WEEKS 2–3', t: 'The flatline', d: 'Feels like nothing is working. It is. Receptors are resetting.' },
-  { x: 660, y: 218, w: 'WEEKS 4–6', t: 'Reconnection', d: 'Energy and focus return. Real things feel good again.' },
-  { x: 900, y: 98, w: 'WEEK 8+', t: 'Stability', d: 'New baseline. Urges become rare, quiet, survivable.' },
+  { x: 420, y: 330, w: 'WEEKS 2–3', t: 'The flatline', d: 'Feels like nothing is working. Most people hit this. It passes.' },
+  { x: 660, y: 218, w: 'WEEKS 4–6', t: 'Reconnection', d: 'Many people notice energy and focus coming back.' },
+  { x: 900, y: 98, w: 'WEEK 8+', t: 'Stability', d: 'For many, urges get rarer, quieter, survivable.' },
 ] as const;
 
 // The recovery curve itself (viewBox 1000×400). Shared so the stroke, the
@@ -896,7 +900,7 @@ export default function AxiomLanding() {
             });
           });
 
-          // ── zero-knowledge split demo ────────────────────────────
+          // ── stays-on-your-phone split demo ───────────────────────
           const sealTl = gsap.timeline({
             scrollTrigger: { trigger: '[data-seal]', start: 'top 62%' },
           });
@@ -919,7 +923,8 @@ export default function AxiomLanding() {
             { autoAlpha: 1, scale: 1, duration: 0.5, ease: 'back.out(2)' },
             1.9,
           );
-          // The server panel never resolves — it re-scrambles forever.
+          // The server panel never settles — it re-scrambles between two
+          // statements of the same absence, forever.
           gsap
             .timeline({ repeat: -1, repeatDelay: 1.4 })
             .to('[data-cipher-text]', {
@@ -1274,7 +1279,7 @@ function Hero() {
           Every other app for this is named the accusation. On your home
           screen, this one says AXIOM. Its notifications say “Daily brief”.
           The recovery work underneath is real and grounded in neuroscience,
-          and your journal is encrypted on your device.
+          and your journal never leaves your phone.
         </p>
         <div data-hero-cta className="mt-11 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <a
@@ -1530,7 +1535,7 @@ function Audit() {
               ))}
             </div>
             <p className={`${MONO} mt-6 text-[10px] uppercase tracking-[0.24em] text-[#8f8ca1]`}>
-              — sealed on your device, not ours
+              — kept on your device, not ours
             </p>
             <div
               data-honest-stamp
@@ -1691,16 +1696,16 @@ function Arc() {
   );
 }
 
-// ── zero-knowledge split demo ────────────────────────────────────────
+// ── stays-on-your-phone split demo ───────────────────────────────────
 function Privacy() {
   return (
     <section id="privacy" data-seal className="relative overflow-hidden bg-[#0a0a0d]/90 py-32">
       <div aria-hidden className="ax-noise-wall" />
       <span aria-hidden className={`${MONO} ax-ghost-num`}>06</span>
       <div className="relative mx-auto max-w-6xl px-6 text-center">
-        <Eyebrow>06 — zero-knowledge</Eyebrow>
+        <Eyebrow>06 — stays on your phone</Eyebrow>
         <h2 data-reveal className="text-[clamp(2.2rem,5vw,3.9rem)] font-semibold leading-[1.04] text-[#f2f1f7]">
-          We can’t read this.{' '}
+          We never get this.{' '}
           <span className="ax-serif text-[#cdc7ee]">That’s the point.</span>
         </h2>
         <div className="mt-16 grid items-stretch gap-6 text-left md:grid-cols-[1fr_auto_1fr]">
@@ -1716,7 +1721,7 @@ function Privacy() {
                 className="flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-[#7ef7c2]/25 bg-[#7ef7c2]/10 px-2.5 py-1 text-[#7ef7c2] opacity-0"
               >
                 <Icon.Lock className="h-3 w-3" />
-                Key stays here
+                Stays here
               </span>
             </div>
             <p data-plain-text className={`${MONO} h-24 overflow-hidden text-base leading-relaxed text-[#c9c6d8] sm:text-lg`}>
@@ -1727,7 +1732,7 @@ function Privacy() {
           <div className="hidden flex-col items-center justify-center gap-3 px-2 md:flex" aria-hidden>
             <span className="h-16 w-px bg-gradient-to-b from-transparent via-[#8b7cf7]/50 to-transparent" />
             <span className={`${MONO} rounded-full border border-white/10 bg-black/40 px-3 py-1.5 text-[9px] uppercase tracking-[0.22em] text-[#9b98ad]`}>
-              E2EE
+              Never sent
             </span>
             <span className="h-16 w-px bg-gradient-to-b from-transparent via-[#8b7cf7]/50 to-transparent" />
           </div>
@@ -1740,26 +1745,26 @@ function Privacy() {
               <span>Our servers — the same entry</span>
               <span className="flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[#9b98ad]">
                 <Icon.Unlock className="h-3 w-3" />
-                No key · cannot decrypt
+                Refused · never stored
               </span>
             </div>
             {/* Fixed height + hidden overflow: the scramble loop swaps glyphs
                 with different fallback widths, and without a hard box the
                 reflow shifts the whole document under the user (scroll
                 anchoring jumps). */}
-            <p data-cipher-text className={`${MONO} h-24 overflow-hidden break-all text-base leading-relaxed text-[#5f5b73] sm:text-lg`}>
+            <p data-cipher-text className={`${MONO} h-24 overflow-hidden break-words text-base leading-relaxed text-[#5f5b73] sm:text-lg`}>
               {JOURNAL_CIPHER}
             </p>
           </div>
         </div>
         <p data-reveal className="mx-auto mt-10 max-w-2xl text-lg leading-relaxed text-[#9b98ad]">
-          Your journal, your triggers, your reset reasons — encrypted on your
-          device with a key only you hold. What reaches us is noise we are
-          mathematically unable to open. Not a policy promise. Architecture.
+          Your journal, your triggers, your reset reasons — they stay on your
+          phone. The app never sends them, and our database is built to refuse
+          them if anything ever tried. Not a policy promise. Architecture.
         </p>
         <div className="mt-12 grid gap-5 sm:grid-cols-3">
           {[
-            { t: 'Zero-knowledge', d: 'Sealed end-to-end. No key on our side, ever.' },
+            { t: 'Never on our servers', d: 'Journal text, triggers and reset reasons are refused at the database. Sign in, and backup holds only streak dates and mood scores.' },
             { t: 'No third-party tracking', d: 'No ad SDKs. No selling data. No profiling.' },
             { t: 'Yours to delete', d: 'Wipe everything, any time. Gone means gone.' },
           ].map((c) => (
@@ -1935,14 +1940,15 @@ function Pricing() {
           <Eyebrow>09 — honest pricing</Eyebrow>
           <h2 data-reveal className="text-[clamp(2.2rem,5vw,3.9rem)] font-semibold leading-[1.04] text-[#f2f1f7]">
             One price.{' '}
-            <span className="ax-serif text-[#cdc7ee]">Shown before you install.</span>
+            <span className="ax-serif text-[#cdc7ee]">Shown before you pay.</span>
           </h2>
           <p data-reveal className="mt-6 text-lg leading-relaxed text-[#9b98ad]">
-            AXIOM is a paid app. You get the whole of it — the streak, the
-            daily check-in, breathing, the daily brief, the pattern engine,
-            the programs, the full history. There is no tier above the one
-            you bought and nothing inside is still selling to you. Cancel in
-            one tap and your data leaves with you.
+            AXIOM is a paid app, and the monthly plan starts with a 7-day free
+            trial. You get the whole of it — the streak, the daily check-in,
+            breathing, the daily brief, the pattern engine, the programs, the
+            full history. There is no tier above the one you bought and
+            nothing inside is still selling to you. Cancel any time and your
+            data leaves with you.
           </p>
           <ul className="mt-8 space-y-3.5">
             {['No fake urgency, ever', 'Price shown honestly, up front', 'No upsell inside the app you bought', 'Cancel any time, keep your data'].map((t) => (
@@ -1986,7 +1992,7 @@ function Pricing() {
               Get AXIOM on Google Play
             </a>
             <p className={`${MONO} mt-4 text-center text-[10px] uppercase tracking-[0.16em] text-[#8f8ca1]`}>
-              Price shown in-app in your currency · cancel anytime
+              7-day free trial on monthly for new subscribers · cancel anytime
             </p>
           </div>
         </div>

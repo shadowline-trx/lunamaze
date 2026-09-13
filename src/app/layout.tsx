@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     'Drift game',
     'Kern Android launcher',
     'minimal Android launcher',
-    'zero-knowledge tools',
+    'privacy-first tools',
     'developer tools',
   ],
   authors: [{ name: 'Luna Maze', url: 'https://lunamaze.com' }],

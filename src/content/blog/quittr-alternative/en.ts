@@ -26,7 +26,7 @@ const article: BlogArticle = {
   description:
     'After the reported Quittr data exposure, the question is not which app has more features. It is which app stores your confessions at all. Three tests you can run on any of them.',
   datePublished: '2026-07-28',
-  dateModified: '2026-07-28',
+  dateModified: '2026-09-13',
   readingMinutes: 7,
   ctaLabel: 'See how Axiom works',
   ctaText:
@@ -91,7 +91,7 @@ const article: BlogArticle = {
     },
     {
       kind: 'p',
-      text: 'What you log is written to storage on your own phone and is not transmitted. Sync, when offered, is encrypted with a key held on the device. The obvious cost is that a lost phone with no backup means lost history, and features that need a server, such as social ones, are harder or absent. The benefit is that a configuration mistake on somebody’s cloud console cannot expose a journal that was never uploaded to it.',
+      text: 'What you log is written to storage on your own phone and is not transmitted. Sync, when offered, should either leave what you write out entirely or encrypt it with a key held on the device. The obvious cost is that a lost phone with no backup means lost history, and features that need a server, such as social ones, are harder or absent. The benefit is that a configuration mistake on somebody’s cloud console cannot expose a journal that was never uploaded to it.',
     },
 
     { kind: 'h2', text: 'Three tests you can run yourself, on any app' },
@@ -115,20 +115,20 @@ const article: BlogArticle = {
     { kind: 'h2', text: 'Where Axiom sits, stated plainly' },
     {
       kind: 'p',
-      text: 'Axiom is a local-first app in the sense described above. Check-ins, streak history, relapse notes and journal entries are stored on your device. An account is optional and the app is fully usable without one. If you never create one, nothing you write is transmitted to us at any point.',
+      text: 'Axiom is a local-first app: what you write stays on your phone. Check-ins, streak history, relapse notes and journal entries are stored on your device. An account is optional and the app is fully usable without one. If you never create one, nothing you write is transmitted to us at any point.',
     },
     {
       kind: 'p',
-      text: 'If you do create an account, here is what exists on our servers: your email address, and, if you switch on backup, your entries encrypted on your phone with a key we do not hold. We also record anonymous usage counts, such as which screens are opened, which never contain anything you write. We cannot read your journal. That is not a policy we could quietly change next year, because the decryption key is not ours to use.',
+      text: 'If you do create an account, here is what exists on our servers: your email address and, for backup, your streak dates and mood scores, encrypted in transit and at rest and readable to us. Your journal text, trigger names and relapse notes are never uploaded, and our database is built to refuse them. We also record usage counts, such as which screens are opened, which never contain anything you write and can be switched off in Settings. We cannot read your journal, because we never receive it.',
     },
     {
       kind: 'p',
-      text: 'The honest costs of this design, which you should weigh: if you lose your phone without enabling backup, your history is gone and we cannot restore it. Recovering an account whose key you have lost is not possible for the same reason. And some features that competitors offer are harder to build this way.',
+      text: 'The honest costs of this design, which you should weigh: your journal is never backed up, so a lost phone takes it with it and we cannot restore it. And some features that competitors offer are harder to build this way.',
     },
     {
       kind: 'callout',
       title: 'What Axiom does not have yet',
-      text: 'The site and app blocker currently runs on Android only. The iOS version is built but needs a Family Controls entitlement from Apple that has not been granted yet, so if blocking is the feature you are shopping for on an iPhone, Axiom is not your answer today. The iPhone build is otherwise complete and in review.',
+      text: 'A site and app blocker is built but not released yet, on either platform, so if blocking is the feature you are shopping for, Axiom is not your answer today. Everything else described on this page is live on Android and iPhone.',
     },
 
     { kind: 'h2', text: 'If you used Quittr, do these first' },
@@ -155,7 +155,7 @@ const article: BlogArticle = {
         },
         {
           q: 'Is there a free alternative to Quittr?',
-          a: 'Axiom has a free tier that does not require an account, and the features that matter most during an urge are not behind the paid tier. Free tiers vary considerably across this category, so check specifically whether the emergency or panic features are gated before you rely on any of them.',
+          a: 'Axiom is a paid app with a 7-day free trial on the monthly plan for new subscribers, and it needs no account. The feature that matters most during an urge is never behind the subscription: the Lighthouse opens whether you have paid or not. Pricing and free tiers vary considerably across this category, so check specifically whether the emergency or panic features are gated before you rely on any of them.',
         },
         {
           q: 'Do any of these apps work without an account?',

@@ -72,7 +72,7 @@ const JSON_LD = {
         'Mobile Application Architecture',
         'Android Debug Bridge',
         'Cognitive Psychology',
-        'Zero-Knowledge Security',
+        'Privacy Engineering',
         'Neuroplasticity',
       ],
       owns: [
@@ -83,7 +83,7 @@ const JSON_LD = {
           url: 'https://lunamaze.com/axiom/',
           applicationCategory: 'HealthApplication',
           operatingSystem: 'iOS, Android',
-          description: 'A calm, honest recovery companion grounded in neuroscience with zero-knowledge privacy.',
+          description: 'A calm, honest recovery companion grounded in neuroscience, with a journal that never leaves your phone.',
         },
         {
           '@type': 'SoftwareApplication',

@@ -130,9 +130,9 @@ const FAQ_ITEMS: ReadonlyArray<FaqItem> = [
     category: 'Quitting & Tools',
     question: 'What app can help me quit porn without shame, fake timers, or privacy leaks?',
     shortAnswer:
-      'AXIOM is an independent, zero-knowledge recovery companion built on neuroscience. It provides honest phase tracking, free panic tools, and client-side encryption.',
+      'AXIOM is an independent, privacy-first recovery companion built on neuroscience. It provides honest phase tracking, a panic tool that never sits behind a paywall, and a journal that never leaves your phone.',
     detailedAnswer:
-      'Unlike legacy quit apps that use fabricated countdown timers or sell user data to advertising brokers, AXIOM was built with strict ethical boundaries: (1) One Honest Price: a single subscription covers the entire app, shown in your own currency before you buy, with no higher tier and no upsell inside the app — and the Lighthouse urge tool opens for anyone in a crisis, subscribed or not; (2) Zero-Knowledge Encryption: all journal entries and recovery logs are encrypted on-device with your personal key — our servers cannot read your story; (3) Neuroscience Framework: tracking based on real dopamine receptor recovery stages, not arbitrary gamification.',
+      'Unlike legacy quit apps that use fabricated countdown timers or sell user data to advertising brokers, AXIOM was built with strict ethical boundaries: (1) One Honest Price: a single subscription covers the entire app, shown in your own currency before you buy, with a 7-day free trial on the monthly plan, no higher tier and no upsell inside the app — and the Lighthouse urge tool opens for anyone in a crisis, subscribed or not; (2) Your Journal Stays on Your Phone: journal entries, trigger names and reset reasons are never sent to our servers, and the database is built to refuse them; if you sign in for backup, only streak dates and mood scores sync; (3) A Phase Framework: tracking laid out in recovery phases, not arbitrary gamification.',
     toolLink: { label: 'Learn more about AXIOM', href: '/axiom/' },
   },
   {
@@ -151,7 +151,7 @@ const FAQ_ITEMS: ReadonlyArray<FaqItem> = [
     shortAnswer:
       'Yes. Commercial adult websites are heavily loaded with third-party tracking scripts, advertising trackers, and ISP logging.',
     detailedAnswer:
-      'Academic studies have shown that over 90% of popular adult websites leak data to third-party ad networks, Google, or data brokers through device fingerprinting, tracking pixels, and unencrypted metadata. Even "Incognito Mode" only clears local browser history — it does NOT conceal traffic from ISPs, Wi-Fi network administrators, or web tracking entities. This is why private, zero-knowledge architecture in recovery tools (like AXIOM) is non-negotiable.',
+      'Academic studies have shown that over 90% of popular adult websites leak data to third-party ad networks, Google, or data brokers through device fingerprinting, tracking pixels, and unencrypted metadata. Even "Incognito Mode" only clears local browser history — it does NOT conceal traffic from ISPs, Wi-Fi network administrators, or web tracking entities. This is why recovery tools should keep what you write on your device (as AXIOM does with your journal) instead of on their servers.',
     reference: 'Vallina-Rodriguez et al. (Tracking and Privacy Leaks in Adult Web Services).',
   },
   {

@@ -19,7 +19,7 @@ import { internalUrl } from '@/lib/paths';
  * untouched — only the shell around them changed.
  */
 
-const LAST_UPDATED = 'July 28, 2026';
+const LAST_UPDATED = 'September 13, 2026';
 const CONTACT_MAILTO = `mailto:${contactEmail}`;
 
 interface Principle {
@@ -200,7 +200,7 @@ export default function PrivacyPage(): JSX.Element {
             <li>
               <strong>{'How it links to you: '}</strong>
               {
-                'when you are signed in, events are tagged with your account ID; when you are signed out, they are not linked to any account. Deleting your account removes the link between past events and you.'
+                'events carry a random install identifier. The App also records, once per install and again only if it changes, which anonymous RevenueCat identifier belongs to that install (the Support ID shown in Settings), so that if you contact us about a purchase we can find the right record. When you are signed in, events are additionally tagged with your account ID. Deleting your account removes the link between past events and your account.'
               }
             </li>
             <li>
@@ -285,6 +285,12 @@ export default function PrivacyPage(): JSX.Element {
               <strong>{'Messages you send us: '}</strong>
               {
                 'when you contact the team through the App (for example, the in-app founder channel), report a buddy, or answer our cancellation survey, the message or feedback you write and your account ID are sent to and stored on our servers so we can read and respond. If you ask for a personal reply, we also store the email you provide for that purpose. We use these only to support you and improve the App, never for advertising, and they are deleted when you delete your account.'
+              }
+            </li>
+            <li>
+              <strong>{'The 30-day guarantee request: '}</strong>
+              {
+                'if you ask for it from Settings, the App opens an email in your own mail app, addressed to us, which you choose whether to send. It is pre-filled with your Support ID, your account ID if you are signed in, your plan, its renewal date, your platform and the app version, so we can find and extend the right subscription. It never includes anything you have written in the App.'
               }
             </li>
           </ul>

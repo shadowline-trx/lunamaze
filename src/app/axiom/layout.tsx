@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://lunamaze.com'),
   title: 'AXIOM — Quit Porn App. Your Phone Never Says So.',
   description:
-    'Every other quit-porn app is named the accusation. On your home screen this one just says AXIOM. Real porn addiction recovery grounded in neuroscience, journal encrypted on your device, one honest price, no account needed to start.',
+    'Every other quit-porn app is named the accusation. On your home screen this one just says AXIOM. Real porn addiction recovery grounded in neuroscience, a journal that never leaves your phone, one honest price, no account needed to start.',
   keywords: [
     'quit porn app',
     'porn addiction recovery',
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     'compulsive sexual behavior disorder',
     'ICD-11 CSBD 6C72',
     'how to stop gooning',
-    'zero-knowledge addiction tracker',
+    'private addiction tracker',
     'best quit porn app android ios',
     'deltaFosB dopamine recovery',
     'porn addiction self test',
@@ -63,7 +63,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'AXIOM — Quit Porn App. Your Phone Never Says So.',
     description:
-      'Every other quit-porn app is named the accusation. On your home screen this one just says AXIOM. Real porn addiction recovery grounded in neuroscience, journal encrypted on your device, one honest price, no account needed to start.',
+      'Every other quit-porn app is named the accusation. On your home screen this one just says AXIOM. Real porn addiction recovery grounded in neuroscience, a journal that never leaves your phone, one honest price, no account needed to start.',
     type: 'website',
     url: 'https://lunamaze.com/axiom/',
     siteName: 'Luna Maze',
@@ -81,7 +81,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'AXIOM — Quit Porn App. Your Phone Never Says So.',
     description:
-      'Every other quit-porn app is named the accusation. On your home screen this one just says AXIOM. Real porn addiction recovery grounded in neuroscience, journal encrypted on your device, one honest price, no account needed to start.',
+      'Every other quit-porn app is named the accusation. On your home screen this one just says AXIOM. Real porn addiction recovery grounded in neuroscience, a journal that never leaves your phone, one honest price, no account needed to start.',
     images: ['https://lunamaze.com/images/axiom/og.jpg'],
   },
 };
@@ -98,7 +98,7 @@ const JSON_LD = {
       name: 'AXIOM',
       alternateName: ['Axiom — Quit Porn Recovery', 'Axiom Habit Tracker'],
       description:
-        'A calm, honest porn-recovery companion grounded in real neuroscience. Zero-knowledge encryption: your journal and history never leave your phone readable.',
+        'A calm, honest porn-recovery companion grounded in real neuroscience. Private by design: your journal never leaves your phone.',
       url: 'https://lunamaze.com/axiom/',
       image: 'https://lunamaze.com/images/axiom/og.jpg',
       operatingSystem: 'Android, iOS',
@@ -114,7 +114,7 @@ const JSON_LD = {
           'Free to install. AXIOM Protocol subscription required to use the app; price shown in your own currency before you buy. The Lighthouse urge tool opens for anyone in a crisis, subscribed or not.',
       },
       featureList: [
-        'Zero-knowledge encrypted journal',
+        'Private journal that never leaves your phone',
         'Neuroscience-based recovery phases',
         'Lighthouse urge tool, open in a crisis to anyone',
         'Guided somatic breathing',
@@ -161,7 +161,7 @@ const JSON_LD = {
           name: 'Is there a free version?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'No. AXIOM is a paid app and the price is shown before you install. We tried it the other way and it made a worse product: a free tier funded by nagging the people using it. One exception, and it is not a marketing one — if you are in an urge, the Lighthouse opens whether you have paid or not.',
+            text: 'No. AXIOM is a paid app: the monthly plan starts with a 7-day free trial for eligible new subscribers, and the exact price is shown in the app before you pay anything. We tried it the other way and it made a worse product: a free tier funded by nagging the people using it. One exception, and it is not a marketing one — if you are in an urge, the Lighthouse opens whether you have paid or not.',
           },
         },
         {
@@ -169,7 +169,7 @@ const JSON_LD = {
           name: 'Can anyone at AXIOM read my journal?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'No. Your entries are encrypted on your phone with a key we never see. What our servers store is mathematically unreadable to us — there is nothing to leak, sell, or hand over.',
+            text: 'No. Your journal never leaves your phone. The app does not send it, and our database is built to refuse journal text, trigger names and reset reasons — so there is no journal on our servers to leak, sell, or hand over. If you sign in for backup, only your streak dates and mood scores sync.',
           },
         },
         {
@@ -185,7 +185,7 @@ const JSON_LD = {
           name: 'How long does rewiring actually take?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'Honestly: usually longer than the famous ninety days, and different for everyone. Most people feel the flatline lift somewhere in weeks two to six and reach a stable baseline after two to three months. AXIOM maps your arc instead of promising you a date.',
+            text: 'Honestly: usually longer than the famous ninety days, and different for everyone. Many people describe the flatline lifting somewhere in weeks two to six and things steadying after two to three months. AXIOM will not promise you a date.',
           },
         },
         {
@@ -201,7 +201,7 @@ const JSON_LD = {
           name: 'Do I need an account or my real name?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'We never ask for your name. The core works on your phone, and anything you choose to sync is sealed with your key before it leaves the device. There is no readable story to attach to anyone.',
+            text: 'No account is needed, and your real name is never required. AXIOM works on your phone without signing in. If you choose to sign in for backup, only your streak dates and mood scores sync — your journal never does. A recovery buddy sees whether you are standing, never what you wrote.',
           },
         },
         {
@@ -209,7 +209,7 @@ const JSON_LD = {
           name: 'Is AXIOM on iPhone?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'Both. Android is on Google Play and iPhone is on the App Store — same app, same price, same sealed journal.',
+            text: 'Both. Android is on Google Play and iPhone is on the App Store — same app, same private journal. The price is shown in the app, in your currency.',
           },
         },
         {
@@ -217,7 +217,7 @@ const JSON_LD = {
           name: 'How is this different from legacy quit apps?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'No fake countdowns, no invented member counts, no panic button behind a paywall — and zero bytes of your recovery story stored unencrypted in a cloud.',
+            text: 'No fake countdowns, no invented member counts, no panic button behind a paywall — and no journal sitting in a cloud.',
           },
         },
       ],
