@@ -148,6 +148,24 @@ export function playIsBlockedHere(): boolean {
 }
 
 /**
+ * Whether the App Store should be the first store this visitor is offered.
+ * Browser only, like `playIsBlockedHere`: call it from an effect.
+ *
+ * Apple devices get the App Store, including Macs, because a Mac visitor is
+ * very likely holding an iPhone and iPadOS reports itself as a Mac. A desktop
+ * visitor in the US or Australia gets it too: Play 404s there, so the App Store
+ * is the only listing that visitor can act on. Android visitors never do,
+ * because an App Store link is useless on an Android phone.
+ */
+export function appStoreFirst(): boolean {
+  if (APP_STORE_ID === null) return false;
+  const ua = navigator.userAgent;
+  if (/Android/i.test(ua)) return false;
+  if (/iPhone|iPad|iPod|Macintosh/i.test(ua)) return true;
+  return playIsBlockedHere();
+}
+
+/**
  * App Store URL tagged for `source`, or `null` while iOS is unreleased.
  *
  * `ct` is Apple's campaign token. Full App Analytics attribution also wants the

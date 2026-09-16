@@ -15,7 +15,7 @@ const article: BlogArticle = {
   readingMinutes: 8,
   ctaLabel: 'Lihat cara kerja Axiom',
   ctaText:
-    'Axiom menandai periode flatline di timeline pemulihanmu sendiri — jadi minggu yang datar terbaca sebagai tahap, bukan vonis. Semua yang kamu catat tetap tersimpan di ponselmu.',
+    'Axiom menandai periode flatline di timeline pemulihanmu sendiri — jadi minggu yang datar terbaca sebagai tahap, bukan vonis. Jurnalmu tidak pernah keluar dari ponselmu.',
   blocks: [
     {
       kind: 'p',

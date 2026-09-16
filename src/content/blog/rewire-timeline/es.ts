@@ -16,7 +16,7 @@ const article: BlogArticle = {
   readingMinutes: 9,
   ctaLabel: 'Mira cómo funciona Axiom',
   ctaText:
-    'Axiom sigue tu recuperación contra esta misma línea de tiempo — de forma totalmente privada. Nada de lo que registras sale de tu teléfono.',
+    'Axiom sigue tu recuperación contra esta misma línea de tiempo — de forma totalmente privada. Tu diario nunca sale de tu teléfono.',
   blocks: [
     {
       kind: 'p',

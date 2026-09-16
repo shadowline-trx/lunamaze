@@ -15,7 +15,7 @@ const article: BlogArticle = {
   readingMinutes: 8,
   ctaLabel: 'Mira cómo funciona Axiom',
   ctaText:
-    'Axiom marca la ventana del flatline en tu propia línea de tiempo — así una semana gris se lee como una etapa, no como una condena. Todo lo que registras se queda en tu teléfono.',
+    'Axiom marca la ventana del flatline en tu propia línea de tiempo — así una semana gris se lee como una etapa, no como una condena. Tu diario nunca sale de tu teléfono.',
   blocks: [
     {
       kind: 'p',

@@ -18,7 +18,7 @@ const article: BlogArticle = {
   readingMinutes: 7,
   ctaLabel: 'See how Axiom works',
   ctaText:
-    'Axiom takes the danger hour you name yourself and meets you there, privately — and after dark it dims and slows itself down. Nothing readable about your recovery leaves your phone.',
+    'After dark, Axiom dims and slows itself down, because that is when this is hardest. Your journal never leaves your phone.',
   blocks: [
     {
       kind: 'p',

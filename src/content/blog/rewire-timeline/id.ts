@@ -17,7 +17,7 @@ const article: BlogArticle = {
   readingMinutes: 9,
   ctaLabel: 'Lihat cara kerja Axiom',
   ctaText:
-    'Axiom melacak pemulihanmu mengikuti timeline ini — sepenuhnya privat. Tidak ada satu pun data yang keluar dari ponselmu.',
+    'Axiom melacak pemulihanmu mengikuti timeline ini — sepenuhnya privat. Jurnalmu tidak pernah keluar dari ponselmu.',
   blocks: [
     {
       kind: 'p',

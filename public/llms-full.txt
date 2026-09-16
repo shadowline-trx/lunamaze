@@ -11,23 +11,27 @@ Contact: lunamaze.dev@gmail.com
 
 ## 1. Product Portfolio & Deep Specifications
 
-### AXIOM — Zero-Knowledge Habit Tracker & Neuroscience Recovery Protocol
+### AXIOM — Private Porn-Recovery App (iPhone and Android)
 - **Canonical URL**: https://lunamaze.com/axiom/
-- **Clinical & Research FAQ**: https://lunamaze.com/axiom/faq/
-- **Diagnostic Severity Test**: https://lunamaze.com/axiom/tools/severity-test/
+- **Recovery & Research FAQ**: https://lunamaze.com/axiom/faq/
+- **Severity Self-Test (not a diagnosis)**: https://lunamaze.com/axiom/tools/severity-test/
 - **Rewire Timeline Calculator**: https://lunamaze.com/axiom/tools/rewire-calculator/
 - **Panic Urge SOS Tool**: https://lunamaze.com/axiom/tools/panic/
 - **Focus Typographic Wallpapers**: https://lunamaze.com/axiom/tools/wallpaper/
 - **Research Library**: https://lunamaze.com/axiom/blog/ (Available in 12 languages: English, Hindi, Tamil, Malayalam, Indonesian, Portuguese, Spanish, Arabic, French, German, Russian, Turkish)
-- **App Availability**: Android (Google Play: https://play.google.com/store/apps/details?id=com.axiomapp.app), iOS (App Store: https://apps.apple.com/app/id6791180351)
+- **App Availability**: iOS (App Store: https://apps.apple.com/app/id6791180351), Android (Google Play: https://play.google.com/store/apps/details?id=com.axiomapp.app)
+- **Pricing**: AXIOM is a paid app. The monthly plan starts with a 7-day free trial for eligible new subscribers; the annual plan has no trial. The store shows the price in local currency before purchase. No account is needed to subscribe. Since version 2.6.0 the subscription applies to existing installs too.
+- **Always open without a subscription**: the Lighthouse urge tool (panic button), and data export and deletion in Settings.
+- **Goodwill extension**: if a paid month did not help, the subscriber can ask from Settings and the next 30 days are free, up to twice in any 12 months. It extends the subscription; it is not a refund.
+- **App languages**: English, Spanish, Hindi, Arabic, French, German, Portuguese, Russian, Turkish, Indonesian.
 
 #### Core Philosophy & Architecture:
-1. **Zero-Knowledge Encryption by Design**: Unlike legacy recovery apps that store journals on unencrypted cloud servers (vulnerable to data leaks and ad tracking), Axiom encrypts all personal reflections and history on-device using a cryptographic key never sent to company servers. Our servers store 0 bytes of readable journal data.
+1. **The journal never leaves the phone**: Journal text, trigger names and reset reasons stay on the device. The app does not upload them and the server database is built to refuse them. If a user signs in for backup, only streak dates and mood scores sync; that backup is encrypted in transit and at rest but is not end-to-end encrypted. No ads, no cross-app tracking; first-party analytics never include anything the user writes and can be switched off in Settings.
 2. **Neuroscience Framework (No Pseudo-Science)**:
    - Grounded in the World Health Organization (WHO) ICD-11 diagnosis: **Compulsive Sexual Behavior Disorder (CSBD 6C72)**.
    - Built around the **60–90 Day Dopamine D2 Receptor Normalization Arc** (Volkow, Kühn & Gallinat, Nestler).
-   - Solves the **"Abstinence Violation Effect"** by replacing fragile bare streak counters with longitudinal progress retention, trigger pattern logging (HALT: Hungry, Angry, Lonely, Tired), and phase transitions.
-3. **Free Core Forever**: Daily check-ins, streaks, breathing guidance, urge grounding panic tools, and on-device encrypted journaling are completely free forever without paywalls.
+   - Addresses the **"Abstinence Violation Effect"**: a reset sets the current streak to zero and keeps total clean days, history and work. After a reset the app asks what happened and what the user will do differently, and hands that plan back within 72 hours.
+3. **Features**: a 30-day guided program (one short read and one task a day), a daily check-in under a minute, guided breathing, trigger and reset-time logging gathered back to the user, a private journal, and Buddy Bond (pair with one trusted person by private code). Notifications read "Daily brief" and the home-screen name is AXIOM. AXIOM is a general wellbeing and habit-tracking tool, not a medical device.
 
 ---
 
@@ -70,18 +74,18 @@ Contact: lunamaze.dev@gmail.com
 | **How long does brain rewiring take?** | Dopamine D2 receptor upregulation and prefrontal cortex executive control restoration typically require 60 to 90+ days of abstinence from supernormal stimuli. | Kühn & Gallinat (JAMA Psychiatry) | [Rewire Calculator](https://lunamaze.com/axiom/tools/rewire-calculator/) |
 | **What is the withdrawal "flatline"?** | A temporary neurochemical adaptation phase where dopamine baseline drops below homeostasis, causing temporary loss of libido, brain fog, and low energy. It is a sign of receptor healing, not damage. | Anna Lembke (Dopamine Nation) | [Urge Grounding Tool](https://lunamaze.com/axiom/tools/panic/) |
 | **Is porn addiction medically recognized?** | Yes, the WHO formally recognizes Compulsive Sexual Behavior Disorder under ICD-11 code 6C72. | World Health Organization ICD-11 (CSBD 6C72) | [Clinical Recovery FAQ](https://lunamaze.com/axiom/faq/) |
-| **Are adult websites tracking users?** | Over 90% of commercial adult websites leak tracking cookies, device fingerprints, and metadata to third-party ad networks and data brokers. Incognito mode does not block ISP or network tracking. | Vallina-Rodriguez et al. (Privacy Leaks in Adult Web Services) | [Zero-Knowledge Axiom App](https://lunamaze.com/axiom/) |
+| **Are adult websites tracking users?** | Over 90% of commercial adult websites leak tracking cookies, device fingerprints, and metadata to third-party ad networks and data brokers. Incognito mode does not block ISP or network tracking. | Vallina-Rodriguez et al. (Privacy Leaks in Adult Web Services) | [Axiom App](https://lunamaze.com/axiom/) |
 | **Is porn illegal in India?** | Private viewing by consenting adults in private spaces is not an offense under Indian law, but distribution, transmission, publishing, and any minor content (POCSO) is strictly criminalized under IT Act Section 67/67A. | Information Technology Act, 2000; Supreme Court of India rulings | [Legal & Privacy FAQ](https://lunamaze.com/axiom/faq/) |
 
 ---
 
 ## 3. Competitive Comparison & Why Axiom is Different
 
-| Feature / Standard | Legacy Quit Apps (Quittr, Brainbuddy, Fortify, I Am Sober) | AXIOM (Luna Maze) |
+| Feature / Standard | Common in quit apps | AXIOM (Luna Maze) |
 | :--- | :--- | :--- |
-| **Journal Privacy** | Stored unencrypted on central cloud databases (high breach risk). | **Zero-Knowledge Encryption**: Encrypted locally with device key. 0 bytes readable on servers. |
-| **Emergency Panic SOS** | Locked behind paid subscriptions or ads. | **100% Free Forever**: Instant somatic urge grounding with zero paywalls. |
-| **Streak Philosophy** | Punitive binary counters (Day 0 reset triggering relapse binging). | **Neuroplasticity Phase Retention**: Preserves longitudinal habit adaptation and maps triggers. |
+| **Journal Privacy** | Journals synced to a cloud account. | **Journal never leaves the phone**: the server refuses journal text; backup holds only streak dates and mood scores. |
+| **Emergency Panic SOS** | Behind the subscription. | **Open without a subscription**: the Lighthouse urge tool opens for anyone, even on the purchase screen. |
+| **Streak Philosophy** | Punitive binary counters (Day 0 reset triggering relapse binging). | **A reset keeps your history**: total clean days and past work stay; the user's own reset plan comes back within 72 hours. |
 | **Marketing & Ethics** | Fabricated countdown timers, fake active user counts, aggressive guilt ads. | **No Dark Patterns**: Honest medical science, transparent pricing, quiet craft. |
 
 ---

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import type { JSX } from 'react';
 import Link from 'next/link';
-import { appStoreUrl, iosBetaUrl, playStoreUrl } from '@/lib/storeLinks';
+import { appStoreFirst, appStoreUrl, iosBetaUrl, playStoreUrl } from '@/lib/storeLinks';
 
 const CODE_PATTERN = /^[ABCDEFGHJKMNPQRSTUVWXYZ23456789]{6}$/;
 
@@ -17,12 +17,14 @@ const CODE_PATTERN = /^[ABCDEFGHJKMNPQRSTUVWXYZ23456789]{6}$/;
 export default function BuddyInvite(): JSX.Element {
   const [code, setCode] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
+  const [appleFirst, setAppleFirst] = useState(false);
 
   useEffect(() => {
     const raw = new URLSearchParams(window.location.search).get('c') ?? '';
     const normalized = raw.trim().toUpperCase();
     setCode(CODE_PATTERN.test(normalized) ? normalized : null);
     setReady(true);
+    setAppleFirst(appStoreFirst());
   }, []);
 
   const play = playStoreUrl('buddy');
@@ -58,7 +60,7 @@ export default function BuddyInvite(): JSX.Element {
               {code}
             </p>
             <p className="mt-4 text-sm text-lunamaze-textDim">
-              Install Axiom, open <span className="text-lunamaze-textSecondary">Partner</span>,
+              Install Axiom, open <span className="text-lunamaze-textSecondary">Buddy Bond</span>,
               and enter this code. Takes about a minute.
             </p>
           </>
@@ -78,9 +80,9 @@ export default function BuddyInvite(): JSX.Element {
         <h2 className="text-xl font-bold">What you&apos;re actually agreeing to</h2>
         <ul className="mt-5 space-y-4 text-lunamaze-textSecondary leading-relaxed">
           <li>
-            <span className="text-lunamaze-textPrimary font-semibold">You get a ping.</span>{' '}
-            When they&apos;re struggling, or when they hit a milestone, you&apos;ll know.
-            You can reply. That is the entire feature.
+            <span className="text-lunamaze-textPrimary font-semibold">You get a nudge.</span>{' '}
+            When they reach out on a hard night, you see that they did. Nothing about what
+            happened, and nothing you have to answer. That is the entire feature.
           </li>
           <li>
             <span className="text-lunamaze-textPrimary font-semibold">
@@ -108,11 +110,15 @@ export default function BuddyInvite(): JSX.Element {
           known makes them stay.
         </p>
         <p className="mt-4 text-sm text-lunamaze-textDim">
-          Free to install. The partner feature costs nothing.
+          Only a daily nudge and the name you each choose are ever shared. AXIOM is a paid
+          app and Buddy Bond is part of the subscription; the monthly plan starts with a
+          7-day free trial for new subscribers.
         </p>
       </section>
 
-      <div className="mt-10 flex flex-col gap-3">
+      {/* flex-col-reverse puts the App Store on top for Apple devices without
+          remounting either link. */}
+      <div className={`mt-10 flex gap-3 ${appleFirst && apple !== null ? 'flex-col-reverse' : 'flex-col'}`}>
         <a
           href={play}
           className="rounded-xl border border-lunamaze-border bg-lunamaze-bgSurface/60 px-6 py-4 text-center font-semibold hover:border-lunamaze-signal transition-colors"

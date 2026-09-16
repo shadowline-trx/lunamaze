@@ -404,8 +404,8 @@ export default function RewireCalculator(): JSX.Element {
             <div className="relative p-5 sm:p-9">
               <h3 className="text-xl sm:text-2xl font-bold tracking-tight">Walk the map with company</h3>
               <p className="mt-4 text-lunamaze-textSecondary leading-relaxed">
-                Axiom tracks your recovery against this exact arc — including the flatline window
-                and your personal danger hour — privately. Nothing you log ever leaves your phone.
+                Axiom tracks your recovery against this exact arc, flatline window included,
+                privately. Your journal never leaves your phone.
               </p>
               {/* `hover:-translate-y-0.5` was the only feedback these two
                   carried, and hover does not exist on the devices that see

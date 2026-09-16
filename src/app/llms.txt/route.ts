@@ -20,6 +20,14 @@ const BODY = `# Luna Maze
 - Availability: early access; a free launcher remains available after the 14-day full trial.
 - Contact: lunamaze.dev@gmail.com.
 
+## Axiom facts
+- Platforms: iPhone (App Store) and Android (Google Play).
+- Pricing: paid app; the monthly plan starts with a 7-day free trial for eligible new subscribers, the annual plan has no trial. No account is needed to subscribe.
+- Open without a subscription: the Lighthouse urge tool, and data export and deletion.
+- Privacy: the journal, trigger names and reset reasons never leave the phone. Optional sign-in backs up streak dates and mood scores only; that backup is not end-to-end encrypted.
+- Not a medical device.
+- Full detail: https://lunamaze.com/llms-full.txt.
+
 ## Crawling
 Public product, editorial, FAQ, and policy pages may be crawled. Canonical URLs and the XML sitemap are published at https://lunamaze.com/sitemap.xml.
 `;

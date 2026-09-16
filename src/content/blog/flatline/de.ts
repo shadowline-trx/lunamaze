@@ -15,7 +15,7 @@ const article: BlogArticle = {
   readingMinutes: 8,
   ctaLabel: 'So funktioniert Axiom',
   ctaText:
-    'Axiom markiert das Flatline-Fenster auf deiner eigenen Zeitleiste — so liest sich eine graue Woche als Phase, nicht als Urteil. Alles, was du einträgst, bleibt auf deinem Handy.',
+    'Axiom markiert das Flatline-Fenster auf deiner eigenen Zeitleiste — so liest sich eine graue Woche als Phase, nicht als Urteil. Dein Journal verlässt nie dein Handy.',
   blocks: [
     {
       kind: 'p',

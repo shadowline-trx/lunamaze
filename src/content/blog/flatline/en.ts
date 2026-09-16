@@ -18,7 +18,7 @@ const article: BlogArticle = {
   readingMinutes: 8,
   ctaLabel: 'See how Axiom works',
   ctaText:
-    'Axiom marks the flatline window on your own timeline so a gray week reads as a stage, not a verdict. Everything you log stays on your phone.',
+    'Axiom marks the flatline window on your own timeline so a gray week reads as a stage, not a verdict. Your journal never leaves your phone.',
   blocks: [
     {
       kind: 'p',

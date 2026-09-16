@@ -15,7 +15,7 @@ const article: BlogArticle = {
   readingMinutes: 7,
   ctaLabel: 'Lihat cara kerja Axiom',
   ctaText:
-    'Axiom mempelajari jam bahaya pribadimu dari catatan jujurmu sendiri dan memperingatkanmu sebelum jam itu tiba — secara privat. Semua yang kamu catat tidak pernah meninggalkan ponselmu.',
+    'Saat malam tiba, Axiom meredup dan melambat, karena saat itulah paling berat. Jurnalmu tidak pernah keluar dari ponselmu.',
   blocks: [
     {
       kind: 'p',

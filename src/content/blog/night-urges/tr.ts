@@ -15,7 +15,7 @@ const article: BlogArticle = {
   readingMinutes: 7,
   ctaLabel: 'Axiom nasıl çalışıyor, gör',
   ctaText:
-    'Axiom, kendi dürüst kayıtlarından senin kişisel tehlikeli saatini öğrenir ve o saat gelmeden seni uyarır — gizlilik içinde. Takip ettiğin hiçbir şey telefonundan çıkmaz.',
+    'Hava karardığında Axiom ışığını kısar ve yavaşlar, çünkü en zor zaman odur. Günlüğün telefonundan asla çıkmaz.',
   blocks: [
     {
       kind: 'p',

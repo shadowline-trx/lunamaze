@@ -15,7 +15,7 @@ const article: BlogArticle = {
   readingMinutes: 7,
   ctaLabel: 'Mira cómo funciona Axiom',
   ctaText:
-    'Axiom aprende tu hora de peligro personal a partir de tus propios registros honestos y te avisa antes de que llegue — en privado. Nada de lo que registras sale de tu teléfono.',
+    'Cuando oscurece, Axiom baja el brillo y va más despacio, porque es cuando más cuesta. Tu diario nunca sale de tu teléfono.',
   blocks: [
     {
       kind: 'p',

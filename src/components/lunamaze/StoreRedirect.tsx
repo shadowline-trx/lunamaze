@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import type { JSX } from 'react';
 import Link from 'next/link';
-import { appStoreUrl, iosBetaUrl, playIsBlockedHere, playStoreUrl } from '@/lib/storeLinks';
+import { appStoreFirst, appStoreUrl, iosBetaUrl, playIsBlockedHere, playStoreUrl } from '@/lib/storeLinks';
 
 type Phase = 'detecting' | 'redirecting' | 'choose';
 
@@ -23,6 +23,7 @@ interface StoreRedirectProps {
 export default function StoreRedirect({ source }: StoreRedirectProps): JSX.Element {
   const [phase, setPhase] = useState<Phase>('detecting');
   const [playBlocked, setPlayBlocked] = useState(false);
+  const [appleFirst, setAppleFirst] = useState(false);
 
   const play = playStoreUrl(source);
   const apple = appStoreUrl(source);
@@ -39,6 +40,7 @@ export default function StoreRedirect({ source }: StoreRedirectProps): JSX.Eleme
     // those two markets get the page instead of the bounce.
     const blocked = isAndroid && playIsBlockedHere();
     setPlayBlocked(blocked);
+    setAppleFirst(appStoreFirst());
 
     // An Apple visitor with no live iOS listing must not be bounced to Play —
     // they'd land on a store page they cannot install from.
@@ -80,7 +82,11 @@ export default function StoreRedirect({ source }: StoreRedirectProps): JSX.Eleme
         </p>
       )}
 
-      <div className="mt-8 flex flex-col gap-3">
+      {/* A desktop visitor in the US or Australia can only use the App Store,
+          so it goes on top for them (see `appStoreFirst`). */}
+      <div
+        className={`mt-8 flex gap-3 ${appleFirst && apple !== null && !playBlocked ? 'flex-col-reverse' : 'flex-col'}`}
+      >
         {playBlocked ? (
           <>
             <div className="rounded-xl border border-lunamaze-signal/40 bg-lunamaze-bgSurface/60 px-6 py-5 text-left">

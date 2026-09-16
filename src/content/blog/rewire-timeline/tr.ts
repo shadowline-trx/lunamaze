@@ -15,7 +15,7 @@ const article: BlogArticle = {
   readingMinutes: 9,
   ctaLabel: 'Axiom nasıl çalışıyor, gör',
   ctaText:
-    'Axiom, toparlanmanı tam da bu zaman çizelgesi üzerinden takip eder — gizlice değil, gizli kalarak: kaydettiğin hiçbir şey telefonundan çıkmaz.',
+    'Axiom, toparlanmanı tam da bu zaman çizelgesi üzerinden takip eder — gizli kalarak. Günlüğün telefonundan asla çıkmaz.',
   blocks: [
     {
       kind: 'p',

@@ -15,7 +15,7 @@ const article: BlogArticle = {
   readingMinutes: 9,
   ctaLabel: 'So funktioniert Axiom',
   ctaText:
-    'Axiom verfolgt deine Genesung entlang genau dieses Zeitplans — privat. Nichts, was du einträgst, verlässt jemals dein Handy.',
+    'Axiom verfolgt deine Genesung entlang genau dieses Zeitplans — privat. Dein Journal verlässt nie dein Handy.',
   blocks: [
     {
       kind: 'p',

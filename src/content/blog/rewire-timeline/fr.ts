@@ -15,7 +15,7 @@ const article: BlogArticle = {
   readingMinutes: 9,
   ctaLabel: 'Voir comment Axiom fonctionne',
   ctaText:
-    'Axiom suit ta récupération sur cette chronologie exacte — en privé. Rien de ce que tu enregistres ne quitte ton téléphone.',
+    'Axiom suit ta récupération sur cette chronologie exacte — en privé. Ton journal ne quitte jamais ton téléphone.',
   blocks: [
     {
       kind: 'p',

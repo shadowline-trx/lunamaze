@@ -166,6 +166,22 @@ const JSON_LD = {
         },
         {
           '@type': 'Question',
+          name: 'I installed AXIOM before it was paid. What changed?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Since version 2.6.0 a subscription is needed on every install, including ones from before. Your data stays yours either way: export it or delete it from Settings, with or without a subscription, and the Lighthouse still opens whether you pay or not. Already subscribed on another phone? Tap Sign in or Restore on the membership screen.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'What if it does not help me?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Ask from Settings and we make the next 30 days free. You do not have to explain what happened. It works on paid subscriptions, up to twice in any 12 months, and it adds time rather than refunding money.',
+          },
+        },
+        {
+          '@type': 'Question',
           name: 'Can anyone at AXIOM read my journal?',
           acceptedAnswer: {
             '@type': 'Answer',
@@ -177,7 +193,7 @@ const JSON_LD = {
           name: 'What happens when I relapse?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'A reset, not a verdict. You log it honestly, the app maps what led there, and your history keeps its value. Shame is not a strategy here.',
+            text: 'A reset, not a verdict. You log it honestly, AXIOM asks what happened and what you will do differently, and that plan comes back to you within 72 hours. Your total and your history stay. Shame is not a strategy here.',
           },
         },
         {

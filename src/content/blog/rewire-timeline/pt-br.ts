@@ -16,7 +16,7 @@ const article: BlogArticle = {
   readingMinutes: 9,
   ctaLabel: 'Veja como o Axiom funciona',
   ctaText:
-    'O Axiom acompanha sua recuperação seguindo exatamente essa linha do tempo — de forma totalmente privada. Nada do que você registra sai do seu celular.',
+    'O Axiom acompanha sua recuperação seguindo exatamente essa linha do tempo — de forma totalmente privada. Seu diário nunca sai do seu celular.',
   blocks: [
     {
       kind: 'p',

@@ -11,13 +11,14 @@ import { internalUrl } from '@/lib/paths';
  * Studio" language of the main landing; a max-conversion page, so it stays
  * static and instant (CSS stage only, no WebGL, no scroll choreography).
  *
- * The order is conversion order: install-now first (TestFlight), the
- * two-install friction stated plainly, what the app is, the free browser
- * tools as a zero-commitment fallback, and the waitlist last.
+ * The order is conversion order: install-now first, what the app is, the
+ * free browser tools as a zero-commitment fallback, and (only while the
+ * listing is not live) the waitlist last.
  *
- * When Apple approves, filling APP_STORE_ID in src/lib/storeLinks.ts flips
- * this page to a plain download page and retires both the beta and the
- * waitlist. Nothing else needs editing.
+ * APP_STORE_ID in src/lib/storeLinks.ts drives all three states: set, the
+ * page is a plain download page; null, it falls back to the TestFlight beta
+ * and the waitlist. The live headline and intro used to fall through to the
+ * "coming to iPhone" copy, which is what the page said on launch day.
  */
 
 const CANONICAL = 'https://lunamaze.com/axiom/ios/';
@@ -25,7 +26,7 @@ const CANONICAL = 'https://lunamaze.com/axiom/ios/';
 export const metadata: Metadata = {
   title: 'AXIOM for iPhone — download on the App Store',
   description:
-    'AXIOM is a private, honest porn-recovery companion for iPhone. Free on the App Store — no account needed, and nothing you log leaves your phone readable.',
+    'AXIOM is a private, honest porn-recovery companion for iPhone, live on the App Store. The monthly plan starts with a 7-day free trial, no account is needed, and your journal never leaves your phone.',
   alternates: { canonical: CANONICAL },
 };
 
@@ -125,7 +126,7 @@ export default function IosPage(): JSX.Element {
           {liveNow ? 'iPhone — available now' : betaNow ? 'iPhone — open beta' : 'iPhone — in review'}
         </div>
         <h1 className="text-[clamp(2.6rem,7vw,4.6rem)] font-semibold leading-[1.0] tracking-[-0.03em] text-[#f2f1f7]">
-          {betaNow ? (
+          {liveNow || betaNow ? (
             <>
               AXIOM is on iPhone.
               <br />
@@ -140,9 +141,11 @@ export default function IosPage(): JSX.Element {
           )}
         </h1>
         <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[#a6a3b8]">
-          {betaNow
-            ? 'A private, honest recovery companion that keeps your journal on your phone — not on our servers. The App Store listing is still with Apple, but the build is finished and you can install it right now through TestFlight.'
-            : 'A private, honest recovery companion that keeps your journal on your phone — not on our servers. It has been on Android for a while; the iPhone build is with Apple now.'}
+          {liveNow
+            ? 'A private, honest recovery companion that keeps your journal on your phone — not on our servers. Same app as on Android, on the App Store now.'
+            : betaNow
+              ? 'A private, honest recovery companion that keeps your journal on your phone — not on our servers. The App Store listing is still with Apple, but the build is finished and you can install it right now through TestFlight.'
+              : 'A private, honest recovery companion that keeps your journal on your phone — not on our servers. It has been on Android for a while; the iPhone build is with Apple now.'}
         </p>
 
         {/* Primary action */}
@@ -150,8 +153,9 @@ export default function IosPage(): JSX.Element {
           <div className="ax-card mt-12 p-8" style={{ boxShadow: '0 0 80px rgba(139,124,247,0.10)' }}>
             <p className={`${MONO} text-[11px] uppercase tracking-[0.26em] text-[#8b7cf7]`}>It is live</p>
             <p className="mt-3 leading-relaxed text-[#a6a3b8]">
-              Free to install, no account needed, and the monthly plan starts
-              with a 7-day free trial for new subscribers.
+              AXIOM is a paid app. The monthly plan starts with a 7-day free
+              trial for new subscribers, and no account is needed to start.
+              Nothing is charged until the trial ends.
             </p>
             <a href={apple} className="ax-btn-primary mt-6 inline-block px-8 py-4">
               Download on the App Store

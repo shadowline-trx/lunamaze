@@ -18,7 +18,7 @@ const article: BlogArticle = {
   readingMinutes: 9,
   ctaLabel: 'See how Axiom works',
   ctaText:
-    'Axiom tracks your recovery against this exact timeline — privately. Nothing you log ever leaves your phone.',
+    'Axiom tracks your recovery against this exact timeline — privately. Your journal never leaves your phone.',
   blocks: [
     {
       kind: 'p',

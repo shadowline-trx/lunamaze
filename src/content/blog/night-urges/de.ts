@@ -15,7 +15,7 @@ const article: BlogArticle = {
   readingMinutes: 7,
   ctaLabel: 'So funktioniert Axiom',
   ctaText:
-    'Axiom lernt deine persönliche Gefahrenstunde aus deinen eigenen ehrlichen Einträgen und warnt dich, bevor sie kommt — privat. Nichts, was du trackst, verlässt jemals dein Handy.',
+    'Nach Einbruch der Dunkelheit wird Axiom dunkler und ruhiger, weil es dann am schwersten ist. Dein Journal verlässt nie dein Handy.',
   blocks: [
     {
       kind: 'p',

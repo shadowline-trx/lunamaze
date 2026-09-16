@@ -15,7 +15,7 @@ const article: BlogArticle = {
   readingMinutes: 7,
   ctaLabel: 'Voir comment Axiom fonctionne',
   ctaText:
-    'Axiom apprend ton heure dangereuse personnelle à partir de tes propres journaux honnêtes et te prévient avant qu’elle arrive — en privé. Rien de ce que tu enregistres ne quitte ton téléphone.',
+    'Quand la nuit tombe, Axiom baisse la lumière et ralentit, parce que c’est là que c’est le plus dur. Ton journal ne quitte jamais ton téléphone.',
   blocks: [
     {
       kind: 'p',

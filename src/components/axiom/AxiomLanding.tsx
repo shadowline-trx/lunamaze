@@ -40,7 +40,7 @@ import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
 import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
 import { internalUrl } from '@/lib/paths';
-import { appStoreUrl, playIsBlockedHere, playStoreUrl } from '@/lib/storeLinks';
+import { appStoreFirst, appStoreUrl, playIsBlockedHere, playStoreUrl } from '@/lib/storeLinks';
 import ParticleField, {
   type ParticleFieldHandle,
 } from '@/components/axiom/ParticleField';
@@ -100,7 +100,8 @@ const APP_STORE_URL = appStoreUrl('site-landing') ?? internalUrl('/axiom/ios/');
  *
  * Renders Play on the server so the static export keeps a real href for
  * crawlers and for JS-off visitors, then corrects on mount:
- *   - iPhone / iPad          -> App Store
+ *   - Apple devices, and desktops in the US or Australia -> App Store
+ *                                (see `appStoreFirst`)
  *   - Android where Play 404s -> App Store is useless to them, so the free
  *                                browser tools, which need no install at all
  *   - everyone else          -> Play, campaign-tagged
@@ -112,17 +113,88 @@ function useStoreHref(): { href: string; label: string } {
   });
 
   useEffect(() => {
-    const ua = navigator.userAgent;
-    if (/iPhone|iPad|iPod/i.test(ua)) {
+    if (appStoreFirst()) {
       setTarget({ href: APP_STORE_URL, label: 'Get the app' });
       return;
     }
-    if (/Android/i.test(ua) && playIsBlockedHere()) {
+    if (/Android/i.test(navigator.userAgent) && playIsBlockedHere()) {
       setTarget({ href: internalUrl('/axiom/tools/'), label: 'Open the free tools' });
     }
   }, []);
 
   return target;
+}
+
+/** `appStoreFirst` after mount; false on the server and on the first paint. */
+function useAppStoreFirst(): boolean {
+  const [first, setFirst] = useState(false);
+  useEffect(() => {
+    setFirst(appStoreFirst());
+  }, []);
+  return first;
+}
+
+type StoreButtonsVariant = 'hero' | 'shelf' | 'card' | 'finale';
+
+const STORE_BUTTON_CLASSES: Record<StoreButtonsVariant, { primary: string; ghost: string }> = {
+  hero: {
+    primary: 'ax-btn-primary flex items-center gap-3 px-8 py-4 text-[15px]',
+    ghost: 'ax-btn-ghost flex items-center gap-2.5 px-8 py-4 text-[15px]',
+  },
+  shelf: {
+    primary: 'ax-btn-primary flex items-center gap-3 px-7 py-3.5',
+    ghost: 'ax-btn-ghost flex items-center gap-2.5 px-7 py-3.5',
+  },
+  card: {
+    primary: 'ax-btn-primary flex items-center justify-center gap-3 py-4',
+    ghost: 'ax-btn-ghost flex items-center justify-center gap-2.5 py-4',
+  },
+  finale: {
+    primary: 'ax-btn-primary flex items-center gap-3 px-9 py-4',
+    ghost: 'ax-btn-ghost flex items-center gap-2.5 px-9 py-4',
+  },
+};
+
+/**
+ * Both store buttons, every time, with the visitor's own store first and filled.
+ *
+ * Several CTAs on this page used to offer Google Play alone, the pricing card
+ * included, written when iOS was not live yet. The App Store is now the only
+ * install route in the US and Australia, so a CTA with one store is a dead end
+ * for somebody. Renders only the two links: the caller keeps its own container,
+ * because the reveal and magnetic animations select on it. The links are keyed,
+ * so reordering after mount moves the same DOM nodes instead of rebuilding them.
+ */
+function StoreButtons({ variant }: { variant: StoreButtonsVariant }) {
+  const appleFirst = useAppStoreFirst();
+  const classes = STORE_BUTTON_CLASSES[variant];
+  const play = (
+    <a
+      key="play"
+      href={PLAY_URL}
+      target="_blank"
+      rel="noreferrer"
+      data-magnetic
+      className={appleFirst ? classes.ghost : classes.primary}
+    >
+      <Icon.Play className="h-4 w-4" />
+      Get AXIOM on Google Play
+    </a>
+  );
+  const apple = (
+    <a
+      key="apple"
+      href={APP_STORE_URL}
+      target="_blank"
+      rel="noreferrer"
+      data-magnetic
+      className={appleFirst ? classes.primary : classes.ghost}
+    >
+      <Icon.Apple className="h-4 w-4" />
+      Download on the App Store
+    </a>
+  );
+  return <>{appleFirst ? [apple, play] : [play, apple]}</>;
 }
 
 const HERO_BADGE = 'ON YOUR HOME SCREEN, IT JUST SAYS AXIOM';
@@ -291,11 +363,11 @@ const FEATURES: Feature[] = [
   { icon: Icon.Pulse, title: 'The Rewire Map', body: 'Your recovery laid out in phases, so every week has a shape instead of a bare count. Not a novelty counter — a picture of the road you are on.', accent: 'text-[#8b7cf7]' },
   { icon: Icon.Life, title: 'Panic toolkit', body: 'Urge timer, grounding, and a breath pacer one tap from anywhere — built for the 90 seconds that decide everything.', accent: 'text-[#ff8f8f]', badge: 'urgent' },
   { icon: Icon.Journal, title: 'Private journal', body: 'Write the whole truth. Your entries never leave your phone — they are not on our servers, so nobody there can read them.', accent: 'text-[#cdc7ee]' },
-  { icon: Icon.Compass, title: 'Pattern engine', body: 'The triggers and risk hours you record come back to you gathered — and the app meets you at those hours instead of only counting them afterwards.', accent: 'text-[#8b7cf7]' },
+  { icon: Icon.Compass, title: 'Pattern engine', body: 'The triggers and reset times you record come back to you gathered, so you stop guessing about your own week.', accent: 'text-[#8b7cf7]' },
   { icon: Icon.Wind, title: 'Breathe', body: 'Ride a craving out in about ninety seconds with guided breathing tuned for urge waves, not spa music.', accent: 'text-[#7fd8ff]' },
   { icon: Icon.Spark, title: 'Daily practice', body: 'A streak, a check-in, a daily brief. Small honest reps that compound instead of willpower.', accent: 'text-[#ffd27a]' },
   { icon: Icon.Buddy, title: 'Recovery buddy', body: 'Invite one person you trust. They see whether you are standing — never your journal, never your data.', accent: 'text-[#7fd8ff]' },
-  { icon: Icon.Widget, title: 'Widgets & milestones', body: 'Home-screen widgets that keep the day in sight, and milestone artwork actually worth reaching.', accent: 'text-[#ffd27a]' },
+  { icon: Icon.Widget, title: 'Widgets & milestones', body: 'Home-screen widgets on Android that keep the day in sight, and milestone artwork actually worth reaching.', accent: 'text-[#ffd27a]' },
   { icon: Icon.Sound, title: 'Calming soundscapes', body: 'A synthesis engine tuned for urge-surfing — sound sculpted to slow your pulse, not another lo-fi playlist.', accent: 'text-[#7fd8ff]' },
   { icon: Icon.Export, title: 'Your data, your call', body: 'Export everything. Delete everything forever. Leaving takes one tap, subscribed or not — that is the point.', accent: 'text-[#cdc7ee]' },
   { icon: Icon.Shield, title: 'The Shield', body: 'An honest content blocker that is friction, not a cage — and never watches what you browse.', accent: 'text-[#7ef7c2]', badge: 'soon' },
@@ -307,12 +379,20 @@ const FAQS = [
     a: 'No. AXIOM is a paid app: the monthly plan starts with a 7-day free trial for eligible new subscribers, and the exact price is shown in the app before you pay anything. We tried it the other way and it made a worse product: a free tier funded by nagging the people using it. One exception, and it is not a marketing one — if you are in an urge, the Lighthouse opens whether you have paid or not.',
   },
   {
+    q: 'I installed AXIOM before it was paid. What changed?',
+    a: 'Since version 2.6.0 a subscription is needed on every install, including ones from before. Your data stays yours either way: export it or delete it from Settings, with or without a subscription, and the Lighthouse still opens whether you pay or not. Already subscribed on another phone? Tap Sign in or Restore on the membership screen.',
+  },
+  {
+    q: 'What if it does not help me?',
+    a: 'Ask from Settings and we make the next 30 days free. You do not have to explain what happened. It works on paid subscriptions, up to twice in any 12 months, and it adds time rather than refunding money.',
+  },
+  {
     q: 'Can anyone at AXIOM read my journal?',
     a: 'No. Your journal never leaves your phone. The app does not send it, and our database is built to refuse journal text, trigger names and reset reasons — so there is no journal on our servers to leak, sell, or hand over. If you sign in for backup, only your streak dates and mood scores sync.',
   },
   {
     q: 'What happens when I relapse?',
-    a: 'A reset, not a verdict. You log it honestly, the app maps what led there, and your history keeps its value. Shame is not a strategy here.',
+    a: 'A reset, not a verdict. You log it honestly, AXIOM asks what happened and what you will do differently, and that plan comes back to you within 72 hours. Your total and your history stay. Shame is not a strategy here.',
   },
   {
     q: 'How long does rewiring actually take?',
@@ -1282,26 +1362,7 @@ function Hero() {
           and your journal never leaves your phone.
         </p>
         <div data-hero-cta className="mt-11 flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <a
-            href={PLAY_URL}
-            target="_blank"
-            rel="noreferrer"
-            data-magnetic
-            className="ax-btn-primary flex items-center gap-3 px-8 py-4 text-[15px]"
-          >
-            <Icon.Play className="h-4 w-4" />
-            Get AXIOM on Google Play
-          </a>
-          <a
-            href={APP_STORE_URL}
-            target="_blank"
-            rel="noreferrer"
-            data-magnetic
-            className="ax-btn-ghost flex items-center gap-2.5 px-8 py-4 text-[15px]"
-          >
-            <Icon.Apple className="h-4 w-4" />
-            Download on the App Store
-          </a>
+          <StoreButtons variant="hero" />
         </div>
         <p
           data-hero-trust
@@ -1840,16 +1901,9 @@ function Tools() {
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[#8b7cf7]/[0.10] to-transparent" />
             <p className={`${MONO} text-[10px] uppercase tracking-[0.26em] text-[#8b7cf7]`}>All of it, in your pocket</p>
             <p className="mt-3 text-2xl font-semibold text-[#f2f1f7]">Start today.</p>
-            <a
-              href={PLAY_URL}
-              target="_blank"
-              rel="noreferrer"
-              data-magnetic
-              className="ax-btn-primary mt-7 flex items-center gap-3 px-7 py-3.5"
-            >
-              <Icon.Play className="h-4 w-4" />
-              Get AXIOM
-            </a>
+            <div className="mt-7 flex flex-col items-start gap-3">
+              <StoreButtons variant="shelf" />
+            </div>
           </div>
         </div>
       </div>
@@ -1871,13 +1925,13 @@ const DEPTH_TIERS = [
   {
     tag: 'Weeks in — go deeper',
     title: 'Your patterns surface.',
-    body: 'Your own triggers, your risk hours, your real arc against the recovery timeline. The daily brief turns your data into tomorrow’s next move.',
+    body: 'Your own triggers and reset times, your real arc against the recovery timeline. The plan you wrote after a reset comes back to you within 72 hours.',
     accent: '#8b7cf7',
   },
   {
     tag: 'All the way — full depth',
     title: 'Understand everything.',
-    body: 'Recovery programs, complete stats and history, risk alerts, the entire pattern engine. Built for people who want the whole machine, not a mascot.',
+    body: 'The 30-day guided program, complete stats and history, every trigger you have logged. Built for people who want the whole machine, not a mascot.',
     accent: '#7ef7c2',
   },
 ] as const;
@@ -1945,10 +1999,10 @@ function Pricing() {
           <p data-reveal className="mt-6 text-lg leading-relaxed text-[#9b98ad]">
             AXIOM is a paid app, and the monthly plan starts with a 7-day free
             trial. You get the whole of it — the streak, the daily check-in,
-            breathing, the daily brief, the pattern engine, the programs, the
-            full history. There is no tier above the one you bought and
-            nothing inside is still selling to you. Cancel any time and your
-            data leaves with you.
+            breathing, the daily brief, the 30-day program, the full history.
+            There is no tier above the one you bought and nothing inside is
+            still selling to you. Cancel any time and your data leaves with
+            you.
           </p>
           <ul className="mt-8 space-y-3.5">
             {['No fake urgency, ever', 'Price shown honestly, up front', 'No upsell inside the app you bought', 'Cancel any time, keep your data'].map((t) => (
@@ -1975,24 +2029,21 @@ function Pricing() {
             </div>
             <div className="my-8 h-px bg-white/[0.07]" />
             <div className="space-y-3.5">
-              {['The full pattern engine and risk alerts', 'Recovery programs and deeper practice', 'Complete stats and history', 'The Lighthouse, open even to non-subscribers'].map((t) => (
+              {['A 30-day guided program, one read and one task a day', 'The plan you write after a reset, handed back within 72 hours', 'Your check-ins, triggers and full history', 'The Lighthouse, open even to non-subscribers'].map((t) => (
                 <p key={t} className="flex items-start gap-3 text-[#9b98ad]">
                   <span className="mt-0.5 text-[#8b7cf7]">✓</span>
                   {t}
                 </p>
               ))}
             </div>
-            <a
-              href={PLAY_URL}
-              target="_blank"
-              rel="noreferrer"
-              data-magnetic
-              className="ax-btn-primary mt-9 block py-4 text-center"
-            >
-              Get AXIOM on Google Play
-            </a>
+            <div className="mt-9 flex flex-col gap-3">
+              <StoreButtons variant="card" />
+            </div>
             <p className={`${MONO} mt-4 text-center text-[10px] uppercase tracking-[0.16em] text-[#8f8ca1]`}>
               7-day free trial on monthly for new subscribers · cancel anytime
+            </p>
+            <p className="mt-5 text-center text-sm leading-relaxed text-[#9b98ad]">
+              A paid month did not help? Ask in Settings and the next 30 days are free.
             </p>
           </div>
         </div>
@@ -2094,26 +2145,7 @@ function Finale() {
           system for the person you are becoming.
         </p>
         <div data-reveal className="mt-11 flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <a
-            href={PLAY_URL}
-            target="_blank"
-            rel="noreferrer"
-            data-magnetic
-            className="ax-btn-primary flex items-center gap-3 px-9 py-4"
-          >
-            <Icon.Play className="h-4 w-4" />
-            Get AXIOM on Google Play
-          </a>
-          <a
-            href={APP_STORE_URL}
-            target="_blank"
-            rel="noreferrer"
-            data-magnetic
-            className="ax-btn-ghost flex items-center gap-2.5 px-9 py-4"
-          >
-            <Icon.Apple className="h-4 w-4" />
-            Download on the App Store
-          </a>
+          <StoreButtons variant="finale" />
         </div>
         <p
           data-reveal

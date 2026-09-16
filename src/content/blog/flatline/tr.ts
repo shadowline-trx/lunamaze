@@ -15,7 +15,7 @@ const article: BlogArticle = {
   readingMinutes: 8,
   ctaLabel: 'Axiom nasıl çalışıyor, gör',
   ctaText:
-    'Axiom, flatline aralığını kendi zaman çizelgende işaretler — böylece gri bir hafta bir hüküm gibi değil, bir aşama gibi okunur. Kaydettiğin her şey telefonunda kalır.',
+    'Axiom, flatline aralığını kendi zaman çizelgende işaretler — böylece gri bir hafta bir hüküm gibi değil, bir aşama gibi okunur. Günlüğün telefonundan asla çıkmaz.',
   blocks: [
     {
       kind: 'p',
