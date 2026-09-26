@@ -120,8 +120,8 @@ function jsonLd(article: BlogArticle): string {
       inLanguage: article.lang,
       datePublished: article.datePublished,
       dateModified: article.dateModified,
-      author: { '@type': 'Organization', name: 'Luna Maze', url: BASE },
-      publisher: { '@type': 'Organization', name: 'Luna Maze', url: BASE },
+      author: { '@type': 'Organization', '@id': 'https://lunamaze.com/#organization', name: 'Luna Maze', url: BASE },
+      publisher: { '@type': 'Organization', '@id': 'https://lunamaze.com/#organization', name: 'Luna Maze', url: BASE },
       mainEntityOfPage: articleUrl(article),
     },
   ];

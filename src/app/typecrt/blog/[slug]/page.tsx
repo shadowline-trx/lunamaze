@@ -168,8 +168,8 @@ export default async function TypecrtArticlePage({
       dateModified: article.dateModified,
       inLanguage: 'en',
       mainEntityOfPage: { '@type': 'WebPage', '@id': url },
-      author: { '@type': 'Organization', name: 'Luna Maze', url: BASE },
-      publisher: { '@type': 'Organization', name: 'Luna Maze', url: BASE },
+      author: { '@type': 'Organization', '@id': 'https://lunamaze.com/#organization', name: 'Luna Maze', url: BASE },
+      publisher: { '@type': 'Organization', '@id': 'https://lunamaze.com/#organization', name: 'Luna Maze', url: BASE },
       about: { '@type': 'WebApplication', name: 'TypeCrt', url: TYPECRT_URL },
     },
   ];
