@@ -107,6 +107,7 @@ function drawRibbon(
   yCenter: number,
   amp: number,
   thickness: number,
+  scale: number,
 ): void {
   const phase = rand() * Math.PI * 2;
   const freq = 0.8 + rand() * 0.8;
@@ -114,7 +115,9 @@ function drawRibbon(
   ctx.save();
   ctx.globalCompositeOperation = 'screen';
   ctx.globalAlpha = 0.5;
-  ctx.filter = 'blur(90px)';
+  // A canvas filter works in canvas pixels, not the current transform, so
+  // the blur scales with the render size to look the same at any scale.
+  ctx.filter = `blur(${90 * scale}px)`;
   ctx.fillStyle = color;
   ctx.beginPath();
   const steps = 40;
@@ -138,9 +141,17 @@ function drawRibbon(
   ctx.restore();
 }
 
-function draw(canvas: HTMLCanvasElement, day: number, styleKey: StyleKey, showLabel: boolean): void {
+/**
+ * Draws the wallpaper at `scale` of its full size (W x H). The on-page
+ * preview only needs as many pixels as it is shown at; the download always
+ * renders at full size. Every coordinate below is in full-size units.
+ */
+function draw(canvas: HTMLCanvasElement, day: number, styleKey: StyleKey, showLabel: boolean, scale = 1): void {
+  canvas.width = Math.round(W * scale);
+  canvas.height = Math.round(H * scale);
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
+  ctx.setTransform(scale, 0, 0, scale, 0, 0);
   const style = STYLES[styleKey];
   const rand = mulberry32(day * 7919 + styleKey.length * 104729);
 
@@ -159,6 +170,7 @@ function draw(canvas: HTMLCanvasElement, day: number, styleKey: StyleKey, showLa
       H * (0.22 + 0.16 * i + (rand() - 0.5) * 0.06),
       H * (0.04 + rand() * 0.05),
       H * (0.1 + rand() * 0.06),
+      scale,
     );
   }
 
@@ -243,13 +255,20 @@ export default function WallpaperGenerator(): JSX.Element {
   const [styleKey, setStyleKey] = useState<StyleKey>('aurora');
   const [showLabel, setShowLabel] = useState<boolean>(true);
 
+  // The preview renders at the pixel size it is displayed at, not the full
+  // 1080 x 2340: the blurred ribbons make a full-size draw expensive, and a
+  // 320-pixel-wide preview gains nothing from it.
   const render = useCallback(() => {
-    if (canvasRef.current) draw(canvasRef.current, day, styleKey, showLabel);
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const shown = canvas.clientWidth || 320;
+    const scale = Math.min(1, (shown * Math.min(window.devicePixelRatio || 1, 2)) / W);
+    draw(canvas, day, styleKey, showLabel, scale);
   }, [day, styleKey, showLabel]);
 
   useEffect(() => {
-    render();
-    // Re-render once web fonts land so the label uses the real mono face.
+    // Draw once the label's mono face is available, so the first draw is
+    // also the last one.
     let cancelled = false;
     void document.fonts.ready.then(() => {
       if (!cancelled) render();
@@ -260,8 +279,9 @@ export default function WallpaperGenerator(): JSX.Element {
   }, [render]);
 
   function download(): void {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+    // Full resolution, drawn off-screen only when someone asks for the file.
+    const canvas = document.createElement('canvas');
+    draw(canvas, day, styleKey, showLabel, 1);
     canvas.toBlob((blob) => {
       if (!blob) return;
       const url = URL.createObjectURL(blob);

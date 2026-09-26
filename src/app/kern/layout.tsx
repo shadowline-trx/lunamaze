@@ -4,9 +4,12 @@ import { Fraunces, Jost } from 'next/font/google';
 import '../globals.css';
 import { interClass } from '@/lib/interFont';
 
+// Preloaded per page by scripts/defer-hydration.mjs, not by next/font: Next
+// would preload these on every product page (see src/lib/interFont.ts).
 const jost = Jost({
   subsets: ['latin'],
   display: 'swap',
+  preload: false,
   variable: '--kern-jost',
   weight: ['300', '400', '500'],
 });
@@ -14,6 +17,7 @@ const jost = Jost({
 const fraunces = Fraunces({
   subsets: ['latin'],
   display: 'swap',
+  preload: false,
   variable: '--kern-fraunces',
   weight: ['700', '900'],
 });
