@@ -18,6 +18,17 @@ function Wordmark() {
   return <span className={styles.wordmark}><span className={styles.wordmarkIcon} aria-hidden="true">K</span><span>KERN</span></span>;
 }
 
+/** A small live vignette for each of the three ways Kern gives space a job. */
+function WayDemo({ kind }: { kind: string }) {
+  if (kind === 'FIND') {
+    return <div className={`${styles.wayDemo} ${styles.wayFind}`} aria-hidden><div><span>⌕</span><b>wh</b><i /></div><p><strong>WhatsApp</strong><em>APP</em></p><p><strong>Weather</strong><em>APP</em></p></div>;
+  }
+  if (kind === 'NOTICE') {
+    return <div className={`${styles.wayDemo} ${styles.wayNotice}`} aria-hidden>{histogram.map((h, i) => <i key={i} style={{ '--h': h, '--i': i } as CSSProperties} />)}</div>;
+  }
+  return <div className={`${styles.wayDemo} ${styles.wayCapture}`} aria-hidden><p><span>—</span>Call the bank before 5</p><p><span>›</span><b>Buy film for the camera</b><i /></p></div>;
+}
+
 function SectionHead({ index, title, note }: { index: string; title: string; note: string }) {
   return <div className={styles.sectionHead} data-reveal><p>{index}</p><h2>{title}</h2><p>{note}</p></div>;
 }
@@ -41,8 +52,24 @@ export default function KernProductLanding() {
           <p className={styles.intro}>A quiet home screen is not enough. Kern adds the three things that change the relationship: fast search, an honest record of the day, and somewhere to write things down.</p>
           <a className={styles.primaryAction} href={ACCESS_MAILTO}><span className={styles.filledSquare} /><span>JOIN EARLY ACCESS</span><span aria-hidden>↗</span></a>
         </div>
-        <div className={styles.heroMeasure} aria-label="Example notification record">
-          <p>YESTERDAY</p><div><strong>214</strong><span>interruptions</span></div><i><span /></i><div><strong>11</strong><span>opened</span></div><p>IT REPORTS. WHAT TO DO ABOUT IT IS NOT ITS BUSINESS.</p>
+        <div className={styles.heroPhone} aria-hidden="true">
+          <div className={styles.phoneScreen}>
+            <div className={styles.phoneStatus}><span>09:41</span><span className={styles.phoneSignal}><i /><i /><i /><b /></span></div>
+            <p className={styles.phoneDate}>FRIDAY · 26 SEPTEMBER</p>
+            <strong className={styles.phoneClock}>09:41</strong>
+            <div className={styles.phoneLedger}>
+              <span>YESTERDAY</span>
+              <p><b>214</b> interruptions · <b className={styles.phoneAccent}>11</b> opened</p>
+              <i><em /></i>
+            </div>
+            <div className={styles.phonePage}><span>›</span> Send the new build to Maya</div>
+            <ul className={styles.phoneDock}><li>Phone</li><li>Messages</li><li>Camera</li><li>Maps</li></ul>
+            <div className={styles.phoneResults}>
+              <p><span>Play Store</span><em>APP</em></p>
+              <p><span>Playlist</span><em>PAGE</em></p>
+            </div>
+            <div className={styles.phoneSearch}><span>⌕</span><b>plst</b><i /></div>
+          </div>
         </div>
         <div className={styles.heroFoot}><span>NO ACCOUNT</span><span>NO CLOUD</span><span>NO ANALYTICS</span><span>KOTLIN / COMPOSE</span></div>
       </section>
@@ -55,7 +82,7 @@ export default function KernProductLanding() {
             ['01', 'FIND', 'Search apps, shortcuts, notes, settings, and arithmetic before your thumb changes its mind.'],
             ['02', 'NOTICE', 'See the day as time and interruptions. No score. No sermon. Just the record.'],
             ['03', 'CAPTURE', 'Keep a page, a task, or a thought one swipe away from wherever you are.'],
-          ].map(([number, title, copy]) => <article key={number} data-reveal><span>{number}</span><i /><h3>{title}</h3><p>{copy}</p></article>)}
+          ].map(([number, title, copy]) => <article key={number} data-reveal><span>{number}</span><WayDemo kind={title} /><h3>{title}</h3><p>{copy}</p></article>)}
         </div>
         <div className={styles.productFacts} data-reveal>
           <div><span>PACKAGE</span><strong>dev.lunamaze.kern</strong></div>
