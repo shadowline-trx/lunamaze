@@ -212,7 +212,7 @@ const jsonLd = {
       fileSize: '10MB',
       image: 'https://lunamaze.com/images/tether-adb-og.png',
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-      publisher: { '@type': 'Organization', name: 'Luna Maze', url: 'https://lunamaze.com' },
+      publisher: { '@type': 'Organization', '@id': 'https://lunamaze.com/#organization', name: 'Luna Maze', url: 'https://lunamaze.com' },
     },
     {
       '@type': 'FAQPage',
@@ -231,7 +231,7 @@ function DownloadButton({ primary, children }: { primary?: boolean; children: Re
       href={DOWNLOAD_URL}
       className={
         primary
-          ? 'inline-flex items-center gap-2.5 rounded-xl bg-lunamaze-violet px-6 py-3.5 text-[15px] font-semibold text-white shadow-lg shadow-lunamaze-violet/30 transition hover:bg-lunamaze-violetLight'
+          ? 'inline-flex items-center gap-2.5 rounded-xl bg-[#6a48f0] px-6 py-3.5 text-[15px] font-semibold text-white shadow-lg shadow-lunamaze-violet/30 transition hover:bg-[#5b3fd0]'
           : 'inline-flex items-center gap-2.5 rounded-xl border border-lunamaze-border bg-lunamaze-bgSurface px-6 py-3.5 text-[15px] font-semibold text-lunamaze-textPrimary transition hover:border-lunamaze-violet'
       }
     >
@@ -271,7 +271,7 @@ export default function AdbHubPage() {
           </a>
           <a
             href={DOWNLOAD_URL}
-            className="inline-flex items-center gap-2 rounded-lg bg-lunamaze-violet px-4 py-2 text-[14px] font-semibold text-white transition hover:bg-lunamaze-violetLight"
+            className="inline-flex items-center gap-2 rounded-lg bg-[#6a48f0] px-4 py-2 text-[14px] font-semibold text-white transition hover:bg-[#5b3fd0]"
           >
             <IconDownload className="h-4 w-4" /> Download
           </a>

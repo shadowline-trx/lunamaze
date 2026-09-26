@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
+import '../globals.css';
+import { interClass } from '@/lib/interFont';
 
 const title = 'Tether ADB — Wireless ADB, Screen Mirror & Device Control for Windows';
 const description =
@@ -59,5 +61,5 @@ interface TetherAdbLayoutProps {
 }
 
 export default function TetherAdbLayout({ children }: TetherAdbLayoutProps) {
-  return <div className="bg-lunamaze-bgDeep text-lunamaze-textPrimary">{children}</div>;
+  return <div className={`${interClass} bg-lunamaze-bgDeep text-lunamaze-textPrimary`}>{children}</div>;
 }

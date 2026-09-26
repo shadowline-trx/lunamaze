@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { Fraunces, Jost } from 'next/font/google';
+import '../globals.css';
+import { interClass } from '@/lib/interFont';
 
 const jost = Jost({
   subsets: ['latin'],
@@ -77,7 +79,7 @@ interface KernLayoutProps {
 
 export default function KernLayout({ children }: KernLayoutProps) {
   return (
-    <div className={`${jost.variable} ${fraunces.variable}`}>
+    <div className={`${interClass} ${jost.variable} ${fraunces.variable}`}>
       {children}
     </div>
   );

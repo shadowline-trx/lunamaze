@@ -35,7 +35,7 @@ module.exports = {
           signal: '#FFD27A',
           textPrimary: '#F2F3FA',
           textSecondary: '#B6B9D2',
-          textDim: '#6E72A0',
+          textDim: '#8A8FBF',
           border: '#22264A',
         },
       },

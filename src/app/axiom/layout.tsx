@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { Fraunces, Instrument_Sans, JetBrains_Mono } from 'next/font/google';
+import '../globals.css';
 
 // Grotesk: Instrument Sans (variable) — the big cinematic display voice and
 // the body voice. Display serif: Fraunces italic — the emotional accent
@@ -8,11 +9,13 @@ import { Fraunces, Instrument_Sans, JetBrains_Mono } from 'next/font/google';
 const grotesk = Instrument_Sans({
   subsets: ['latin'],
   display: 'swap',
+  preload: false,
   variable: '--font-grotesk',
 });
 const fraunces = Fraunces({
   subsets: ['latin'],
   display: 'swap',
+  preload: false,
   variable: '--font-display',
   style: ['normal', 'italic'],
   axes: ['opsz'],
@@ -20,6 +23,7 @@ const fraunces = Fraunces({
 const jetbrains = JetBrains_Mono({
   subsets: ['latin'],
   display: 'swap',
+  preload: false,
   variable: '--font-mono',
   weight: ['400', '500'],
 });
@@ -120,7 +124,7 @@ const JSON_LD = {
         'Guided somatic breathing',
         'Trigger pattern engine',
       ],
-      publisher: { '@id': 'https://lunamaze.com/#org' },
+      publisher: { '@id': 'https://lunamaze.com/#organization' },
     },
     {
       '@type': 'MedicalWebPage',
@@ -147,10 +151,10 @@ const JSON_LD = {
     },
     {
       '@type': 'Organization',
-      '@id': 'https://lunamaze.com/#org',
+      '@id': 'https://lunamaze.com/#organization',
       name: 'Luna Maze',
       url: 'https://lunamaze.com/',
-      logo: 'https://lunamaze.com/images/axiom/logo.webp',
+      logo: 'https://lunamaze.com/images/lunamaze-logo-512.png',
       sameAs: ['https://github.com/shadowline-trx'],
     },
     {

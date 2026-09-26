@@ -135,6 +135,13 @@ function applyUniform(
   }
 }
 
+/** True when WebGL is backed by a CPU rasteriser rather than a GPU. */
+export function isSoftwareRenderer(gl: WebGLRenderingContext | WebGL2RenderingContext): boolean {
+  const debug = gl.getExtension('WEBGL_debug_renderer_info');
+  const renderer = String(debug ? gl.getParameter(debug.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER));
+  return /swiftshader|llvmpipe|softpipe|software|basic render/i.test(renderer);
+}
+
 export function createShaderBackground(
   canvas: HTMLCanvasElement,
   options: ShaderBackgroundOptions,
@@ -148,6 +155,14 @@ export function createShaderBackground(
     }) as GL | null) ??
     (canvas.getContext('experimental-webgl') as GL | null);
   if (gl === null) return null;
+
+  // No GPU (a software rasteriser such as SwiftShader or llvmpipe): every frame
+  // of a full-screen shader would run on the CPU and stall the main thread.
+  // Bail out so the caller's CSS fallback shows instead.
+  if (isSoftwareRenderer(gl)) {
+    gl.getExtension('WEBGL_lose_context')?.loseContext();
+    return null;
+  }
 
   const program = buildProgram(gl, options.fragment);
   if (program === null) return null;
