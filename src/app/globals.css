@@ -591,6 +591,20 @@ body {
    carried hover-only feedback, which means the app's own download buttons were
    the least responsive controls on the site for the visitors most likely to
    install — the ones already holding a phone. */
+/* On phones the nav button steps aside while the sticky CTA bar is up, so
+   only one call to action is on screen at a time. */
+.ax-nav-cta {
+  transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (max-width: 767px) {
+  [data-nav][data-sticky-on] .ax-nav-cta {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-8px);
+  }
+}
+
 .ax-btn-primary {
   background: var(--ax-silver);
   color: #0b0b0e;

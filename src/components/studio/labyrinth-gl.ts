@@ -11,7 +11,20 @@
  * Loaded with `import()` after the page is idle; it never blocks first paint.
  */
 
+export interface LabyrinthTint {
+  /** Soft accent: light spill, rim tints. */
+  readonly soft: readonly [number, number, number];
+  /** Deep accent: shadowed metal, haze. */
+  readonly deep: readonly [number, number, number];
+  /** The crescent's lit and shadowed ends. */
+  readonly crA: readonly [number, number, number];
+  readonly crC: readonly [number, number, number];
+  /** Changes whenever the colours do, so the layer knows to redraw. */
+  readonly key: string;
+}
+
 export interface LabyrinthState {
+  tint: LabyrinthTint;
   centreX: number;
   centreY: number;
   radius: number;
@@ -48,6 +61,10 @@ uniform float uProgress;
 uniform float uTime;
 uniform float uReveal;
 uniform float uTexel;
+uniform vec3 uSoft;
+uniform vec3 uDeep;
+uniform vec3 uCrA;
+uniform vec3 uCrC;
 out vec4 outColor;
 
 const vec2 C1 = vec2(-58.0, 34.0);
@@ -105,7 +122,7 @@ void main() {
 
   // Background: the page's ink, a violet haze around the maze, and stars.
   vec3 col = INK;
-  col += vec3(0.30, 0.22, 0.64) * exp(-pow(r / 640.0, 2.0)) * 0.11;
+  col += mix(uDeep, uSoft, 0.35) * exp(-pow(r / 640.0, 2.0)) * 0.14;
   vec2 cell = floor(css / 2.5);
   float h0 = hash(cell);
   float star = step(0.9972, h0) * (0.45 + 0.55 * sin(uTime * (0.6 + h0 * 2.0) + h0 * 90.0));
@@ -126,9 +143,9 @@ void main() {
     float corridor = (0.4 + 0.6 * smoothstep(0.0, 0.04, uProgress)) / (1.0 + pow(dh / 70.0, 2.0));
     floorC += vec3(0.95, 0.9, 1.0) * corridor * 0.32 * (1.0 - ao * 0.7);
     float dpf = length(m - pm);
-    floorC += vec3(0.48, 0.4, 1.0) * 0.07 * uPointerOn / (1.0 + pow(dpf / 200.0, 2.0));
+    floorC += uSoft * 0.07 * uPointerOn / (1.0 + pow(dpf / 200.0, 2.0));
 
-    vec3 wall = shadeMetal(n, P, vec3(0.8, 0.79, 0.86), vec3(0.14, 0.09, 0.3), vec3(0.96, 0.94, 1.0), pm, 46.0);
+    vec3 wall = shadeMetal(n, P, vec3(0.8, 0.79, 0.86), uDeep * 0.9, vec3(0.96, 0.94, 1.0), pm, 46.0);
     float mask = smoothstep(0.03, 0.03 + max(0.06, unitsPerPx * 0.02), h);
     float disc = 1.0 - smoothstep(448.0, 468.0, r);
     col = mix(col, floorC, disc);
@@ -136,7 +153,7 @@ void main() {
 
     // A single sweep of light outward when the layer wakes up.
     float sweep = exp(-pow((r - uReveal * 760.0) / 50.0, 2.0)) * (1.0 - uReveal);
-    col += vec3(0.85, 0.8, 1.0) * sweep * mask * 0.9;
+    col += mix(uSoft, vec3(1.0), 0.5) * sweep * mask * 0.9;
   }
 
   // Crescent: the violet moon of the emblem.
@@ -150,8 +167,8 @@ void main() {
     vec3 n = normalize(vec3(dir * slope, 1.0));
     vec3 P = vec3(m, smoothstep(0.0, 22.0, e1) * 16.0);
     float along = smoothstep(-460.0, 460.0, dot(m, normalize(vec2(0.8, 1.0))));
-    vec3 albedo = mix(vec3(0.6, 0.48, 0.98), vec3(0.14, 0.08, 0.32), along);
-    vec3 c = shadeMetal(n, P, albedo, vec3(0.1, 0.05, 0.24), vec3(0.72, 0.62, 1.0), pm, 34.0) * mix(1.0, 0.7, along);
+    vec3 albedo = mix(uCrA * 0.95, uCrC * 1.4, along);
+    vec3 c = shadeMetal(n, P, albedo, uCrC * 1.2, uSoft * 0.95, pm, 34.0) * mix(1.0, 0.7, along);
     col = mix(col, c, smoothstep(0.0, max(1.2, unitsPerPx * 1.2), e1));
   }
 
@@ -163,7 +180,7 @@ void main() {
     float slope = (1.0 - smoothstep(0.0, 9.0, e3)) * 1.4;
     vec3 n = normalize(vec3(dir * slope, 1.0));
     vec3 P = vec3(m, smoothstep(0.0, 9.0, e3) * 10.0);
-    vec3 c = shadeMetal(n, P, vec3(0.85, 0.84, 0.9), vec3(0.2, 0.16, 0.34), vec3(1.0, 0.98, 1.0), pm, 60.0);
+    vec3 c = shadeMetal(n, P, vec3(0.85, 0.84, 0.9), mix(uDeep, vec3(0.2), 0.5), vec3(1.0, 0.98, 1.0), pm, 60.0);
     col = mix(col, c, smoothstep(0.0, max(1.2, unitsPerPx * 1.2), e3));
   }
 
@@ -283,7 +300,7 @@ export function startLabyrinth(canvas: HTMLCanvasElement, options: Options): () 
     const loc = gl.getAttribLocation(program, 'aPos');
     gl.enableVertexAttribArray(loc);
     gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
-    for (const name of ['uWalls', 'uRes', 'uDpr', 'uCentre', 'uRadius', 'uRot', 'uPointer', 'uPointerOn', 'uHead', 'uProgress', 'uTime', 'uReveal', 'uTexel']) {
+    for (const name of ['uWalls', 'uRes', 'uDpr', 'uCentre', 'uRadius', 'uRot', 'uPointer', 'uPointerOn', 'uHead', 'uProgress', 'uTime', 'uReveal', 'uTexel', 'uSoft', 'uDeep', 'uCrA', 'uCrC']) {
       uniforms[name] = gl.getUniformLocation(program, name);
     }
     gl.uniform1i(uniforms.uWalls, 0);
@@ -348,7 +365,7 @@ export function startLabyrinth(canvas: HTMLCanvasElement, options: Options): () 
       resize();
     }
 
-    const key = `${state.centreX.toFixed(1)}|${state.centreY.toFixed(1)}|${state.radius.toFixed(1)}|${state.progress.toFixed(4)}|${state.pointer[0]}|${state.pointer[1]}|${state.pointerActive}`;
+    const key = `${state.tint.key}|${state.centreX.toFixed(1)}|${state.centreY.toFixed(1)}|${state.radius.toFixed(1)}|${state.progress.toFixed(4)}|${state.pointer[0]}|${state.pointer[1]}|${state.pointerActive}`;
     if (key !== lastKey) {
       lastKey = key;
       activeUntil = now + 1200;
@@ -377,6 +394,10 @@ export function startLabyrinth(canvas: HTMLCanvasElement, options: Options): () 
     gl.uniform1f(uniforms.uProgress, state.progress);
     gl.uniform1f(uniforms.uTime, t);
     gl.uniform1f(uniforms.uReveal, reveal);
+    gl.uniform3f(uniforms.uSoft, ...state.tint.soft);
+    gl.uniform3f(uniforms.uDeep, ...state.tint.deep);
+    gl.uniform3f(uniforms.uCrA, ...state.tint.crA);
+    gl.uniform3f(uniforms.uCrC, ...state.tint.crC);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
 
     if (reveal < 1 || wake === now) {

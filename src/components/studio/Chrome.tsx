@@ -13,6 +13,37 @@ function Mark() {
   );
 }
 
+/**
+ * The opening loader: the emblem draws itself, a counter runs to 100, and the
+ * screen parts like a curtain onto the labyrinth. Pure CSS, about a second
+ * and a half, shown once per session and never with reduced motion (the boot
+ * script in page.tsx sets `data-intro-seen` to skip it).
+ */
+export function Loader() {
+  return (
+    <div className={s.loader} aria-hidden="true">
+      <span className={s.loaderHalf} data-half="top" />
+      <span className={s.loaderHalf} data-half="bottom" />
+      <span className={s.loaderCore}>
+        <svg className={s.loaderMark} viewBox="0 0 40 40">
+          <path className={s.loaderMoon} d="M22 3.2A17 17 0 1 0 36.6 27 15 15 0 0 1 22 3.2Z" pathLength={1} />
+          <circle className={s.loaderRing} cx="21" cy="20" r="11" pathLength={1} />
+          <circle className={s.loaderRing} cx="21" cy="20" r="6.5" pathLength={1} />
+          <circle className={s.loaderCore2} cx="21" cy="20" r="1.8" />
+        </svg>
+        <span className={s.loaderWord}>Luna Maze</span>
+        <span className={s.loaderCount}>
+          <span className={s.loaderNum} />
+          <i className={s.loaderBar} />
+          <span>Finding the way</span>
+        </span>
+      </span>
+    </div>
+  );
+}
+
+const THEME_NAMES = ['Moonlight', 'Blood moon', 'Blue moon'];
+
 export function Nav() {
   return (
     <header className={s.nav} data-nav>
@@ -33,6 +64,22 @@ export function Nav() {
         <a href="#faq" data-cursor="Go">
           Questions
         </a>
+        <button
+          type="button"
+          className={s.themeToggle}
+          data-theme-toggle
+          data-cursor="Theme"
+          aria-label={`Colour theme: ${THEME_NAMES[0]}. Change theme`}
+        >
+          <span className={s.themeDots} aria-hidden="true">
+            <i />
+            <i />
+            <i />
+          </span>
+          <span className={s.themeName} data-theme-name aria-hidden="true">
+            {THEME_NAMES[0]}
+          </span>
+        </button>
         <a className={s.navContact} href="#contact" aria-label="Contact" data-magnetic>
           <svg className={s.moon} viewBox="0 0 24 24" aria-hidden="true">
             <clipPath id="lm-moon-clip">

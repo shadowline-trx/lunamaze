@@ -1,10 +1,12 @@
-import { Bodoni_Moda, Geist, Geist_Mono } from 'next/font/google';
+import { Bodoni_Moda, Geist, Martian_Mono } from 'next/font/google';
 
 /**
- * Studio type system. Bodoni Moda carries the optical-size axis, so the same
- * family draws hairline display cuts for the hero and sturdier text cuts for
- * small headings. The upright display face and the sans are preloaded: the
- * first screen's title and paragraph paint with them.
+ * Studio type system. Bodoni Moda carries optical-size and weight axes, so the
+ * same family draws hairline display cuts for the hero, sturdier cuts for small
+ * headings, and can shift weight in motion. Geist sets the reading text.
+ * Martian Mono, condensed on its width axis, sets the instrument labels: the
+ * HUD, chapter names, captions. The upright display face and the sans are
+ * preloaded; the italic and the mono arrive after the first paint.
  */
 export const display = Bodoni_Moda({
   subsets: ['latin'],
@@ -29,9 +31,10 @@ export const sans = Geist({
   variable: '--studio-sans',
 });
 
-export const mono = Geist_Mono({
+export const mono = Martian_Mono({
   subsets: ['latin'],
   display: 'swap',
+  axes: ['wdth'],
   preload: false,
   variable: '--studio-mono',
 });
