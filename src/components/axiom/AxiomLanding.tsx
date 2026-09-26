@@ -1120,6 +1120,9 @@ export default function AxiomLanding() {
               trigger: '[data-story]',
               start: 'top 55%',
               toggleActions: 'play none none reverse',
+              // One call to action on screen at a time: the nav button steps
+              // aside on phones while the sticky bar is up.
+              onToggle: (self) => document.querySelector('[data-nav]')?.toggleAttribute('data-sticky-on', self.isActive),
             },
           });
 
@@ -1265,7 +1268,7 @@ function Nav() {
           href={store.href}
           target="_blank"
           rel="noreferrer"
-          className="ax-btn-primary px-5 py-2 text-sm"
+          className="ax-btn-primary ax-nav-cta px-5 py-2 text-sm"
           data-magnetic
         >
           {store.label}
@@ -1293,9 +1296,9 @@ function StickyCTA() {
           className="h-[38px] w-[38px] rounded-xl"
         />
         <div className="min-w-0 flex-1">
-          <p className="truncate text-sm font-semibold text-[#f2f1f7]">AXIOM — your phone never says so</p>
-          <p className={`${MONO} truncate text-[9px] uppercase tracking-[0.18em] text-[#9b98ad]`}>
-            Your phone never says what this is
+          <p className="truncate text-[15px] font-semibold text-[#f2f1f7]">Quit porn, quietly.</p>
+          <p className={`${MONO} truncate text-[10px] uppercase tracking-[0.12em] text-[#7ef7c2]`}>
+            7 days free on monthly
           </p>
         </div>
         <a
@@ -1371,7 +1374,19 @@ function Hero() {
           style={{ '--ax-d': '0.85s' } as CSSProperties}
           className={`${MONO} ax-in mt-6 text-[10px] uppercase tracking-[0.22em] text-[#8f8ca1]`}
         >
-          One honest price · No fake urgency · Cancel anytime
+          7-day free trial on monthly · Cancel anytime · Journal stays on your phone
+        </p>
+        <p
+          style={{ '--ax-d': '1s' } as CSSProperties}
+          className={`ax-in mt-4 text-sm text-[#a6a3b8] ${OVER_FIELD}`}
+        >
+          Not ready to install?{' '}
+          <a
+            href={internalUrl('/axiom/tools/panic/')}
+            className="text-[#e8e6f0] underline decoration-[#8b7cf7] decoration-1 underline-offset-4 transition-colors hover:text-white"
+          >
+            Use the free Panic Button now
+          </a>
         </p>
       </div>
       <div
@@ -1413,7 +1428,7 @@ function StoryAct() {
             // Composition matches desktop: label top, outline word over the
             // particle shape, copy at the bottom clear of the sticky CTA.
             // min-h rather than h so a long chapter grows instead of clipping.
-            className="flex min-h-[100svh] flex-col items-center justify-between gap-6 px-7 pb-[17svh] pt-[15svh] text-center md:block md:min-h-0 md:gap-0 md:p-0 md:text-left"
+            className="flex min-h-[80svh] flex-col items-center justify-between gap-6 px-7 pb-[13svh] pt-[11svh] text-center md:block md:min-h-0 md:gap-0 md:p-0 md:text-left"
           >
             <div
               data-chapter-meta
@@ -1564,7 +1579,7 @@ function Audit() {
               <span>Total charged</span>
               <span>Your trust</span>
             </div>
-            <p className={`${MONO} mt-4 text-center text-[9px] uppercase tracking-[0.3em] text-[#181622]/50`}>
+            <p className={`${MONO} mt-4 text-center text-[9px] uppercase tracking-[0.3em] text-[#181622]/75`}>
               ✱ no refunds ✱
             </p>
             {/* VOID stamp slams in at the end of the act. */}
