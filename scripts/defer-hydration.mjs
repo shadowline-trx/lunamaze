@@ -49,6 +49,7 @@ const FONT_PRELOADS = [
   // The landing headline's accent word is set in Fraunces italic.
   { prefix: 'axiom/index.html', faces: [['Fraunces', 'italic', '100 900']] },
   { prefix: 'kern/', faces: [['Jost', 'normal'], ['Fraunces', 'normal', '700']] },
+  { prefix: 'tether-adb/', faces: [['Space Grotesk', 'normal'], ['JetBrains Mono', 'normal']] },
 ];
 
 const cssCache = new Map();
@@ -103,16 +104,19 @@ for await (const file of htmlFiles(DIST)) {
     scripts.push(id ? [src, id] : [src]);
     return '';
   });
-  if (scripts.length === 0) continue;
-  out = out.replace(PRELOAD, '');
+  if (scripts.length === 0 && fonts.length === 0) continue;
   if (!out.includes('</body>')) continue;
-  if (fonts.length > 0) {
+  if (fonts.length > 0 && !out.includes('as="font" type="font/woff2" crossorigin=""/><link rel="stylesheet"')) {
     const links = fonts.map((u) => `<link rel="preload" href="${u}" as="font" type="font/woff2" crossorigin=""/>`).join('');
     out = out.replace('<link rel="stylesheet"', `${links}<link rel="stylesheet"`);
     preloaded += 1;
   }
-  out = out.replace('</body>', `${loader(scripts)}</body>`);
+  // Pages shipped without Next's runtime (static-islands.mjs) only get fonts.
+  if (scripts.length > 0) {
+    out = out.replace(PRELOAD, '');
+    out = out.replace('</body>', `${loader(scripts)}</body>`);
+    changed += 1;
+  }
   await writeFile(file, out);
-  changed += 1;
 }
 console.log(`defer-hydration: rewrote ${changed} page(s), added section font preloads to ${preloaded}`);

@@ -33,11 +33,15 @@ const OUT = '_static';
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
 const MARK = 'data-static-island';
 
-const ISLANDS = [{ page: 'index.html', entry: 'src/components/studio/runtime-entry.ts' }];
+// `entry: null` ships the page with no script at all (everything it does is CSS).
+const ISLANDS = [
+  { page: 'index.html', entry: 'src/components/studio/runtime-entry.ts' },
+  { page: 'tether-adb/index.html', entry: null },
+];
 
 const result = await build({
   absWorkingDir: ROOT,
-  entryPoints: ISLANDS.map((island) => island.entry),
+  entryPoints: ISLANDS.map((island) => island.entry).filter(Boolean),
   bundle: true,
   splitting: true,
   format: 'esm',
@@ -90,8 +94,8 @@ for (const island of ISLANDS) {
   const file = join(DIST, island.page);
   let html = await readFile(file, 'utf8');
   if (html.includes(MARK)) continue;
-  const out = entryOutput.get(island.entry);
-  if (!out) throw new Error(`static-islands: no bundle for ${island.entry}`);
+  const out = island.entry ? entryOutput.get(island.entry) : null;
+  if (island.entry && !out) throw new Error(`static-islands: no bundle for ${island.entry}`);
 
   for (const pattern of PATTERNS) html = html.replace(pattern, '');
 
@@ -105,7 +109,7 @@ for (const island of ISLANDS) {
   }
   if (!html.includes('</body>')) throw new Error(`static-islands: ${island.page} has no </body>`);
 
-  html = html.replace('</body>', `${loader(`${BASE}/${out}`)}</body>`);
+  html = html.replace('</body>', `${out ? loader(`${BASE}/${out}`) : `<script ${MARK}=""></script>`}</body>`);
   await writeFile(file, html);
   rewritten += 1;
 }
