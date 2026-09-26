@@ -581,6 +581,7 @@
 
 /* ----------------------------------------------------------- Sections --- */
 
+.modes,
 .themes,
 .keyforge,
 .docs,
@@ -1125,7 +1126,377 @@
   }
 }
 
+
+/* ------------------------------------------------------------- Pledges */
+.pledges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin: 22px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.8rem;
+  color: var(--fg-dim);
+}
+
+.pledges li::before {
+  content: '✓ ';
+  color: var(--fg);
+}
+
+/* ------------------------------------------------------ CRT power-on --- */
+/* The screen switches on like a tube: a bright line, then the picture. */
+.screen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    linear-gradient(#fff, var(--fg)) center / 3% 2px no-repeat,
+    var(--screen);
+  box-shadow: inset 0 0 40px var(--glow);
+  animation: tubeOn 1.3s cubic-bezier(0.7, 0, 0.2, 1) 0.15s both;
+}
+
+@keyframes tubeOn {
+  0% { background-size: 3% 2px, auto; opacity: 1; }
+  32% { background-size: 100% 2px, auto; opacity: 1; }
+  52% { background-size: 100% 100%, auto; opacity: 0.9; }
+  100% { background-size: 100% 100%, auto; opacity: 0; }
+}
+
+/* --------------------------------------------------------------- Modes */
+.modeGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 44px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.modeCard {
+  position: relative;
+  padding: 18px 20px 22px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--bg-2) 70%, transparent);
+  transition: border-color 0.4s ease, box-shadow 0.5s ease, transform 0.6s var(--ease);
+}
+
+.modeCard:hover {
+  border-color: color-mix(in srgb, var(--fg) 55%, transparent);
+  box-shadow: 0 0 40px -18px var(--glow);
+  transform: translateY(-3px);
+}
+
+.modeCard[data-mode-card='forge'] {
+  border-style: dashed;
+}
+
+.modeArt {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 96px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--screen);
+  font-family: var(--display);
+  color: var(--fg);
+  text-shadow: 0 0 10px var(--glow);
+}
+
+.modeArt::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.18) 0 1px, transparent 1px 3px);
+}
+
+.modeName {
+  margin: 14px 0 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--fg);
+}
+
+.modeName span {
+  color: var(--fg-dim);
+}
+
+.modeName em {
+  margin-left: 8px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.78rem;
+  color: var(--fg-dim);
+}
+
+.modeBody {
+  margin: 8px 0 0;
+  font-size: 0.9rem;
+  color: var(--ink-2);
+}
+
+.artTime,
+.artWords {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  width: 70%;
+}
+
+.artTime b,
+.artWords b {
+  font-weight: 400;
+  font-size: 2.6rem;
+  line-height: 1;
+}
+
+.artTime i,
+.artWords i {
+  display: block;
+  width: 100%;
+  height: 4px;
+  background: var(--fg);
+  box-shadow: 0 0 8px var(--glow);
+  transform-origin: left;
+}
+
+.artTime i {
+  animation: drain 6s linear infinite;
+}
+
+.artWords i {
+  animation: fill 6s steps(25, end) infinite;
+}
+
+@keyframes drain {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0); }
+}
+
+@keyframes fill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@property --tc-count {
+  syntax: '<integer>';
+  inherits: false;
+  initial-value: 0;
+}
+
+.countUp {
+  counter-reset: tcc var(--tc-count);
+  animation: countWords 6s steps(25, end) infinite;
+}
+
+.countUp::after {
+  content: counter(tcc);
+}
+
+@keyframes countWords {
+  from { --tc-count: 0; }
+  to { --tc-count: 25; }
+}
+
+.artQuote {
+  padding: 0 14px;
+  font-size: 1.35rem;
+  line-height: 1.1;
+  text-align: center;
+  animation: typeQuote 6s steps(34, end) infinite;
+}
+
+@keyframes typeQuote {
+  0% { clip-path: inset(0 100% 0 0); }
+  60%, 90% { clip-path: inset(0 0 0 0); }
+  100% { clip-path: inset(0 100% 0 0); }
+}
+
+.artZen {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 1.5rem;
+  mask-image: linear-gradient(to right, transparent, #000 20%, #000 80%, transparent);
+}
+
+.artZen span {
+  display: inline-block;
+  animation: zen 14s linear infinite;
+}
+
+@keyframes zen {
+  to { transform: translateX(-50%); }
+}
+
+.artCustom {
+  display: grid;
+  gap: 2px;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  text-shadow: none;
+}
+
+.artCustom span {
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid transparent;
+  animation: typeLine 5s steps(28, end) infinite;
+}
+
+.artCustom span + span {
+  animation-delay: 1.2s;
+}
+
+@keyframes typeLine {
+  0% { max-width: 0; }
+  50%, 90% { max-width: 28ch; }
+  100% { max-width: 0; }
+}
+
+.artForge {
+  display: flex;
+  gap: 8px;
+}
+
+.artForge i {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  font-style: normal;
+  font-size: 1.4rem;
+  border: 1px solid var(--fg);
+  background: color-mix(in srgb, var(--fg) calc(60% - var(--i) * 10%), transparent);
+  color: var(--bg);
+  animation: forgeHeat 2.4s ease-in-out infinite;
+  animation-delay: calc(var(--i) * -0.35s);
+}
+
+@keyframes forgeHeat {
+  50% { transform: translateY(-5px); box-shadow: 0 0 14px var(--glow); }
+}
+
+/* ----------------------------------------------------- Evidence curve */
+.curve {
+  max-width: 820px;
+  margin: 40px auto 0;
+}
+
+.curve svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.curveArea {
+  fill: color-mix(in srgb, var(--fg) 10%, transparent);
+}
+
+.curveTail {
+  fill: color-mix(in srgb, var(--fg) 26%, transparent);
+}
+
+.curveLine {
+  fill: none;
+  stroke: var(--fg);
+  stroke-width: 2.5;
+  filter: drop-shadow(0 0 6px var(--glow));
+  stroke-dasharray: 1 1;
+}
+
+.curveBase {
+  stroke: var(--line);
+}
+
+.curveMean {
+  stroke: var(--fg);
+  stroke-dasharray: 3 5;
+  opacity: 0.7;
+}
+
+.curveText,
+.curveTextMean {
+  font-family: var(--mono);
+  font-size: 12px;
+  fill: var(--ink-2);
+}
+
+.curveTextMean {
+  fill: var(--fg);
+  font-weight: 600;
+}
+
+.curve figcaption {
+  margin-top: 16px;
+  font-size: 0.9rem;
+  color: var(--ink-2);
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .curveLine {
+      animation: drawCurve linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 45%;
+    }
+
+    @keyframes drawCurve {
+      from { stroke-dashoffset: 1; }
+      to { stroke-dashoffset: 0; }
+    }
+  }
+}
+
+.evActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 18px 26px;
+  margin-top: 30px;
+}
+
+.evActions .textLink {
+  margin-top: 0;
+}
+
+@media (max-width: 900px) {
+  .modeGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .modeGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .curveText {
+    font-size: 16px;
+  }
+
+  .curveTextMean {
+    font-size: 18px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .screen::after,
+  .artTime i,
+  .artWords i,
+  .countUp,
+  .artQuote,
+  .artZen span,
+  .artCustom span,
+  .artForge i,
   .brandCursor,
   .titleCaret,
   .dot,
@@ -1138,6 +1509,10 @@
 
   .bezel {
     transition: none;
+  }
+
+  .screen::after {
+    display: none;
   }
 
   .root[data-js] [data-reveal] {

@@ -37,6 +37,7 @@ const MARK = 'data-static-island';
 const ISLANDS = [
   { page: 'index.html', entry: 'src/components/studio/runtime-entry.ts' },
   { page: 'tether-adb/index.html', entry: null },
+  { page: 'typecrt/index.html', entry: 'src/components/typecrt/runtime-entry.ts' },
 ];
 
 const result = await build({
@@ -74,18 +75,15 @@ const PATTERNS = [
 ];
 
 /**
- * Starts the module once the page has loaded and its first contentful paint
- * is on screen. The studio's boot script announces that moment with
- * `lm:painted` (it also binds the late fonts then); pages without it fall
- * back to load plus a frame.
+ * Starts the module once the page has loaded and its first contentful paint is
+ * on screen, so neither the download nor the start-up work competes with it.
  */
 function loader(src) {
   return (
-    `<script ${MARK}="">(function(){var d=0;` +
-    `function go(){if(d)return;d=1;var s=document.createElement("script");s.type="module";s.src=${JSON.stringify(src)};document.head.appendChild(s)}` +
-    'var r=document.querySelector("[data-late-fonts]");if(r){go();return}' +
-    'addEventListener("lm:painted",go,{once:true});' +
-    'function late(){setTimeout(go,4000)}if(document.readyState==="complete")late();else addEventListener("load",late,{once:true})})()</script>'
+    `<script ${MARK}="">(function(){var d=0,L=document.readyState==="complete",P=0;` +
+    `function go(){if(d||!L||!P)return;d=1;setTimeout(function(){var s=document.createElement("script");s.type="module";s.src=${JSON.stringify(src)};document.head.appendChild(s)},0)}` +
+    'try{new PerformanceObserver(function(l,o){if(l.getEntriesByName("first-contentful-paint").length){P=1;o.disconnect();go()}}).observe({type:"paint",buffered:true})}catch(e){P=1}' +
+    'if(!L)addEventListener("load",function(){L=1;go()},{once:true});else go()})()</script>'
   );
 }
 
