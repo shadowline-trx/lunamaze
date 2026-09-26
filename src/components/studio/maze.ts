@@ -17,6 +17,11 @@
 export interface MazeGeometry {
   /** SVG path data for every wall (arcs and radial segments). */
   readonly walls: string;
+  /**
+   * The same walls split by ring, innermost first; the last entry is the outer
+   * wall. Lets the hero draw and light the labyrinth one ring at a time.
+   */
+  readonly ringWalls: ReadonlyArray<string>;
   /** SVG path data for the route from the entrance to the keyhole. */
   readonly thread: string;
   /** Radius, in viewBox units, of the outermost wall. */
@@ -135,8 +140,9 @@ export function buildMaze(seed = 20260926, rings = 9): MazeGeometry {
   }
 
   // Walls. Each cell owns its inner arc and its clockwise radial edge.
-  const parts: string[] = [];
+  const ringWalls: string[] = [];
   for (let r = 1; r < rings; r += 1) {
+    const parts: string[] = [];
     const step = (2 * Math.PI) / counts[r];
     const inner = r * ringH;
     const outer = (r + 1) * ringH;
@@ -170,6 +176,7 @@ export function buildMaze(seed = 20260926, rings = 9): MazeGeometry {
         parts.push(`M${r1(x0)} ${r1(y0)}L${r1(x1)} ${r1(y1)}`);
       }
     }
+    ringWalls.push(parts.join(''));
   }
 
   // Outer wall with the entrance gap over cell (rings-1, 0).
@@ -178,7 +185,7 @@ export function buildMaze(seed = 20260926, rings = 9): MazeGeometry {
     const [x0, y0] = polar(OUTER, lastStep);
     const [xm, ym] = polar(OUTER, Math.PI + lastStep / 2);
     const [x1, y1] = polar(OUTER, 2 * Math.PI);
-    parts.push(`M${r1(x0)} ${r1(y0)}A${OUTER} ${OUTER} 0 0 1 ${r1(xm)} ${r1(ym)}A${OUTER} ${OUTER} 0 0 1 ${r1(x1)} ${r1(y1)}`);
+    ringWalls.push(`M${r1(x0)} ${r1(y0)}A${OUTER} ${OUTER} 0 0 1 ${r1(xm)} ${r1(ym)}A${OUTER} ${OUTER} 0 0 1 ${r1(x1)} ${r1(y1)}`);
   }
 
   // Route from the entrance to the keyhole (breadth-first over carved links).
@@ -256,7 +263,7 @@ export function buildMaze(seed = 20260926, rings = 9): MazeGeometry {
     }
   }
 
-  return { walls: parts.join(''), thread: thread.join(''), outer: OUTER, ring: ringH, rings };
+  return { walls: ringWalls.join(''), ringWalls, thread: thread.join(''), outer: OUTER, ring: ringH, rings };
 }
 
 /**

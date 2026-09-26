@@ -8,6 +8,8 @@
 :global(html) {
   background: #09070f;
   scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(228, 224, 246, 0.22) transparent;
   -webkit-text-size-adjust: 100%;
 }
 
@@ -30,7 +32,7 @@
 
 @property --intro {
   syntax: '<number>';
-  inherits: true;
+  inherits: false;
   initial-value: 0;
 }
 
@@ -38,6 +40,13 @@
   --ink-0: #050409;
   --ink-1: #09070f;
   --ink-2: #110d1b;
+  --violet-strong: #5b3fd0;
+  --violet-pale: #d9cfff;
+  /* The hero's entrance waits for the loader's curtain, unless it was skipped. */
+  --intro-delay: 1.05s;
+  --cr-a: #a38bf5;
+  --cr-b: #6344c4;
+  --cr-c: #1e1244;
   --ink-3: #1a1528;
   --line: rgba(228, 224, 246, 0.1);
   --line-strong: rgba(228, 224, 246, 0.2);
@@ -71,6 +80,58 @@
   font-family: var(--sans);
 }
 
+/* Colour themes, named for the moon. Moonlight is the default; the other two
+   are chosen from the moon in the nav and remembered on this device. */
+.root[data-theme='eclipse'] {
+  --ink-0: #070304;
+  --ink-1: #0e0708;
+  --ink-2: #180c0e;
+  --ink-3: #231215;
+  --violet: #e2553a;
+  --violet-soft: #ffab8f;
+  --violet-deep: #4d1510;
+  --violet-strong: #b83a24;
+  --violet-pale: #ffd6c7;
+  --cr-a: #ff9d7a;
+  --cr-b: #c23e27;
+  --cr-c: #3b0c08;
+}
+
+.root[data-theme='tide'] {
+  --ink-0: #03060a;
+  --ink-1: #060a11;
+  --ink-2: #0b111c;
+  --ink-3: #121a28;
+  --violet: #3e8bff;
+  --violet-soft: #9fcbff;
+  --violet-deep: #0e2a57;
+  --violet-strong: #2a64c9;
+  --violet-pale: #d2e6ff;
+  --cr-a: #8cc4ff;
+  --cr-b: #2d6fd8;
+  --cr-c: #081c42;
+}
+
+:global(html):has(.root[data-theme='eclipse']),
+:global(html):has(.root[data-theme='eclipse']) :global(body) {
+  background: #0e0708;
+}
+
+:global(html):has(.root[data-theme='tide']),
+:global(html):has(.root[data-theme='tide']) :global(body) {
+  background: #060a11;
+}
+
+.crA { stop-color: var(--cr-a); }
+.crB { stop-color: var(--cr-b); }
+.crC { stop-color: var(--cr-c); }
+.vSoft { stop-color: var(--violet-soft); }
+.vMoon { stop-color: var(--moon); }
+
+.root[data-intro-seen] {
+  --intro-delay: 0s;
+}
+
 .root[data-late-fonts] {
   --display-italic: var(--studio-display-italic), var(--studio-display), 'Bodoni 72', Georgia, serif;
   --mono: var(--studio-mono), ui-monospace, 'SFMono-Regular', Menlo, monospace;
@@ -79,6 +140,9 @@
 .root {
   font-size: 1.0625rem;
   line-height: 1.6;
+  font-optical-sizing: auto;
+  font-kerning: normal;
+  font-feature-settings: 'kern', 'liga', 'calt';
   overflow-x: clip;
   interpolate-size: allow-keywords;
   -webkit-font-smoothing: antialiased;
@@ -158,7 +222,7 @@
   position: absolute;
   inset: 0 0 -24px;
   z-index: -1;
-  background: linear-gradient(to bottom, rgba(9, 7, 15, 0.92), rgba(9, 7, 15, 0.6) 55%, rgba(9, 7, 15, 0));
+  background: linear-gradient(to bottom, color-mix(in srgb, var(--ink-1) 92%, transparent), color-mix(in srgb, var(--ink-1) 60%, transparent) 55%, color-mix(in srgb, var(--ink-1) 0%, transparent));
   opacity: 0;
   transition: opacity 0.5s ease;
   pointer-events: none;
@@ -180,6 +244,7 @@
   background: var(--moon);
   color: var(--ink-0) !important;
   font-family: var(--mono);
+  font-stretch: 87.5%;
   font-size: 0.75rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -239,12 +304,12 @@
   font-family: var(--display);
   font-size: 1.12rem;
   letter-spacing: 0.01em;
-  font-variation-settings: 'opsz' 40;
 }
 
 .navChapter {
   margin: 0;
   font-family: var(--mono);
+  font-stretch: 87.5%;
   font-size: 0.7rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -269,6 +334,7 @@
   align-items: center;
   gap: clamp(16px, 2.4vw, 36px);
   font-family: var(--mono);
+  font-stretch: 87.5%;
   font-size: 0.74rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -355,10 +421,9 @@
   overflow: hidden;
   isolation: isolate;
   background:
-    radial-gradient(60% 70% at var(--mx) var(--my), rgba(123, 92, 240, 0.16), transparent 70%),
-    radial-gradient(120% 90% at 50% 120%, rgba(42, 27, 85, 0.5), transparent 60%),
+    radial-gradient(60% 70% at var(--mx) var(--my), color-mix(in srgb, var(--violet) 16%, transparent), transparent 70%),
+    radial-gradient(120% 90% at 50% 120%, color-mix(in srgb, var(--violet-deep) 50%, transparent), transparent 60%),
     var(--ink-1);
-  animation: introBars 1.2s var(--ease-io) 0.05s both;
 }
 
 @keyframes introBars {
@@ -437,25 +502,40 @@
   stroke: url(#lm-silver);
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-dasharray: 1 1;
-  stroke-dashoffset: 0;
-  animation: drawWalls 1.7s var(--ease-out) 0.05s both;
 }
 
-@keyframes drawWalls {
+/* The labyrinth draws itself from the outer wall in, each ring turning the
+   opposite way to the one outside it, like the wards of a lock closing. */
+.ring {
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: 0;
+  animation: drawRing 1.3s var(--ease-io) calc(var(--intro-delay) + 0.1s + var(--r) * 0.08s) both;
+}
+
+.ring[data-dir='ccw'] {
+  animation-name: drawRingBack;
+}
+
+@keyframes drawRing {
   from { stroke-dashoffset: 1; }
+}
+
+@keyframes drawRingBack {
+  from { stroke-dashoffset: -1; }
 }
 
 .crescent,
 .blade {
+  /* The view box is centred on the maze, but the reference box of
+     transform-box: view-box starts at user-space 0,0: the centre itself. */
   transform-box: view-box;
-  transform-origin: 50% 50%;
-  animation: crescentIn 1.5s var(--ease-out) 0.05s both;
+  transform-origin: 0 0;
+  animation: crescentIn 1.6s var(--ease-out) calc(var(--intro-delay) + 0.35s) both;
 }
 
 .blade {
   animation-name: bladeIn;
-  animation-delay: 0.2s;
+  animation-delay: calc(var(--intro-delay) + 0.55s);
 }
 
 @keyframes crescentIn {
@@ -466,6 +546,55 @@
   from { opacity: 0; transform: rotate(32deg); }
 }
 
+/* A rim just outside the outer wall fills clockwise from the entrance as the
+   thread advances: the moon waxing toward full. */
+.rimTrack,
+.rimFill {
+  fill: none;
+  transform-box: view-box;
+  transform-origin: 0 0;
+  transform: rotate(-90deg);
+}
+
+.rimTrack {
+  stroke: rgba(244, 239, 228, 0.07);
+  stroke-width: 2;
+  animation: fadeIn 1s ease calc(var(--intro-delay) + 1.2s) both;
+}
+
+.rimFill {
+  stroke: var(--moon);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: var(--tp) 2;
+  opacity: 0.85;
+}
+
+/* When the thread reaches the keyhole the labyrinth fills with moonlight,
+   ring after ring, from the centre out. */
+.litRings {
+  fill: none;
+  stroke: #fff8ea;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  visibility: hidden;
+}
+
+.hero[data-bloom] .litRings,
+.hero[data-bloom] .halo {
+  visibility: visible;
+}
+
+.litRing {
+  opacity: clamp(0, calc(var(--bloom) * 10 - var(--k) * 1.02), 0.92);
+}
+
+.halo {
+  visibility: hidden;
+  opacity: calc(var(--bloom) * 0.85);
+}
+
+.threadFlood,
 .threadGlow,
 .thread {
   fill: none;
@@ -475,8 +604,13 @@
   stroke-dashoffset: calc(1 - var(--tp));
 }
 
+/* The corridor the thread has travelled floods with a faint violet light. */
+.threadFlood {
+  stroke: color-mix(in srgb, var(--violet-soft) 13%, transparent);
+}
+
 .threadGlow {
-  stroke: rgba(196, 180, 255, 0.28);
+  stroke: color-mix(in srgb, var(--violet-soft) 28%, transparent);
   stroke-width: 16;
 }
 
@@ -500,6 +634,26 @@
   fill: #fffdf7;
 }
 
+/* Until the visitor scrolls, the entrance calls to them. */
+.headPing {
+  fill: none;
+  stroke: rgba(244, 239, 228, 0.7);
+  stroke-width: 1.5;
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0;
+  animation: ping 2.6s var(--ease-out) calc(var(--intro-delay) + 1.9s) infinite;
+}
+
+.hero[data-moving] .headPing {
+  animation: none;
+}
+
+@keyframes ping {
+  0% { transform: scale(0.6); opacity: 0.9; }
+  100% { transform: scale(3.2); opacity: 0; }
+}
+
 @keyframes breathe {
   0%, 100% { transform: scale(0.7); opacity: 0.55; }
   50% { transform: scale(1.25); opacity: 1; }
@@ -521,6 +675,9 @@
   background: #030206;
   transform: scaleY(max(var(--bars), var(--intro)));
   pointer-events: none;
+  /* Animated here, not on the stage: a registered property animating on an
+     ancestor would restyle the whole hero every frame. */
+  animation: introBars 1.2s var(--ease-io) calc(var(--intro-delay) + 0.05s) both;
 }
 
 .letterbox span:first-child {
@@ -539,11 +696,12 @@
   z-index: 5;
   pointer-events: none;
   font-family: var(--mono);
+  font-stretch: 87.5%;
   font-size: 0.68rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--text-2);
-  animation: fadeIn 0.8s var(--ease-out) 0.5s both;
+  animation: fadeIn 0.8s var(--ease-out) calc(var(--intro-delay) + 0.5s) both;
 }
 
 .hudCorner {
@@ -579,7 +737,7 @@
 
 .hudLeft strong,
 .hudRight strong {
-  font-weight: 500;
+  font-weight: 400;
   color: var(--moon);
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.06em;
@@ -652,11 +810,12 @@
   gap: 14px;
   margin-bottom: 22px;
   font-family: var(--mono);
+  font-stretch: 87.5%;
   font-size: 0.72rem;
   letter-spacing: 0.24em;
   text-transform: uppercase;
   color: var(--text-2);
-  animation: rise 0.9s var(--ease-out) 0.1s both;
+  animation: rise 0.9s var(--ease-out) calc(var(--intro-delay) + 0.1s) both;
 }
 
 .heroKicker i {
@@ -664,16 +823,15 @@
   height: 1px;
   background: var(--violet-soft);
   transform-origin: left;
-  animation: grow 1s var(--ease-out) 0.2s both;
+  animation: grow 1s var(--ease-out) calc(var(--intro-delay) + 0.2s) both;
 }
 
 .heroWord {
   display: block;
   font-family: var(--display);
-  font-variation-settings: 'opsz' 96;
   font-size: clamp(4rem, 8.6vw, 10.6rem);
   line-height: 0.84;
-  text-shadow: 0 0 40px rgba(9, 7, 15, 0.65);
+  text-shadow: 0 0 40px color-mix(in srgb, var(--ink-1) 65%, transparent);
   letter-spacing: -0.035em;
   color: var(--silver-0);
   white-space: nowrap;
@@ -682,15 +840,26 @@
 .heroWord > span,
 .heroWord > em {
   display: inline-block;
-  animation: rise 1s var(--ease-out) 0.12s both;
+}
+
+/* The name arrives a letter at a time, each one surfacing out of a blur. */
+.heroWord span[style] {
+  display: inline-block;
+  animation: letterRise 1.3s var(--ease-out) calc(var(--intro-delay) + 0.12s + var(--c) * 0.055s) both;
+}
+
+@keyframes letterRise {
+  from {
+    opacity: 0.01;
+    transform: translate3d(0, 0.32em, 0) rotate(5deg);
+    filter: blur(10px);
+  }
 }
 
 .heroWord > em {
   font-family: var(--display);
   font-style: normal;
-  font-variation-settings: 'opsz' 96;
-  color: #d9cfff;
-  animation-delay: 0.2s;
+  color: var(--violet-pale);
   letter-spacing: -0.02em;
   padding-right: 0.06em;
 }
@@ -698,11 +867,10 @@
 .heroTagline {
   margin: 26px 0 0;
   font-family: var(--display);
-  font-variation-settings: 'opsz' 36;
   font-size: clamp(1.35rem, 2.1vw, 2rem);
   line-height: 1.2;
   color: var(--moon);
-  animation: rise 0.9s var(--ease-out) 0.28s both;
+  animation: rise 0.9s var(--ease-out) calc(var(--intro-delay) + 0.5s) both;
 }
 
 .heroLede {
@@ -710,7 +878,7 @@
   margin: 18px 0 0;
   color: var(--text-2);
   font-size: 1.02rem;
-  animation: rise 0.9s var(--ease-out) 0.34s both;
+  animation: rise 0.9s var(--ease-out) calc(var(--intro-delay) + 0.58s) both;
 }
 
 .heroActions {
@@ -718,7 +886,7 @@
   flex-wrap: wrap;
   gap: 14px;
   margin-top: 34px;
-  animation: rise 0.9s var(--ease-out) 0.42s both;
+  animation: rise 0.9s var(--ease-out) calc(var(--intro-delay) + 0.66s) both;
 }
 
 @keyframes rise {
@@ -783,12 +951,13 @@
   gap: 12px;
   transform: translateX(-50%);
   font-family: var(--mono);
+  font-stretch: 87.5%;
   font-size: 0.64rem;
   letter-spacing: 0.24em;
   text-transform: uppercase;
   color: var(--text-2);
   opacity: clamp(0, calc(1 - var(--p) * 20), 1);
-  animation: fadeIn 0.8s ease 0.8s both;
+  animation: fadeIn 0.8s ease calc(var(--intro-delay) + 1s) both;
 }
 
 .scrollCue i {
@@ -826,6 +995,7 @@
   height: 54px;
   padding: 0 26px;
   font-family: var(--mono);
+  font-stretch: 87.5%;
   font-size: 0.76rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -845,7 +1015,7 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: #5b3fd0;
+  background: var(--violet-strong);
   transform: translate3d(-101%, 0, 0);
   transition: transform 0.6s var(--ease-out);
 }
@@ -919,20 +1089,45 @@
   position: relative;
   max-width: var(--measure);
   margin: 0 auto;
-  padding: clamp(84px, 13vh, 164px) var(--gutter);
+  padding: clamp(80px, 12vh, 148px) var(--gutter);
+}
+
+/* Chapter heads: a moon that waxes chapter by chapter, the numeral, the name,
+   and a line of narration in the old manner ("In which..."). */
+.chapter {
+  margin-bottom: clamp(38px, 6vh, 68px);
 }
 
 .chapterHead {
   display: flex;
-  align-items: baseline;
-  gap: 18px;
-  margin-bottom: clamp(36px, 6vh, 64px);
+  align-items: center;
+  gap: 16px;
+}
+
+.chapterMoon {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  overflow: visible;
+}
+
+.cmDark {
+  fill: #1d182b;
+}
+
+.cmLit {
+  fill: var(--moon);
+}
+
+.cmRim {
+  fill: none;
+  stroke: rgba(244, 239, 228, 0.34);
+  stroke-width: 0.8;
 }
 
 .chapterNo {
   font-family: var(--display);
-  font-variation-settings: 'opsz' 72;
-  font-size: 2.3rem;
+  font-size: 2.1rem;
   line-height: 1;
   color: var(--violet-soft);
   min-width: 1.6ch;
@@ -940,6 +1135,7 @@
 
 .chapterName {
   font-family: var(--mono);
+  font-stretch: 87.5%;
   font-size: 0.72rem;
   letter-spacing: 0.26em;
   text-transform: uppercase;
@@ -961,12 +1157,33 @@
   transform: none;
 }
 
+.chapterNote {
+  max-width: 52ch;
+  margin: 16px 0 0 34px;
+  font-family: var(--display-italic);
+  font-style: italic;
+  font-size: clamp(1.05rem, 1.35vw, 1.28rem);
+  line-height: 1.4;
+  color: var(--text-2);
+}
+
+/* The narration is inked in from left to right rather than faded up. */
+.root[data-js] .chapterNote[data-reveal]:not([data-in]) {
+  opacity: 1;
+  transform: none;
+  clip-path: inset(-20% 100% -20% 0);
+}
+
+.root[data-js] .chapterNote[data-reveal] {
+  clip-path: inset(-20% -4% -20% 0);
+  transition: clip-path 1.8s var(--ease-io) 0.35s;
+}
+
 .sectionTitle {
   margin: 0;
   font-family: var(--display);
   font-weight: 400;
-  font-variation-settings: 'opsz' 96;
-  font-size: clamp(2.6rem, 6.2vw, 6.6rem);
+  font-size: clamp(2.5rem, 5.6vw, 6rem);
   line-height: 0.96;
   letter-spacing: -0.03em;
   color: var(--silver-0);
@@ -1013,38 +1230,56 @@
 
 /* ----------------------------------------------------------- Manifesto --- */
 
+.manifestoGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+  gap: clamp(32px, 6vw, 112px);
+  align-items: start;
+}
+
 .manifestoTitle {
-  margin: 0 0 30px;
-  font-family: var(--display-italic);
-  font-style: italic;
+  margin: 0;
+  font-family: var(--display);
   font-weight: 400;
-  font-size: clamp(1.3rem, 2vw, 1.8rem);
+  font-size: clamp(2.3rem, 4vw, 4.2rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--silver-0);
+  text-wrap: balance;
+}
+
+.manifestoTitle em {
   color: var(--violet-soft);
 }
 
 .manifestoBody {
-  max-width: 1180px;
   margin: 0;
+  padding-top: 0.35em;
   font-family: var(--display);
-  font-variation-settings: 'opsz' 72;
-  font-size: clamp(1.9rem, 4.3vw, 4.6rem);
-  line-height: 1.1;
-  letter-spacing: -0.02em;
+  font-size: clamp(1.4rem, 2.1vw, 2.25rem);
+  line-height: 1.32;
+  letter-spacing: -0.012em;
   color: var(--silver-0);
   text-wrap: pretty;
 }
 
+/* Words are lit as the reader reaches them: dim violet ink turning to
+   moonlit silver, one word after another, driven by scroll alone. */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
+    .manifestoBody {
+      view-timeline: --manifesto block;
+    }
+
     .mWord {
       animation: wordLight linear both;
-      animation-timeline: view();
-      animation-range: cover 12% cover 42%;
+      animation-timeline: --manifesto;
+      animation-range: cover calc(16% + var(--i) * 0.62%) cover calc(23% + var(--i) * 0.62%);
     }
 
     @keyframes wordLight {
-      from { opacity: 0.16; }
-      to { opacity: 1; }
+      from { opacity: 0.2; color: var(--violet-soft); }
+      to { opacity: 1; color: var(--silver-0); }
     }
 
     .chapterRule {
@@ -1075,6 +1310,7 @@
 
 .manifestoFacts dt {
   font-family: var(--mono);
+  font-stretch: 87.5%;
   font-size: 0.7rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -1084,7 +1320,7 @@
 .manifestoFacts dd {
   margin: 10px 0 0;
   font-family: var(--display);
-  font-size: 1.45rem;
+  font-size: 1.4rem;
   line-height: 1.2;
   color: var(--text);
 }
@@ -1096,80 +1332,83 @@
   grid-template-columns: 1.1fr 0.9fr;
   gap: 48px;
   align-items: end;
-  margin-bottom: clamp(48px, 8vh, 88px);
+  margin-bottom: clamp(44px, 7vh, 80px);
 }
 
 .worksIntro .sectionLede {
   margin: 0;
 }
 
-.workList {
+.roomList {
+  display: grid;
+  gap: clamp(18px, 2.4vw, 32px);
   margin: 0;
   padding: 0;
   list-style: none;
-  border-bottom: 1px solid var(--line);
 }
 
-.workItem {
-  border-top: 1px solid var(--line);
+.roomItem {
+  position: relative;
+  --accent-text: color-mix(in srgb, var(--accent) 62%, #ffffff);
 }
 
-.work {
+/* Each product is a room: its words on one side, a lit window onto the
+   product on the other. Rooms alternate sides, like walking a corridor. */
+.room {
   position: relative;
   display: grid;
-  grid-template-columns: 5.5rem minmax(0, 1fr) 132px 56px;
-  gap: 28px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
+  gap: clamp(24px, 4vw, 64px);
   align-items: center;
-  padding: clamp(28px, 4vh, 40px) 0;
-  isolation: isolate;
-}
-
-.work::before {
-  content: '';
-  position: absolute;
-  inset: 0 calc(var(--gutter) * -0.5);
-  z-index: -1;
+  padding: clamp(20px, 2.6vw, 36px);
+  border: 1px solid var(--line);
+  border-radius: 28px;
   background:
-    radial-gradient(60% 140% at 85% 50%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 70%),
-    linear-gradient(to right, rgba(244, 239, 228, 0.025), transparent);
-  opacity: 0;
-  transition: opacity 0.8s var(--ease-out);
+    radial-gradient(70% 90% at 100% 0%, color-mix(in srgb, var(--accent) 7%, transparent), transparent 70%),
+    linear-gradient(160deg, rgba(255, 255, 255, 0.028), rgba(255, 255, 255, 0) 45%),
+    var(--ink-2);
+  isolation: isolate;
+  transition: border-color 0.7s var(--ease-out), transform 0.9s var(--ease-out);
 }
 
-.work:hover::before,
-.work:focus-visible::before {
-  opacity: 1;
+.roomItem:nth-child(even) .room {
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
+  background:
+    radial-gradient(70% 90% at 0% 0%, color-mix(in srgb, var(--accent) 7%, transparent), transparent 70%),
+    linear-gradient(200deg, rgba(255, 255, 255, 0.028), rgba(255, 255, 255, 0) 45%),
+    var(--ink-2);
 }
 
-.workNo {
-  align-self: start;
-  padding-top: 0.9rem;
-  font-family: var(--display);
-  font-variation-settings: 'opsz' 60;
-  font-size: 1.5rem;
-  color: var(--text-3);
-  transition: color 0.6s var(--ease-out);
+.roomItem:nth-child(even) .roomWindow {
+  order: -1;
 }
 
-.work:hover .workNo {
-  color: var(--accent);
+.room:hover,
+.room:focus-visible {
+  border-color: color-mix(in srgb, var(--accent) 38%, var(--line));
 }
 
-.workMain {
+.roomText {
   display: grid;
   min-width: 0;
+  padding: 6px 4px;
 }
 
-.workMeta {
+.roomTop {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 10px 22px;
   font-family: var(--mono);
+  font-stretch: 87.5%;
   font-size: 0.7rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--text-2);
+}
+
+.roomNo {
+  color: var(--accent-text);
 }
 
 .workStatus {
@@ -1188,7 +1427,11 @@
 .workStatus[data-status='Live'] i {
   background: var(--live);
   box-shadow: 0 0 0 0 rgba(126, 224, 181, 0.5);
-  animation: livePulse 2.6s ease-out infinite;
+  animation: livePulse 2.6s ease-out infinite paused;
+}
+
+.roomItem[data-onscreen] .workStatus[data-status='Live'] i {
+  animation-play-state: running;
 }
 
 .workStatus[data-status='Closed testing'] i {
@@ -1200,215 +1443,627 @@
   70%, 100% { box-shadow: 0 0 0 9px rgba(126, 224, 181, 0); }
 }
 
-.workName {
-  margin: 10px 0 0;
+.roomName {
+  margin: 16px 0 0;
   font-family: var(--display);
   font-weight: 400;
-  font-variation-settings: 'opsz' 96;
-  font-size: clamp(2.6rem, 6.4vw, 6.8rem);
+  font-size: clamp(2.6rem, 4.8vw, 5rem);
   line-height: 0.92;
   letter-spacing: -0.035em;
   color: var(--silver-0);
-  transition: transform 0.9s var(--ease-out), color 0.6s ease;
+  transition: transform 0.9s var(--ease-out);
 }
 
-.work:hover .workName,
-.work:focus-visible .workName {
-  transform: translate3d(14px, 0, 0);
+.room:hover .roomName,
+.room:focus-visible .roomName {
+  transform: translate3d(10px, 0, 0);
 }
 
-.workLine {
-  margin-top: 14px;
-  max-width: 60ch;
+.roomKind {
+  margin-top: 10px;
+  font-family: var(--display-italic);
+  font-style: italic;
+  font-size: 1.18rem;
+  color: var(--accent-text);
+}
+
+.roomLine {
+  margin-top: 18px;
+  max-width: 46ch;
   color: var(--text);
-  font-size: 1.05rem;
+  font-size: 1.04rem;
 }
 
-.workDetail {
-  max-width: 64ch;
+.roomDetail {
+  margin-top: 10px;
+  max-width: 54ch;
   color: var(--text-2);
-  font-size: 0.98rem;
-  display: grid;
-  grid-template-rows: 0fr;
-  opacity: 0;
-  transition: grid-template-rows 0.7s var(--ease-out), opacity 0.6s var(--ease-out), margin 0.7s var(--ease-out);
-  overflow: hidden;
-  margin-top: 0;
+  font-size: 0.95rem;
 }
 
-.work:hover .workDetail,
-.work:focus-visible .workDetail {
-  grid-template-rows: 1fr;
-  opacity: 1;
-  margin-top: 8px;
+.roomFoot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 24px;
+  margin-top: 26px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
 }
 
-.workPlatforms {
-  margin-top: 14px;
+.roomPlatforms {
   font-family: var(--mono);
+  font-stretch: 87.5%;
   font-size: 0.7rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--text-3);
 }
 
-.workGlyph {
-  width: 132px;
-  height: 132px;
+.roomCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-stretch: 87.5%;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text);
+  transition: color 0.5s var(--ease-out);
 }
 
-.workArrow {
-  display: grid;
-  place-items: center;
-  width: 56px;
-  height: 56px;
-  border: 1px solid var(--line-strong);
-  border-radius: 50%;
-  transition: background-color 0.5s var(--ease-out), border-color 0.5s var(--ease-out), transform 0.8s var(--ease-out);
-}
-
-.workArrow svg {
-  width: 20px;
-  height: 20px;
+.roomCta svg {
+  width: 16px;
+  height: 16px;
   fill: none;
   stroke: currentColor;
-  stroke-width: 1.3;
+  stroke-width: 1.4;
   transition: transform 0.6s var(--ease-out);
 }
 
-.work:hover .workArrow,
-.work:focus-visible .workArrow,
-.labLink:hover .workArrow {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--ink-0);
-  transform: rotate(45deg);
+.room:hover .roomCta,
+.room:focus-visible .roomCta {
+  color: var(--accent-text);
 }
 
-/* Glyphs */
-.glyph {
+.room:hover .roomCta svg,
+.room:focus-visible .roomCta svg {
+  transform: translate3d(3px, -3px, 0);
+}
+
+/* The window onto the room. It is glass in front of a lit scene: a rim that
+   catches the light, a pane reflection that follows the pointer, and the
+   room's own colour pooling at the sill. No backdrop blur is needed here;
+   the scene behind is the thing to look at. */
+.roomWindow {
+  position: relative;
   display: block;
+  aspect-ratio: 400 / 260;
+  border-radius: 20px;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    radial-gradient(70% 80% at 50% 45%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 72%),
+    #0b0812;
+  box-shadow:
+    0 30px 60px -30px rgba(0, 0, 0, 0.8),
+    0 0 0 1px rgba(255, 255, 255, 0.07);
+  transition: box-shadow 0.8s var(--ease-out);
+}
+
+.roomWindow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 70% at var(--gx, 22%) var(--gy, 0%), rgba(255, 255, 255, 0.13), transparent 60%),
+    linear-gradient(118deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 32%, rgba(255, 255, 255, 0) 68%, rgba(255, 255, 255, 0.04) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.07),
+    inset 0 -22px 34px -26px color-mix(in srgb, var(--accent) 80%, transparent);
+}
+
+.room:hover .roomWindow,
+.room:focus-visible .roomWindow {
+  box-shadow:
+    0 34px 70px -30px color-mix(in srgb, var(--accent) 45%, rgba(0, 0, 0, 0.8)),
+    0 0 0 1px color-mix(in srgb, var(--accent) 35%, rgba(255, 255, 255, 0.08));
+}
+
+/* The room's light: dark until the room is reached, then switched on with
+   the flicker of an old lamp finding its current. */
+.roomSwitch {
+  position: absolute;
+  left: 16px;
+  top: 14px;
+  z-index: 3;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+}
+
+.root[data-js] .roomItem:not([data-in]) .roomSwitch {
+  background: rgba(228, 224, 246, 0.18);
+  box-shadow: none;
+}
+
+.root[data-js] .roomItem .roomSwitch {
+  transition: background-color 0.3s ease 0.5s, box-shadow 0.3s ease 0.5s;
+}
+
+.root[data-js] .roomItem:not([data-in]) .scene {
+  opacity: 0.06;
+}
+
+.root[data-js] .roomItem[data-in] .scene {
+  animation: lightsOn 1.3s linear 0.4s both;
+}
+
+@keyframes lightsOn {
+  0% { opacity: 0.06; }
+  9% { opacity: 0.8; }
+  13% { opacity: 0.1; }
+  21% { opacity: 0.92; }
+  26% { opacity: 0.3; }
+  38%, 100% { opacity: 1; }
+}
+
+/* ---- Scenes ---- */
+
+.scene {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  overflow: visible;
-  --g: var(--silver-1);
 }
 
-.glyph * {
-  vector-effect: non-scaling-stroke;
+.scene * {
+  animation-play-state: paused !important;
 }
 
-.glyphRing {
-  fill: none;
-  stroke: var(--line-strong);
-  stroke-width: 1;
-  stroke-dasharray: 3 5;
-  transform-origin: 60px 60px;
-  transition: stroke 0.6s ease;
+.roomItem[data-onscreen] .scene * {
+  animation-play-state: running !important;
 }
 
-.gStroke,
-.gTangle,
-.gOrder,
-.gCable,
-.gOrbit,
-.gOrbitDash,
-.gPulse,
-.gScan {
-  fill: none;
-  stroke: var(--g);
+.scDevice {
+  fill: rgba(255, 255, 255, 0.03);
+  stroke: rgba(228, 224, 246, 0.22);
   stroke-width: 1.2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
 }
 
-.gTangle { opacity: 0.55; transition: opacity 0.8s var(--ease-out); }
-.gOrder { stroke: var(--accent); stroke-dasharray: 1 1; stroke-dashoffset: 1; }
-.gNode { fill: var(--silver-0); transform-box: fill-box; transform-origin: center; }
-.gOrbit { opacity: 0.6; }
-.gOrbitDash { stroke-dasharray: 2 6; transform-origin: 60px 60px; }
-.gLetter { fill: var(--silver-0); font-family: var(--display); font-size: 34px; }
-.gMark { fill: var(--line-strong); }
-.gCable { opacity: 0.6; }
-.gPulse { stroke: var(--accent); stroke-width: 2.4; stroke-dasharray: 0.08 0.92; stroke-dashoffset: 0; opacity: 0; }
-.gQr { fill: var(--silver-1); opacity: 0.25; }
-.gScan { stroke-width: 0.6; opacity: 0.22; }
-.gType { fill: var(--silver-0); font-family: var(--mono); font-size: 11px; letter-spacing: 1px; }
-.gCaret { fill: var(--accent); }
-.gTile, .gTileMove { fill: none; stroke: var(--g); stroke-width: 1.2; }
-.gTileMove { stroke: var(--accent); }
-.gDot { fill: var(--accent); opacity: 0; }
-.gPlanet { fill: rgba(111, 183, 255, 0.08); stroke: var(--g); stroke-width: 1.2; }
-.gLand { fill: var(--silver-1); opacity: 0.55; }
-.gMoon { fill: var(--silver-0); }
+.scDeviceFill {
+  fill: rgba(228, 224, 246, 0.1);
+}
 
-/* Active state: hover and focus on pointer devices, in view on touch. */
-.work:hover .glyphRing,
-.work:focus-visible .glyphRing,
-.labLink:hover .glyphRing,
-.work[data-live] .glyphRing {
+.scRule {
+  stroke: rgba(228, 224, 246, 0.14);
+  stroke-width: 1;
+}
+
+.scFaint {
+  fill: none;
+  stroke: rgba(228, 224, 246, 0.5);
+  stroke-width: 1.2;
+}
+
+.scFaintFill {
+  fill: rgba(228, 224, 246, 0.3);
+}
+
+.scMono {
+  font-family: var(--mono);
+  font-stretch: 87.5%;
+  font-size: 10px;
+  letter-spacing: 2px;
+  fill: var(--text-3);
+}
+
+.scSmall {
+  font-family: var(--sans);
+  font-size: 11px;
+  fill: var(--text-2);
+}
+
+.scText {
+  font-family: var(--sans);
+  font-size: 11.5px;
+  fill: var(--text);
+}
+
+.scNumeral {
+  font-family: var(--display);
+  font-size: 58px;
+  letter-spacing: -2px;
+  fill: var(--silver-0);
+}
+
+.scLabel {
+  font-family: var(--display-italic);
+  font-style: italic;
+  font-size: 15px;
+  fill: var(--moon);
+}
+
+/* Axiom: a breathing guide and the day's place in the program. */
+.axOrbit {
+  fill: none;
   stroke: var(--accent);
-  animation: spin 18s linear infinite;
+  stroke-width: 1;
+  stroke-dasharray: 0.006 0.018;
+  opacity: 0.55;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: spin 50s linear infinite;
 }
 
-.work:hover .gOrder, .work:focus-visible .gOrder, .work[data-live] .gOrder {
-  animation: draw 1.8s var(--ease-out) forwards;
+.axBreath {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: axBreathe 8s var(--ease-io) infinite;
 }
-.work:hover .gTangle, .work:focus-visible .gTangle, .work[data-live] .gTangle { opacity: 0.12; }
-.work:hover .gNode, .work:focus-visible .gNode, .work[data-live] .gNode {
-  animation: nodePulse 2.4s var(--ease-io) infinite;
-}
-.work:hover .gOrbitDash, .work:focus-visible .gOrbitDash, .work[data-live] .gOrbitDash {
-  animation: spin 9s linear infinite;
-}
-.work:hover .gMark, .work:focus-visible .gMark, .work[data-live] .gMark {
-  animation: markFill 2.8s steps(1) infinite;
-}
-.work:hover .gPulse, .work:focus-visible .gPulse, .work[data-live] .gPulse {
-  opacity: 1;
-  animation: travel 1.9s linear infinite;
-}
-.work:hover .gQr, .work:focus-visible .gQr, .work[data-live] .gQr {
-  animation: qr 1.3s steps(2) infinite;
-}
-.gCaret { animation: blink 1.05s steps(1) infinite; }
-.work:hover .gType, .work:focus-visible .gType, .work[data-live] .gType {
-  animation: type 2.8s steps(7) infinite;
-}
-.work:hover .gTileMove, .work:focus-visible .gTileMove, .work[data-live] .gTileMove {
-  animation: slideTile 3.2s var(--ease-io) infinite;
-}
-.work:hover .gDot, .work:focus-visible .gDot, .work[data-live] .gDot {
-  animation: dotDrift 3.2s var(--ease-io) infinite;
-}
-.gLand { animation: spinLand 14s linear infinite; }
-.gMoon { transform-origin: 60px 60px; animation: orbitMoon 9s linear infinite; }
 
-@keyframes draw { to { stroke-dashoffset: 0; } }
-@keyframes nodePulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.5); fill: var(--accent); } }
-@keyframes markFill {
-  0% { fill: var(--line-strong); }
-  50% { fill: var(--accent); }
+@keyframes axBreathe {
+  0%, 100% { transform: scale(0.8); }
+  50% { transform: scale(1.04); }
 }
-@keyframes travel { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
-@keyframes qr { 50% { opacity: 0.9; } }
-@keyframes blink { 50% { opacity: 0; } }
-@keyframes type { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
-@keyframes slideTile {
-  0%, 20% { transform: none; }
-  45%, 70% { transform: translate(0, -20px); }
-  95%, 100% { transform: none; }
+
+.axRing3 {
+  fill: color-mix(in srgb, var(--accent) 7%, transparent);
+  stroke: color-mix(in srgb, var(--accent) 30%, transparent);
 }
-@keyframes dotDrift {
-  0%, 20% { opacity: 0; transform: translate(-18px, 0); }
-  50% { opacity: 1; transform: translate(0, 0); }
-  80%, 100% { opacity: 0; transform: translate(18px, 0); }
+
+.axRing2 {
+  fill: color-mix(in srgb, var(--accent) 13%, transparent);
 }
-@keyframes spinLand { from { transform: translateX(-30px); } to { transform: translateX(30px); } }
-@keyframes orbitMoon {
-  from { transform: rotate(0deg) scaleY(1); }
-  to { transform: rotate(360deg); }
+
+.axCore {
+  fill: color-mix(in srgb, var(--accent) 30%, transparent);
 }
+
+.axIn {
+  animation: axIn 8s var(--ease-io) infinite;
+}
+
+.axOut {
+  opacity: 0;
+  animation: axOut 8s var(--ease-io) infinite;
+}
+
+@keyframes axIn {
+  0%, 38% { opacity: 1; }
+  50%, 88% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes axOut {
+  0%, 38% { opacity: 0; }
+  50%, 88% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.axDone {
+  fill: var(--accent);
+  opacity: 0.85;
+}
+
+.axToday {
+  fill: var(--moon);
+  animation: blinkSoft 1.8s var(--ease-io) infinite;
+}
+
+.axTodo {
+  fill: rgba(228, 224, 246, 0.14);
+}
+
+@keyframes blinkSoft {
+  50% { opacity: 0.25; }
+}
+
+/* Kern: typing two letters is enough; the results rank themselves. */
+.knField {
+  fill: rgba(255, 255, 255, 0.05);
+  stroke: rgba(228, 224, 246, 0.2);
+}
+
+.knQuery {
+  font-family: var(--sans);
+  font-size: 13px;
+  fill: var(--text);
+  animation: knType 6s step-end infinite;
+}
+
+.knCaret {
+  fill: var(--accent-text);
+  animation: knCaret 6s step-end infinite;
+}
+
+@keyframes knType {
+  0% { clip-path: inset(-20% 100% -20% 0); }
+  12% { clip-path: inset(-20% 48% -20% 0); }
+  18%, 92% { clip-path: inset(-20% -10% -20% 0); }
+}
+
+@keyframes knCaret {
+  0% { transform: translateX(-14px); }
+  12% { transform: translateX(-7px); }
+  18%, 92% { transform: translateX(0); }
+  96% { transform: translateX(-14px); opacity: 0; }
+  98% { opacity: 1; }
+}
+
+.knResult {
+  animation: knResult 6s var(--ease-out) infinite;
+  animation-delay: calc(var(--i) * 0.22s);
+}
+
+@keyframes knResult {
+  0%, 19% { opacity: 0; transform: translateY(8px); }
+  27%, 86% { opacity: 1; transform: none; }
+  94%, 100% { opacity: 0; transform: none; }
+}
+
+.knTop {
+  fill: color-mix(in srgb, var(--accent) 22%, transparent);
+  stroke: color-mix(in srgb, var(--accent) 60%, transparent);
+}
+
+.knRow {
+  fill: rgba(255, 255, 255, 0.035);
+}
+
+.knIcon {
+  fill: color-mix(in srgb, var(--accent) 60%, #ffffff);
+  opacity: 0.8;
+}
+
+.knBar,
+.knBarNow {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+
+.knBar {
+  fill: rgba(228, 224, 246, 0.18);
+}
+
+.knBarNow {
+  fill: var(--accent);
+  animation: knNow 3s var(--ease-io) infinite;
+}
+
+@keyframes knNow {
+  50% { opacity: 0.6; }
+}
+
+.root[data-js] .roomItem:not([data-in]) .knBar,
+.root[data-js] .roomItem:not([data-in]) .knBarNow {
+  transform: scaleY(0.04);
+}
+
+.root[data-js] .roomItem .knBar,
+.root[data-js] .roomItem .knBarNow {
+  transition: transform 1.2s var(--ease-out) calc(0.6s + var(--i) * 0.08s);
+}
+
+/* Tether ADB: scan the code, and the phone appears on the desktop. */
+.tqBack {
+  fill: rgba(244, 243, 248, 0.94);
+}
+
+.tqFinder {
+  fill: none;
+  stroke: #0c0914;
+  stroke-width: 3.2;
+}
+
+.tqDot {
+  fill: #0c0914;
+}
+
+.tqScan {
+  fill: var(--accent);
+  opacity: 0.85;
+  animation: tqScan 2.6s var(--ease-io) infinite alternate;
+}
+
+@keyframes tqScan {
+  from { transform: translateY(-2px); }
+  to { transform: translateY(88px); }
+}
+
+.tqLink {
+  fill: none;
+  stroke: rgba(228, 224, 246, 0.28);
+  stroke-width: 1.4;
+  stroke-dasharray: 0.02 0.025;
+}
+
+.tqPulse {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-dasharray: 0.14 0.86;
+  animation: travel 1.8s linear infinite;
+}
+
+@keyframes travel {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+
+.tqScreen {
+  fill: color-mix(in srgb, var(--accent) 7%, #0c0914);
+}
+
+.tqLine {
+  fill: color-mix(in srgb, var(--accent) 50%, transparent);
+  animation: tqLine 2.4s var(--ease-io) infinite;
+  animation-delay: calc(var(--i) * 0.2s);
+}
+
+@keyframes tqLine {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 0.9; }
+}
+
+.tqLive {
+  fill: var(--accent);
+  animation: blinkSoft 1.6s var(--ease-io) infinite;
+}
+
+/* TypeCrt: phosphor text typed on a curved glass screen. */
+.tcBezel {
+  fill: #161020;
+  stroke: rgba(228, 224, 246, 0.2);
+  stroke-width: 1.2;
+}
+
+.tcScreen {
+  fill: #1b1006;
+}
+
+.tcLines {
+  fill: url(#lm-scan);
+  pointer-events: none;
+}
+
+.tcDim {
+  font-family: var(--mono);
+  font-stretch: 87.5%;
+  font-size: 11px;
+  fill: color-mix(in srgb, var(--accent) 58%, #1b1006);
+}
+
+.tcType {
+  font-family: var(--mono);
+  font-stretch: 87.5%;
+  font-size: 13px;
+  fill: var(--accent);
+  animation: tcType 6s infinite;
+}
+
+.tcCaret {
+  fill: var(--accent);
+  animation: tcCaret 6s infinite, blinkSoft 1s steps(1) infinite;
+}
+
+@keyframes tcType {
+  0% { clip-path: inset(-30% 100% -30% 0); animation-timing-function: steps(25, end); }
+  62%, 90% { clip-path: inset(-30% -4% -30% 0); animation-timing-function: step-end; }
+  100% { clip-path: inset(-30% 100% -30% 0); }
+}
+
+@keyframes tcCaret {
+  0% { transform: translateX(0); animation-timing-function: steps(25, end); }
+  62%, 90% { transform: translateX(195px); animation-timing-function: step-end; }
+  100% { transform: translateX(0); }
+}
+
+.tcRoll {
+  fill: rgba(255, 184, 92, 0.05);
+  animation: tcRoll 5s linear infinite;
+}
+
+@keyframes tcRoll {
+  from { transform: translateY(0); }
+  to { transform: translateY(134px); }
+}
+
+.tcKey {
+  fill: rgba(228, 224, 246, 0.12);
+}
+
+.tcHot {
+  fill: var(--accent);
+  animation: tcHot 2.4s var(--ease-io) infinite;
+  animation-delay: calc(var(--i) * -0.31s);
+}
+
+@keyframes tcHot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
+/* Drift: glide, and stop exactly on the mark. */
+.drTile {
+  fill: rgba(255, 255, 255, 0.02);
+  stroke: rgba(228, 224, 246, 0.08);
+}
+
+.drTarget {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.6;
+  stroke-dasharray: 4 4;
+  animation: drTarget 4.4s var(--ease-out) infinite;
+}
+
+@keyframes drTarget {
+  0%, 52% { stroke-width: 1.6; opacity: 0.8; }
+  56% { stroke-width: 4; opacity: 1; }
+  80%, 100% { stroke-width: 1.6; opacity: 0.8; }
+}
+
+.drTrack {
+  stroke: rgba(228, 224, 246, 0.2);
+  stroke-dasharray: 2 6;
+}
+
+.drPiece {
+  fill: color-mix(in srgb, var(--accent) 82%, #ffffff);
+  animation: drPiece 4.4s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+}
+
+@keyframes drPiece {
+  0%, 10% { transform: translateX(0); opacity: 1; }
+  55%, 84% { transform: translateX(252px); opacity: 1; }
+  93% { transform: translateX(252px); opacity: 0; }
+  94%, 100% { transform: translateX(0); opacity: 0; }
+}
+
+.drMeter {
+  fill: rgba(228, 224, 246, 0.08);
+}
+
+.drWindow {
+  fill: color-mix(in srgb, var(--accent) 48%, transparent);
+}
+
+.drNeedle {
+  fill: var(--moon);
+  animation: drNeedle 4.4s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+}
+
+@keyframes drNeedle {
+  0%, 10% { transform: translateX(0); }
+  55%, 84% { transform: translateX(221px); }
+  94%, 100% { transform: translateX(0); }
+}
+
+.drPerfect {
+  font-family: var(--display-italic);
+  font-style: italic;
+  font-size: 16px;
+  fill: var(--accent);
+  animation: drPerfect 4.4s var(--ease-out) infinite;
+}
+
+@keyframes drPerfect {
+  0%, 54% { opacity: 0; }
+  60%, 84% { opacity: 1; }
+  92%, 100% { opacity: 0; }
+}
+
+/* ---- The lab ---- */
 
 .lab {
   display: grid;
@@ -1420,6 +2075,7 @@
 
 .labTag {
   font-family: var(--mono);
+  font-stretch: 87.5%;
   font-size: 0.7rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -1434,14 +2090,14 @@
   gap: 26px;
   align-items: center;
   padding: 22px 26px;
-  border: 1px solid var(--line);
-  border-radius: 2px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 22px;
   background: linear-gradient(120deg, rgba(111, 183, 255, 0.05), transparent 60%);
   transition: border-color 0.5s ease;
 }
 
 .labLink:hover {
-  border-color: var(--line-strong);
+  border-color: var(--accent);
 }
 
 .labGlyph {
@@ -1465,60 +2121,156 @@
   font-size: 0.98rem;
 }
 
+.labArrow {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  transition: background-color 0.5s var(--ease-out), border-color 0.5s var(--ease-out), transform 0.8s var(--ease-out);
+}
+
+.labArrow svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.3;
+}
+
+.labLink:hover .labArrow {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--ink-0);
+  transform: rotate(45deg);
+}
+
+.glyph {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  --g: var(--silver-1);
+}
+
+.glyph * {
+  vector-effect: non-scaling-stroke;
+}
+
+.glyphRing {
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: 1;
+  stroke-dasharray: 3 5;
+  transform-origin: 60px 60px;
+  transition: stroke 0.6s ease;
+}
+
+.labLink:hover .glyphRing {
+  stroke: var(--accent);
+  animation: spin 18s linear infinite;
+}
+
+.gOrbit {
+  fill: none;
+  stroke: var(--g);
+  stroke-width: 1.2;
+  opacity: 0.6;
+}
+
+.gPlanet { fill: rgba(111, 183, 255, 0.08); stroke: var(--g); stroke-width: 1.2; }
+.gLand { fill: var(--silver-1); opacity: 0.55; animation: spinLand 14s linear infinite; }
+.gMoon { fill: var(--silver-0); transform-origin: 60px 60px; animation: orbitMoon 9s linear infinite; }
+
+@keyframes spinLand { from { transform: translateX(-30px); } to { transform: translateX(30px); } }
+@keyframes orbitMoon { to { transform: rotate(360deg); } }
+
 /* -------------------------------------------------------------- Method --- */
 
 .methodList {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(28px, 4vw, 64px) clamp(28px, 5vw, 96px);
-  margin: clamp(48px, 8vh, 88px) 0 0;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: clamp(44px, 7vh, 80px) 0 0;
   padding: 0;
   list-style: none;
+  border-block: 1px solid var(--line-strong);
 }
 
+/* Four doors. Each opens down the middle as it arrives, and the principle
+   behind it is standing in a pool of light. */
 .methodItem {
   position: relative;
   display: grid;
-  grid-template-columns: 64px 1fr;
-  grid-template-areas:
-    'mark index'
-    'mark title'
-    'mark body';
-  column-gap: 26px;
-  padding-top: 28px;
-  border-top: 1px solid var(--line-strong);
+  align-content: start;
+  min-height: 380px;
+  padding: 30px clamp(18px, 2vw, 30px) 40px;
+  overflow: hidden;
+  isolation: isolate;
+  background: radial-gradient(70% 55% at 50% 0%, color-mix(in srgb, var(--violet-soft) 7%, transparent), transparent 70%);
 }
 
-.methodItem h3 {
-  grid-area: title;
-  margin: 6px 0 0;
-  font-family: var(--display);
-  font-weight: 400;
-  font-variation-settings: 'opsz' 60;
-  font-size: clamp(1.7rem, 2.6vw, 2.4rem);
-  line-height: 1.05;
-  letter-spacing: -0.02em;
-  color: var(--silver-0);
+.methodItem + .methodItem {
+  border-left: 1px solid var(--line);
 }
 
-.methodItem p {
-  grid-area: body;
-  margin: 14px 0 0;
-  color: var(--text-2);
+.methodItem::before,
+.methodItem::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  width: 50.5%;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02), transparent 30%, transparent 70%, rgba(255, 255, 255, 0.02)),
+    linear-gradient(180deg, #13101e, #0c0a14);
+  pointer-events: none;
+  transition: transform 1.5s var(--ease-io) calc(var(--d, 0ms) + 250ms);
+}
+
+.methodItem::before {
+  left: 0;
+  box-shadow: inset -1px 0 0 color-mix(in srgb, var(--violet-soft) 40%, transparent);
+}
+
+.methodItem::after {
+  right: 0;
+  box-shadow: inset 1px 0 0 color-mix(in srgb, var(--violet-soft) 40%, transparent);
+}
+
+.root:not([data-js]) .methodItem::before,
+.root:not([data-js]) .methodItem::after {
+  display: none;
+}
+
+.methodItem[data-in]::before {
+  transform: translate3d(-101%, 0, 0);
+}
+
+.methodItem[data-in]::after {
+  transform: translate3d(101%, 0, 0);
+}
+
+/* The doors do the revealing, so the item itself does not fade or rise. */
+.root[data-js] .methodItem[data-reveal]:not([data-in]) {
+  opacity: 1;
+  transform: none;
 }
 
 .methodIndex {
-  grid-area: index;
   font-family: var(--mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.2em;
+  font-stretch: 87.5%;
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
   color: var(--violet-soft);
 }
 
 .methodMark {
-  grid-area: mark;
-  width: 64px;
-  height: 64px;
+  width: 72px;
+  height: 72px;
+  margin: 40px 0 34px;
   fill: none;
   stroke: var(--silver-1);
   stroke-width: 1.3;
@@ -1527,18 +2279,44 @@
   overflow: visible;
 }
 
+.methodItem h3 {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(1.5rem, 2vw, 2.05rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--silver-0);
+}
+
+.methodItem p {
+  margin: 16px 0 0;
+  color: var(--text-2);
+  font-size: 0.97rem;
+}
+
 .mShackle {
   transition: transform 0.7s var(--ease-out);
   transform-origin: 42px 28px;
 }
 
-.methodItem:hover .mShackle {
+.methodItem:hover .mShackle,
+.methodItem[data-in] .mShackle {
   transform: translateY(-4px) rotate(-12deg);
+  transition-delay: 1.2s;
+}
+
+.methodItem:hover .mShackle {
+  transition-delay: 0s;
 }
 
 .mBolt {
   stroke-dasharray: 1 1;
   stroke-dashoffset: 0;
+}
+
+.methodItem[data-in] .mBolt {
+  animation: boltDraw 1s var(--ease-out) 1.3s both;
 }
 
 .methodItem:hover .mBolt {
@@ -1552,11 +2330,16 @@
 
 .mBeam {
   transform-origin: 32px 22px;
-  transition: transform 0.8s var(--ease-out);
+}
+
+.methodItem:hover .mBeam,
+.methodItem[data-in] .mBeam {
+  animation: balance 2.8s var(--ease-io) 1.4s;
 }
 
 .methodItem:hover .mBeam {
-  animation: balance 2.4s var(--ease-io) infinite;
+  animation-delay: 0s;
+  animation-iteration-count: infinite;
 }
 
 @keyframes balance {
@@ -1585,7 +2368,7 @@
 /* -------------------------------------------------------------- Ledger --- */
 
 .ledger {
-  padding-top: clamp(40px, 8vh, 96px);
+  padding-bottom: clamp(56px, 9vh, 110px);
 }
 
 .figures {
@@ -1594,14 +2377,13 @@
   margin: 0;
   padding: 0;
   list-style: none;
-  border-top: 1px solid var(--line-strong);
-  border-bottom: 1px solid var(--line-strong);
+  border-block: 1px solid var(--line-strong);
 }
 
 .figure {
   display: grid;
   align-content: start;
-  gap: 10px;
+  gap: 12px;
   padding: 34px 24px 34px 0;
 }
 
@@ -1610,19 +2392,50 @@
   border-left: 1px solid var(--line);
 }
 
-.figure strong {
+/* Odometer wheels: each digit is a strip of numerals that rolls to its value
+   when the figure arrives. A zero rolls a full turn and lands on zero. */
+.odometer {
+  display: block;
   font-family: var(--display);
   font-weight: 400;
-  font-variation-settings: 'opsz' 96;
-  font-size: clamp(3.6rem, 8vw, 8.4rem);
-  line-height: 0.85;
-  letter-spacing: -0.04em;
+  font-size: clamp(3.6rem, 7.2vw, 7.6rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
   color: var(--silver-0);
   font-variant-numeric: lining-nums tabular-nums;
 }
 
+.odoWheels {
+  display: inline-flex;
+}
+
+.odoWheel {
+  display: block;
+  height: 1em;
+  overflow: hidden;
+  mask-image: linear-gradient(transparent, #000 16%, #000 84%, transparent);
+}
+
+.odoStrip {
+  display: flex;
+  flex-direction: column;
+  transform: translate3d(0, calc(var(--n) * -1em), 0);
+  transition: transform 2.2s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--d, 0ms) + var(--w) * 140ms + 250ms);
+}
+
+.odoStrip > span {
+  display: block;
+  height: 1em;
+  line-height: 1;
+}
+
+.root[data-js] .figure:not([data-in]) .odoStrip {
+  transform: translate3d(0, 0, 0);
+}
+
 .figureLabel {
   font-family: var(--mono);
+  font-stretch: 87.5%;
   font-size: 0.72rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -1647,7 +2460,7 @@
 .makerSeal {
   position: relative;
   aspect-ratio: 1;
-  max-width: 440px;
+  max-width: 420px;
   width: 100%;
 }
 
@@ -1655,9 +2468,6 @@
   width: 100%;
   height: 100%;
   overflow: visible;
-}
-
-.makerSeal svg {
   animation: spin 120s linear infinite paused;
 }
 
@@ -1669,7 +2479,22 @@
   fill: none;
   stroke: url(#lm-silver);
   stroke-linecap: round;
-  opacity: 0.6;
+  opacity: 0.62;
+}
+
+/* The seal is pressed: its rings are cut from the centre out, then the
+   initial is set in the keyhole. */
+.sealRing {
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: 0;
+}
+
+.root[data-js] .makerSeal:not([data-in]) .sealRing {
+  stroke-dashoffset: 1;
+}
+
+.root[data-js] .makerSeal .sealRing {
+  transition: stroke-dashoffset 1.5s var(--ease-io) calc(0.2s + var(--r) * 0.09s);
 }
 
 .sealLetter {
@@ -1684,12 +2509,23 @@
   color: var(--violet-soft);
 }
 
+.root[data-js] .makerSeal:not([data-in]) .sealLetter {
+  opacity: 0;
+  transform: scale(1.25);
+  filter: blur(8px);
+}
+
+.root[data-js] .makerSeal .sealLetter {
+  transition: opacity 1s var(--ease-out) 1.2s, transform 1.4s var(--ease-out) 1.2s, filter 1.2s var(--ease-out) 1.2s;
+}
+
 .textLink {
   display: inline-flex;
   gap: 10px;
   margin-top: 30px;
   padding-bottom: 6px;
   font-family: var(--mono);
+  font-stretch: 87.5%;
   font-size: 0.76rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -1747,7 +2583,6 @@
   margin: 0;
   font-family: var(--display);
   font-weight: 400;
-  font-variation-settings: 'opsz' 40;
   font-size: clamp(1.25rem, 1.8vw, 1.6rem);
   line-height: 1.2;
   color: var(--text);
@@ -1891,8 +2726,12 @@
 }
 
 .finaleKicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
   margin: 0;
   font-family: var(--mono);
+  font-stretch: 87.5%;
   font-size: 0.72rem;
   letter-spacing: 0.26em;
   text-transform: uppercase;
@@ -1903,7 +2742,6 @@
   margin: 26px 0 0;
   font-family: var(--display);
   font-weight: 400;
-  font-variation-settings: 'opsz' 96;
   font-size: clamp(3.4rem, 11vw, 12rem);
   line-height: 0.88;
   letter-spacing: -0.04em;
@@ -1977,6 +2815,7 @@
 .creditsLead {
   margin: 0 0 clamp(40px, 7vh, 72px);
   font-family: var(--mono);
+  font-stretch: 87.5%;
   font-size: 0.76rem;
   letter-spacing: 0.42em;
   text-transform: uppercase;
@@ -2000,6 +2839,7 @@
 .creditsRoll dt {
   text-align: right;
   font-family: var(--mono);
+  font-stretch: 87.5%;
   font-size: 0.7rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -2039,6 +2879,7 @@
   padding-top: 24px;
   border-top: 1px solid var(--line);
   font-family: var(--mono);
+  font-stretch: 87.5%;
   font-size: 0.7rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -2127,6 +2968,7 @@
 
 .cursorRing span {
   font-family: var(--mono);
+  font-stretch: 87.5%;
   font-size: 0.58rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -2168,7 +3010,7 @@
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.34),
     inset 0 -1px 0 rgba(255, 255, 255, 0.05),
-    inset 0 -16px 26px -22px rgba(179, 161, 255, 0.55),
+    inset 0 -16px 26px -22px color-mix(in srgb, var(--violet-soft) 55%, transparent),
     0 12px 36px -14px rgba(0, 0, 0, 0.7);
 }
 
@@ -2184,7 +3026,7 @@
 
 .navLinks.glass .navContact {
   border-color: rgba(255, 255, 255, 0.16);
-  background: rgba(9, 7, 15, 0.35);
+  background: color-mix(in srgb, var(--ink-1) 35%, transparent);
 }
 
 .hudLeft.glass,
@@ -2195,27 +3037,6 @@
 }
 
 .buttonGhost.glass {
-  border-color: rgba(255, 255, 255, 0.16);
-}
-
-.workGlyph.glass {
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  padding: 14px;
-  transition: box-shadow 0.8s var(--ease-out), border-color 0.8s var(--ease-out);
-}
-
-.work:hover .workGlyph.glass,
-.work:focus-visible .workGlyph.glass {
-  border-color: color-mix(in srgb, var(--accent) 45%, rgba(255, 255, 255, 0.2));
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.4),
-    inset 0 -18px 30px -18px color-mix(in srgb, var(--accent) 70%, transparent),
-    0 18px 50px -18px color-mix(in srgb, var(--accent) 55%, transparent);
-}
-
-.faqIcon.glass {
   border-color: rgba(255, 255, 255, 0.16);
 }
 
@@ -2260,7 +3081,6 @@
   gap: clamp(22px, 3vw, 48px);
   padding-right: clamp(22px, 3vw, 48px);
   font-family: var(--display);
-  font-variation-settings: 'opsz' 96;
   font-size: clamp(3rem, 9vw, 9.5rem);
   line-height: 1.02;
   letter-spacing: -0.035em;
@@ -2280,7 +3100,7 @@
   height: 0.28em;
   border-radius: 50%;
   background: radial-gradient(circle at 35% 35%, #fff, var(--violet-soft) 45%, var(--violet-deep));
-  box-shadow: 0 0 24px rgba(179, 161, 255, 0.5);
+  box-shadow: 0 0 24px color-mix(in srgb, var(--violet-soft) 50%, transparent);
 }
 
 .reelOutline .reelWord i {
@@ -2293,31 +3113,333 @@
   to { transform: translate3d(-100%, 0, 0); }
 }
 
-/* A moonlight sheen crosses each section title once as it arrives. */
-.sectionTitle[data-in],
-.finaleTitle[data-in] {
-  background: linear-gradient(100deg, var(--silver-0) 42%, #ffffff 50%, var(--silver-0) 58%) 0 0 / 260% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: sheen 2.2s var(--ease-io) 0.3s both;
+/* ------------------------------------------------------ Split titles --- */
+/* Titles arrive a letter at a time: each rises out of a blur, tilted, and
+   settles. The heading itself does not fade; its letters do. */
+.root [data-split] > span,
+.root [data-split] em > span {
+  display: inline-block;
+  white-space: nowrap;
 }
 
-.sectionTitle[data-in] em,
-.finaleTitle[data-in] em {
-  color: var(--violet-soft);
-  -webkit-text-fill-color: var(--violet-soft);
+.root [data-split] span span {
+  display: inline-block;
 }
 
-@keyframes sheen {
-  from { background-position: 100% 0; }
-  to { background-position: 0% 0; }
+.root[data-js] [data-split][data-reveal]:not([data-in]) {
+  opacity: 1;
+  transform: none;
+}
+
+.root[data-js] [data-split] span span {
+  transition:
+    opacity 0.9s var(--ease-out),
+    transform 1.3s var(--ease-out),
+    filter 1s var(--ease-out);
+  transition-delay: calc(var(--c) * 26ms + 60ms);
+}
+
+.root[data-js] [data-split]:not([data-in]) span span {
+  opacity: 0;
+  transform: translate3d(0, 0.45em, 0) rotate(7deg);
+  filter: blur(8px);
+}
+
+/* ------------------------------------------------------------ Loader --- */
+
+@property --load {
+  syntax: '<integer>';
+  inherits: false;
+  initial-value: 0;
+}
+
+@counter-style lm-three {
+  system: extends decimal;
+  pad: 3 '0';
+}
+
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  pointer-events: none;
+  animation: loaderGone 0s linear 1.75s forwards;
+}
+
+.root[data-intro-seen] .loader {
+  display: none;
+}
+
+@keyframes loaderGone {
+  to { visibility: hidden; }
+}
+
+.loaderHalf {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 50.2%;
+  background: var(--ink-0);
+}
+
+.loaderHalf[data-half='top'] {
+  top: 0;
+  animation: halfUp 0.8s var(--ease-io) 1s forwards;
+}
+
+.loaderHalf[data-half='bottom'] {
+  bottom: 0;
+  animation: halfDown 0.8s var(--ease-io) 1s forwards;
+}
+
+/* A seam of moonlight where the curtain parts. */
+.loaderHalf[data-half='top']::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--moon) 30%, var(--violet-soft) 50%, var(--moon) 70%, transparent);
+  transform: scaleX(0);
+  animation: seam 0.5s var(--ease-io) 0.62s forwards;
+}
+
+@keyframes halfUp {
+  to { transform: translate3d(0, -101%, 0); }
+}
+
+@keyframes halfDown {
+  to { transform: translate3d(0, 101%, 0); }
+}
+
+@keyframes seam {
+  to { transform: scaleX(1); }
+}
+
+.loaderCore {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 18px;
+  animation: coreOut 0.5s var(--ease-io) 0.85s forwards;
+}
+
+@keyframes coreOut {
+  to { opacity: 0; transform: scale(0.94); filter: blur(6px); }
+}
+
+.loaderMark {
+  width: 96px;
+  height: 96px;
+  overflow: visible;
+}
+
+.loaderMoon {
+  fill: var(--violet);
+  fill-opacity: 0;
+  stroke: var(--violet-soft);
+  stroke-width: 0.6;
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: 1;
+  animation: loaderMoon 0.8s var(--ease-io) 0.05s forwards;
+}
+
+@keyframes loaderMoon {
+  60% { fill-opacity: 0; }
+  to { stroke-dashoffset: 0; fill-opacity: 0.9; }
+}
+
+.loaderRing {
+  fill: none;
+  stroke: var(--silver-1);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: 1;
+  transform-origin: 21px 20px;
+  animation: loaderRing 0.9s var(--ease-out) 0.15s forwards;
+}
+
+.loaderRing + .loaderRing {
+  animation-delay: 0.28s;
+  animation-direction: reverse;
+}
+
+@keyframes loaderRing {
+  from { stroke-dashoffset: 1; transform: rotate(-120deg); }
+  to { stroke-dashoffset: 0.12; transform: rotate(0deg); }
+}
+
+.loaderCore2 {
+  fill: var(--moon);
+  transform-origin: 21px 20px;
+  animation: loaderDot 0.9s var(--ease-out) 0.4s both;
+}
+
+@keyframes loaderDot {
+  from { transform: scale(0); }
+}
+
+.loaderWord {
+  font-family: var(--display);
+  font-size: 1.9rem;
+  letter-spacing: 0.04em;
+  color: var(--silver-0);
+  animation: loaderWord 0.9s var(--ease-out) 0.1s both;
+}
+
+@keyframes loaderWord {
+  from { opacity: 0; letter-spacing: 0.5em; filter: blur(6px); }
+}
+
+.loaderCount {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-stretch: 87.5%;
+  font-size: 0.62rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.loaderNum {
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  color: var(--moon);
+  font-variant-numeric: tabular-nums;
+  animation: loadCount 0.85s cubic-bezier(0.45, 0, 0.2, 1) forwards;
+  counter-reset: load var(--load);
+}
+
+.loaderNum::after {
+  content: counter(load, lm-three);
+}
+
+@keyframes loadCount {
+  to { --load: 100; }
+}
+
+.loaderBar {
+  display: block;
+  width: 132px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--violet-soft), var(--moon));
+  transform-origin: left;
+  transform: scaleX(0);
+  animation: loadBar 0.85s cubic-bezier(0.45, 0, 0.2, 1) forwards;
+}
+
+@keyframes loadBar {
+  to { transform: scaleX(1); }
+}
+
+/* ------------------------------------------------------ Theme switch --- */
+
+.themeToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 4px;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+}
+
+.themeDots {
+  position: relative;
+  display: inline-flex;
+  gap: 3px;
+}
+
+.themeDots i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+  transition: transform 0.5s var(--ease-out), opacity 0.5s ease;
+  opacity: 0.45;
+}
+
+.themeDots i:nth-child(1) { background: #b3a1ff; }
+.themeDots i:nth-child(2) { background: #ffab8f; }
+.themeDots i:nth-child(3) { background: #9fcbff; }
+
+.root:not([data-theme]) .themeDots i:nth-child(1),
+.root[data-theme='eclipse'] .themeDots i:nth-child(2),
+.root[data-theme='tide'] .themeDots i:nth-child(3) {
+  opacity: 1;
+  transform: scale(1.3);
+  box-shadow: 0 0 10px currentColor, inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+}
+
+.themeToggle:hover .themeDots i {
+  opacity: 1;
+}
+
+.themeName {
+  min-width: 7.2em;
+  text-align: left;
+}
+
+/* --------------------------------------------------------------- Sky --- */
+
+.sky {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+}
+
+.sky i {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--moon);
+  box-shadow: 0 0 6px var(--moon);
+  opacity: 0.2;
+  animation: twinkle 4s var(--ease-io) infinite paused;
+}
+
+.sky[data-onscreen] i {
+  animation-play-state: running;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.12; transform: scale(0.7); }
+  50% { opacity: 0.9; transform: scale(1.15); }
+}
+
+/* ---------------------------------------------------------- Parallax --- */
+/* Room windows drift against the scroll, a little, like panes in a moving
+   train: scroll-driven, on the compositor, no script. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .roomWindow {
+      animation: windowDrift linear both;
+      animation-timeline: view();
+      animation-range: cover;
+    }
+
+    @keyframes windowDrift {
+      from { translate: 0 32px; }
+      to { translate: 0 -32px; }
+    }
+  }
 }
 
 /* ---------------------------------------------------------- Responsive --- */
 
 @media (max-width: 1100px) {
-  .navChapter {
+  .navChapter,
+  .themeName {
     display: none;
   }
 
@@ -2325,17 +3447,16 @@
     grid-template-columns: auto 1fr;
   }
 
-  .work {
-    grid-template-columns: 3.6rem minmax(0, 1fr) 104px;
+  .methodList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .workGlyph {
-    width: 104px;
-    height: 104px;
+  .methodItem:nth-child(3) {
+    border-left: 0;
   }
 
-  .workArrow {
-    display: none;
+  .methodItem:nth-child(n + 3) {
+    border-top: 1px solid var(--line);
   }
 
   .figures {
@@ -2352,11 +3473,29 @@
   }
 }
 
+@media (max-width: 900px) {
+  .room,
+  .roomItem:nth-child(even) .room {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .roomWindow,
+  .roomItem:nth-child(even) .roomWindow {
+    order: -1;
+  }
+
+  .manifestoGrid {
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
+}
+
 @media (max-width: 1100px) and (orientation: portrait) {
   .heroStage {
     --mx: 50%;
-    --my: 34%;
-    --md: min(112vw, 78svh);
+    --my: 32%;
+    --md: min(104vw, 70svh);
   }
 
   /* Film-poster scrim: the maze sinks into the dark behind the title. */
@@ -2365,7 +3504,7 @@
     position: absolute;
     inset: 0;
     z-index: 2;
-    background: linear-gradient(to top, var(--ink-1) 0%, rgba(9, 7, 15, 0.95) 40%, rgba(9, 7, 15, 0.72) 54%, rgba(9, 7, 15, 0.3) 64%, rgba(9, 7, 15, 0) 74%);
+    background: linear-gradient(to top, var(--ink-1) 0%, color-mix(in srgb, var(--ink-1) 94%, transparent) 36%, color-mix(in srgb, var(--ink-1) 60%, transparent) 48%, color-mix(in srgb, var(--ink-1) 0%, transparent) 58%);
     opacity: clamp(0, calc(1 - var(--p) * 6), 1);
     pointer-events: none;
   }
@@ -2411,18 +3550,18 @@
   }
 
   .heroStage {
-    --mx: 57%;
-    --my: 25%;
-    --md: 116vw;
+    --mx: 50%;
+    --my: 28%;
+    --md: 98vw;
   }
 
   .heroCopy {
-    bottom: 10.5svh;
+    bottom: 10svh;
   }
 
   .heroKicker {
-    margin-bottom: 14px;
-    font-size: 0.64rem;
+    margin-bottom: 12px;
+    font-size: 0.62rem;
   }
 
   .heroWord {
@@ -2430,16 +3569,17 @@
   }
 
   .heroTagline {
-    margin-top: 16px;
+    margin-top: 14px;
+    font-size: 1.3rem;
   }
 
   .heroLede {
-    font-size: 0.95rem;
-    margin-top: 12px;
+    font-size: 0.94rem;
+    margin-top: 10px;
   }
 
   .heroActions {
-    margin-top: 24px;
+    margin-top: 22px;
     gap: 10px;
   }
 
@@ -2448,6 +3588,7 @@
     height: 50px;
     padding: 0 18px;
     font-size: 0.68rem;
+    letter-spacing: 0.14em;
   }
 
   .hudCorner[data-pos='tl'],
@@ -2474,8 +3615,18 @@
     display: none;
   }
 
+  .beats {
+    bottom: 64px;
+    height: auto;
+    min-height: 3.4em;
+  }
+
   .beats li {
     padding: 0 12px;
+  }
+
+  .chapterNote {
+    margin-left: 0;
   }
 
   .manifestoFacts,
@@ -2483,6 +3634,14 @@
   .makerGrid,
   .questionsGrid {
     grid-template-columns: 1fr;
+  }
+
+  .manifestoFacts {
+    gap: 0;
+  }
+
+  .manifestoFacts > div {
+    padding: 16px 0;
   }
 
   .worksIntro {
@@ -2493,25 +3652,17 @@
     position: static;
   }
 
-  .work {
-    grid-template-columns: minmax(0, 1fr) 76px;
-    gap: 14px 18px;
-    align-items: start;
+  .room {
+    padding: 12px 12px 22px;
+    border-radius: 24px;
   }
 
-  .workNo {
-    display: none;
+  .roomWindow {
+    border-radius: 16px;
   }
 
-  .workGlyph {
-    width: 76px;
-    height: 76px;
-  }
-
-  .workDetail {
-    grid-template-rows: 1fr;
-    opacity: 1;
-    margin-top: 8px;
+  .roomText {
+    padding: 4px 8px;
   }
 
   .lab {
@@ -2535,7 +3686,7 @@
     height: 64px;
   }
 
-  .labLink .workArrow {
+  .labArrow {
     display: none;
   }
 
@@ -2543,14 +3694,20 @@
     grid-template-columns: 1fr;
   }
 
-  .methodItem {
-    grid-template-columns: 48px 1fr;
-    column-gap: 18px;
+  .methodItem,
+  .methodItem + .methodItem {
+    min-height: 0;
+    border-left: 0;
+  }
+
+  .methodItem + .methodItem {
+    border-top: 1px solid var(--line);
   }
 
   .methodMark {
-    width: 48px;
-    height: 48px;
+    width: 56px;
+    height: 56px;
+    margin: 24px 0 22px;
   }
 
   .figures {
@@ -2612,15 +3769,18 @@
 
   .heroStage {
     position: relative;
+  }
+
+  .letterbox span {
     animation: none;
   }
 
   .grain,
   .reelTrack,
-  .sectionTitle[data-in],
-  .finaleTitle[data-in],
   .markRing,
-  .walls,
+  .ring,
+  .rimTrack,
+  .headPing,
   .crescent,
   .blade,
   .headHalo,
@@ -2633,13 +3793,42 @@
   .heroActions,
   .hud,
   .scrollCue,
-  .sealWalls,
   .finaleWalls,
+  .makerSeal svg,
   .gLand,
   .gMoon,
-  .gCaret,
-  .workStatus i {
+  .scene,
+  .scene *,
+  .workStatus i,
+  .methodItem * {
     animation: none !important;
+  }
+
+  .methodItem::before,
+  .methodItem::after,
+  .loader,
+  .tcCaret {
+    display: none;
+  }
+
+  .heroWord span[style],
+  .sky i,
+  .roomWindow {
+    animation: none !important;
+  }
+
+  .root [data-split] span span {
+    transition: none !important;
+  }
+
+  .root .sealRing,
+  .root .odoStrip,
+  .root .sealLetter,
+  .root .chapterNote,
+  .root .roomSwitch,
+  .root .knBar,
+  .root .knBarNow {
+    transition: none !important;
   }
 
   .root [data-reveal],
