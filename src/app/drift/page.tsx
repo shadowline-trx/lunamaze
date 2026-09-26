@@ -1,6 +1,7 @@
 import type { JSX } from 'react';
 import ProductNav from '@/components/lunamaze/ProductNav';
 import LunaFooter from '@/components/lunamaze/LunaFooter';
+import ProductFaq, { type FaqItem } from '@/components/lunamaze/ProductFaq';
 import Beams from '@/components/backgrounds/Beams';
 
 /**
@@ -38,6 +39,33 @@ const PILLARS: ReadonlyArray<Pillar> = [
     title: 'Handcrafted levels',
     description:
       'Each puzzle is authored and tuned by hand — no procedural filler, no padding.',
+  },
+];
+
+const FAQ: ReadonlyArray<FaqItem> = [
+  {
+    q: 'What is Drift?',
+    a: 'Drift is a precision puzzle game about timing and control, made by the independent studio Luna Maze. Every level rewards exactness over speed, the levels are designed by hand, and the palette and pacing are deliberately calm.',
+  },
+  {
+    q: 'Can I download Drift yet?',
+    a: 'Not publicly. Drift is in closed testing on Google Play. It was paused so Axiom and TypeCrt could ship first, and it is next in line. There is no public release date yet.',
+  },
+  {
+    q: 'How do I join the Drift closed test?',
+    a: `Email ${CONTACT_EMAIL} with the subject “Drift closed test access” and you will be added to the next test build. Places are limited.`,
+  },
+  {
+    q: 'Which platforms is Drift for?',
+    a: 'Drift is being tested on Android through the Google Play Console.',
+  },
+  {
+    q: 'Are Drift’s levels procedurally generated?',
+    a: 'No. Each puzzle is authored and tuned by hand, with no procedural filler and no padding.',
+  },
+  {
+    q: 'Who makes Drift?',
+    a: 'Drift is made by Luna Maze, an independent software studio run by the developer Shadowline. The studio also makes Axiom, Kern, Tether ADB and TypeCrt.',
   },
 ];
 
@@ -144,6 +172,8 @@ export default function DriftPage(): JSX.Element {
           </a>
         </div>
       </section>
+
+      <ProductFaq items={FAQ} title="Drift questions" pageUrl="https://lunamaze.com/drift/" />
 
       <LunaFooter />
     </main>

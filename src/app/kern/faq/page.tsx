@@ -208,8 +208,8 @@ export default function KernFaqPage(): JSX.Element {
       />
 
       <header className={styles.header}>
-        <Link className={styles.wordmark} href="/kern/" aria-label="Kern home">
-          <span className={styles.wordmarkIcon}>K</span>
+        <Link className={styles.wordmark} href="/kern/">
+          <span className={styles.wordmarkIcon} aria-hidden="true">K</span>
           <span>KERN</span>
         </Link>
         <nav className={styles.headerNav} aria-label="Kern pages">

@@ -30,6 +30,7 @@ import {
   useImperativeHandle,
   useRef,
 } from 'react';
+import { isSoftwareRenderer } from '@/components/backgrounds/webgl';
 
 export interface ParticleFieldState {
   /** 0=chaos, 1=glyph, 2=brain, 3=shield, 4=tree; fractions blend. */
@@ -379,270 +380,299 @@ const ParticleField = forwardRef<ParticleFieldHandle, ParticleFieldProps>(
     useEffect(() => {
       const canvas = canvasRef.current;
       if (!canvas) return;
-      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const coarse = window.matchMedia('(pointer: coarse)').matches;
-      const small = window.innerWidth < 768;
-      // Scale density to the machine: fewer cores usually means an iGPU or a
-      // budget phone, and half the particles is indistinguishable there.
-      const lowPower = (navigator.hardwareConcurrency || 8) <= 4;
-      const COUNT = reduce
-        ? 6000
-        : small || coarse
-          ? lowPower
-            ? 5000
-            : 9000
-          : lowPower
-            ? 14000
-            : 26000;
+      let disposed = false;
+      let teardown: (() => void) | undefined;
+      // Built in idle slots: context and shaders first, then one shape per
+      // slot, so no single task runs long while the page is still settling.
+      // The shapes and their order are unchanged, so the field looks the same.
+      const idle = (): Promise<void> =>
+        new Promise((resolve) => {
+          const ric = (window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number })
+            .requestIdleCallback;
+          if (ric) ric(() => resolve(), { timeout: 600 });
+          else window.setTimeout(resolve, 16);
+        });
+      const build = async (): Promise<void> => {
+        await idle();
+        if (disposed) return;
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const coarse = window.matchMedia('(pointer: coarse)').matches;
+        const small = window.innerWidth < 768;
+        // Scale density to the machine: fewer cores usually means an iGPU or a
+        // budget phone, and half the particles is indistinguishable there.
+        const lowPower = (navigator.hardwareConcurrency || 8) <= 4;
+        const COUNT = reduce
+          ? 6000
+          : small || coarse
+            ? lowPower
+              ? 5000
+              : 9000
+            : lowPower
+              ? 14000
+              : 26000;
 
-      const gl = canvas.getContext('webgl', {
-        alpha: true,
-        antialias: false,
-        depth: false,
-        stencil: false,
-        premultipliedAlpha: true,
-        powerPreference: 'high-performance',
-      });
-      if (!gl) return;
-
-      const vs = compile(gl, gl.VERTEX_SHADER, VERT);
-      const fs = compile(gl, gl.FRAGMENT_SHADER, FRAG);
-      if (!vs || !fs) return;
-      const prog = gl.createProgram();
-      if (!prog) return;
-      gl.attachShader(prog, vs);
-      gl.attachShader(prog, fs);
-      gl.linkProgram(prog);
-      if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return;
-      gl.useProgram(prog);
-
-      // Shape targets. Index matches ParticleFieldState.progress.
-      const rnd = mulberry32(1337);
-      const shapes: Float32Array[] = [
-        sampleChaos(COUNT, rnd),
-        sampleShape(drawGlyphA, COUNT, rnd),
-        sampleShape(drawSynapse, COUNT, rnd),
-        sampleShape(drawShield, COUNT, rnd),
-        sampleShape(drawTree, COUNT, rnd),
-      ];
-      const buffers = shapes.map((data) => {
-        const b = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, b);
-        gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
-        return b;
-      });
-
-      const seeds = new Float32Array(COUNT * 4);
-      for (let i = 0; i < COUNT; i++) {
-        seeds[i * 4] = rnd();
-        seeds[i * 4 + 1] = rnd();
-        seeds[i * 4 + 2] = rnd();
-        seeds[i * 4 + 3] = rnd();
-      }
-      const seedBuf = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, seedBuf);
-      gl.bufferData(gl.ARRAY_BUFFER, seeds, gl.STATIC_DRAW);
-
-      const locFrom = gl.getAttribLocation(prog, 'aFrom');
-      const locTo = gl.getAttribLocation(prog, 'aTo');
-      const locSeed = gl.getAttribLocation(prog, 'aSeed');
-      gl.enableVertexAttribArray(locFrom);
-      gl.enableVertexAttribArray(locTo);
-      gl.enableVertexAttribArray(locSeed);
-      gl.bindBuffer(gl.ARRAY_BUFFER, seedBuf);
-      gl.vertexAttribPointer(locSeed, 4, gl.FLOAT, false, 0, 0);
-
-      const uni = {
-        blend: gl.getUniformLocation(prog, 'uBlend'),
-        time: gl.getUniformLocation(prog, 'uTime'),
-        mouse: gl.getUniformLocation(prog, 'uMouse'),
-        mouseStrength: gl.getUniformLocation(prog, 'uMouseStrength'),
-        scale: gl.getUniformLocation(prog, 'uScale'),
-        pointBase: gl.getUniformLocation(prog, 'uPointBase'),
-        opacity: gl.getUniformLocation(prog, 'uOpacity'),
-        brightness: gl.getUniformLocation(prog, 'uBrightness'),
-      };
-
-      gl.disable(gl.DEPTH_TEST);
-      gl.enable(gl.BLEND);
-      gl.blendFuncSeparate(gl.ONE, gl.ONE, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-      gl.clearColor(0, 0, 0, 0);
-
-      const dpr = Math.min(window.devicePixelRatio || 1, small || coarse ? 1.3 : 2);
-      // Adaptive quality governor: phones are fill-rate limited and lie about
-      // their GPUs, so instead of guessing we measure. Sustained slow frames
-      // step the tier down — fewer points, then lower resolution, then
-      // half-rate — and it never steps back up (no oscillation).
-      let tier = 0;
-      let drawCount = COUNT;
-      let dprCurrent = dpr;
-      let lastW = 0;
-      let lastH = 0;
-      // Live CSS size of the stage, kept up to date from the ResizeObserver
-      // entry (free — no layout read). The aspect ratio is derived from this
-      // rather than from the drawing buffer, so the shapes stay correctly
-      // proportioned even when the buffer itself is deliberately left stale.
-      let cssW = 1;
-      let cssH = 1;
-      const resize = (force: boolean): void => {
-        const w = cssW;
-        const h = cssH;
-        if (w === 0 || h === 0) return;
-        // Mobile browsers collapse the URL bar on the first scroll gesture,
-        // which changes the fixed stage's height and fires this observer
-        // mid-scroll — sometimes repeatedly, as the bar animates. Reallocating
-        // the GL drawing buffer is a synchronous GPU stall, so doing it while
-        // the user is flicking through the hero is a guaranteed hitch right
-        // where the field is busiest. Height-only jitter is therefore ignored
-        // on touch: the canvas simply stretches a few percent, which is
-        // invisible on a cloud of 2px points. Width changes (rotation) and
-        // deliberate DPR changes still go through.
-        if (!force && coarse && w === lastW && Math.abs(h - lastH) < 220) return;
-        lastW = w;
-        lastH = h;
-        canvas.width = Math.round(w * dprCurrent);
-        canvas.height = Math.round(h * dprCurrent);
-        gl.viewport(0, 0, canvas.width, canvas.height);
-      };
-      const applyTier = (t: number): void => {
-        tier = t;
-        drawCount = t === 0 ? COUNT : t === 1 ? Math.floor(COUNT * 0.6) : Math.floor(COUNT * 0.38);
-        const nextDpr = t === 0 ? dpr : t === 1 ? Math.min(dpr, 1.15) : 1;
-        if (nextDpr !== dprCurrent) {
-          dprCurrent = nextDpr;
-          resize(true);
+        const gl = canvas.getContext('webgl', {
+          alpha: true,
+          antialias: false,
+          depth: false,
+          stencil: false,
+          premultipliedAlpha: true,
+          powerPreference: 'high-performance',
+        });
+        if (!gl) return;
+        // No GPU: a software rasteriser would draw 25k points on the CPU every
+        // frame. The CSS stage behind stands on its own, as it does without WebGL.
+        if (isSoftwareRenderer(gl)) {
+          gl.getExtension('WEBGL_lose_context')?.loseContext();
+          return;
         }
-      };
-      cssW = canvas.clientWidth;
-      cssH = canvas.clientHeight;
-      resize(true);
-      const ro = new ResizeObserver((entries) => {
-        const box = entries[0]?.contentRect;
-        if (box && box.width > 0 && box.height > 0) {
-          cssW = box.width;
-          cssH = box.height;
+
+        const vs = compile(gl, gl.VERTEX_SHADER, VERT);
+        const fs = compile(gl, gl.FRAGMENT_SHADER, FRAG);
+        if (!vs || !fs) return;
+        const prog = gl.createProgram();
+        if (!prog) return;
+        gl.attachShader(prog, vs);
+        gl.attachShader(prog, fs);
+        gl.linkProgram(prog);
+        if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return;
+        gl.useProgram(prog);
+
+        // Shape targets. Index matches ParticleFieldState.progress.
+        const rnd = mulberry32(1337);
+        const shapes: Float32Array[] = [sampleChaos(COUNT, rnd)];
+        for (const drawShape of [drawGlyphA, drawSynapse, drawShield, drawTree]) {
+          await idle();
+          if (disposed) {
+            gl.getExtension('WEBGL_lose_context')?.loseContext();
+            return;
+          }
+          shapes.push(sampleShape(drawShape, COUNT, rnd));
         }
-        resize(false);
-      });
-      ro.observe(canvas);
+        const buffers = shapes.map((data) => {
+          const b = gl.createBuffer();
+          gl.bindBuffer(gl.ARRAY_BUFFER, b);
+          gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
+          return b;
+        });
 
-      // Pointer state, smoothed in the loop.
-      const mouse = { x: 10, y: 10, tx: 10, ty: 10, energy: 0 };
-      const onPointer = (e: PointerEvent): void => {
-        const r = canvas.getBoundingClientRect();
-        mouse.tx = ((e.clientX - r.left) / r.width) * 2 - 1;
-        mouse.ty = -(((e.clientY - r.top) / r.height) * 2 - 1);
-        mouse.energy = 1;
-      };
-      if (!coarse && !reduce) {
-        window.addEventListener('pointermove', onPointer, { passive: true });
-      }
+        const seeds = new Float32Array(COUNT * 4);
+        for (let i = 0; i < COUNT; i++) {
+          seeds[i * 4] = rnd();
+          seeds[i * 4 + 1] = rnd();
+          seeds[i * 4 + 2] = rnd();
+          seeds[i * 4 + 3] = rnd();
+        }
+        const seedBuf = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, seedBuf);
+        gl.bufferData(gl.ARRAY_BUFFER, seeds, gl.STATIC_DRAW);
 
-      let raf = 0;
-      let lost = false;
-      let mainLoop: ((t: number) => void) | null = null;
-      const onLost = (e: Event): void => {
-        e.preventDefault();
-        lost = true;
-        cancelAnimationFrame(raf);
-      };
-      canvas.addEventListener('webglcontextlost', onLost);
+        const locFrom = gl.getAttribLocation(prog, 'aFrom');
+        const locTo = gl.getAttribLocation(prog, 'aTo');
+        const locSeed = gl.getAttribLocation(prog, 'aSeed');
+        gl.enableVertexAttribArray(locFrom);
+        gl.enableVertexAttribArray(locTo);
+        gl.enableVertexAttribArray(locSeed);
+        gl.bindBuffer(gl.ARRAY_BUFFER, seedBuf);
+        gl.vertexAttribPointer(locSeed, 4, gl.FLOAT, false, 0, 0);
 
-      const draw = (timeMs: number): void => {
-        const s = stateRef.current;
-        const p = Math.max(0, Math.min(shapes.length - 1 - 0.0001, s.progress));
-        const seg = Math.floor(p);
-        const blend = p - seg;
-
-        gl.bindBuffer(gl.ARRAY_BUFFER, buffers[seg]);
-        gl.vertexAttribPointer(locFrom, 3, gl.FLOAT, false, 0, 0);
-        gl.bindBuffer(gl.ARRAY_BUFFER, buffers[Math.min(seg + 1, shapes.length - 1)]);
-        gl.vertexAttribPointer(locTo, 3, gl.FLOAT, false, 0, 0);
-
-        // Aspect from the CSS box, not the drawing buffer: on touch the buffer
-        // is intentionally left stale through URL-bar height changes.
-        const m = Math.min(cssW, cssH);
-        const zoom = small ? 1.02 : 1.16;
-        gl.uniform2f(uni.scale, (m / cssW) * zoom, (m / cssH) * zoom);
-        gl.uniform1f(uni.blend, blend);
-        gl.uniform1f(uni.time, timeMs * 0.001);
-        gl.uniform1f(uni.pointBase, (small ? 2.1 : 2.5) * dprCurrent);
-        gl.uniform1f(uni.opacity, s.opacity);
-        gl.uniform1f(uni.brightness, s.brightness);
-
-        mouse.x += (mouse.tx - mouse.x) * 0.08;
-        mouse.y += (mouse.ty - mouse.y) * 0.08;
-        mouse.energy *= 0.985;
-        gl.uniform2f(uni.mouse, mouse.x, mouse.y);
-        gl.uniform1f(uni.mouseStrength, 0.35 + mouse.energy * 0.65);
-
-        gl.clear(gl.COLOR_BUFFER_BIT);
-        gl.drawArrays(gl.POINTS, 0, drawCount);
-      };
-
-      if (reduce) {
-        // One static frame of the monogram; no loop.
-        stateRef.current.progress = 1;
-        stateRef.current.opacity = 0.55;
-        draw(0);
-      } else {
-        // Frame budget accounting for the governor, plus two saving modes:
-        // near-invisible opacity skips rendering entirely (one clear, then
-        // idle), and dimmed/degraded states render at half rate.
-        let frame = 0;
-        let lastT = 0;
-        let strikes = 0;
-        let hiddenCleared = false;
-        const loop = (t: number): void => {
-          if (lost) return;
-          frame++;
-          const dt = t - lastT;
-          lastT = t;
-          if (dt > 4 && dt < 200) {
-            if (dt > 26) strikes += 1;
-            else strikes = Math.max(0, strikes - 0.5);
-            if (strikes >= 8 && tier < 2) {
-              applyTier(tier + 1);
-              strikes = 0;
-            }
-          }
-          const s = stateRef.current;
-          if (s.opacity < 0.075) {
-            if (!hiddenCleared) {
-              gl.clear(gl.COLOR_BUFFER_BIT);
-              hiddenCleared = true;
-            }
-          } else {
-            hiddenCleared = false;
-            const halfRate = s.opacity < 0.3 || tier >= 2;
-            if (!halfRate || frame % 2 === 0) draw(t);
-          }
-          raf = requestAnimationFrame(loop);
+        const uni = {
+          blend: gl.getUniformLocation(prog, 'uBlend'),
+          time: gl.getUniformLocation(prog, 'uTime'),
+          mouse: gl.getUniformLocation(prog, 'uMouse'),
+          mouseStrength: gl.getUniformLocation(prog, 'uMouseStrength'),
+          scale: gl.getUniformLocation(prog, 'uScale'),
+          pointBase: gl.getUniformLocation(prog, 'uPointBase'),
+          opacity: gl.getUniformLocation(prog, 'uOpacity'),
+          brightness: gl.getUniformLocation(prog, 'uBrightness'),
         };
-        mainLoop = loop;
-        raf = requestAnimationFrame(loop);
-      }
 
-      const onVisibility = (): void => {
-        if (reduce || lost) return;
-        cancelAnimationFrame(raf);
-        if (!document.hidden && mainLoop) {
-          raf = requestAnimationFrame(mainLoop);
+        gl.disable(gl.DEPTH_TEST);
+        gl.enable(gl.BLEND);
+        gl.blendFuncSeparate(gl.ONE, gl.ONE, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+        gl.clearColor(0, 0, 0, 0);
+
+        const dpr = Math.min(window.devicePixelRatio || 1, small || coarse ? 1.3 : 2);
+        // Adaptive quality governor: phones are fill-rate limited and lie about
+        // their GPUs, so instead of guessing we measure. Sustained slow frames
+        // step the tier down — fewer points, then lower resolution, then
+        // half-rate — and it never steps back up (no oscillation).
+        let tier = 0;
+        let drawCount = COUNT;
+        let dprCurrent = dpr;
+        let lastW = 0;
+        let lastH = 0;
+        // Live CSS size of the stage, kept up to date from the ResizeObserver
+        // entry (free — no layout read). The aspect ratio is derived from this
+        // rather than from the drawing buffer, so the shapes stay correctly
+        // proportioned even when the buffer itself is deliberately left stale.
+        let cssW = 1;
+        let cssH = 1;
+        const resize = (force: boolean): void => {
+          const w = cssW;
+          const h = cssH;
+          if (w === 0 || h === 0) return;
+          // Mobile browsers collapse the URL bar on the first scroll gesture,
+          // which changes the fixed stage's height and fires this observer
+          // mid-scroll — sometimes repeatedly, as the bar animates. Reallocating
+          // the GL drawing buffer is a synchronous GPU stall, so doing it while
+          // the user is flicking through the hero is a guaranteed hitch right
+          // where the field is busiest. Height-only jitter is therefore ignored
+          // on touch: the canvas simply stretches a few percent, which is
+          // invisible on a cloud of 2px points. Width changes (rotation) and
+          // deliberate DPR changes still go through.
+          if (!force && coarse && w === lastW && Math.abs(h - lastH) < 220) return;
+          lastW = w;
+          lastH = h;
+          canvas.width = Math.round(w * dprCurrent);
+          canvas.height = Math.round(h * dprCurrent);
+          gl.viewport(0, 0, canvas.width, canvas.height);
+        };
+        const applyTier = (t: number): void => {
+          tier = t;
+          drawCount = t === 0 ? COUNT : t === 1 ? Math.floor(COUNT * 0.6) : Math.floor(COUNT * 0.38);
+          const nextDpr = t === 0 ? dpr : t === 1 ? Math.min(dpr, 1.15) : 1;
+          if (nextDpr !== dprCurrent) {
+            dprCurrent = nextDpr;
+            resize(true);
+          }
+        };
+        cssW = canvas.clientWidth;
+        cssH = canvas.clientHeight;
+        resize(true);
+        const ro = new ResizeObserver((entries) => {
+          const box = entries[0]?.contentRect;
+          if (box && box.width > 0 && box.height > 0) {
+            cssW = box.width;
+            cssH = box.height;
+          }
+          resize(false);
+        });
+        ro.observe(canvas);
+
+        // Pointer state, smoothed in the loop.
+        const mouse = { x: 10, y: 10, tx: 10, ty: 10, energy: 0 };
+        const onPointer = (e: PointerEvent): void => {
+          const r = canvas.getBoundingClientRect();
+          mouse.tx = ((e.clientX - r.left) / r.width) * 2 - 1;
+          mouse.ty = -(((e.clientY - r.top) / r.height) * 2 - 1);
+          mouse.energy = 1;
+        };
+        if (!coarse && !reduce) {
+          window.addEventListener('pointermove', onPointer, { passive: true });
         }
-      };
-      document.addEventListener('visibilitychange', onVisibility);
 
+        let raf = 0;
+        let lost = false;
+        let mainLoop: ((t: number) => void) | null = null;
+        const onLost = (e: Event): void => {
+          e.preventDefault();
+          lost = true;
+          cancelAnimationFrame(raf);
+        };
+        canvas.addEventListener('webglcontextlost', onLost);
+
+        const draw = (timeMs: number): void => {
+          const s = stateRef.current;
+          const p = Math.max(0, Math.min(shapes.length - 1 - 0.0001, s.progress));
+          const seg = Math.floor(p);
+          const blend = p - seg;
+
+          gl.bindBuffer(gl.ARRAY_BUFFER, buffers[seg]);
+          gl.vertexAttribPointer(locFrom, 3, gl.FLOAT, false, 0, 0);
+          gl.bindBuffer(gl.ARRAY_BUFFER, buffers[Math.min(seg + 1, shapes.length - 1)]);
+          gl.vertexAttribPointer(locTo, 3, gl.FLOAT, false, 0, 0);
+
+          // Aspect from the CSS box, not the drawing buffer: on touch the buffer
+          // is intentionally left stale through URL-bar height changes.
+          const m = Math.min(cssW, cssH);
+          const zoom = small ? 1.02 : 1.16;
+          gl.uniform2f(uni.scale, (m / cssW) * zoom, (m / cssH) * zoom);
+          gl.uniform1f(uni.blend, blend);
+          gl.uniform1f(uni.time, timeMs * 0.001);
+          gl.uniform1f(uni.pointBase, (small ? 2.1 : 2.5) * dprCurrent);
+          gl.uniform1f(uni.opacity, s.opacity);
+          gl.uniform1f(uni.brightness, s.brightness);
+
+          mouse.x += (mouse.tx - mouse.x) * 0.08;
+          mouse.y += (mouse.ty - mouse.y) * 0.08;
+          mouse.energy *= 0.985;
+          gl.uniform2f(uni.mouse, mouse.x, mouse.y);
+          gl.uniform1f(uni.mouseStrength, 0.35 + mouse.energy * 0.65);
+
+          gl.clear(gl.COLOR_BUFFER_BIT);
+          gl.drawArrays(gl.POINTS, 0, drawCount);
+        };
+
+        if (reduce) {
+          // One static frame of the monogram; no loop.
+          stateRef.current.progress = 1;
+          stateRef.current.opacity = 0.55;
+          draw(0);
+        } else {
+          // Frame budget accounting for the governor, plus two saving modes:
+          // near-invisible opacity skips rendering entirely (one clear, then
+          // idle), and dimmed/degraded states render at half rate.
+          let frame = 0;
+          let lastT = 0;
+          let strikes = 0;
+          let hiddenCleared = false;
+          const loop = (t: number): void => {
+            if (lost) return;
+            frame++;
+            const dt = t - lastT;
+            lastT = t;
+            if (dt > 4 && dt < 200) {
+              if (dt > 26) strikes += 1;
+              else strikes = Math.max(0, strikes - 0.5);
+              if (strikes >= 8 && tier < 2) {
+                applyTier(tier + 1);
+                strikes = 0;
+              }
+            }
+            const s = stateRef.current;
+            if (s.opacity < 0.075) {
+              if (!hiddenCleared) {
+                gl.clear(gl.COLOR_BUFFER_BIT);
+                hiddenCleared = true;
+              }
+            } else {
+              hiddenCleared = false;
+              const halfRate = s.opacity < 0.3 || tier >= 2;
+              if (!halfRate || frame % 2 === 0) draw(t);
+            }
+            raf = requestAnimationFrame(loop);
+          };
+          mainLoop = loop;
+          raf = requestAnimationFrame(loop);
+        }
+
+        const onVisibility = (): void => {
+          if (reduce || lost) return;
+          cancelAnimationFrame(raf);
+          if (!document.hidden && mainLoop) {
+            raf = requestAnimationFrame(mainLoop);
+          }
+        };
+        document.addEventListener('visibilitychange', onVisibility);
+
+        teardown = () => {
+          cancelAnimationFrame(raf);
+          ro.disconnect();
+          window.removeEventListener('pointermove', onPointer);
+          document.removeEventListener('visibilitychange', onVisibility);
+          canvas.removeEventListener('webglcontextlost', onLost);
+          buffers.forEach((b) => gl.deleteBuffer(b));
+          gl.deleteBuffer(seedBuf);
+          gl.deleteProgram(prog);
+          gl.deleteShader(vs);
+          gl.deleteShader(fs);
+        };
+      };
+      void build();
       return () => {
-        cancelAnimationFrame(raf);
-        ro.disconnect();
-        window.removeEventListener('pointermove', onPointer);
-        document.removeEventListener('visibilitychange', onVisibility);
-        canvas.removeEventListener('webglcontextlost', onLost);
-        buffers.forEach((b) => gl.deleteBuffer(b));
-        gl.deleteBuffer(seedBuf);
-        gl.deleteProgram(prog);
-        gl.deleteShader(vs);
-        gl.deleteShader(fs);
+        disposed = true;
+        teardown?.();
       };
     }, []);
 

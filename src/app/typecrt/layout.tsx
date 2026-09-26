@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
+import '../globals.css';
+import { interClass } from '@/lib/interFont';
 
-const title = 'TypeCrt — Zero-latency CRT Typing Test & Terminal Practice';
+const title = 'TypeCrt — CRT-Style Typing Test & Adaptive Typing Practice';
 const description =
-  'TypeCrt is an aesthetic, zero-latency typing test inspired by vintage CRT monitors. 50+ themes, adaptive weak-key practice, command palette, smooth caret engine, and deep performance analytics. Built in pure TypeScript. Live at typecrt.in.';
+  'TypeCrt is a free typing test styled after vintage CRT monitors: 80 themes, adaptive practice on your weak keys, a command palette and published WPM formulas. Built in vanilla TypeScript. Live at typecrt.com.';
 const url = 'https://lunamaze.com/typecrt/';
 const ogImage = 'https://lunamaze.com/images/typecrt-logo.png';
 
@@ -19,7 +21,8 @@ export const metadata: Metadata = {
     'wpm test',
     'typing practice',
     'retro terminal typing',
-    'zero-latency typing',
+    'adaptive typing practice',
+    'average typing speed',
   ],
   authors: [{ name: 'Luna Maze', url: 'https://lunamaze.com' }],
   creator: 'Luna Maze',
@@ -38,7 +41,7 @@ export const metadata: Metadata = {
         url: ogImage,
         width: 1200,
         height: 630,
-        alt: 'TypeCrt — Zero-latency typing test',
+        alt: 'TypeCrt — CRT-style typing test',
       },
     ],
   },
@@ -64,9 +67,11 @@ const JSON_LD = {
     priceCurrency: 'USD',
   },
   description:
-    'Aesthetic, zero-latency typing test inspired by CRT terminals with 50+ themes, adaptive weak-key training, and live stats.',
+    'A typing test styled after CRT terminals, built in vanilla TypeScript, with 80 themes, adaptive weak-key practice and published WPM formulas.',
+  sameAs: ['https://typecrt.com'],
   author: {
     '@type': 'Organization',
+    '@id': 'https://lunamaze.com/#organization',
     name: 'Luna Maze',
     url: 'https://lunamaze.com',
   },
@@ -80,7 +85,7 @@ export default function TypeCrtLayout({
   children,
 }: TypeCrtLayoutProps) {
   return (
-    <div className="bg-lunamaze-bgDeep text-lunamaze-textPrimary">
+    <div className={`${interClass} bg-lunamaze-bgDeep text-lunamaze-textPrimary`}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}

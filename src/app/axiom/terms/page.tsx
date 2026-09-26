@@ -412,7 +412,7 @@ export default function TermsPage(): JSX.Element {
             </li>
             <li>
               <strong>{'Developer: '}</strong>
-              {'Luna Maze, a studio of Harikrishnan V (shadowline), India'}
+              {'Luna Maze, an independent studio run by Shadowline, India'}
             </li>
           </ul>
         </article>

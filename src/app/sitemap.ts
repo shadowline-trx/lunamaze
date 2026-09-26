@@ -13,7 +13,7 @@ const BASE = 'https://lunamaze.com';
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   const routes: Array<{ path: string; priority: number; changeFrequency: MetadataRoute.Sitemap[number]['changeFrequency']; lastModified?: Date }> = [
-    { path: '/', priority: 1.0, changeFrequency: 'monthly', lastModified: new Date('2026-08-31') },
+    { path: '/', priority: 1.0, changeFrequency: 'monthly', lastModified: new Date('2026-09-26') },
     { path: '/tether-adb/', priority: 0.9, changeFrequency: 'weekly' },
     { path: '/axiom/', priority: 0.8, changeFrequency: 'monthly' },
     // Weekly while the listing status is in flux; this page's copy changes the
@@ -22,9 +22,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Weekly until the Play listing is live and the copy settles.
     { path: '/kern/', priority: 0.9, changeFrequency: 'weekly', lastModified: new Date('2026-08-31') },
     { path: '/kern/faq/', priority: 0.8, changeFrequency: 'monthly', lastModified: new Date('2026-08-31') },
-    { path: '/typecrt/', priority: 0.7, changeFrequency: 'monthly' },
+    { path: '/typecrt/', priority: 0.8, changeFrequency: 'monthly', lastModified: new Date('2026-09-26') },
     { path: '/typecrt/blog/', priority: 0.7, changeFrequency: 'weekly' },
-    { path: '/drift/', priority: 0.5, changeFrequency: 'monthly' },
+    { path: '/drift/', priority: 0.5, changeFrequency: 'monthly', lastModified: new Date('2026-09-26') },
     { path: '/genesis/', priority: 0.8, changeFrequency: 'monthly', lastModified: new Date('2026-09-05') },
     { path: '/axiom/privacy/', priority: 0.3, changeFrequency: 'yearly' },
     { path: '/kern/privacy/', priority: 0.3, changeFrequency: 'yearly', lastModified: new Date('2026-08-29') },

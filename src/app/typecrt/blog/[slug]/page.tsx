@@ -168,8 +168,8 @@ export default async function TypecrtArticlePage({
       dateModified: article.dateModified,
       inLanguage: 'en',
       mainEntityOfPage: { '@type': 'WebPage', '@id': url },
-      author: { '@type': 'Organization', name: 'Luna Maze', url: BASE },
-      publisher: { '@type': 'Organization', name: 'Luna Maze', url: BASE },
+      author: { '@type': 'Organization', '@id': 'https://lunamaze.com/#organization', name: 'Luna Maze', url: BASE },
+      publisher: { '@type': 'Organization', '@id': 'https://lunamaze.com/#organization', name: 'Luna Maze', url: BASE },
       about: { '@type': 'WebApplication', name: 'TypeCrt', url: TYPECRT_URL },
     },
   ];
@@ -258,7 +258,7 @@ export default async function TypecrtArticlePage({
           <p className="text-lunamaze-textSecondary">{article.ctaText}</p>
           <a
             href={TYPECRT_URL}
-            className="mt-4 inline-flex items-center gap-2 rounded-xl px-5 py-3 font-mono text-sm font-semibold text-lunamaze-bgBase"
+            className="mt-4 inline-flex items-center gap-2 rounded-xl px-5 py-3 font-mono text-sm font-semibold text-lunamaze-bgDeep"
             style={{ background: ACCENT }}
           >
             {article.ctaLabel} →

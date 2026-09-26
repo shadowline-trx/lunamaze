@@ -1,22 +1,16 @@
 import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
-import { Inter } from 'next/font/google';
-import './globals.css';
-
-const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-inter',
-});
+// Product sections import ./globals.css from their own layouts; the studio
+// home ships only its own stylesheet and type.
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://lunamaze.com'),
   title: {
-    default: 'Luna Maze — Independent Product Studio',
+    default: 'Luna Maze — Independent Software Studio',
     template: '%s | Luna Maze',
   },
   description:
-    'Luna Maze is an independent product studio building focused software for cognition, Android, writing, play, and everyday speed. Home of Axiom, Tether ADB, TypeCrt, Drift, and Kern.',
+    'Luna Maze is an independent software studio making Axiom, Kern, Tether ADB, TypeCrt and Drift: focused, private software for the mind, the phone and the desk.',
   keywords: [
     'Luna Maze',
     'product studio',
@@ -47,28 +41,28 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    title: 'Luna Maze — Independent Product Studio',
+    title: 'Luna Maze — Independent Software Studio',
     description:
-      'Focused software for cognition, Android, writing, play, and everyday speed. Home of Axiom, Tether ADB, TypeCrt, Drift, and Kern.',
+      'Focused, private software for the mind, the phone and the desk. Home of Axiom, Kern, Tether ADB, TypeCrt and Drift.',
     url: 'https://lunamaze.com',
     siteName: 'Luna Maze',
     locale: 'en_US',
     type: 'website',
     images: [
       {
-        url: '/images/axiom/og.jpg',
+        url: '/images/og/lunamaze-og.jpg',
         width: 1200,
         height: 630,
-        alt: 'Luna Maze — Independent Product Studio',
+        alt: 'Luna Maze: a silver labyrinth inside a violet crescent moon',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Luna Maze — Independent Product Studio',
+    title: 'Luna Maze — Independent Software Studio',
     description:
-      'Focused software for cognition, Android, writing, play, and everyday speed. Home of Axiom, Tether ADB, TypeCrt, Drift, and Kern.',
-    images: ['/images/axiom/og.jpg'],
+      'Focused, private software for the mind, the phone and the desk. Home of Axiom, Kern, Tether ADB, TypeCrt and Drift.',
+    images: ['/images/og/lunamaze-og.jpg'],
   },
   robots: {
     index: true,
@@ -87,7 +81,7 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   viewportFit: 'cover',
-  themeColor: '#050510',
+  themeColor: '#09070f',
 };
 
 interface RootLayoutProps {
@@ -96,8 +90,8 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en" className={inter.variable} suppressHydrationWarning>
-      <body className={`${inter.className} min-h-screen`}>
+    <html lang="en" suppressHydrationWarning>
+      <body className="min-h-screen">
         {children}
         <script
           dangerouslySetInnerHTML={{

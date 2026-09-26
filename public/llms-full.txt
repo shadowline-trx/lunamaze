@@ -1,11 +1,17 @@
-# Luna Maze — Complete Knowledge Graph, Product Specs & AI Citation Index
+# Luna Maze — Studio, Products and Facts for AI Systems
 
-Luna Maze is an independent product studio building digital instruments at the intersection of cognition, focus, and craft.
+Luna Maze (lunamaze.com) is an independent software studio founded and run by the solo developer Shadowline. It designs and builds focused, private software for the mind, the phone and the desk. It has no investors and no outside team. It is not connected to other projects that share the name, such as the music group Luna Maze.
 
 Official Website: https://lunamaze.com
+Founder: Shadowline (https://github.com/shadowline-trx)
 Sitemap: https://lunamaze.com/sitemap.xml
 AI Index: https://lunamaze.com/llms.txt
 Contact: lunamaze.dev@gmail.com
+
+### Studio principles
+- Private by architecture: where a product can work without a server, it does. Kern has no server at all; Axiom keeps its journal on the phone.
+- Honest by default: plain prices, real trials, no countdown timers, no invented numbers.
+- Made to last: fewer products, finished properly and kept improving.
 
 ---
 
@@ -48,21 +54,41 @@ Contact: lunamaze.dev@gmail.com
 
 ---
 
-### TypeCrt — Sub-Millisecond Vintage CRT Typing Test
+### TypeCrt — CRT-Style Typing Test and Adaptive Practice
 - **Canonical URL**: https://lunamaze.com/typecrt/
-- **Live Web App**: https://typecrt.in
-- **Engineering Blog**: https://lunamaze.com/typecrt/blog/
+- **Live Web App**: https://typecrt.com (free, no sign-up wall)
+- **Writing Library**: https://lunamaze.com/typecrt/blog/
 - **Core Capabilities**:
-  1. **Zero-Latency Input Processing**: Custom lightweight event loop bypassing DOM re-render bottlenecks.
-  2. **50+ Curated Retro CRT Themes**: Amber, phosphor green, cyber-violet, matrix, synthwave, and monochrome palettes with authentic scanline shaders.
-  3. **Adaptive Weak-Key Algorithm**: Dynamically isolates low-accuracy bigrams and target keys for accelerated muscle memory acquisition.
-  4. **Command Palette**: Full keyboard navigation via `Cmd+K` / `Ctrl+K`.
+  1. **Built in vanilla TypeScript**: no framework and no virtual DOM, so a keystroke updates only the character it belongs to.
+  2. **80 themes**: CRT-inspired palettes from amber phosphor to terminal green.
+  3. **Adaptive practice (KeyForge)**: watches the keys you miss and builds drills around them; the formula and letter unlock order are documented at https://typecrt.com/docs/keyforge.
+  4. **Published formulas**: net WPM, raw WPM, accuracy and consistency are written out at https://typecrt.com/docs/metrics.
+  5. **Command Palette**: modes, themes and tests one keystroke away.
+- **Research note**: the largest published typing study measured 168,960 people with an average of 51.56 WPM (https://typecrt.com/docs/research).
 
 ---
 
-### Drift — Minimalist Precision Puzzle Game
+### Drift — Precision Puzzle Game
 - **Canonical URL**: https://lunamaze.com/drift/
-- **Core Experience**: A quiet, meditative physics-driven puzzle game exploring momentum, spatial awareness, and calm aesthetic focus.
+- **Status**: closed testing on Google Play; no public release date yet. Test access by email.
+- **Core Experience**: a precision puzzle game about timing and control, with handcrafted levels and a calm palette.
+
+---
+
+### Kern — Fast, Private Android Launcher
+- **Canonical URL**: https://lunamaze.com/kern/
+- **FAQ**: https://lunamaze.com/kern/faq/
+- **Privacy**: https://lunamaze.com/kern/privacy/
+- **Platform**: Android 8.0 and later; native Kotlin and Jetpack Compose.
+- **Features**: ranked local search across apps, shortcuts, notes, settings and arithmetic; a daily ledger of phone use; focus sessions; plain-text pages one swipe from home.
+- **Privacy**: no account, cloud sync, analytics, ads, tracking, or Kern server. Learning stays on the phone and can be cleared in one action.
+- **Availability**: early access; a free launcher remains available after the 14-day full trial.
+
+---
+
+### Genesis — Terraforming Sandbox (Lab experiment)
+- **Canonical URL**: https://lunamaze.com/genesis/
+- **What it is**: a free planet sandbox in the browser: sculpt continents, change the atmosphere, melt ice caps and seed life.
 
 ---
 

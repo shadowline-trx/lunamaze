@@ -75,3 +75,26 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  # Ping IndexNow (Bing, Copilot, Yandex, Seznam, Naver) once the new build is
+  # live. Informational only: it can never fail or block a deploy.
+  indexnow:
+    needs: deploy
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: scripts
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Wait for Pages to serve the new build
+        run: sleep 60
+
+      - name: Submit sitemap URLs to IndexNow
+        run: node scripts/indexnow.mjs

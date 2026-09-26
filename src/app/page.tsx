@@ -1,161 +1,200 @@
 import type { Metadata } from 'next';
-import LunaNavbar from '@/components/lunamaze/LunaNavbar';
-import LunaHero from '@/components/lunamaze/LunaHero';
-import StudioSection from '@/components/lunamaze/StudioSection';
-import ProductsGrid from '@/components/lunamaze/ProductsGrid';
-import CapabilitiesSection from '@/components/lunamaze/CapabilitiesSection';
-import FounderSection from '@/components/lunamaze/FounderSection';
-import ContactSection from '@/components/lunamaze/ContactSection';
-import LunaFooter from '@/components/lunamaze/LunaFooter';
-import DotGrid from '@/components/backgrounds/DotGrid';
-import { products, capabilities } from '@/content/lunamaze';
+import Hero from '@/components/studio/Hero';
+import { Nav, Credits } from '@/components/studio/Chrome';
+import { Manifesto, Works, Reel, Method, Ledger, Maker, Questions, Finale } from '@/components/studio/Sections';
+import StudioEnhancer from '@/components/studio/StudioEnhancer';
+import { fontVariables } from '@/components/studio/fonts';
+import { CONTACT_EMAIL, FAQS, GITHUB_URL, HOME_UPDATED, LAB, SITE, WORKS } from '@/components/studio/content';
+import s from '@/components/studio/studio.module.css';
+
+const TITLE = 'Luna Maze — Independent Software Studio';
+const DESCRIPTION =
+  'Luna Maze is an independent software studio making Axiom, Kern, Tether ADB, TypeCrt and Drift: focused, private software for the mind, the phone and the desk.';
+const OG_IMAGE = `${SITE}/images/og/lunamaze-og.jpg`;
 
 export const metadata: Metadata = {
-  title: 'Luna Maze — Independent Product Studio',
-  description:
-    'Luna Maze is an independent product studio building focused software for cognition, Android, writing, play, and everyday speed. Explore Axiom, Tether ADB, TypeCrt, Drift, and Kern.',
-  alternates: {
-    canonical: 'https://lunamaze.com/',
-  },
+  title: { absolute: TITLE },
+  description: DESCRIPTION,
+  alternates: { canonical: `${SITE}/` },
   openGraph: {
-    title: 'Luna Maze — Independent Product Studio',
-    description:
-      'Focused software for cognition, Android, writing, play, and everyday speed. Explore Axiom, Tether ADB, TypeCrt, Drift, and Kern.',
-    url: 'https://lunamaze.com',
+    title: TITLE,
+    description: DESCRIPTION,
+    url: `${SITE}/`,
     siteName: 'Luna Maze',
     locale: 'en_US',
     type: 'website',
-    images: [
-      {
-        url: 'https://lunamaze.com/images/axiom/og.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Luna Maze — Independent Product Studio',
-      },
-    ],
+    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: 'Luna Maze: a silver labyrinth inside a violet crescent moon' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Luna Maze — Independent Product Studio',
-    description:
-      'Focused software for cognition, Android, writing, play, and everyday speed. Explore Axiom, Tether ADB, TypeCrt, Drift, and Kern.',
-    images: ['https://lunamaze.com/images/axiom/og.jpg'],
+    title: TITLE,
+    description: DESCRIPTION,
+    images: [OG_IMAGE],
   },
 };
+
+const ORG_ID = `${SITE}/#organization`;
+const FOUNDER_ID = `${SITE}/#shadowline`;
 
 const JSON_LD = {
   '@context': 'https://schema.org',
   '@graph': [
     {
       '@type': 'Organization',
-      '@id': 'https://lunamaze.com/#organization',
+      '@id': ORG_ID,
       name: 'Luna Maze',
-      alternateName: ['Luna Maze Studio', 'LunaMaze'],
-      url: 'https://lunamaze.com',
+      alternateName: ['LunaMaze', 'Luna Maze Studio', 'lunamaze.com'],
+      url: `${SITE}/`,
       logo: {
         '@type': 'ImageObject',
-        url: 'https://lunamaze.com/images/axiom/logo.png',
-        caption: 'Luna Maze Logo',
+        '@id': `${SITE}/#logo`,
+        url: `${SITE}/images/lunamaze-logo-512.png`,
+        width: 512,
+        height: 512,
+        caption: 'Luna Maze',
       },
+      image: { '@id': `${SITE}/#logo` },
       description:
-        'Luna Maze is an independent product studio building premium tools at the intersection of cognition, focus, and craft.',
-      founder: {
-        '@type': 'Person',
-        name: 'Thehan',
-        jobTitle: 'Founder & Principal Engineer',
+        'Luna Maze is an independent software studio that designs and builds focused, private software: Axiom, Kern, Tether ADB, TypeCrt and Drift.',
+      slogan: 'Quiet software, precisely made.',
+      email: CONTACT_EMAIL,
+      founder: { '@id': FOUNDER_ID },
+      address: { '@type': 'PostalAddress', addressCountry: 'IN' },
+      contactPoint: {
+        '@type': 'ContactPoint',
+        email: CONTACT_EMAIL,
+        contactType: 'customer support',
+        availableLanguage: ['English'],
       },
-      sameAs: [
-        'https://github.com/shadowline-trx',
-      ],
+      sameAs: [GITHUB_URL],
       knowsAbout: [
-        'Software Engineering',
-        'Mobile Application Architecture',
+        'Software engineering',
+        'Android launchers',
         'Android Debug Bridge',
-        'Cognitive Psychology',
-        'Privacy Engineering',
-        'Neuroplasticity',
+        'Habit tracking',
+        'Privacy engineering',
+        'Typing practice',
+        'Puzzle game design',
       ],
-      owns: [
-        {
-          '@type': 'MobileApplication',
-          '@id': 'https://lunamaze.com/axiom/#app',
-          name: 'AXIOM',
-          url: 'https://lunamaze.com/axiom/',
-          applicationCategory: 'HealthApplication',
-          operatingSystem: 'iOS, Android',
-          description: 'A calm, honest recovery companion grounded in neuroscience, with a journal that never leaves your phone.',
-        },
-        {
-          '@type': 'SoftwareApplication',
-          '@id': 'https://lunamaze.com/tether-adb/#app',
-          name: 'Tether ADB',
-          url: 'https://lunamaze.com/tether-adb/',
-          applicationCategory: 'DeveloperApplication',
-          operatingSystem: 'Windows',
-          description: 'An enterprise-grade Android device control center for Windows with wireless QR ADB pairing and screen mirroring.',
-        },
-        {
-          '@type': 'WebApplication',
-          '@id': 'https://lunamaze.com/typecrt/#app',
-          name: 'TypeCrt',
-          url: 'https://lunamaze.com/typecrt/',
-          applicationCategory: 'BrowserApplication',
-          description: 'Zero-latency CRT-styled typing test with adaptive weak-key training and command palette.',
-        },
-        {
-          '@type': 'SoftwareApplication',
-          '@id': 'https://lunamaze.com/drift/#app',
-          name: 'Drift',
-          url: 'https://lunamaze.com/drift/',
-          applicationCategory: 'GameApplication',
-          description: 'A handcrafted precision puzzle game exploring focus and calm design.',
-        },
-        {
-          '@type': 'MobileApplication',
-          '@id': 'https://lunamaze.com/kern/#app',
-          name: 'Kern',
-          url: 'https://lunamaze.com/kern/',
-          applicationCategory: 'UtilitiesApplication',
-          operatingSystem: 'Android 8.0 and later',
-          description: 'A private native Android launcher with ranked local search, a daily ledger, focus sessions, and plain-text pages.',
-        },
-      ],
+      owns: [...WORKS, LAB].map((w) => ({ '@id': `${SITE}${w.href}#app` })),
+    },
+    {
+      '@type': 'Person',
+      '@id': FOUNDER_ID,
+      name: 'Shadowline',
+      jobTitle: 'Founder and developer',
+      worksFor: { '@id': ORG_ID },
+      url: `${SITE}/#maker`,
+      sameAs: [GITHUB_URL],
     },
     {
       '@type': 'WebSite',
-      '@id': 'https://lunamaze.com/#website',
-      url: 'https://lunamaze.com',
+      '@id': `${SITE}/#website`,
+      url: `${SITE}/`,
       name: 'Luna Maze',
-      publisher: {
-        '@id': 'https://lunamaze.com/#organization',
-      },
-      description: 'Independent product studio building premium tools for cognition, focus, and craft.',
+      alternateName: 'LunaMaze',
+      inLanguage: 'en',
+      publisher: { '@id': ORG_ID },
+    },
+    {
+      '@type': 'WebPage',
+      '@id': `${SITE}/#webpage`,
+      url: `${SITE}/`,
+      name: TITLE,
+      description: DESCRIPTION,
+      inLanguage: 'en',
+      isPartOf: { '@id': `${SITE}/#website` },
+      about: { '@id': ORG_ID },
+      primaryImageOfPage: { '@type': 'ImageObject', url: OG_IMAGE, width: 1200, height: 630 },
+      dateModified: HOME_UPDATED,
+    },
+    ...[...WORKS, LAB].map((w) => ({
+      '@type': w.schemaType,
+      '@id': `${SITE}${w.href}#app`,
+      name: w.name,
+      url: `${SITE}${w.href}`,
+      description: `${w.line} ${w.detail}`,
+      applicationCategory: w.category,
+      ...(w.os ? { operatingSystem: w.os } : {}),
+      publisher: { '@id': ORG_ID },
+      author: { '@id': ORG_ID },
+    })),
+    {
+      '@type': 'ItemList',
+      '@id': `${SITE}/#works`,
+      name: 'Luna Maze products',
+      itemListElement: WORKS.map((w, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        url: `${SITE}${w.href}`,
+        name: w.name,
+      })),
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': `${SITE}/#faq`,
+      isPartOf: { '@id': `${SITE}/#webpage` },
+      mainEntity: FAQS.map((f) => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a },
+      })),
     },
   ],
 };
 
-export default function LunaMazePage() {
+/**
+ * Binds the italic and mono faces once the page has loaded, independent of
+ * React. They swap into small labels and below-the-fold headings only, and
+ * keeping them out of the first render keeps them off the critical path.
+ */
+const LATE_FONTS =
+  "(function(r){function go(){r.setAttribute('data-late-fonts','')}if(document.readyState==='complete')go();else addEventListener('load',go,{once:true})})(document.currentScript.parentElement)";
+
+export default function StudioHome() {
   return (
-    <div className="relative min-h-screen bg-lunamaze-bgDeep text-lunamaze-textPrimary">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
-      />
-      <LunaNavbar />
-      <main>
-        <LunaHero />
-        <div className="lunamaze-grid-bg lunamaze-noise relative">
-          <DotGrid />
-          <div className="relative z-10">
-            <StudioSection />
-            <ProductsGrid products={products} />
-            <CapabilitiesSection items={capabilities} />
-          </div>
-        </div>
-        <FounderSection />
-        <ContactSection />
+    <div className={`${fontVariables} ${s.root}`} data-studio>
+      <script dangerouslySetInnerHTML={{ __html: LATE_FONTS }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
+      <Nav />
+      <main id="main" style={{ position: 'relative' }}>
+        <Hero />
+        <svg className={s.pageThread} data-page-thread aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="lm-page-thread" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="#b3a1ff" />
+              <stop offset="1" stopColor="#f4efe4" />
+            </linearGradient>
+          </defs>
+          <path className={s.pageThreadTrack} data-track />
+          <path className={s.pageThreadLine} data-line pathLength={1} />
+          <circle className={s.pageThreadHead} data-head r="3" />
+        </svg>
+        <Manifesto />
+        <Works />
+        <Reel />
+        <Method />
+        <Ledger />
+        <Maker />
+        <Questions />
+        <Finale />
       </main>
-      <LunaFooter />
+      <Credits />
+      <div className={s.cursor} data-cursor-el aria-hidden="true">
+        <span className={s.cursorRing} data-cursor-ring>
+          <span />
+        </span>
+        <span className={s.cursorDot} data-cursor-dot />
+      </div>
+      <div className={s.grain} aria-hidden="true" />
+      <svg className={s.srOnly} aria-hidden="true" focusable="false">
+        <filter id="lm-liquid" x="0%" y="0%" width="100%" height="100%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.012 0.018" numOctaves="2" seed="7" result="noise" />
+          <feGaussianBlur in="noise" stdDeviation="2" result="soft" />
+          <feDisplacementMap in="SourceGraphic" in2="soft" scale="26" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+      </svg>
+      <StudioEnhancer />
     </div>
   );
 }

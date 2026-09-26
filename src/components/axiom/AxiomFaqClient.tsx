@@ -142,7 +142,7 @@ export default function AxiomFaqClient({ faqs }: AxiomFaqClientProps) {
               <span className={`${MONO} text-sm font-semibold tracking-[0.32em] text-[#f2f1f7]`}>
                 AXIOM
               </span>
-              <span className="text-[9px] tracking-[0.24em] text-[#7a7690] uppercase">Neuroscience Archive</span>
+              <span className="text-[9px] tracking-[0.24em] text-[#8a86a0] uppercase">Neuroscience Archive</span>
             </div>
           </Link>
 
@@ -174,7 +174,7 @@ export default function AxiomFaqClient({ faqs }: AxiomFaqClientProps) {
         {/* Breadcrumb Path */}
         <nav
           aria-label="Breadcrumb"
-          className={`${MONO} mb-6 flex items-center gap-2 text-[11px] uppercase tracking-[0.26em] text-[#7a7690]`}
+          className={`${MONO} mb-6 flex items-center gap-2 text-[11px] uppercase tracking-[0.26em] text-[#8a86a0]`}
         >
           <Link href="/" className="hover:text-[#edeaf5] transition-colors">Luna Maze</Link>
           <span className="text-[#3c3852]">/</span>
@@ -209,7 +209,7 @@ export default function AxiomFaqClient({ faqs }: AxiomFaqClientProps) {
             {/* Search Input */}
             <div className="relative flex items-center">
               <svg
-                className="absolute left-4 h-4 w-4 text-[#7a7690]"
+                className="absolute left-4 h-4 w-4 text-[#8a86a0]"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -227,7 +227,7 @@ export default function AxiomFaqClient({ faqs }: AxiomFaqClientProps) {
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-3.5 flex h-5 w-5 items-center justify-center rounded-full bg-white/10 text-xs text-[#7a7690] hover:text-white"
+                  className="absolute right-3.5 flex h-5 w-5 items-center justify-center rounded-full bg-white/10 text-xs text-[#8a86a0] hover:text-white"
                   aria-label="Clear search"
                 >
                   ✕
@@ -247,7 +247,7 @@ export default function AxiomFaqClient({ faqs }: AxiomFaqClientProps) {
                       className={`${MONO} shrink-0 rounded-lg px-3.5 py-1.5 text-[10px] uppercase tracking-[0.2em] transition-all duration-200 ${
                         isSelected
                           ? 'border border-[#8b7cf7]/60 bg-[#8b7cf7]/20 text-white shadow-[0_0_15px_rgba(139,124,247,0.3)] font-medium'
-                          : 'border border-transparent text-[#7a7690] hover:border-white/10 hover:text-[#edeaf5]'
+                          : 'border border-transparent text-[#8a86a0] hover:border-white/10 hover:text-[#edeaf5]'
                       }`}
                     >
                       {cat}
@@ -259,14 +259,14 @@ export default function AxiomFaqClient({ faqs }: AxiomFaqClientProps) {
               <div className="hidden sm:flex items-center gap-2 pl-3">
                 <button
                   onClick={expandAll}
-                  className={`${MONO} text-[10px] uppercase tracking-[0.2em] text-[#7a7690] hover:text-[#00f5a0] transition-colors`}
+                  className={`${MONO} text-[10px] uppercase tracking-[0.2em] text-[#8a86a0] hover:text-[#00f5a0] transition-colors`}
                 >
                   Expand all
                 </button>
                 <span className="text-[#3c3852]">·</span>
                 <button
                   onClick={collapseAll}
-                  className={`${MONO} text-[10px] uppercase tracking-[0.2em] text-[#7a7690] hover:text-white transition-colors`}
+                  className={`${MONO} text-[10px] uppercase tracking-[0.2em] text-[#8a86a0] hover:text-white transition-colors`}
                 >
                   Collapse all
                 </button>
@@ -276,7 +276,7 @@ export default function AxiomFaqClient({ faqs }: AxiomFaqClientProps) {
         </div>
 
         {/* Counter Info */}
-        <div className="mb-8 flex items-center justify-between px-1 text-xs text-[#7a7690]">
+        <div className="mb-8 flex items-center justify-between px-1 text-xs text-[#8a86a0]">
           <span className={`${MONO} uppercase tracking-[0.24em]`}>
             Showing {filteredFaqs.length} {filteredFaqs.length === 1 ? 'Clinical Answer' : 'Clinical Answers'}
           </span>
@@ -302,7 +302,7 @@ export default function AxiomFaqClient({ faqs }: AxiomFaqClientProps) {
                         CHAPTER {chapter.number}
                       </span>
                       <span className="h-px w-6 bg-white/[0.12]" />
-                      <span className={`${MONO} text-[10px] uppercase tracking-[0.22em] text-[#7a7690]`}>
+                      <span className={`${MONO} text-[10px] uppercase tracking-[0.22em] text-[#8a86a0]`}>
                         {chapter.category}
                       </span>
                     </div>
@@ -403,13 +403,13 @@ export default function AxiomFaqClient({ faqs }: AxiomFaqClientProps) {
       {/* Footer */}
       <footer className="border-t border-white/[0.06] py-12">
         <div className="mx-auto max-w-5xl px-4 text-center">
-          <p className={`${MONO} text-[11px] uppercase tracking-[0.26em] text-[#7a7690]`}>
+          <p className={`${MONO} text-[11px] uppercase tracking-[0.26em] text-[#8a86a0]`}>
             AXIOM is crafted by{' '}
             <Link href="/" className="text-[#c5bdfc] hover:text-white transition-colors underline underline-offset-4">
               Luna Maze Studio
             </Link>
           </p>
-          <p className="mt-3 text-xs text-[#4e4a60]">
+          <p className="mt-3 text-xs text-[#8a86a0]">
             © {new Date().getFullYear()} Luna Maze. Your journal stays on your device.
           </p>
         </div>
@@ -493,7 +493,7 @@ function FaqCard({
 
               {/* In-Depth Scientific Analysis */}
               <div className="space-y-2">
-                <p className={`${MONO} text-[10px] uppercase tracking-[0.24em] text-[#7a7690]`}>
+                <p className={`${MONO} text-[10px] uppercase tracking-[0.24em] text-[#8a86a0]`}>
                   NEUROLOGICAL MECHANISM
                 </p>
                 <p className="text-sm sm:text-base leading-[1.75] text-[#a6a3b8] font-normal">

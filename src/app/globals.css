@@ -629,6 +629,33 @@ body {
   transition-duration: 60ms;
 }
 
+/* Liquid glass, shared with the studio home: a rim that catches light from
+   above, a violet caustic pooling at the bottom edge, a soft sheen. Blur is
+   desktop-only, like .ax-blur-desk; phones get the same surface, tinted. */
+.ax-glass {
+  background:
+    radial-gradient(90% 120% at 30% -10%, rgba(255, 255, 255, 0.14), transparent 55%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02) 55%, rgba(255, 255, 255, 0.05));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 -14px 24px -20px rgba(139, 124, 247, 0.6),
+    0 12px 36px -14px rgba(0, 0, 0, 0.7);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  backdrop-filter: blur(14px) saturate(160%);
+}
+@media (pointer: coarse) {
+  .ax-glass {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background-color: rgba(16, 16, 20, 0.92);
+  }
+}
+.ax-btn-ghost {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.015));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), inset 0 -12px 22px -18px rgba(139, 124, 247, 0.55);
+}
+
 /* Card surface — quiet glass on the dark stage. */
 .ax-card {
   background: linear-gradient(180deg, rgba(232, 230, 240, 0.045), rgba(232, 230, 240, 0.012));
@@ -731,22 +758,35 @@ body {
   .ax-cue { display: flex; }
 }
 
-/* Boot guard: an inline script sets data-ax-boot on <html> before first paint so
-   intro elements never flash before GSAP takes over. The landing effect
-   removes the attribute the moment it runs (and re-hides via inline styles in the
-   same tick). If JS never hydrates, the delayed animation force-releases
-   everything — no-JS visitors and crawlers always get a full page. */
-html[data-ax-boot] .axiom-v3 [data-intro] {
-  opacity: 0;
-  visibility: hidden;
-  animation: axBootRelease 0.8s ease 2.5s forwards;
+/* Hero entrance, in CSS so it starts with the first paint: nothing waits for
+   hydration, and the headline counts as painted straight away (the fade starts
+   just above zero opacity, which browsers treat as visible). */
+.ax-in {
+  animation: axIn 1s cubic-bezier(0.16, 1, 0.3, 1) var(--ax-d, 0s) both;
 }
-@keyframes axBootRelease {
-  to {
-    opacity: 1;
-    visibility: visible;
-  }
+.ax-word {
+  display: inline-block;
+  animation: axWord 1.15s cubic-bezier(0.16, 1, 0.3, 1) calc(0.12s + var(--ax-i, 0) * 0.07s) both;
 }
+@keyframes axIn {
+  from { opacity: 0.01; transform: translate3d(0, 22px, 0); }
+}
+@keyframes axWord {
+  from { opacity: 0.01; transform: translate3d(0, 0.42em, 0) rotate(2deg); filter: blur(6px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ax-in,
+  .ax-word { animation: none; }
+}
+
+/* Chapters after the last pinned section skip style, layout and paint until
+   they approach the viewport. Pinned sections are left alone: ScrollTrigger
+   measures them at refresh. */
+.ax-cv {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 1100px;
+}
+
 
 /* Chapter display words: stronger stroke + soft bloom so the word stays
    readable behind the particle formations. */

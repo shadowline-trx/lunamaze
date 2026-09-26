@@ -29,7 +29,7 @@
  * gets a static, complete page.
  */
 
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
@@ -497,7 +497,6 @@ export default function AxiomLanding() {
 
     const ctx = gsap.context(() => {
       if (reduce) {
-        document.documentElement.removeAttribute('data-ax-boot');
         // Nothing below this branch runs, so anything the animations would
         // have revealed has to be shown outright. These blocks start at
         // opacity-0 in markup and are otherwise invisible for the entire
@@ -514,31 +513,43 @@ export default function AxiomLanding() {
         }
         return;
       }
-      // Hand-off from the parse-time boot guard: inline styles take over the
-      // hiding in the same tick the class is dropped, so there is no gap and
-      // no flash in either direction.
-      gsap.set('[data-intro]', { autoAlpha: 0 });
-      gsap.set('[data-reveal]', { autoAlpha: 0, y: 40 });
-      document.documentElement.removeAttribute('data-ax-boot');
+      // Scripts arrive after first paint, so the visitor may already be
+      // reading. Only blocks still below the fold are hidden for their reveal;
+      // anything on screen now stays put rather than blinking out.
+      const belowFold = gsap.utils
+        .toArray<HTMLElement>('[data-reveal]')
+        .filter((el) => el.getBoundingClientRect().top > window.innerHeight);
+      gsap.set(belowFold, { autoAlpha: 0, y: 40 });
     }, root);
 
     let cancelled = false;
+    const observers: Array<() => void> = [];
     if (!reduce) {
-      document.fonts.ready.then(() => {
+      document.fonts.ready.then(async () => {
         if (cancelled) return;
-        ctx.add(() => {
-          const st = fieldRef.current?.state;
-          const mmG = gsap.matchMedia();
+        // The scroll choreography is built in page order, a chunk at a time,
+        // with a yield between chunks so no single task holds the main thread
+        // for long. Each chunk joins the same gsap.context, so unmount still
+        // reverts everything; creation order (which pins rely on) is unchanged.
+        const st = fieldRef.current?.state;
+        let mmG!: ReturnType<typeof gsap.matchMedia>;
+        let chapters: HTMLElement[] = [];
+        const chunk = async (build: () => void): Promise<void> => {
+          if (cancelled) return;
+          ctx.add(build);
+          await new Promise<void>((resolve) => window.setTimeout(resolve, 0));
+        };
+
+        await chunk(() => {
+          mmG = gsap.matchMedia();
           // Dev/test hook alongside __axLenis: observe the field state live.
           (window as Window & { __axField?: typeof st }).__axField = st;
 
-          // ── intro ────────────────────────────────────────────────
-          const heroTitle = root.querySelector<HTMLElement>('[data-hero-title]');
-          const intro = gsap.timeline({ defaults: { ease: 'expo.out' } });
-          // The assembly tween lives OUTSIDE the intro timeline so the story
-          // pin can kill it: if the user dives deep (nav anchor, fast flick)
-          // while it is still playing, it must not keep writing progress
-          // back to 1 after the scrub has already rendered a later shape.
+          // ── intro: the field assembles ─────────────────────────────
+          // The assembly tween is standalone so the story pin can kill it: if
+          // the user dives deep (nav anchor, fast flick) while it is still
+          // playing, it must not keep writing progress back to 1 after the
+          // scrub has already rendered a later shape.
           const assembly = st
             ? gsap.fromTo(
                 st,
@@ -546,45 +557,10 @@ export default function AxiomLanding() {
                 { progress: 1, duration: 2.8, ease: 'power2.inOut', delay: 0.2 },
               )
             : null;
-          intro.to('[data-nav]', { autoAlpha: 1, duration: 0.9 }, 0.4);
-          intro.to('[data-hero-badge]', { autoAlpha: 1, duration: 0.6 }, 0.55);
-          intro.to(
-            '[data-hero-badge-text]',
-            {
-              duration: 1.6,
-              scrambleText: { text: HERO_BADGE, chars: '▮▯░AXIOM01', speed: 0.55 },
-            },
-            0.6,
-          );
-          if (heroTitle) {
-            const split = SplitText.create(heroTitle, {
-              type: 'lines,chars',
-              mask: 'lines',
-              linesClass: 'ax-clip-line',
-              charsClass: 'ax-char',
-            });
-            gsap.set(heroTitle, { autoAlpha: 1 });
-            intro.from(
-              split.chars,
-              {
-                yPercent: 118,
-                duration: 1.15,
-                stagger: { amount: 0.55 },
-                ease: 'expo.out',
-              },
-              0.7,
-            );
-          }
-          gsap.set('[data-hero-sub]', { y: 26 });
-          intro.to('[data-hero-sub]', { autoAlpha: 1, y: 0, duration: 0.9 }, 1.35);
-          intro.fromTo(
-            '[data-hero-cta] > *',
-            { y: 26, autoAlpha: 0 },
-            { y: 0, autoAlpha: 1, duration: 0.8, stagger: 0.1 },
-            1.5,
-          );
-          intro.to('[data-hero-trust]', { autoAlpha: 1, duration: 0.8 }, 1.75);
-          intro.to('[data-hero-cue]', { autoAlpha: 1, duration: 1 }, 2.1);
+          // The hero copy, badge, buttons and nav animate in with CSS from the
+          // first paint (see .ax-in in globals.css), so they are readable before
+          // any script runs and hydration never hides them again. Only the
+          // field's assembly, above, is scripted.
 
           gsap.to('[data-hero-content]', {
             yPercent: -16,
@@ -599,7 +575,7 @@ export default function AxiomLanding() {
           });
 
           // ── story act: morph brain → shield → tree ───────────────
-          const chapters = gsap.utils.toArray<HTMLElement>('[data-chapter]');
+          chapters = gsap.utils.toArray<HTMLElement>('[data-chapter]');
           mmG.add('(min-width: 768px)', () => {
             const story = gsap.timeline({
               scrollTrigger: {
@@ -773,6 +749,8 @@ export default function AxiomLanding() {
             );
           }
 
+        });
+        await chunk(() => {
           // ── marquee ──────────────────────────────────────────────
           gsap.to('[data-marquee-track]', {
             xPercent: -50,
@@ -890,6 +868,8 @@ export default function AxiomLanding() {
             );
           });
 
+        });
+        await chunk(() => {
           // ── the arc: pinned curve + comet (desktop) ──────────────
           mmG.add('(min-width: 768px)', () => {
             const arc = gsap.timeline({
@@ -980,6 +960,8 @@ export default function AxiomLanding() {
             });
           });
 
+        });
+        await chunk(() => {
           // ── stays-on-your-phone split demo ───────────────────────
           const sealTl = gsap.timeline({
             scrollTrigger: { trigger: '[data-seal]', start: 'top 62%' },
@@ -1043,6 +1025,8 @@ export default function AxiomLanding() {
             });
           });
 
+        });
+        await chunk(() => {
           // ── generic reveals ──────────────────────────────────────
           ScrollTrigger.batch('[data-reveal]', {
             // Touch fires later and moves quicker. At 86% the element has only
@@ -1159,12 +1143,27 @@ export default function AxiomLanding() {
           }
 
           ScrollTrigger.refresh();
+
+          // The last chapters skip rendering until they near the viewport
+          // (.ax-cv). When one renders at its real height, triggers below it
+          // (the finale) have moved: refresh once the sizes settle.
+          let refreshTimer = 0;
+          const resized = new ResizeObserver(() => {
+            window.clearTimeout(refreshTimer);
+            refreshTimer = window.setTimeout(() => ScrollTrigger.refresh(), 150);
+          });
+          root.querySelectorAll('.ax-cv').forEach((el) => resized.observe(el));
+          observers.push(() => {
+            window.clearTimeout(refreshTimer);
+            resized.disconnect();
+          });
         });
       });
     }
 
     return () => {
       cancelled = true;
+      observers.forEach((stop) => stop());
       root.removeEventListener('click', onAnchorClick);
       ctx.revert();
       if (tick) gsap.ticker.remove(tick);
@@ -1174,15 +1173,6 @@ export default function AxiomLanding() {
 
   return (
     <div ref={rootRef} className="axiom-v3 relative">
-      {/* Runs during HTML parse, before first paint: arms the .ax-boot CSS
-          guard so intro elements cannot flash before GSAP takes over. */}
-      {/* A data attribute, not a class: React hydrates <html>'s className and
-          would report a mismatch if we appended to it. */}
-      <script
-        dangerouslySetInnerHTML={{
-          __html: "document.documentElement.setAttribute('data-ax-boot','')",
-        }}
-      />
       {/* ── fixed stage: gradients, cage grid, shafts, particles ── */}
       <div aria-hidden className="pointer-events-none fixed inset-0 -z-10">
         <div
@@ -1232,14 +1222,22 @@ export default function AxiomLanding() {
   );
 }
 
+/** One word of the hero headline, rising in on its own delay. */
+function HeroWord({ i, className, children }: { i: number; className?: string; children: ReactNode }) {
+  return (
+    <span className={`ax-word ${className ?? ''}`} style={{ '--ax-i': i } as CSSProperties}>
+      {children}
+    </span>
+  );
+}
+
 // ── navigation ───────────────────────────────────────────────────────
 function Nav() {
   const store = useStoreHref();
   return (
     <header
       data-nav
-      data-intro
-      className="fixed inset-x-0 top-0 z-50"
+      className="ax-in fixed inset-x-0 top-0 z-50"
       style={{
         background: 'linear-gradient(to bottom, rgba(10,10,13,0.72), transparent)',
       }}
@@ -1257,7 +1255,7 @@ function Nav() {
             AXIOM
           </span>
         </a>
-        <div className={`${MONO} hidden items-center gap-9 text-[11px] uppercase tracking-[0.22em] text-[#9b98ad] md:flex`}>
+        <div className={`${MONO} ax-glass hidden items-center gap-9 rounded-full px-7 py-3 text-[11px] uppercase tracking-[0.22em] text-[#9b98ad] md:flex`}>
           <a className="transition-colors hover:text-[#e8e6f0]" href="#difference">The audit</a>
           <a className="transition-colors hover:text-[#e8e6f0]" href="#arc">The arc</a>
           <a className="transition-colors hover:text-[#e8e6f0]" href="#privacy">Discretion</a>
@@ -1286,7 +1284,7 @@ function StickyCTA() {
       className="fixed inset-x-3 bottom-3 z-50 md:hidden"
       style={{ transform: 'translateY(140%)' }}
     >
-      <div className="ax-blur-desk flex items-center gap-3 rounded-2xl border border-white/10 bg-[#101014]/95 p-3 shadow-[0_12px_48px_rgba(0,0,0,0.6)]">
+      <div className="ax-glass flex items-center gap-3 rounded-2xl p-3">
         <img
           src={internalUrl('/images/axiom/logo.webp')}
           alt=""
@@ -1332,50 +1330,54 @@ function Hero() {
       >
         <div
           data-hero-badge
-          data-intro
-          className={`${MONO} ax-blur-desk mb-9 inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-black/40 px-4 py-1.5 text-[10px] uppercase tracking-[0.24em] text-[#9b98ad]`}
+          style={{ '--ax-d': '0.15s' } as CSSProperties}
+          className={`${MONO} ax-in ax-glass mb-9 inline-flex items-center gap-2.5 rounded-full px-4 py-1.5 text-[10px] uppercase tracking-[0.24em] text-[#9b98ad]`}
         >
           <span className="h-1.5 w-1.5 rounded-full bg-[#7ef7c2] shadow-[0_0_12px_rgba(126,247,194,0.8)]" />
           <span data-hero-badge-text>{HERO_BADGE}</span>
         </div>
         <h1
           data-hero-title
-          data-intro
           className="text-[clamp(3.2rem,9.2vw,8rem)] font-semibold leading-[0.98] tracking-[-0.04em] text-[#f2f1f7]"
         >
-          Quit porn.
+          {/* Words rise one by one, in CSS, so the headline paints at once. */}
+          <HeroWord i={0}>Quit</HeroWord> <HeroWord i={1}>porn.</HeroWord>
           <br />
-          Your phone{' '}
-          <span className="ax-serif ax-grad-violet pr-2 font-normal">
+          <HeroWord i={2}>Your</HeroWord> <HeroWord i={3}>phone</HeroWord>{' '}
+          <HeroWord i={4} className="ax-serif ax-grad-violet pr-2 font-normal">
             never
-          </span>{' '}
-          says so.
+          </HeroWord>{' '}
+          <HeroWord i={5}>says</HeroWord> <HeroWord i={6}>so.</HeroWord>
         </h1>
         <p
           data-hero-sub
-          data-intro
-          className={`mx-auto mt-8 max-w-xl text-base leading-relaxed text-[#a6a3b8] ${OVER_FIELD} sm:text-lg`}
+          style={{ '--ax-d': '0.55s' } as CSSProperties}
+          className={`ax-in mx-auto mt-8 max-w-xl text-base leading-relaxed text-[#a6a3b8] ${OVER_FIELD} sm:text-lg`}
         >
           Every other app for this is named the accusation. On your home
           screen, this one says AXIOM. Its notifications say “Daily brief”.
           The recovery work underneath is real and grounded in neuroscience,
           and your journal never leaves your phone.
         </p>
-        <div data-hero-cta className="mt-11 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <div
+          data-hero-cta
+          style={{ '--ax-d': '0.7s' } as CSSProperties}
+          className="ax-in mt-11 flex flex-col items-center justify-center gap-4 sm:flex-row"
+        >
           <StoreButtons variant="hero" />
         </div>
         <p
           data-hero-trust
-          data-intro
-          className={`${MONO} mt-6 text-[10px] uppercase tracking-[0.22em] text-[#8f8ca1]`}
+          style={{ '--ax-d': '0.85s' } as CSSProperties}
+          className={`${MONO} ax-in mt-6 text-[10px] uppercase tracking-[0.22em] text-[#8f8ca1]`}
         >
           One honest price · No fake urgency · Cancel anytime
         </p>
       </div>
       <div
         data-hero-cue
-        data-intro
-        className={`${MONO} ax-cue absolute bottom-8 left-1/2 -translate-x-1/2 flex-col items-center gap-3 text-[10px] uppercase tracking-[0.3em] text-[#8f8ca1]`}
+        style={{ '--ax-d': '1.1s' } as CSSProperties}
+        className={`${MONO} ax-in ax-cue absolute bottom-8 left-1/2 -translate-x-1/2 flex-col items-center gap-3 text-[10px] uppercase tracking-[0.3em] text-[#8f8ca1]`}
       >
         Scroll — the rewire begins
         <span className="block h-10 w-px overflow-hidden bg-white/10">
@@ -1518,7 +1520,7 @@ function Audit() {
             <p className={`${MONO} text-center text-[13px] font-bold uppercase tracking-[0.3em]`}>
               The Category
             </p>
-            <p className={`${MONO} mt-1.5 text-center text-[9px] uppercase tracking-[0.24em] text-[#181622]/60`}>
+            <p className={`${MONO} mt-1.5 text-center text-[9px] uppercase tracking-[0.24em] text-[#181622]/75`}>
               Recovery apps inc · open 24/7 · every visit
             </p>
             <div className="my-5 border-t-2 border-dashed border-[#181622]/25" />
@@ -1529,7 +1531,7 @@ function Audit() {
                 className={`${MONO} relative flex items-baseline justify-between gap-4 py-2.5 text-[11.5px] uppercase leading-relaxed tracking-[0.06em]`}
               >
                 <span className="max-w-[290px]">{row.theirs}</span>
-                <span className="shrink-0 text-[#181622]/55">№{i + 1}</span>
+                <span className="shrink-0 text-[#181622]/70">№{i + 1}</span>
                 {/* Hand-drawn marker strike: a wavy double stroke, not a rule. */}
                 <svg
                   data-receipt-strike
@@ -1938,7 +1940,7 @@ const DEPTH_TIERS = [
 
 function Depth() {
   return (
-    <section className="relative bg-[#0a0a0d]/90 py-32">
+    <section className="ax-cv relative bg-[#0a0a0d]/90 py-32">
       <span aria-hidden className={`${MONO} ax-ghost-num`}>08</span>
       <div className="relative mx-auto max-w-6xl px-6">
         <Eyebrow>08 — built for depth</Eyebrow>
@@ -1982,7 +1984,7 @@ function Depth() {
 // ── honest pricing ───────────────────────────────────────────────────
 function Pricing() {
   return (
-    <section id="pricing" className="relative overflow-hidden bg-[#0a0a0d]/90 py-32">
+    <section id="pricing" className="ax-cv relative overflow-hidden bg-[#0a0a0d]/90 py-32">
       <div aria-hidden className="pointer-events-none absolute inset-0">
         <span className="ax-ring h-[46rem] w-[46rem]" style={{ right: '-14rem', top: '-10rem' }} />
         <span className="ax-ring h-[34rem] w-[34rem]" style={{ right: '-8rem', top: '-4rem' }} />
@@ -2091,7 +2093,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 
 function Faq() {
   return (
-    <section id="faq" className="relative bg-[#0a0a0d]/90 py-32">
+    <section id="faq" className="ax-cv relative bg-[#0a0a0d]/90 py-32">
       <span aria-hidden className={`${MONO} ax-ghost-num`}>10</span>
       <div className="relative mx-auto max-w-3xl px-6">
         <Eyebrow>10 — asked straight, answered straight</Eyebrow>

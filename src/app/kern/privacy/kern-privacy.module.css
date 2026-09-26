@@ -26,6 +26,9 @@
 
 .root * { box-sizing: border-box; }
 .root a { color: var(--accent); text-underline-offset: 3px; }
+/* Links inside the policy text are underlined: colour alone does not set them
+   apart from the paragraph around them. */
+.main a { text-decoration: underline; text-decoration-thickness: 1px; }
 
 .header {
   display: flex;

@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
+import '../globals.css';
+import { interClass } from '@/lib/interFont';
 
 const title = 'Drift — Handcrafted Precision Puzzle Game';
 const description =
@@ -61,6 +63,7 @@ const JSON_LD = {
     'A handcrafted precision puzzle game exploring momentum, spatial anticipation, and calm aesthetics.',
   author: {
     '@type': 'Organization',
+    '@id': 'https://lunamaze.com/#organization',
     name: 'Luna Maze',
     url: 'https://lunamaze.com',
   },
@@ -72,7 +75,7 @@ interface DriftLayoutProps {
 
 export default function DriftLayout({ children }: DriftLayoutProps) {
   return (
-    <div className="bg-lunamaze-bgDeep text-lunamaze-textPrimary">
+    <div className={`${interClass} bg-lunamaze-bgDeep text-lunamaze-textPrimary`}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}

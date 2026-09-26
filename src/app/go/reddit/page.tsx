@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import type { JSX } from 'react';
 import StoreRedirect from '@/components/lunamaze/StoreRedirect';
+import '../../globals.css';
+import { interClass } from '@/lib/interFont';
 
 /**
  * /go/reddit/ — the short, countable link that lives in the Reddit profile bio.
@@ -23,7 +25,7 @@ export const metadata: Metadata = {
 
 export default function GoRedditPage(): JSX.Element {
   return (
-    <main className="relative min-h-screen bg-lunamaze-bgDeep text-lunamaze-textPrimary flex items-center justify-center px-6 py-24">
+    <main className={`${interClass} relative min-h-screen bg-lunamaze-bgDeep text-lunamaze-textPrimary flex items-center justify-center px-6 py-24`}>
       <div className="w-full">
         <h1 className="text-center text-3xl sm:text-4xl font-extrabold tracking-tight mb-4">
           <span className="lunamaze-text-gradient">Axiom</span>

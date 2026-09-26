@@ -484,7 +484,7 @@ export default function PrivacyPage(): JSX.Element {
             </li>
             <li>
               <strong>{'Developer: '}</strong>
-              {'Luna Maze, a studio of Harikrishnan V (shadowline), India'}
+              {'Luna Maze, an independent studio run by Shadowline, India'}
             </li>
           </ul>
         </article>
