@@ -69,13 +69,13 @@ export function playStoreUrl(source: string): string {
 /**
  * Territories where the Play listing exists but cannot be installed from.
  *
- * The trademark strike took the listing down in exactly these two markets.
- * Verified 2026-08-02 by requesting the listing with `gl` set to 17 territories:
- * only `us` and `au` returned 404 — gb, ca, nz, ie, in, de, fr, nl, br, id, ph,
- * za, sg, ae and jp all returned 200. This list changes when the dispute is
- * resolved, not on a schedule, so re-run that check before trusting it.
+ * The trademark strike took the listing down in the US and Australia from May
+ * 2026 (verified 2026-08-02: with `gl` set to 17 territories only `us` and `au`
+ * returned 404). The complainant withdrew on 2026-09-25 and both returned 200
+ * on 2026-09-28, so the list is empty. Put 'US' / 'AU' back only after that
+ * same `gl` check shows a 404 again.
  */
-export const PLAY_BLOCKED_TERRITORIES = ['US', 'AU'] as const;
+export const PLAY_BLOCKED_TERRITORIES: readonly ('US' | 'AU')[] = [];
 
 /**
  * IANA zones for the United States, including the legacy `US/*` aliases some
@@ -124,12 +124,20 @@ const US_TIME_ZONES: ReadonlySet<string> = new Set([
  * Whether this visitor is somewhere the Play listing will 404. Browser only —
  * it reads the device time zone, so it must be called from an effect, never
  * during render or the static export.
- *
- * Time zone rather than `navigator.language`: `en-US` is the default locale on
- * devices all over the world, so matching on it would suppress the Play
- * redirect far outside the two markets that are actually dark.
  */
 export function playIsBlockedHere(): boolean {
+  if (PLAY_BLOCKED_TERRITORIES.length === 0) return false;
+  return inUsOrAustralia();
+}
+
+/**
+ * Whether the device time zone is in the US or Australia.
+ *
+ * Time zone rather than `navigator.language`: `en-US` is the default locale on
+ * devices all over the world, so matching on it would catch visitors far
+ * outside those two markets.
+ */
+function inUsOrAustralia(): boolean {
   let zone: string | undefined;
   try {
     zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -137,11 +145,11 @@ export function playIsBlockedHere(): boolean {
     zone = undefined;
   }
 
-  // An unreadable location counts as blocked on purpose. The two mistakes are
-  // not equally expensive: showing a working page to someone who could have
-  // been auto-redirected costs one tap, while auto-redirecting a US or
-  // Australian visitor drops them on a 404 that reads as "this app does not
-  // exist" — and we never find out it happened.
+  // An unreadable location counts as inside on purpose. While Play was dark
+  // there the two mistakes were not equally expensive: showing a working page
+  // to someone who could have been auto-redirected costs one tap, while
+  // auto-redirecting a US or Australian visitor dropped them on a 404 that
+  // read as "this app does not exist".
   if (zone === undefined || zone === '') return true;
 
   return zone.startsWith('Australia/') || zone.startsWith('US/') || US_TIME_ZONES.has(zone);
@@ -153,16 +161,16 @@ export function playIsBlockedHere(): boolean {
  *
  * Apple devices get the App Store, including Macs, because a Mac visitor is
  * very likely holding an iPhone and iPadOS reports itself as a Mac. A desktop
- * visitor in the US or Australia gets it too: Play 404s there, so the App Store
- * is the only listing that visitor can act on. Android visitors never do,
- * because an App Store link is useless on an Android phone.
+ * visitor in the US or Australia gets it too: most phones there are iPhones,
+ * and iOS is AXIOM's main paying channel. Android visitors never do, because
+ * an App Store link is useless on an Android phone.
  */
 export function appStoreFirst(): boolean {
   if (APP_STORE_ID === null) return false;
   const ua = navigator.userAgent;
   if (/Android/i.test(ua)) return false;
   if (/iPhone|iPad|iPod|Macintosh/i.test(ua)) return true;
-  return playIsBlockedHere();
+  return inUsOrAustralia();
 }
 
 /**
