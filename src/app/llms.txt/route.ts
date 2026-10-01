@@ -24,6 +24,8 @@ Luna Maze the software studio is not connected to other projects that share the 
 - [TypeCrt writing library](https://lunamaze.com/typecrt/blog/): Why typing tests disagree, adaptive practice, and typing research.
 - [Drift](https://lunamaze.com/drift/): Precision puzzle game about timing and control, in closed testing on Google Play.
 - [Genesis](https://lunamaze.com/genesis/): Free terraforming sandbox that runs in the browser (an experiment from the studio's lab).
+- [Allergen Label Maker](https://lunamaze.com/allergen-label-maker/): Free browser tool for bakeries, delis and cafés. It flags the major food allergens in an ingredient list (US 9 or UK 14) and prints labels. No account; what you type stays in the browser.
+- [New York allergen labeling law guide](https://lunamaze.com/allergen-label-maker/new-york-allergen-law/): Plain-English guide to Chapter 494 of 2025, which requires allergen labels on food prepared and packed on the same premises from November 12, 2026.
 
 ## Axiom facts
 - Platforms: iPhone (App Store) and Android (Google Play).

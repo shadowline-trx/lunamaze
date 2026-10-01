@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free Allergen Label Maker for Bakeries, Delis and Cafés</title>
+<meta name="description" content="Paste your ingredients, we flag the allergens, you print the sticker. Free allergen label maker for bakeries, delis, cafés and food trucks. US (FDA 9) and UK (14) formats. No account.">
+<link rel="canonical" href="https://lunamaze.com/allergen-label-maker/">
+<link rel="icon" href="/allergen-label-maker/favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="Free Allergen Label Maker for Bakeries, Delis and Cafés">
+<meta property="og:description" content="Paste ingredients, get a print-ready allergen label. New York requires them on food packaged on-site from Nov 12, 2026.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://lunamaze.com/allergen-label-maker/">
+<meta name="theme-color" content="#faf6ee">
+<link rel="stylesheet" href="/allergen-label-maker/assets/style.css">
+<style id="page-style"></style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Allergen Label Maker","applicationCategory":"BusinessApplication","operatingSystem":"Any (web)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Free allergen label maker for bakeries, delis, cafés and food trucks. Detects major allergens in an ingredient list and prints a label.","url":"https://lunamaze.com/allergen-label-maker/","publisher":{"@type":"Organization","name":"Luna Maze","url":"https://lunamaze.com/"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"Is this legal advice?","acceptedAnswer":{"@type":"Answer","text":"No. It is a drafting tool. It suggests allergens from the text you type and you confirm them. You are responsible for the accuracy of every label. Check current rules with your state or local food regulator."}},
+{"@type":"Question","name":"What does New York's allergen labeling law require?","acceptedAnswer":{"@type":"Answer","text":"From November 12, 2026, food establishments in New York must label food they prepare, pack and sell on the same premises with a written notification of any of the nine major allergens: milk, eggs, fish, crustacean shellfish, tree nuts, wheat, peanuts, sesame and soy."}},
+{"@type":"Question","name":"What printer and labels do I need?","acceptedAnswer":{"@type":"Answer","text":"Any printer. Pick the size that matches your label roll or sheet, set the printer to that size, and print at 100 percent. Sizes include 2.25 x 1.25 in, 3 x 2 in, 4 x 2 in, 4 x 6 in and an Avery 5163 style sheet."}},
+{"@type":"Question","name":"Do I need an account?","acceptedAnswer":{"@type":"Answer","text":"No. Your text stays in your browser. We only receive an email address if you join the founding list."}},
+{"@type":"Question","name":"Does it work outside New York?","acceptedAnswer":{"@type":"Answer","text":"Yes. Switch between the US list of nine major allergens and the UK and EU list of fourteen. The UK format always prints the full ingredient list with allergens in bold, as Natasha's Law requires for food pre-packed for direct sale."}}
+]}
+</script>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/allergen-label-maker/" aria-label="Allergen Label Maker home">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="6" width="28" height="20" rx="4" fill="#0e6b4f"/><path d="M8 13h16M8 17h16M8 21h9" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>
+      Allergen Label Maker
+    </a>
+    <nav aria-label="Main">
+      <a href="/allergen-label-maker/new-york-allergen-law/">New York law</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="wrap">
+    <a class="law-chip" href="/allergen-label-maker/new-york-allergen-law/">New York: allergen labels required on food packed on-site from Nov 12, 2026 <span aria-hidden="true">→</span></a>
+    <h1>Allergen labels for your bakery, deli or café. Ready in 30 seconds.</h1>
+    <p class="lead">Paste your ingredients. We flag the allergens. Print a sticker that says what is in it. Free, no account.</p>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="tool" id="tool">
+    <div class="form-col">
+      <div class="field">
+        <span class="lab">Where are you selling?</span>
+        <div class="seg" role="radiogroup" aria-label="Region">
+          <label><input type="radio" name="region" value="us"><span>United States</span></label>
+          <label><input type="radio" name="region" value="uk"><span>UK / EU</span></label>
+        </div>
+        <p class="hint" id="region-note" style="margin:6px 0 0"></p>
+      </div>
+
+      <div class="field">
+        <label for="f-name">Product name</label>
+        <input id="f-name" type="text" placeholder="Blueberry muffin" autocomplete="off" maxlength="80">
+      </div>
+
+      <div class="field">
+        <label for="f-ing">Ingredients <span class="hint">(as on your supplier labels)</span></label>
+        <textarea id="f-ing" placeholder="Enriched flour (wheat), sugar, butter, eggs, milk, blueberries…" maxlength="1200"></textarea>
+        <p style="margin:6px 0 0"><button class="btn btn-ghost" type="button" id="btn-example" style="min-height:36px;padding:6px 12px;font-weight:600;font-size:.88rem">Try an example</button></p>
+      </div>
+
+      <div class="field">
+        <span class="lab">Allergens on this label <span class="hint">(tick or untick to correct us)</span></span>
+        <div class="chips" id="chips" role="group" aria-label="Allergens"></div>
+        <ul class="notes" id="notes" aria-live="polite"></ul>
+      </div>
+
+      <details class="more">
+        <summary>More options</summary>
+        <div class="checks">
+          <label><input type="checkbox" id="opt-ing"> Print the full ingredient list</label>
+          <label><input type="checkbox" id="opt-bold"> Bold allergens inside the ingredient list</label>
+          <label><input type="checkbox" id="opt-dates"> Add made / use-by dates</label>
+        </div>
+        <div class="row" id="date-fields" hidden>
+          <div class="field"><label for="f-made">Made</label><input id="f-made" type="date"></div>
+          <div class="field"><label for="f-useby">Use by</label><input id="f-useby" type="date"></div>
+        </div>
+        <div class="field"><label for="f-biz">Business name and address <span class="hint">(optional)</span></label><input id="f-biz" type="text" maxlength="90" placeholder="Rosa's Bakery, 12 Main St"></div>
+        <div class="row">
+          <div class="field"><label for="f-size">Label size</label><select id="f-size"></select></div>
+          <div class="field"><label for="f-qty">Copies</label><input id="f-qty" type="number" min="1" max="12" value="1" inputmode="numeric"></div>
+        </div>
+      </details>
+
+      <div class="actions">
+        <button class="btn btn-primary" type="button" id="btn-print">Print label</button>
+        <button class="btn btn-ghost" type="button" id="btn-copy">Copy text</button>
+        <span class="counter" id="counter"></span>
+      </div>
+    </div>
+
+    <div class="preview-col">
+      <div class="preview-stage" id="preview-stage"><div class="scale-box" id="scale-box"></div></div>
+      <p class="preview-cap" id="preview-cap"></p>
+      <ul class="notes"><li id="overflow-warn" hidden>This much text will not fit at a readable size. Pick a bigger label or shorten the ingredient list.</li></ul>
+      <p class="preview-cap"><strong>Check before you print.</strong> We read your text and suggest allergens. We cannot see your supplier labels, so confirm each one.</p>
+    </div>
+  </div>
+</div>
+
+<section class="block">
+  <div class="wrap">
+    <h2>Made for shops that pack food on-site</h2>
+    <div class="grid3">
+      <div class="card"><h3>Bakeries and cafés</h3><p class="muted">Muffins, cookies, cakes and grab-and-go sandwiches. Change a recipe, change the label in seconds.</p></div>
+      <div class="card"><h3>Delis and sandwich shops</h3><p class="muted">Salads, prepared meals and deli cases. One clear "Contains" line your staff and customers can read at a glance.</p></div>
+      <div class="card"><h3>Meal prep, caterers, food trucks</h3><p class="muted">New menu every week? Type the ingredients, tick the allergens, print the whole batch.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="pricing">
+  <div class="wrap">
+    <h2>Free to try. Built to save your recipes.</h2>
+    <p class="muted" style="max-width:640px">The label maker above is free. After 3 prints we ask for your email, then it stays free on that browser. Accounts with saved recipes are next: join the founding list to lock the lower price. Nothing to pay today.</p>
+    <div class="grid3" style="margin-top:18px">
+      <div class="card plan">
+        <span class="tag">Free</span>
+        <div class="price">$0</div>
+        <ul>
+          <li>Free printing (email after 3 prints)</li>
+          <li>US and UK formats</li>
+          <li>Automatic allergen flagging</li>
+          <li>No account</li>
+        </ul>
+        <a class="btn btn-ghost btn-block" href="#tool">Make a label</a>
+      </div>
+      <div class="card plan feat">
+        <span class="tag">Shop</span>
+        <div class="price"><span class="was" data-price="shop-full"></span><span data-price="shop-founding"></span><small> /month</small></div>
+        <p class="fine" style="margin:0">Founding price for early members, kept for life.</p>
+        <ul>
+          <li>Save recipes, type ingredients once</li>
+          <li>Made and use-by dates, batch codes</li>
+          <li>Print a week of labels in one go</li>
+        </ul>
+        <button class="btn btn-primary btn-block" type="button" data-lead="pricing" data-plan="shop">Join the founding list</button>
+      </div>
+      <div class="card plan">
+        <span class="tag">Shop + Menu</span>
+        <div class="price"><span class="was" data-price="menu-full"></span><span data-price="menu-founding"></span><small> /month</small></div>
+        <p class="fine" style="margin:0">Founding price for early members, kept for life.</p>
+        <ul>
+          <li>Everything in Shop</li>
+          <li>Menu allergen chart with a QR code</li>
+          <li>Staff allergen sheet in English, Spanish and Chinese</li>
+        </ul>
+        <button class="btn btn-ghost btn-block" type="button" data-lead="pricing" data-plan="menu">Join the founding list</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block faq" id="faq">
+  <div class="wrap narrow">
+    <h2>Questions</h2>
+    <details><summary>Is this legal advice?</summary><p>No. It is a drafting tool. It suggests allergens from the text you type and you confirm them. You are responsible for every label you print. Check current rules with your state or local food regulator.</p></details>
+    <details><summary>What does New York's law require?</summary><p>From November 12, 2026, food establishments must label food they prepare, pack and sell on the same premises with a written notice of any of the nine major allergens. <a href="/allergen-label-maker/new-york-allergen-law/">Read the plain-English guide</a>.</p></details>
+    <details><summary>What printer and labels do I need?</summary><p>Any printer. Pick the size that matches your roll or sheet, set your printer to that size, and print at 100%. Sizes include 2.25 × 1.25 in, 3 × 2 in, 4 × 2 in, 4 × 6 in and an Avery 5163 style sheet.</p></details>
+    <details><summary>Do I need an account?</summary><p>No. What you type stays in your browser. We only receive an email address if you join the founding list.</p></details>
+    <details><summary>Does it work outside New York?</summary><p>Yes. Switch between the US list of nine major allergens and the UK and EU list of fourteen. The UK format always prints the full ingredient list with allergens in bold, as Natasha's Law requires for food pre-packed for direct sale.</p></details>
+    <details><summary>How accurate is the allergen flagging?</summary><p>It catches common ingredients and knows tricky cases like peanut butter versus dairy butter and coconut milk versus milk. It cannot see hidden allergens in "natural flavors", spices or chocolate, so it warns you and leaves the decision to you.</p></details>
+  </div>
+</section>
+</main>
+
+<footer class="wrap disclaimer">
+  <p>Allergen Label Maker is a drafting aid, not legal or medical advice. You are responsible for label accuracy. Rules differ by state and country; confirm with your regulator. Made by <a href="https://lunamaze.com/">Luna Maze</a>. <a href="/allergen-label-maker/privacy/">Privacy</a><span id="contact-line"></span></p>
+</footer>
+
+<dialog id="lead-dialog" aria-labelledby="lead-title">
+  <div class="modal" style="position:relative">
+    <button class="x" type="button" data-close aria-label="Close">×</button>
+    <form id="lead-form" novalidate>
+      <h2 id="lead-title">Join the founding list</h2>
+      <p id="lead-limit-copy" class="muted" hidden><strong>That was your 3rd free print.</strong> Leave your email and printing stays free on this browser.</p>
+      <p class="muted">We will write when accounts with saved recipes open. Founding members keep the lower price for life. Nothing to pay today.</p>
+      <input type="hidden" name="source" id="lead-source" value="page">
+      <div class="radios" role="radiogroup" aria-label="Plan">
+        <label><input type="radio" name="plan" value="shop" checked> <span><strong>Shop</strong> <span data-price="shop-founding-mo"></span><br><span class="fine">Saved recipes, dates and batch codes, a week of labels in one go</span></span></label>
+        <label><input type="radio" name="plan" value="menu"> <span><strong>Shop + Menu</strong> <span data-price="menu-founding-mo"></span><br><span class="fine">Adds menu allergen chart with QR and staff sheet in EN / ES / ZH</span></span></label>
+      </div>
+      <div class="field"><label for="lead-email">Email</label><input id="lead-email" name="email" type="email" required autocomplete="email" placeholder="you@yourshop.com"></div>
+      <div class="row">
+        <div class="field"><label for="lead-type">Your business</label>
+          <select id="lead-type" name="business_type"><option value="">Choose…</option><option>Bakery</option><option>Café / coffee shop</option><option>Deli / sandwich shop</option><option>Grocery / market</option><option>Food truck / caterer</option><option>Meal prep</option><option>Home baker</option><option>Other</option></select></div>
+        <div class="field"><label for="lead-items">Items you label</label>
+          <select id="lead-items" name="items"><option value="">Choose…</option><option>1–10</option><option>11–30</option><option>31–100</option><option>100+</option></select></div>
+      </div>
+      <p class="err" id="lead-err" role="alert"></p>
+      <button class="btn btn-primary btn-block" type="submit">Join the founding list</button>
+      <p class="fine" style="margin:10px 0 0">One email when accounts open, plus a reminder or two before Nov 12. Unsubscribe any time.</p>
+    </form>
+    <div id="lead-done" class="success" hidden>
+      <h2>You are on the list.</h2>
+      <p class="muted" id="lead-done-mailto" hidden>Your email app should open with the message ready. Press send and you are in. If nothing opened, write to us at <a href="mailto:lunamaze.dev@gmail.com">lunamaze.dev@gmail.com</a>.</p>
+      <p class="muted">Printing is unlocked on this browser. We will email you when accounts open.</p>
+      <button class="btn btn-ghost" type="button" data-close>Back to the label maker</button>
+    </div>
+  </div>
+</dialog>
+
+<div id="print-root" aria-hidden="true"></div>
+<div id="toast" class="toast" role="status" hidden></div>
+<noscript><p style="padding:16px;text-align:center">The label maker needs JavaScript. Please enable it and reload.</p></noscript>
+
+<script src="/allergen-label-maker/assets/config.js"></script>
+<script src="/allergen-label-maker/assets/site.js"></script>
+<script src="/allergen-label-maker/assets/allergens.js"></script>
+<script src="/allergen-label-maker/assets/app.js"></script>
+</body>
+</html>
