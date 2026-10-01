@@ -11,7 +11,7 @@ window.ALM_CONFIG = {
 
   // Lead capture. Get a free access key at web3forms.com (they email it to you).
   // Leads arrive in your inbox with the ad click id and UTM tags attached.
-  web3formsKey: '',
+  web3formsKey: 'd5daacca-b67b-4598-9a21-5903b604a8c8', // lunamaze.dev@gmail.com, form "Allergen Label Maker founding list"
   leadEndpoint: '', // optional: your own endpoint that accepts JSON POST
 
   // Analytics (both optional; use Plausible or Umami for cookieless, GA4 if Google Ads needs conversions).
