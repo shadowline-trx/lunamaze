@@ -12,20 +12,23 @@ import styles from './kern-privacy.module.css';
  * just came from.
  *
  * The wording has to keep matching what the app actually does. Every claim below is
- * checkable against the source: there is no networking code in Kern at all, and the
- * notification log stores a package name, an hour and an outcome and nothing else.
+ * checkable against the source: the only networking code is data/Telemetry.kt (opt-in,
+ * a fixed vocabulary of events and property keys) and the Google Play purchase path in
+ * data/Billing.kt; the notification log stores a package name, an hour and an outcome
+ * and nothing else. data/RcBilling.kt exists but is inert while RC_PUBLIC_KEY is empty;
+ * if it is ever switched on, the Payments section has to name RevenueCat first.
  */
 
-const LAST_UPDATED = 'August 29, 2026';
+const LAST_UPDATED = 'October 2, 2026';
 
 export const metadata: Metadata = {
   title: 'Privacy — Kern',
   description:
-    'Kern collects nothing, sends nothing, and has no server to send it to. The full privacy policy.',
+    'Kern has no account, no ads and no tracking, and sends nothing about you unless you turn on anonymous counts. The full privacy policy.',
   alternates: { canonical: 'https://lunamaze.com/kern/privacy/' },
   openGraph: {
     title: 'Privacy — Kern',
-    description: 'Kern collects nothing, sends nothing, and has no server to send it to.',
+    description: 'No account, no ads, no tracking. Anonymous counts only if you turn them on.',
     url: 'https://lunamaze.com/kern/privacy/',
     siteName: 'Luna Maze',
     type: 'article',
@@ -46,24 +49,81 @@ export default function KernPrivacyPage(): JSX.Element {
         <p className={styles.eyebrow}>PRIVACY POLICY</p>
         <h1 className={styles.title}>Privacy</h1>
         <p className={styles.lede}>
-          Kern collects nothing, sends nothing, and has no server to send it to.
+          Kern has no account, no ads and no tracking. It sends nothing about you unless
+          you turn on anonymous counts &mdash; and if you do, you can read every one.
         </p>
         <p>
-          That is the whole policy. Everything below is the detail behind it, written out
+          That is the short version. Everything below is the detail behind it, written out
           because a one-line privacy policy is easy to write and hard to believe.
         </p>
 
-        <h2>What is collected</h2>
+        <h2>What leaves your phone</h2>
         <p>
-          Nothing. Kern has no analytics, no crash reporting service, no advertising
-          identifier, no account and no sign-in. It does not ask for your email address,
-          your name, your phone number or your contacts. There is no telemetry, not even
-          anonymous usage counts.
+          By default, nothing about you. Kern has no account and no sign-in and no
+          advertising identifier, and it does not ask for your email address, your name,
+          your phone number or your contacts. Your notes, pages, usage figures and
+          everything else described further down stay on the device.
+        </p>
+        <p>Two things can use the network, and only these two:</p>
+        <ul>
+          <li>
+            <strong>Purchases.</strong> Buying or restoring a licence goes through Google
+            Play. See Payments below.
+          </li>
+          <li>
+            <strong>Anonymous counts, if you turn them on.</strong> Off by default. Kern
+            asks once, a day or more after you start using it, and Settings can turn it on
+            or off at any time.
+          </li>
+        </ul>
+
+        <h2>Anonymous counts (only if you say yes)</h2>
+        <p>
+          If you turn them on, Kern sends a small set of counts to a database run by Luna
+          Maze, so that the person who makes it can tell what is used, what is not, and
+          whether a purchase went through:
+        </p>
+        <ul>
+          <li>
+            That Kern was opened on a given day, whether the licence is a trial, paid or
+            lapsed, which day of the trial it was, and whether usage access was granted.
+          </li>
+          <li>
+            That a feature was used: the record, focus sessions, the battery page, extra
+            pages, widgets, deep search, backup.
+          </li>
+          <li>
+            That the pause before opening an app appeared, whether it was turned back or
+            opened anyway, and how many seconds that took. Not which app.
+          </li>
+          <li>
+            That the price screen or the receipt was shown, which product was tapped, and
+            whether a purchase succeeded or failed.
+          </li>
+          <li>
+            That Kern stopped being, or became again, your home screen; and the class name
+            of an error if the app crashes (for example NullPointerException), with no
+            message and no trace.
+          </li>
+          <li>
+            The build number of Kern, the Android version, your language, and your time
+            zone&rsquo;s offset from UTC.
+          </li>
+        </ul>
+        <p>
+          <strong>Never sent:</strong> which apps you use or pause, the name of any app,
+          the text of a page, note, notification or search, your contacts, your location,
+          or anything that identifies you. There is no account to link counts to. The only
+          identifier is a random number generated on your phone the first time you turn
+          counts on; it is not derived from anything about you or the device.
         </p>
         <p>
-          Kern makes no network requests of any kind. It has no backend. There is no
-          address anywhere in the app for your information to be sent to, which is a
-          stronger guarantee than a promise not to send it.
+          You can read exactly what has been sent, word for word, in Settings under
+          Anonymous counts. You can also erase it there: Kern asks the server to delete
+          every count stored under your number, then starts a new one. Turning counts off
+          deletes anything not yet sent. Counts older than 90 days are deleted
+          automatically. Our hosting provider, Supabase, may log network addresses as part
+          of running its service; Kern does not store them with the counts.
         </p>
 
         <h2>What stays on your phone</h2>
@@ -119,6 +179,11 @@ export default function KernPrivacyPage(): JSX.Element {
         </p>
         <ul>
           <li>
+            <strong>Network access.</strong> Two things use it, both described above:
+            checking a purchase, and the anonymous counts, which do nothing until you
+            turn them on. Nothing else in Kern uses the network.
+          </li>
+          <li>
             <strong>Usage access.</strong> The day&rsquo;s record, and the data-usage
             figures. Android will not report screen time to any app without it. Granted
             by hand in system settings.
@@ -153,8 +218,8 @@ export default function KernPrivacyPage(): JSX.Element {
         <p>
           Purchases are handled entirely by Google Play. Kern never sees your card
           details, your billing address or your Google account. It asks Play whether a
-          licence is held and receives a yes or a no. Google&rsquo;s handling of that
-          transaction is covered by{' '}
+          licence is held and receives a yes or a no; no purchase-checking service sits in
+          between. Google&rsquo;s handling of that transaction is covered by{' '}
           <a href="https://policies.google.com/privacy">Google&rsquo;s privacy policy</a>.
         </p>
 
@@ -167,10 +232,12 @@ export default function KernPrivacyPage(): JSX.Element {
         <h2>Your rights</h2>
         <p>
           Regulations such as the GDPR and India&rsquo;s DPDP Act give you the right to
-          access, correct, export and erase personal data held about you. Kern holds
-          none, so there is nothing for us to hand over or delete — the data is on your
-          phone, under your control, exportable from Settings, and destroyed when you
-          uninstall.
+          access, correct, export and erase personal data held about you. Kern holds no
+          personal information: the anonymous counts are not linked to your name or an
+          account, and we cannot trace them to you, but you can still erase them from
+          Settings, or ask at <a href="mailto:hello@lunamaze.com">hello@lunamaze.com</a>.
+          Everything else is on your phone, exportable from Settings and destroyed when
+          you uninstall.
         </p>
 
         <h2>Changes</h2>

@@ -9,7 +9,7 @@ AI Index: https://lunamaze.com/llms.txt
 Contact: lunamaze.dev@gmail.com
 
 ### Studio principles
-- Private by architecture: where a product can work without a server, it does. Kern has no server at all; Axiom keeps its journal on the phone.
+- Private by architecture: where a product can work without a server, it does. Kern needs no server to work, and sends anonymous counts only if the user opts in; Axiom keeps its journal on the phone.
 - Honest by default: plain prices, real trials, no countdown timers, no invented numbers.
 - Made to last: fewer products, finished properly and kept improving.
 
@@ -81,7 +81,7 @@ Contact: lunamaze.dev@gmail.com
 - **Privacy**: https://lunamaze.com/kern/privacy/
 - **Platform**: Android 8.0 and later; native Kotlin and Jetpack Compose.
 - **Features**: ranked local search across apps, shortcuts, notes, settings and arithmetic; a daily ledger of phone use; focus sessions; plain-text pages one swipe from home.
-- **Privacy**: no account, cloud sync, analytics, ads, tracking, or Kern server. Learning stays on the phone and can be cleared in one action.
+- **Privacy**: no account, cloud sync, ads, or tracking. Anonymous usage counts are off unless the user turns them on, never include app names, notes, notifications or searches, and can be read and erased in Settings. Learning stays on the phone and can be cleared in one action.
 - **Availability**: early access; a free launcher remains available after the 14-day full trial.
 
 ---

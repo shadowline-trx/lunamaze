@@ -102,7 +102,7 @@ const groups = [
       {
         question: 'Does Kern work offline?',
         answer:
-          'Yes. Kern’s launcher, search ranking, learning, pages, focus sessions, and daily records run on the phone. Kern has no backend and makes no network requests. Google Play handles licence purchases separately and tells Kern only whether a valid licence is present.',
+          'Yes. Kern’s launcher, search ranking, learning, pages, focus sessions, and daily records run on the phone. The launcher itself needs no network. Google Play handles licence purchases and tells Kern only whether a valid licence is present, and Kern makes no other network requests unless you turn on anonymous counts, which are off by default.',
       },
     ],
   },
@@ -151,7 +151,7 @@ const groups = [
       {
         question: 'Does Kern collect, sell, or send personal data?',
         answer:
-          'No. Kern has no account, sign-in, analytics SDK, advertising identifier, crash-reporting service, cloud sync, ad network, or Kern server. Notes, settings, usage summaries, notification counts, and search learning stay in Android’s private app storage. Uninstalling Kern removes that local data, and pages can be exported before uninstalling.',
+          'Not by default. Kern has no account, sign-in, advertising identifier, cloud sync, or ad network, and it sends nothing about you unless you turn on anonymous counts, which are off by default and limited to a fixed set of events — never app names, notes, notifications, or searches. Settings shows everything that was sent and can erase it. Notes, settings, usage summaries, notification counts, and search learning stay in Android’s private app storage. Uninstalling Kern removes that local data, and pages can be exported before uninstalling.',
       },
       {
         question: 'Which Android permissions does Kern need?',

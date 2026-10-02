@@ -19,7 +19,7 @@ const KERN_JSON_LD = {
         'Focus sessions with regular, strict, and breathe modes',
         'Plain-text pages and daily tasks',
         'On-device learning with clearable history',
-        'No account, cloud sync, ads, or analytics',
+        'No account, cloud sync, or ads. Anonymous counts only if you opt in',
       ],
       image: 'https://lunamaze.com/images/kern/og.png',
       publisher: {

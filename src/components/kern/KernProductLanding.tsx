@@ -71,7 +71,7 @@ export default function KernProductLanding() {
             <div className={styles.phoneSearch}><span>⌕</span><b>plst</b><i /></div>
           </div>
         </div>
-        <div className={styles.heroFoot}><span>NO ACCOUNT</span><span>NO CLOUD</span><span>NO ANALYTICS</span><span>KOTLIN / COMPOSE</span></div>
+        <div className={styles.heroFoot}><span>NO ACCOUNT</span><span>NO CLOUD</span><span>NO TRACKING</span><span>KOTLIN / COMPOSE</span></div>
       </section>
 
       <section className={`${styles.argument} ${styles.lightSection}`}>
@@ -202,8 +202,8 @@ export default function KernProductLanding() {
 
       <section id="privacy" className={styles.privacySection}>
         <SectionHead index="10 / PRIVACY" title="There is no Kern server." note="Not a promise about policy. A description of the architecture." />
-        <div className={styles.privacyLead} data-reveal><h3>Your home screen is not an advertising surface.</h3><p>There is no account, sign-in, cloud sync, analytics SDK, ad network, or tracking. Search ranking and daily records are calculated on the device and stay there.</p></div>
-        <div className={styles.noList}>{['NO ACCOUNT','NO CLOUD','NO ANALYTICS','NO ADS','NO TRACKING','NO KERN SERVER'].map((item,index) => <div key={item} data-reveal><span>{String(index + 1).padStart(2,'0')}</span><strong>{item}</strong><i /></div>)}</div>
+        <div className={styles.privacyLead} data-reveal><h3>Your home screen is not an advertising surface.</h3><p>There is no account, sign-in, cloud sync, ad network, or tracking. Search ranking and daily records are calculated on the device and stay there. Anonymous counts exist, are off until you turn them on, and can be read and erased in Settings.</p></div>
+        <div className={styles.noList}>{['NO ACCOUNT','NO CLOUD','NO ADS','NO TRACKING','NO AD ID','COUNTS OPT-IN'].map((item,index) => <div key={item} data-reveal><span>{String(index + 1).padStart(2,'0')}</span><strong>{item}</strong><i /></div>)}</div>
         <div className={styles.privacyEnd} data-reveal><p className={styles.privacyNote}>Notification history keeps package · hour · outcome. It never stores title · text · sender.</p><a href={internalUrl('/kern/privacy/')}>READ THE FULL PRIVACY POLICY <span>↗</span></a></div>
       </section>
 

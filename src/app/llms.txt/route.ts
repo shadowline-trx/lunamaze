@@ -36,7 +36,7 @@ Luna Maze the software studio is not connected to other projects that share the 
 
 ## Kern facts
 - Platform: Android 8.0 and later. Native Kotlin and Jetpack Compose.
-- Privacy: no Kern account, cloud, ads, analytics, tracking, or Kern server.
+- Privacy: no Kern account, cloud sync, ads, or tracking. Anonymous usage counts are off unless the user turns them on, use a fixed vocabulary (never app names, notes, notifications or searches), and can be read and erased in Settings.
 - Availability: early access; a free launcher remains available after the 14-day full trial.
 
 ## Tether ADB facts
