@@ -22,8 +22,9 @@
  */
 import { readdir, readFile, writeFile } from 'node:fs/promises';
 import { join, posix, relative } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const DIST = new URL('../dist/', import.meta.url).pathname;
+const DIST = fileURLToPath(new URL('../dist/', import.meta.url));
 const MARK = 'data-deferred-hydration';
 
 async function* htmlFiles(dir) {

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import type { JSX } from 'react';
 import Link from 'next/link';
+import { contactEmail } from '@/content/lunamaze';
 import styles from './kern-privacy.module.css';
 
 /**
@@ -235,7 +236,7 @@ export default function KernPrivacyPage(): JSX.Element {
           access, correct, export and erase personal data held about you. Kern holds no
           personal information: the anonymous counts are not linked to your name or an
           account, and we cannot trace them to you, but you can still erase them from
-          Settings, or ask at <a href="mailto:hello@lunamaze.com">hello@lunamaze.com</a>.
+          Settings, or ask at <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.
           Everything else is on your phone, exportable from Settings and destroyed when
           you uninstall.
         </p>
@@ -250,8 +251,7 @@ export default function KernPrivacyPage(): JSX.Element {
         <h2>Contact</h2>
         <p>
           Questions about privacy, or anything else:{' '}
-          <a href="mailto:hello@lunamaze.com">hello@lunamaze.com</a> or{' '}
-          <a href="mailto:lunamaze.dev@gmail.com">lunamaze.dev@gmail.com</a>.
+          <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.
         </p>
 
         <p>

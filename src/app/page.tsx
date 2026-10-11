@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { establishedYear, studioCountry, websiteLaunchDate } from '@/content/lunamaze';
 import Hero from '@/components/studio/Hero';
 import { Loader, Nav, Credits } from '@/components/studio/Chrome';
 import { Manifesto, Works, Reel, Method, Ledger, Maker, Questions, Finale } from '@/components/studio/Sections';
@@ -55,7 +56,7 @@ const JSON_LD = {
       },
       image: { '@id': `${SITE}/#logo` },
       description:
-        'Luna Maze is an independent software studio that designs and builds focused, private software: Axiom, Kern, Tether ADB, TypeCrt and Drift.',
+        `Luna Maze is an independent, bootstrapped software studio based in ${studioCountry}, established in ${establishedYear}. It designs and builds focused, private software: Axiom, Kern, Tether ADB, TypeCrt and Drift.`,
       slogan: 'Quiet software, precisely made.',
       email: CONTACT_EMAIL,
       founder: { '@id': FOUNDER_ID },
@@ -93,6 +94,7 @@ const JSON_LD = {
       url: `${SITE}/`,
       name: 'Luna Maze',
       alternateName: 'LunaMaze',
+      datePublished: websiteLaunchDate,
       inLanguage: 'en',
       publisher: { '@id': ORG_ID },
     },

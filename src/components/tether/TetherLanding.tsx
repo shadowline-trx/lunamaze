@@ -1,4 +1,5 @@
 import { internalUrl } from '@/lib/paths';
+import { contactEmail } from '@/content/lunamaze';
 import {
   DOWNLOAD_URL,
   FAQS,
@@ -575,7 +576,7 @@ function Faq() {
           </h2>
           <p>
             Anything else? Write to{' '}
-            <a href="mailto:lunamaze.dev@gmail.com?subject=Tether%20ADB">lunamaze.dev@gmail.com</a>.
+            <a href={`mailto:${contactEmail}?subject=Tether%20ADB`}>{contactEmail}</a>.
           </p>
         </div>
         <div className={s.faqList}>

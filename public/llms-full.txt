@@ -1,12 +1,16 @@
 # Luna Maze — Studio, Products and Facts for AI Systems
 
-Luna Maze (lunamaze.com) is an independent software studio founded and run by the solo developer Shadowline. It designs and builds focused, private software for the mind, the phone and the desk. It has no investors and no outside team. It is not connected to other projects that share the name, such as the music group Luna Maze.
+Luna Maze (lunamaze.com) is an independent, bootstrapped software studio based in India, established in 2026 and run by the solo developer Shadowline. It designs and builds focused, private software for the mind, the phone and the desk. It has no investors and no outside team. It is not connected to other projects that share the name, such as the music group Luna Maze.
 
 Official Website: https://lunamaze.com
 Founder: Shadowline (https://github.com/shadowline-trx)
+Established: 2026
+Studio website launched: 25 May 2026 (separate from the studio's establishment)
+Location: India
+Funding: bootstrapped; no investors or outside funding
 Sitemap: https://lunamaze.com/sitemap.xml
 AI Index: https://lunamaze.com/llms.txt
-Contact: lunamaze.dev@gmail.com
+Contact: hello@lunamaze.com
 
 ### Studio principles
 - Private by architecture: where a product can work without a server, it does. Kern needs no server to work, and sends anonymous counts only if the user opts in; Axiom keeps its journal on the phone.

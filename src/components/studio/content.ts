@@ -4,12 +4,14 @@
  * product changes, change it there first and mirror it here.
  */
 
+import { contactEmail, establishedYear, studioCountry, websiteLaunchLabel } from '@/content/lunamaze';
+
 export const SITE = 'https://lunamaze.com';
-export const CONTACT_EMAIL = 'lunamaze.dev@gmail.com';
+export const CONTACT_EMAIL = contactEmail;
 export const GITHUB_URL = 'https://github.com/shadowline-trx';
 
 /** Bump when the home page copy changes; feeds dateModified and the sitemap. */
-export const HOME_UPDATED = '2026-09-26';
+export const HOME_UPDATED = '2026-10-11';
 
 export type Glyph = 'axiom' | 'kern' | 'tether' | 'typecrt' | 'drift' | 'genesis';
 
@@ -173,11 +175,15 @@ export interface Faq {
 export const FAQS: ReadonlyArray<Faq> = [
   {
     q: 'What is Luna Maze?',
-    a: 'Luna Maze is an independent software studio at lunamaze.com. It designs and builds focused products for the mind, the phone and the desk: Axiom (a private recovery companion for iPhone and Android), Kern (a private Android launcher), Tether ADB (wireless ADB and device control for Windows), TypeCrt (a CRT-style typing test) and Drift (a precision puzzle game).',
+    a: `Luna Maze is an independent, bootstrapped software studio based in ${studioCountry}, established in ${establishedYear}. It designs and builds focused products for the mind, the phone and the desk: Axiom (a private recovery companion for iPhone and Android), Kern (a private Android launcher), Tether ADB (wireless ADB and device control for Windows), TypeCrt (a CRT-style typing test) and Drift (a precision puzzle game).`,
   },
   {
     q: 'Who founded Luna Maze?',
     a: 'Luna Maze was founded and is run by Shadowline, a solo developer who designs, engineers and writes every product. The studio has no investors and no outside team.',
+  },
+  {
+    q: 'When was Luna Maze established?',
+    a: `Luna Maze was established in ${establishedYear}. The studio is based in ${studioCountry} and is independently funded by its founder. The studio website launched on ${websiteLaunchLabel}.`,
   },
   {
     q: 'Is Luna Maze related to the band of the same name?',

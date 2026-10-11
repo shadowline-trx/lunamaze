@@ -58,6 +58,9 @@ export function Nav() {
         <span data-nav-chapter>Prologue</span>
       </p>
       <nav className={`${s.navLinks} ${s.glass}`} aria-label="Sections" data-glass>
+        <a href="#studio" data-cursor="Go">
+          About
+        </a>
         <a href="#works" data-cursor="Go">
           Works
         </a>

@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { ALL_ARTICLES } from '@/content/blog';
 import { TYPECRT_ARTICLES } from '@/content/typecrt';
+import { HOME_UPDATED } from '@/components/studio/content';
 
 // Required for `output: 'export'` (static hosting on GitHub Pages).
 export const dynamic = 'force-static';
@@ -13,7 +14,7 @@ const BASE = 'https://lunamaze.com';
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   const routes: Array<{ path: string; priority: number; changeFrequency: MetadataRoute.Sitemap[number]['changeFrequency']; lastModified?: Date }> = [
-    { path: '/', priority: 1.0, changeFrequency: 'monthly', lastModified: new Date('2026-09-26') },
+    { path: '/', priority: 1.0, changeFrequency: 'monthly', lastModified: new Date(HOME_UPDATED) },
     { path: '/tether-adb/', priority: 0.9, changeFrequency: 'weekly' },
     { path: '/axiom/', priority: 0.8, changeFrequency: 'monthly' },
     // Weekly while the listing status is in flux; this page's copy changes the

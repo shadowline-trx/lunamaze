@@ -1,4 +1,5 @@
 import type { JSX } from 'react';
+import { contactEmail as CONTACT_EMAIL } from '@/content/lunamaze';
 import ProductNav from '@/components/lunamaze/ProductNav';
 import LunaFooter from '@/components/lunamaze/LunaFooter';
 import ProductFaq, { type FaqItem } from '@/components/lunamaze/ProductFaq';
@@ -16,7 +17,6 @@ import Beams from '@/components/backgrounds/Beams';
  * Layout, tokens, and accessibility conventions mirror the Luna Maze landing.
  */
 
-const CONTACT_EMAIL = 'lunamaze.dev@gmail.com';
 const ACCESS_MAILTO = `mailto:${CONTACT_EMAIL}?subject=Drift%20closed%20test%20access`;
 
 interface Pillar {

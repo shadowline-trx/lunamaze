@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react';
 import { internalUrl } from '@/lib/paths';
+import { contactEmail } from '@/content/lunamaze';
 import KernClientShell from './KernClientShell';
 import {
   KernFocusExperience,
@@ -7,7 +8,7 @@ import {
 } from './KernInteractiveDemos';
 import styles from './kern-product.module.css';
 
-const ACCESS_MAILTO = 'mailto:lunamaze.dev@gmail.com?subject=Kern%20early%20access';
+const ACCESS_MAILTO = `mailto:${contactEmail}?subject=Kern%20early%20access`;
 
 const histogram = [12, 7, 4, 3, 2, 4, 9, 22, 16, 11, 7, 12, 24, 18, 15, 9, 13, 27, 31, 18, 12, 8, 5, 3];
 const accentNames = ['RUST', 'SAGE', 'INDIGO', 'OCHRE', 'PLUM'];
@@ -219,7 +220,7 @@ export default function KernProductLanding() {
 
       <div className={styles.techMarquee} aria-hidden><div>DEV.LUNAMAZE.KERN · ANDROID 8.0+ · KOTLIN · JETPACK COMPOSE · LOCAL FIRST · DEV.LUNAMAZE.KERN · ANDROID 8.0+ · KOTLIN · JETPACK COMPOSE · LOCAL FIRST ·&nbsp;</div></div>
 
-      <footer className={styles.footer}><div className={styles.footerTop}><Wordmark /><h2>Use your phone.<br /><em>Do not look at it.</em></h2><a className={styles.primaryAction} href={ACCESS_MAILTO}><span className={styles.filledSquare} /><span>JOIN EARLY ACCESS</span><span aria-hidden>↗</span></a></div><div className={styles.footerBottom}><span>BUILT BY LUNA MAZE</span><span>ANDROID 8.0+</span><a href={internalUrl('/kern/faq/')}>FAQ</a><a href={internalUrl('/kern/privacy/')}>PRIVACY</a><a href="mailto:lunamaze.dev@gmail.com">CONTACT</a><a href="#top">BACK TO TOP ↑</a></div></footer>
+      <footer className={styles.footer}><div className={styles.footerTop}><Wordmark /><h2>Use your phone.<br /><em>Do not look at it.</em></h2><a className={styles.primaryAction} href={ACCESS_MAILTO}><span className={styles.filledSquare} /><span>JOIN EARLY ACCESS</span><span aria-hidden>↗</span></a></div><div className={styles.footerBottom}><span>BUILT BY LUNA MAZE</span><span>ANDROID 8.0+</span><a href={internalUrl('/kern/faq/')}>FAQ</a><a href={internalUrl('/kern/privacy/')}>PRIVACY</a><a href={`mailto:${contactEmail}`}>CONTACT</a><a href="#top">BACK TO TOP ↑</a></div></footer>
     </main>
   );
 }

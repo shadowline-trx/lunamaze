@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import type { JSX } from 'react';
 import Link from 'next/link';
+import { contactEmail } from '@/content/lunamaze';
 import styles from './kern-faq.module.css';
 
 const ACCESS_MAILTO =
-  'mailto:lunamaze.dev@gmail.com?subject=Kern%20early%20access';
+  `mailto:${contactEmail}?subject=Kern%20early%20access`;
 
 export const metadata: Metadata = {
   title: 'Kern FAQ — Android Launcher, Privacy & Pricing',
@@ -291,7 +292,7 @@ export default function KernFaqPage(): JSX.Element {
         <Link href="/">LUNA MAZE</Link>
         <Link href="/kern/">KERN</Link>
         <Link href="/kern/privacy/">PRIVACY</Link>
-        <a href="mailto:lunamaze.dev@gmail.com">CONTACT</a>
+        <a href={`mailto:${contactEmail}`}>CONTACT</a>
         <a href="#top">BACK TO TOP ↑</a>
       </footer>
     </div>

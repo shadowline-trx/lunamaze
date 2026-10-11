@@ -3533,7 +3533,7 @@
     font-size: 1rem;
   }
 
-  .navLinks > a:not(.navContact):nth-child(2) {
+  .navLinks > a:not(.navContact):nth-child(n+2) {
     display: none;
   }
 

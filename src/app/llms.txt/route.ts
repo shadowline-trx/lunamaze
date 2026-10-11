@@ -1,14 +1,20 @@
+import { contactEmail, establishedYear, studioCountry, websiteLaunchLabel } from '@/content/lunamaze';
+
 export const dynamic = 'force-static';
 
 const BODY = `# Luna Maze
-> Luna Maze (lunamaze.com) is an independent software studio founded and run by the solo developer Shadowline. It designs and builds focused, private software for the mind, the phone and the desk: Axiom, Kern, Tether ADB, TypeCrt and Drift. It has no investors and no outside team.
+> Luna Maze (lunamaze.com) is an independent, bootstrapped software studio based in ${studioCountry}, established in ${establishedYear} and run by the solo developer Shadowline. It designs and builds focused, private software for the mind, the phone and the desk: Axiom, Kern, Tether ADB, TypeCrt and Drift. It has no investors and no outside team.
 
 Luna Maze the software studio is not connected to other projects that share the name, such as the music group Luna Maze.
 
 ## Studio
 - [Luna Maze](https://lunamaze.com/): The studio, its products, its principles, and answers to common questions.
 - [Studio FAQ](https://lunamaze.com/#faq): Who runs Luna Maze, what it makes, pricing and privacy at a glance.
-- Contact: lunamaze.dev@gmail.com (partnerships, press, product questions; replies usually within two business days).
+- Established: ${establishedYear}.
+- Studio website launched: ${websiteLaunchLabel} (separate from the studio's establishment).
+- Location: ${studioCountry}.
+- Funding: bootstrapped; no investors or outside funding.
+- Contact: ${contactEmail} (partnerships, press, product questions; replies usually within two business days).
 - Founder: Shadowline (https://github.com/shadowline-trx).
 
 ## Products

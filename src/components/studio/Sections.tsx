@@ -1,4 +1,5 @@
 import { internalUrl } from '@/lib/paths';
+import { establishedYear, studioCountry, websiteLaunchDate, websiteLaunchLabel } from '@/content/lunamaze';
 import { CONTACT_EMAIL, FAQS, FIGURES, GITHUB_URL, LAB, PRINCIPLES, WORKS, type Work } from './content';
 import Glyph from './Glyphs';
 import Room from './Rooms';
@@ -82,16 +83,36 @@ export function Manifesto() {
       </div>
       <dl className={s.manifestoFacts}>
         <div data-reveal>
-          <dt>Founded and run by</dt>
-          <dd>Shadowline</dd>
+          <dt>Founder</dt>
+          <dd>
+            <a className={s.inlineLink} href={GITHUB_URL} target="_blank" rel="noopener noreferrer me">
+              Shadowline
+            </a>
+          </dd>
         </div>
         <div data-reveal style={{ ['--d' as string]: '90ms' }}>
-          <dt>Funding</dt>
-          <dd>Independent. No investors.</dd>
+          <dt>Established</dt>
+          <dd>{establishedYear}</dd>
         </div>
         <div data-reveal style={{ ['--d' as string]: '180ms' }}>
-          <dt>Makes</dt>
-          <dd>Apps for iPhone, Android, Windows and the web</dd>
+          <dt>Based in</dt>
+          <dd>{studioCountry}</dd>
+        </div>
+        <div data-reveal style={{ ['--d' as string]: '270ms' }}>
+          <dt>Funding</dt>
+          <dd>Bootstrapped. No outside funding.</dd>
+        </div>
+        <div data-reveal style={{ ['--d' as string]: '360ms' }}>
+          <dt>Website launched</dt>
+          <dd><time dateTime={websiteLaunchDate}>{websiteLaunchLabel}</time></dd>
+        </div>
+        <div data-reveal style={{ ['--d' as string]: '450ms' }}>
+          <dt>Studio contact</dt>
+          <dd>
+            <a className={s.inlineLink} href={`mailto:${CONTACT_EMAIL}`}>
+              {CONTACT_EMAIL}
+            </a>
+          </dd>
         </div>
       </dl>
     </section>
@@ -342,8 +363,9 @@ export function Maker() {
             <Split text="." start={16} />
           </h2>
           <p className={s.sectionLede} data-reveal>
-            Luna Maze is one person working under the name Shadowline: designer, engineer and writer of every product
-            here. No team, no investors, no shortcuts. The work is built quietly and improved in the open.
+            Luna Maze is an independent software studio based in {studioCountry}, established in {establishedYear}.
+            {' '}One founder, working under the name Shadowline, designs, engineers and writes every product here.
+            {' '}The studio is bootstrapped, with no investors or outside funding. The work is built quietly and improved in the open.
           </p>
           <a className={s.textLink} href={GITHUB_URL} target="_blank" rel="noopener noreferrer me" data-reveal>
             Shadowline on GitHub <span aria-hidden="true">↗</span>

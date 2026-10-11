@@ -1,11 +1,11 @@
 'use client';
 
 import { internalUrl } from '@/lib/paths';
+import { contactEmail as STUDIO_EMAIL } from '@/content/lunamaze';
 
 const PLAY_STORE_URL =
   'https://play.google.com/store/apps/details?id=com.axiomapp.app&hl=en_IN';
 const STUDIO_GITHUB_URL = 'https://github.com/shadowline-trx';
-const STUDIO_EMAIL = 'lunamaze.dev@gmail.com';
 
 export default function Footer() {
   return (

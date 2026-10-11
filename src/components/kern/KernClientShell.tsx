@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from 'react';
 import { internalUrl } from '@/lib/paths';
+import { contactEmail } from '@/content/lunamaze';
 import styles from './kern-product.module.css';
 
 const ACCESS_MAILTO =
-  'mailto:lunamaze.dev@gmail.com?subject=Kern%20early%20access';
+  `mailto:${contactEmail}?subject=Kern%20early%20access`;
 
 function Wordmark() {
   return (
