@@ -101,6 +101,28 @@ export function startStudio(): () => void {
 
   /* ------------------------------------------------ Nav + chapter name */
   const nav = root.querySelector<HTMLElement>('[data-nav]');
+  const mobileMenu = root.querySelector<HTMLDetailsElement>('[data-mobile-menu]');
+  if (mobileMenu) {
+    const closeOnLink = (event: MouseEvent): void => {
+      if (event.target instanceof Element && event.target.closest('a')) mobileMenu.open = false;
+    };
+    const closeOutside = (event: PointerEvent): void => {
+      if (event.target instanceof Node && !mobileMenu.contains(event.target)) mobileMenu.open = false;
+    };
+    const closeOnEscape = (event: KeyboardEvent): void => {
+      if (event.key !== 'Escape' || !mobileMenu.open) return;
+      mobileMenu.open = false;
+      mobileMenu.querySelector<HTMLElement>('summary')?.focus();
+    };
+    mobileMenu.addEventListener('click', closeOnLink);
+    document.addEventListener('pointerdown', closeOutside);
+    document.addEventListener('keydown', closeOnEscape);
+    cleanups.push(() => {
+      mobileMenu.removeEventListener('click', closeOnLink);
+      document.removeEventListener('pointerdown', closeOutside);
+      document.removeEventListener('keydown', closeOnEscape);
+    });
+  }
   const chapterLabel = root.querySelector<HTMLElement>('[data-nav-chapter]');
   const chapters = Array.from(root.querySelectorAll<HTMLElement>('[data-chapter]'));
   let currentChapter = 'Prologue';
@@ -335,8 +357,9 @@ export function startStudio(): () => void {
         nav.toggleAttribute('data-scrolled', scrolled);
         navScrolled = scrolled;
       }
-      const hide = y > lastY + 4 && y > window.innerHeight * 0.9;
-      const show = y < lastY - 4;
+      const interacting = mobileMenu?.open || nav.contains(document.activeElement);
+      const hide = !interacting && y > lastY + 4 && y > window.innerHeight * 0.9;
+      const show = interacting || y < lastY - 4;
       if (hide && !navHidden) {
         nav.setAttribute('data-hidden', '');
         navHidden = true;

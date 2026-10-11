@@ -1,5 +1,5 @@
 import { internalUrl } from '@/lib/paths';
-import { CONTACT_EMAIL, GITHUB_URL, LAB, WORKS } from './content';
+import { CONTACT_EMAIL, SECONDARY_CONTACT_EMAIL, GITHUB_URL, LAB, WORKS } from './content';
 import s from './studio.module.css';
 
 function Mark() {
@@ -58,11 +58,24 @@ export function Nav() {
         <span data-nav-chapter>Prologue</span>
       </p>
       <nav className={`${s.navLinks} ${s.glass}`} aria-label="Sections" data-glass>
+        <details className={s.mobileMenu} data-mobile-menu>
+          <summary className={s.mobileMenuSummary}>
+            Menu
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4" /></svg>
+          </summary>
+          <div className={s.mobileMenuLinks}>
+            <a href="#studio">About the studio</a>
+            <a href="#works">Products</a>
+            <a href="#maker">Meet the founder</a>
+            <a href="#faq">Questions</a>
+            <a href="#contact">Contact</a>
+          </div>
+        </details>
         <a href="#studio" data-cursor="Go">
           About
         </a>
         <a href="#works" data-cursor="Go">
-          Works
+          Products
         </a>
         <a href="#faq" data-cursor="Go">
           Questions
@@ -164,6 +177,7 @@ export function Credits() {
           <dt>Correspondence</dt>
           <dd>
             <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+            <a href={`mailto:${SECONDARY_CONTACT_EMAIL}`}>{SECONDARY_CONTACT_EMAIL}</a>
             <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer me">
               GitHub
             </a>

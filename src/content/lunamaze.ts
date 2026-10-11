@@ -11,6 +11,7 @@ export interface SocialLink {
 }
 
 export const contactEmail: string = 'hello@lunamaze.com';
+export const secondaryContactEmail = 'lunamaze.dev@gmail.com';
 export const establishedYear = '2026';
 export const studioCountry = 'India';
 /** First successful public GitHub Pages deployment, separate from the studio's establishment. */

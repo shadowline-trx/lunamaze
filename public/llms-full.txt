@@ -11,6 +11,7 @@ Funding: bootstrapped; no investors or outside funding
 Sitemap: https://lunamaze.com/sitemap.xml
 AI Index: https://lunamaze.com/llms.txt
 Contact: hello@lunamaze.com
+Secondary contact: lunamaze.dev@gmail.com
 
 ### Studio principles
 - Private by architecture: where a product can work without a server, it does. Kern needs no server to work, and sends anonymous counts only if the user opts in; Axiom keeps its journal on the phone.

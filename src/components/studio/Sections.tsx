@@ -1,6 +1,6 @@
 import { internalUrl } from '@/lib/paths';
 import { establishedYear, studioCountry, websiteLaunchDate, websiteLaunchLabel } from '@/content/lunamaze';
-import { CONTACT_EMAIL, FAQS, FIGURES, GITHUB_URL, LAB, PRINCIPLES, WORKS, type Work } from './content';
+import { CONTACT_EMAIL, SECONDARY_CONTACT_EMAIL, FAQS, FIGURES, GITHUB_URL, LAB, PRINCIPLES, WORKS, type Work } from './content';
 import Glyph from './Glyphs';
 import Room from './Rooms';
 import Split from './Split';
@@ -108,9 +108,12 @@ export function Manifesto() {
         </div>
         <div data-reveal style={{ ['--d' as string]: '450ms' }}>
           <dt>Studio contact</dt>
-          <dd>
+          <dd className={s.studioContacts}>
             <a className={s.inlineLink} href={`mailto:${CONTACT_EMAIL}`}>
               {CONTACT_EMAIL}
+            </a>
+            <a className={`${s.inlineLink} ${s.secondaryMail}`} href={`mailto:${SECONDARY_CONTACT_EMAIL}`}>
+              {SECONDARY_CONTACT_EMAIL}
             </a>
           </dd>
         </div>
@@ -367,9 +370,17 @@ export function Maker() {
             {' '}One founder, working under the name Shadowline, designs, engineers and writes every product here.
             {' '}The studio is bootstrapped, with no investors or outside funding. The work is built quietly and improved in the open.
           </p>
-          <a className={s.textLink} href={GITHUB_URL} target="_blank" rel="noopener noreferrer me" data-reveal>
-            Shadowline on GitHub <span aria-hidden="true">↗</span>
-          </a>
+          <div className={s.makerLinks} data-reveal>
+            <a className={s.textLink} href={GITHUB_URL} target="_blank" rel="noopener noreferrer me">
+              GitHub <span aria-hidden="true">↗</span>
+            </a>
+            <a className={s.textLink} href="https://apps.apple.com/app/id6791180351" target="_blank" rel="noopener noreferrer">
+              Axiom on the App Store <span aria-hidden="true">↗</span>
+            </a>
+            <a className={s.textLink} href="https://play.google.com/store/apps/details?id=com.axiomapp.app" target="_blank" rel="noopener noreferrer">
+              Axiom on Google Play <span aria-hidden="true">↗</span>
+            </a>
+          </div>
         </div>
       </div>
     </section>
@@ -478,6 +489,12 @@ export function Finale() {
           <svg viewBox="0 0 24 24"><path d="M5 19L19 5M8 5h11v11" /></svg>
         </i>
       </a>
+      <p className={s.finaleAlternate} data-reveal>
+        Also at{' '}
+        <a className={s.inlineLink} href={`mailto:${SECONDARY_CONTACT_EMAIL}`}>
+          {SECONDARY_CONTACT_EMAIL}
+        </a>
+      </p>
     </section>
   );
 }

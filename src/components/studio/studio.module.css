@@ -24,6 +24,12 @@
   box-sizing: border-box;
 }
 
+@media (max-width: 360px) {
+  .brandWord {
+    display: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   :global(html) {
     scroll-behavior: auto;
@@ -236,6 +242,11 @@
   transform: translate3d(0, -110%, 0);
 }
 
+.nav[data-hidden]:focus-within {
+  transform: none;
+  transition: none;
+}
+
 .skip {
   position: absolute;
   left: var(--gutter);
@@ -343,6 +354,75 @@
 .navLinks > a {
   position: relative;
   padding: 8px 0;
+}
+
+.mobileMenu {
+  display: none;
+  position: relative;
+}
+
+.mobileMenuSummary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px 0;
+  list-style: none;
+  cursor: pointer;
+}
+
+.mobileMenuSummary::-webkit-details-marker {
+  display: none;
+}
+
+.mobileMenuSummary svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+}
+
+.mobileMenu[open] .mobileMenuSummary svg {
+  transform: rotate(180deg);
+}
+
+.mobileMenuLinks {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: -14px;
+  z-index: 2;
+  display: grid;
+  width: 218px;
+  padding: 8px;
+  border: 1px solid var(--line-strong);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--ink-1) 96%, transparent);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.35);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+}
+
+.mobileMenu:not([open]) .mobileMenuLinks {
+  display: none;
+}
+
+.mobileMenuLinks a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 10px 14px;
+  border-radius: 9px;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.mobileMenuLinks a:hover,
+.mobileMenuLinks a:focus-visible {
+  color: var(--moon);
+  background: color-mix(in srgb, var(--violet-soft) 12%, transparent);
 }
 
 .navLinks > a:not(.navContact)::after {
@@ -1323,6 +1403,24 @@
   font-size: 1.4rem;
   line-height: 1.2;
   color: var(--text);
+}
+
+.studioContacts {
+  display: grid;
+  gap: 8px;
+  overflow-wrap: anywhere;
+}
+
+.studioContacts a {
+  justify-self: start;
+  max-width: 100%;
+}
+
+.studioContacts .secondaryMail {
+  font-family: var(--sans);
+  font-size: 1rem;
+  line-height: 1.4;
+  color: var(--text-2);
 }
 
 /* --------------------------------------------------------------- Works --- */
@@ -2457,6 +2555,12 @@
   align-items: center;
 }
 
+.makerLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 24px;
+}
+
 .makerSeal {
   position: relative;
   aspect-ratio: 1;
@@ -2757,6 +2861,13 @@
   margin: 30px 0 0;
   color: var(--text-2);
   font-size: 1.08rem;
+}
+
+.finaleAlternate {
+  margin: 18px 0 0;
+  font-size: 1rem;
+  color: var(--text-2);
+  overflow-wrap: anywhere;
 }
 
 .finaleMail {
@@ -3533,8 +3644,18 @@
     font-size: 1rem;
   }
 
-  .navLinks > a:not(.navContact):nth-child(n+2) {
+  .navLinks > a:not(.navContact) {
     display: none;
+  }
+
+  .mobileMenu {
+    display: block;
+  }
+
+  .navContact,
+  .themeToggle {
+    min-width: 44px;
+    min-height: 44px;
   }
 
   .navContact span {

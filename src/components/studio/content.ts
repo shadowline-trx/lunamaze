@@ -4,10 +4,11 @@
  * product changes, change it there first and mirror it here.
  */
 
-import { contactEmail, establishedYear, studioCountry, websiteLaunchLabel } from '@/content/lunamaze';
+import { contactEmail, secondaryContactEmail, establishedYear, studioCountry, websiteLaunchLabel } from '@/content/lunamaze';
 
 export const SITE = 'https://lunamaze.com';
 export const CONTACT_EMAIL = contactEmail;
+export const SECONDARY_CONTACT_EMAIL = secondaryContactEmail;
 export const GITHUB_URL = 'https://github.com/shadowline-trx';
 
 /** Bump when the home page copy changes; feeds dateModified and the sitemap. */
@@ -59,7 +60,7 @@ export const WORKS: ReadonlyArray<Work> = [
     status: 'Early access',
     line: 'A fast, private Android launcher for people who would rather use their phone than look at it.',
     detail:
-      'Ranked local search, an honest daily ledger, focus sessions, and plain-text pages one swipe from home. No account, no cloud, no Kern server.',
+      'Ranked local search, an honest daily ledger, focus sessions, and plain-text pages one swipe from home. No account or cloud sync. Anonymous usage counts are optional and off by default.',
     accent: '#C26A4E',
     schemaType: 'MobileApplication',
     category: 'UtilitiesApplication',
@@ -137,7 +138,7 @@ export interface Principle {
 export const PRINCIPLES: ReadonlyArray<Principle> = [
   {
     title: 'Private by architecture',
-    body: 'Where a product can work without a server, it does. Kern has no server at all. Axiom keeps the journal on the phone and its database refuses to store it.',
+    body: 'Where a product can work without a server, it does. Kern works offline, with anonymous usage counts only if you opt in. Axiom keeps the journal on the phone and its database refuses to store it.',
   },
   {
     title: 'Fast is a feature',
@@ -203,7 +204,7 @@ export const FAQS: ReadonlyArray<Faq> = [
   },
   {
     q: 'Does Kern collect my data?',
-    a: 'No. Kern has no account, sign-in, cloud sync, analytics SDK, ad network or tracking, and there is no Kern server. Search ranking and daily records are calculated on the phone and stay there.',
+    a: 'Kern has no account, cloud sync, ads or third-party tracking. Search ranking, notes and daily records stay on the phone. Anonymous usage counts are off by default; if you enable them, they never include app names, notes, notifications or searches. You can inspect and erase those counts in Settings.',
   },
   {
     q: 'Where can I use TypeCrt?',
@@ -219,6 +220,6 @@ export const FAQS: ReadonlyArray<Faq> = [
   },
   {
     q: 'How can I contact Luna Maze?',
-    a: `Email ${CONTACT_EMAIL}. The studio answers partnership, press and product questions, usually within two business days.`,
+    a: `Email ${CONTACT_EMAIL} or ${SECONDARY_CONTACT_EMAIL}. The studio answers partnership, press and product questions, usually within two business days.`,
   },
 ];

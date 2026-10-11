@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { establishedYear, studioCountry, websiteLaunchDate } from '@/content/lunamaze';
+import { establishedYear, studioCountry, websiteLaunchDate, secondaryContactEmail } from '@/content/lunamaze';
 import Hero from '@/components/studio/Hero';
 import { Loader, Nav, Credits } from '@/components/studio/Chrome';
 import { Manifesto, Works, Reel, Method, Ledger, Maker, Questions, Finale } from '@/components/studio/Sections';
@@ -63,7 +63,7 @@ const JSON_LD = {
       address: { '@type': 'PostalAddress', addressCountry: 'IN' },
       contactPoint: {
         '@type': 'ContactPoint',
-        email: CONTACT_EMAIL,
+        email: [CONTACT_EMAIL, secondaryContactEmail],
         contactType: 'customer support',
         availableLanguage: ['English'],
       },

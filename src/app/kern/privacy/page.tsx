@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import type { JSX } from 'react';
 import Link from 'next/link';
-import { contactEmail } from '@/content/lunamaze';
+import { contactEmail, secondaryContactEmail } from '@/content/lunamaze';
 import styles from './kern-privacy.module.css';
 
 /**
@@ -251,7 +251,8 @@ export default function KernPrivacyPage(): JSX.Element {
         <h2>Contact</h2>
         <p>
           Questions about privacy, or anything else:{' '}
-          <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.
+          <a href={`mailto:${contactEmail}`}>{contactEmail}</a> or{' '}
+          <a href={`mailto:${secondaryContactEmail}`}>{secondaryContactEmail}</a>.
         </p>
 
         <p>

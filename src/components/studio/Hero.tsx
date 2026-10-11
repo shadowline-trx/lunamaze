@@ -1,5 +1,6 @@
 import { buildMaze, CRESCENT, BLADE } from './maze';
 import { CONTACT_EMAIL } from './content';
+import { establishedYear, studioCountry } from '@/content/lunamaze';
 import Split from './Split';
 import s from './studio.module.css';
 
@@ -157,12 +158,12 @@ export default function Hero() {
           </h1>
           <p className={s.heroTagline}>Quiet software, precisely made.</p>
           <p className={s.heroLede}>
-            An independent studio making focused software for the mind, the phone and the desk. Five products so far,
-            each designed, engineered and finished by one builder.
+            An independent studio in {studioCountry}, established in {establishedYear}. Five focused products for the
+            mind, the phone and the desk, each designed, engineered and finished by one builder.
           </p>
           <div className={s.heroActions}>
-            <a className={s.buttonPrimary} href="#works" data-magnetic data-cursor="Enter">
-              <span className={s.buttonLabel}>Enter the maze</span>
+            <a className={s.buttonPrimary} href="#works" data-magnetic data-cursor="View">
+              <span className={s.buttonLabel}>View products</span>
               <span className={s.buttonIcon} aria-hidden="true">
                 <svg viewBox="0 0 16 16"><path d="M8 2v12M3 9l5 5 5-5" /></svg>
               </span>
