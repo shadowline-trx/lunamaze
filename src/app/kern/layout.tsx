@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { Fraunces, Jost } from 'next/font/google';
 import '../globals.css';
 import { interClass } from '@/lib/interFont';
+import { KERN_PLAY_URL } from '@/content/kern';
 
 // Preloaded per page by scripts/defer-hydration.mjs, not by next/font: Next
 // would preload these on every product page (see src/lib/interFont.ts).
@@ -24,10 +25,11 @@ const fraunces = Fraunces({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://lunamaze.com'),
-  title: 'Kern — Fast, Private Android Launcher',
+  title: 'Kern — Minimalist Android Launcher on Google Play',
   description:
-    'Kern is a fast, private Android launcher with ranked local search, a daily activity ledger, focus sessions, and plain-text pages one swipe from home.',
+    'A quiet home screen, fast app search, honest screen time, focus mode, and notes. Explore Kern for Android on Google Play. Try every feature free for 14 days.',
   applicationName: 'Kern',
+  appLinks: { android: { url: KERN_PLAY_URL, package: 'dev.lunamaze.kern', app_name: 'Kern' } },
   category: 'technology',
   keywords: [
     'Kern launcher',

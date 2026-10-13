@@ -2,11 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { internalUrl } from '@/lib/paths';
-import { contactEmail } from '@/content/lunamaze';
+import { KERN_PLAY_URL } from '@/content/kern';
 import styles from './kern-product.module.css';
-
-const ACCESS_MAILTO =
-  `mailto:${contactEmail}?subject=Kern%20early%20access`;
 
 function Wordmark() {
   return (
@@ -73,9 +70,11 @@ export default function KernClientShell() {
         <a href="#search" onClick={() => setMenuOpen(false)}>Search</a>
         <a href="#ledger" onClick={() => setMenuOpen(false)}>Ledger</a>
         <a href="#focus" onClick={() => setMenuOpen(false)}>Focus</a>
+        <a href="#screenshots" onClick={() => setMenuOpen(false)}>Screenshots</a>
         <a href={internalUrl('/kern/faq/')} onClick={() => setMenuOpen(false)}>FAQ</a>
+        <a className={styles.mobilePlay} href={KERN_PLAY_URL} target="_blank" rel="noopener noreferrer" onClick={() => setMenuOpen(false)}>View on Google Play ↗</a>
       </nav>
-      <a className={styles.headerCta} href={ACCESS_MAILTO}>EARLY ACCESS</a>
+      <a className={styles.headerCta} href={KERN_PLAY_URL} target="_blank" rel="noopener noreferrer">GOOGLE PLAY <span aria-hidden>↗</span></a>
       <button
         className={`${styles.menu} ${menuOpen ? styles.menuOpen : ''}`}
         type="button"

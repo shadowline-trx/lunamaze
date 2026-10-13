@@ -1,4 +1,5 @@
 import KernProductLanding from '@/components/kern/KernProductLanding';
+import { KERN_PLAY_URL } from '@/content/kern';
 
 const KERN_JSON_LD = {
   '@context': 'https://schema.org',
@@ -12,6 +13,8 @@ const KERN_JSON_LD = {
         'A private native Android launcher with ranked local search, an honest daily ledger, focus sessions, and plain-text pages.',
       applicationCategory: 'UtilitiesApplication',
       operatingSystem: 'Android 8.0 and later',
+      softwareVersion: '1.0',
+      installUrl: KERN_PLAY_URL,
       isAccessibleForFree: true,
       featureList: [
         'Ranked local search for apps, shortcuts, settings, notes, and arithmetic',

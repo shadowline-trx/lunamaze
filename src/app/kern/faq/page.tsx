@@ -2,20 +2,18 @@ import type { Metadata } from 'next';
 import type { JSX } from 'react';
 import Link from 'next/link';
 import { contactEmail } from '@/content/lunamaze';
+import { KERN_PLAY_URL } from '@/content/kern';
 import styles from './kern-faq.module.css';
-
-const ACCESS_MAILTO =
-  `mailto:${contactEmail}?subject=Kern%20early%20access`;
 
 export const metadata: Metadata = {
   title: 'Kern FAQ — Android Launcher, Privacy & Pricing',
   description:
-    'Answers about the Kern Android launcher: compatibility, local search, privacy, permissions, focus, notes, pricing, the free plan, and early access.',
+    'Answers about the Kern Android launcher: Google Play availability, compatibility, search, privacy, focus, notes, the 14-day trial, and Full Measure.',
   alternates: { canonical: 'https://lunamaze.com/kern/faq/' },
   openGraph: {
     title: 'Kern FAQ — Android Launcher, Privacy & Pricing',
     description:
-      'Clear answers about Kern compatibility, features, on-device privacy, pricing, and early access.',
+      'Clear answers about Kern compatibility, features, on-device privacy, Full Measure, and Google Play availability.',
     url: 'https://lunamaze.com/kern/faq/',
     siteName: 'Luna Maze',
     type: 'website',
@@ -32,7 +30,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Kern FAQ — Android Launcher, Privacy & Pricing',
     description:
-      'Compatibility, features, privacy, permissions, pricing, and early-access answers for Kern.',
+      'Compatibility, features, privacy, permissions, subscriptions, and Google Play answers for Kern.',
     images: ['https://lunamaze.com/images/kern/og.png'],
   },
 };
@@ -46,9 +44,9 @@ const FAQ_JSON_LD = {
       url: 'https://lunamaze.com/kern/faq/',
       name: 'Kern FAQ — Android Launcher, Privacy & Pricing',
       description:
-        'Product, compatibility, privacy, permission, pricing, and early-access answers for the Kern Android launcher.',
+        'Product, compatibility, privacy, permission, subscription, and Google Play answers for the Kern Android launcher.',
       datePublished: '2026-08-31',
-      dateModified: '2026-08-31',
+      dateModified: '2026-10-13',
       isPartOf: { '@id': 'https://lunamaze.com/#website' },
       about: { '@id': 'https://lunamaze.com/kern/#app' },
       publisher: { '@id': 'https://lunamaze.com/#organization' },
@@ -98,7 +96,7 @@ const groups = [
       {
         question: 'Which phones and Android versions does Kern support?',
         answer:
-          'Kern is designed for phones running Android 8.0 or later. It is built natively in Kotlin with Jetpack Compose. Tablet and unusual manufacturer behavior will be tested through early access, so joining the test is the best way to confirm a specific device before public release.',
+          'Kern is designed for phones running Android 8.0 or later and is built natively in Kotlin with Jetpack Compose. Open its Google Play listing to check whether your device is compatible.',
       },
       {
         question: 'Does Kern work offline?',
@@ -179,12 +177,12 @@ const groups = [
       {
         question: 'Is Kern free?',
         answer:
-          'Yes. After a 14-day trial of the complete system, the core launcher remains free: the home screen, full app drawer, app search, and one notes page keep working. Kern does not turn an installed home screen into a locked paywall, and data created during the trial is never taken away from you.',
+          'Yes. Every feature is unlocked for 14 days with no payment details required. After that, the home screen, full app drawer, app search, one notes page, and a pause before one app remain free. Kern has no ads or nagging, and anything you have written remains accessible and exportable.',
       },
       {
-        question: 'What do the paid licences unlock?',
+        question: 'What does Full Measure unlock?',
         answer:
-          'A paid licence unlocks the daily ledger and day report, Focus modes, unlimited Pages, deep search, appearance controls, widgets, the notification shelf, and workspace lock. The planned yearly price is ₹399 in India or USD 4.99 elsewhere. The planned lifetime licence is ₹1,299 in India or USD 16.99 elsewhere and includes future launcher updates.',
+          'Full Measure unlocks the daily ledger and day report, focus mode, unlimited Pages, pauses before every app, deep search, appearance controls, widgets, the notification shelf, and workspace lock. Choose a monthly or yearly subscription inside Kern. Google Play shows the current price in your local currency before you purchase.',
       },
       {
         question: 'What happens to my data if I do not buy a licence?',
@@ -192,9 +190,9 @@ const groups = [
           'Existing data is never locked. You can continue using the free launcher, drawer, app search, and one page. Pages remain exportable, and the local information already recorded stays under your control. Paid features stop adding their deeper functionality; Kern does not hold your own notes or previous records hostage.',
       },
       {
-        question: 'How do I join Kern early access?',
+        question: 'How do I get Kern on Google Play?',
         answer:
-          'Email Luna Maze using the early-access button and include your Android phone model and Android version if you know them. That helps the test cover different manufacturers and system behaviors. Early access is the current way to try Kern before its public Google Play release and to send direct product feedback.',
+          'Open the Kern listing using any Google Play button on this website. The full rollout has been submitted and is in review. If installation is not available for your account or region yet, check the same listing again after Google Play completes review.',
       },
     ],
   },
@@ -218,7 +216,7 @@ export default function KernFaqPage(): JSX.Element {
           <Link aria-current="page" href="/kern/faq/">FAQ</Link>
           <Link href="/kern/privacy/">Privacy</Link>
         </nav>
-        <a className={styles.headerCta} href={ACCESS_MAILTO}>Early access</a>
+        <a className={styles.headerCta} href={KERN_PLAY_URL} target="_blank" rel="noopener noreferrer">Google Play ↗</a>
       </header>
 
       <main>
@@ -233,10 +231,10 @@ export default function KernFaqPage(): JSX.Element {
               Kern is a fast, private Android launcher—not a blank-screen
               minimalism exercise. These are direct answers about what it does,
               what stays on your phone, what remains free, and what to expect
-              during early access.
+              on Google Play.
             </p>
             <div className={styles.heroActions}>
-              <a className={styles.primaryAction} href={ACCESS_MAILTO}>Join early access <span>↗</span></a>
+              <a className={styles.primaryAction} href={KERN_PLAY_URL} target="_blank" rel="noopener noreferrer">View on Google Play <span>↗</span></a>
               <Link className={styles.secondaryAction} href="/kern/">Explore the system</Link>
             </div>
           </div>
@@ -281,10 +279,10 @@ export default function KernFaqPage(): JSX.Element {
           <p>THE SHORT VERSION</p>
           <h2>Fast when you need it.<br /><em>Quiet when you do not.</em></h2>
           <p className={styles.finalCopy}>
-            Try the complete launcher in early access. No account, no cloud,
+            Try every feature for 14 days. No account, no cloud,
             and a free core that remains useful after the trial.
           </p>
-          <a className={styles.primaryAction} href={ACCESS_MAILTO}>Request early access <span>↗</span></a>
+          <a className={styles.primaryAction} href={KERN_PLAY_URL} target="_blank" rel="noopener noreferrer">View on Google Play <span>↗</span></a>
         </section>
       </main>
 

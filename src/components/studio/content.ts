@@ -12,7 +12,7 @@ export const SECONDARY_CONTACT_EMAIL = secondaryContactEmail;
 export const GITHUB_URL = 'https://github.com/shadowline-trx';
 
 /** Bump when the home page copy changes; feeds dateModified and the sitemap. */
-export const HOME_UPDATED = '2026-10-11';
+export const HOME_UPDATED = '2026-10-13';
 
 export type Glyph = 'axiom' | 'kern' | 'tether' | 'typecrt' | 'drift' | 'genesis';
 
@@ -23,7 +23,7 @@ export interface Work {
   readonly href: string;
   readonly kind: string;
   readonly platforms: string;
-  readonly status: 'Live' | 'Early access' | 'Closed testing' | 'Experiment';
+  readonly status: 'Live' | 'Google Play' | 'Early access' | 'Closed testing' | 'Experiment';
   readonly line: string;
   readonly detail: string;
   /** Accent borrowed from the product's own site, used only on hover. */
@@ -57,10 +57,10 @@ export const WORKS: ReadonlyArray<Work> = [
     href: '/kern/',
     kind: 'Android launcher',
     platforms: 'Android 8.0+',
-    status: 'Early access',
+    status: 'Google Play',
     line: 'A fast, private Android launcher for people who would rather use their phone than look at it.',
     detail:
-      'Ranked local search, an honest daily ledger, focus sessions, and plain-text pages one swipe from home. No account or cloud sync. Anonymous usage counts are optional and off by default.',
+      'Ranked local search, honest screen time, focus sessions, and plain-text pages. Find Kern on Google Play; the full rollout is submitted for review. No account or cloud sync. Anonymous counts are optional.',
     accent: '#C26A4E',
     schemaType: 'MobileApplication',
     category: 'UtilitiesApplication',
@@ -216,7 +216,7 @@ export const FAQS: ReadonlyArray<Faq> = [
   },
   {
     q: 'How does Luna Maze approach privacy?',
-    a: 'Each product is built so that the most sensitive data never needs to leave the device. Kern has no server. Axiom keeps journal text, trigger names and reset reasons on the phone; optional sign-in backs up only streak dates and mood scores. The detailed policies are published for each product.',
+    a: 'Each product is built so that the most sensitive data never needs to leave the device. Kern keeps apps, notes, searches, and daily records on the phone, with anonymous counts only if you opt in. Axiom keeps journal text, trigger names and reset reasons on the phone; optional sign-in backs up only streak dates and mood scores. The detailed policies are published for each product.',
   },
   {
     q: 'How can I contact Luna Maze?',

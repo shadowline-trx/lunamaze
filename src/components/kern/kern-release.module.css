@@ -1,0 +1,66 @@
+.section {
+  padding: clamp(64px, 7vw, 112px) clamp(20px, 5vw, 80px);
+  border-top: 1px solid var(--rule);
+  background: var(--ground);
+  scroll-margin-top: 96px;
+}
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.heading .eyebrow {
+  margin-bottom: 24px;
+  color: var(--soft);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .2em;
+}
+
+.heading h2 {
+  font-family: var(--kern-fraunces), Georgia, serif;
+  font-size: clamp(2.8rem, 5vw, 5.5rem);
+  font-weight: 900;
+  letter-spacing: -.04em;
+  line-height: .95;
+}
+
+.heading h2 em { color: var(--accent); font-style: normal; }
+.context { max-width: 330px; }
+.context p { color: var(--soft); font-size: 15px; line-height: 1.7; }
+.context a {
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+  min-height: 48px;
+  margin-top: 12px;
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .14em;
+}
+.context a span { color: var(--accent); font-size: 20px; }
+.context a:focus-visible, .gallery:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; }
+
+.gallery {
+  display: flex;
+  gap: clamp(16px, 2vw, 28px);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scrollbar-color: var(--accent) var(--ground);
+  padding: 4px 4px 20px;
+}
+.screen { flex: 0 0 clamp(220px, 70vw, 280px); margin: 0; scroll-snap-align: start; }
+.screen img { display: block; width: 100%; height: auto; aspect-ratio: 9 / 16; border: 1px solid var(--rule); border-radius: 12px; }
+.screen figcaption { display: flex; gap: 16px; padding-top: 18px; color: var(--soft); font-size: 12px; line-height: 1.5; }
+.screen figcaption span { color: var(--accent); font-variant-numeric: tabular-nums; }
+.section .hint { margin-top: 20px; color: var(--soft); font-size: 10px; letter-spacing: .2em; }
+.hint span { margin-left: 16px; color: var(--accent); }
+
+@media (min-width: 760px) {
+  .heading { flex-direction: row; justify-content: space-between; align-items: flex-end; gap: 40px; }
+}

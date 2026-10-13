@@ -1,14 +1,14 @@
 import type { CSSProperties } from 'react';
 import { internalUrl } from '@/lib/paths';
 import { contactEmail } from '@/content/lunamaze';
+import { KERN_PLAY_URL, KERN_RELEASE_NOTE } from '@/content/kern';
 import KernClientShell from './KernClientShell';
+import KernScreenshots from './KernScreenshots';
 import {
   KernFocusExperience,
   KernSearchExperience,
 } from './KernInteractiveDemos';
 import styles from './kern-product.module.css';
-
-const ACCESS_MAILTO = `mailto:${contactEmail}?subject=Kern%20early%20access`;
 
 const histogram = [12, 7, 4, 3, 2, 4, 9, 22, 16, 11, 7, 12, 24, 18, 15, 9, 13, 27, 31, 18, 12, 8, 5, 3];
 const accentNames = ['RUST', 'SAGE', 'INDIGO', 'OCHRE', 'PLUM'];
@@ -48,10 +48,12 @@ export default function KernProductLanding() {
         </div>
         <div className={styles.heroIndex} aria-hidden><span>ANDROID 8.0+</span><i /><span>LOCAL / PRIVATE</span></div>
         <div className={styles.heroCopy}>
-          <p className={styles.label}><span /> ANDROID HOME, RECONSIDERED</p>
-          <h1>A launcher for people who would rather <em>use</em> their phone than look at it.</h1>
-          <p className={styles.intro}>A quiet home screen is not enough. Kern adds the three things that change the relationship: fast search, an honest record of the day, and somewhere to write things down.</p>
-          <a className={styles.primaryAction} href={ACCESS_MAILTO}><span className={styles.filledSquare} /><span>JOIN EARLY ACCESS</span><span aria-hidden>↗</span></a>
+          <p className={styles.label}><span /> ANDROID 8.0+ · VERSION 1.0</p>
+          <h1>A quiet home.<br /><em>A clearer day.</em></h1>
+          <p className={styles.intro}>Kern is a minimalist launcher for Android. Find any app in two letters, see your screen time honestly, and pause before the apps you fall into.</p>
+          <a className={styles.primaryAction} href={KERN_PLAY_URL} target="_blank" rel="noopener noreferrer"><span className={styles.filledSquare} /><span>VIEW ON GOOGLE PLAY</span><span aria-hidden>↗</span></a>
+          <p className={styles.releaseNote}>{KERN_RELEASE_NOTE}</p>
+          <a className={styles.screenshotsLink} href="#screenshots">SEE THE APP <span aria-hidden>↓</span></a>
         </div>
         <div className={styles.heroPhone} aria-hidden="true">
           <div className={styles.phoneScreen}>
@@ -74,6 +76,8 @@ export default function KernProductLanding() {
         </div>
         <div className={styles.heroFoot}><span>NO ACCOUNT</span><span>NO CLOUD</span><span>NO TRACKING</span><span>KOTLIN / COMPOSE</span></div>
       </section>
+
+      <KernScreenshots />
 
       <section className={`${styles.argument} ${styles.lightSection}`}>
         <SectionHead index="01 / THE ARGUMENT" title="Less is useful. Fast is better." note="A launcher should remove friction, not only icons." />
@@ -202,25 +206,25 @@ export default function KernProductLanding() {
       </section>
 
       <section id="privacy" className={styles.privacySection}>
-        <SectionHead index="10 / PRIVACY" title="There is no Kern server." note="Not a promise about policy. A description of the architecture." />
+        <SectionHead index="10 / PRIVACY" title="Private by default." note="Your apps, notes, searches, and daily records stay on your phone." />
         <div className={styles.privacyLead} data-reveal><h3>Your home screen is not an advertising surface.</h3><p>There is no account, sign-in, cloud sync, ad network, or tracking. Search ranking and daily records are calculated on the device and stay there. Anonymous counts exist, are off until you turn them on, and can be read and erased in Settings.</p></div>
         <div className={styles.noList}>{['NO ACCOUNT','NO CLOUD','NO ADS','NO TRACKING','NO AD ID','COUNTS OPT-IN'].map((item,index) => <div key={item} data-reveal><span>{String(index + 1).padStart(2,'0')}</span><strong>{item}</strong><i /></div>)}</div>
         <div className={styles.privacyEnd} data-reveal><p className={styles.privacyNote}>Notification history keeps package · hour · outcome. It never stores title · text · sender.</p><a href={internalUrl('/kern/privacy/')}>READ THE FULL PRIVACY POLICY <span>↗</span></a></div>
       </section>
 
       <section className={`${styles.pricingSection} ${styles.lightSection}`}>
-        <SectionHead index="11 / LICENCE" title="Try everything. Keep the launcher." note="14 days free. Then choose what the deeper layer is worth." />
+        <SectionHead index="11 / LICENCE" title="Try everything. Keep the launcher." note="14 days of every feature. No payment details required." />
         <div className={styles.priceGrid}>
-          <article data-reveal><p>FREE / FOREVER</p><strong>₹0</strong><ul><li>Home screen</li><li>Whole app drawer</li><li>App search</li><li>One notes page</li></ul><span>OLD DATA IS NEVER LOCKED</span></article>
-          <article className={styles.paidPrice} data-reveal><p>YEARLY LICENCE</p><strong>₹399 <small>/ year</small></strong><ul><li>The ledger + day report</li><li>Focus sessions</li><li>Unlimited pages</li><li>Deep search + appearance</li></ul><a href={ACCESS_MAILTO}>JOIN EARLY ACCESS <span>↗</span></a></article>
-          <article data-reveal><p>LIFETIME LICENCE</p><strong>₹1,299</strong><ul><li>Everything in yearly</li><li>One payment</li><li>No subscription renewal</li><li>Future launcher updates</li></ul><span>USD 16.99 OUTSIDE INDIA</span></article>
+          <article data-reveal><p>FREE / FOREVER</p><strong>Free</strong><ul><li>A quiet home screen</li><li>Whole drawer + app search</li><li>One notes page</li><li>Pause before one app</li></ul><span>NO ADS. NO NAGGING.</span></article>
+          <article className={styles.paidPrice} data-reveal><p>TRY THE COMPLETE LAUNCHER</p><strong>14 <small>days</small></strong><ul><li>Every feature unlocked</li><li>No payment details asked</li><li>No account to create</li><li>Your notes remain yours</li></ul><a href={KERN_PLAY_URL} target="_blank" rel="noopener noreferrer">VIEW ON GOOGLE PLAY <span>↗</span></a></article>
+          <article data-reveal><p>FULL MEASURE</p><strong>More <small>intention</small></strong><ul><li>The ledger + focus mode</li><li>Unlimited pages + app pauses</li><li>Deep search + appearance</li><li>Widgets + workspace lock</li></ul><span>MONTHLY OR YEARLY, IN THE APP</span></article>
         </div>
-        <p className={styles.priceNote} data-reveal>Yearly pricing outside India: USD 4.99. The licence also includes widgets, notification shelf, and workspace lock.</p>
+        <p className={styles.priceNote} data-reveal>Full Measure is available as a monthly or yearly subscription. Google Play shows the current price in your local currency before purchase. Anything you have written remains accessible and exportable.</p>
       </section>
 
       <div className={styles.techMarquee} aria-hidden><div>DEV.LUNAMAZE.KERN · ANDROID 8.0+ · KOTLIN · JETPACK COMPOSE · LOCAL FIRST · DEV.LUNAMAZE.KERN · ANDROID 8.0+ · KOTLIN · JETPACK COMPOSE · LOCAL FIRST ·&nbsp;</div></div>
 
-      <footer className={styles.footer}><div className={styles.footerTop}><Wordmark /><h2>Use your phone.<br /><em>Do not look at it.</em></h2><a className={styles.primaryAction} href={ACCESS_MAILTO}><span className={styles.filledSquare} /><span>JOIN EARLY ACCESS</span><span aria-hidden>↗</span></a></div><div className={styles.footerBottom}><span>BUILT BY LUNA MAZE</span><span>ANDROID 8.0+</span><a href={internalUrl('/kern/faq/')}>FAQ</a><a href={internalUrl('/kern/privacy/')}>PRIVACY</a><a href={`mailto:${contactEmail}`}>CONTACT</a><a href="#top">BACK TO TOP ↑</a></div></footer>
+      <footer className={styles.footer}><div className={styles.footerTop}><Wordmark /><h2>Use your phone.<br /><em>Do not look at it.</em></h2><a className={styles.primaryAction} href={KERN_PLAY_URL} target="_blank" rel="noopener noreferrer"><span className={styles.filledSquare} /><span>VIEW ON GOOGLE PLAY</span><span aria-hidden>↗</span></a></div><div className={styles.footerBottom}><span>BUILT BY LUNA MAZE</span><span>ANDROID 8.0+</span><a href={internalUrl('/kern/faq/')}>FAQ</a><a href={internalUrl('/kern/privacy/')}>PRIVACY</a><a href={`mailto:${contactEmail}`}>CONTACT</a><a href="#top">BACK TO TOP ↑</a></div></footer>
     </main>
   );
 }
