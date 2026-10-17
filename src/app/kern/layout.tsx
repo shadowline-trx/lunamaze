@@ -46,7 +46,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Kern — Use your phone. Do not look at it.',
     description:
-      'Ranked local search, an honest daily ledger, focus sessions, and pages one swipe from home. No account and no cloud.',
+      'Ranked local search, an honest daily ledger, focus sessions, and pages one swipe from home. Local notes and records. No account or ads.',
     type: 'website',
     url: 'https://lunamaze.com/kern/',
     siteName: 'Luna Maze',
@@ -63,7 +63,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Kern — Use your phone. Do not look at it.',
     description:
-      'Ranked local search, an honest daily ledger, focus sessions, and pages one swipe from home. No account and no cloud.',
+      'Ranked local search, an honest daily ledger, focus sessions, and pages one swipe from home. Local notes and records. No account or ads.',
     images: ['https://lunamaze.com/images/kern/og.png'],
   },
   robots: {

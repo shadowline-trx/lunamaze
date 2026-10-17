@@ -101,7 +101,7 @@ const groups = [
       {
         question: 'Does Kern work offline?',
         answer:
-          'Yes. Kern’s launcher, search ranking, learning, pages, focus sessions, and daily records run on the phone. The launcher itself needs no network. Google Play handles licence purchases and tells Kern only whether a valid licence is present, and Kern makes no other network requests unless you turn on anonymous counts, which are off by default.',
+          'Yes. The launcher, local search, pages, focus sessions and daily records work on the phone. In version 1.1, Google Play and Superwall use the network for paywalls, purchases and access checks. Optional Firebase usage and crash reports are off until you agree.',
       },
     ],
   },
@@ -150,7 +150,7 @@ const groups = [
       {
         question: 'Does Kern collect, sell, or send personal data?',
         answer:
-          'Not by default. Kern has no account, sign-in, advertising identifier, cloud sync, or ad network, and it sends nothing about you unless you turn on anonymous counts, which are off by default and limited to a fixed set of events — never app names, notes, notifications, or searches. Settings shows everything that was sent and can erase it. Notes, settings, usage summaries, notification counts, and search learning stay in Android’s private app storage. Uninstalling Kern removes that local data, and pages can be exported before uninstalling.',
+          'Kern keeps notes, searches, notification content and detailed phone-use records local. Version 1.1 uses optional Firebase Analytics and Crashlytics reports, with advertising IDs and ad personalization disabled. Google Play and Superwall process purchase/paywall information separately, including installation identifiers and transaction details. Kern has no account, ad network or sale of personal data. The Settings transcript shows custom events submitted this session; local reset does not delete uploaded reports. The privacy policy explains deletion requests, Android backups and exports.',
       },
       {
         question: 'Which Android permissions does Kern need?',

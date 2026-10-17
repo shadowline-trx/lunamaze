@@ -207,8 +207,8 @@ export default function KernProductLanding() {
 
       <section id="privacy" className={styles.privacySection}>
         <SectionHead index="10 / PRIVACY" title="Private by default." note="Your apps, notes, searches, and daily records stay on your phone." />
-        <div className={styles.privacyLead} data-reveal><h3>Your home screen is not an advertising surface.</h3><p>There is no account, sign-in, cloud sync, ad network, or tracking. Search ranking and daily records are calculated on the device and stay there. Anonymous counts exist, are off until you turn them on, and can be read and erased in Settings.</p></div>
-        <div className={styles.noList}>{['NO ACCOUNT','NO CLOUD','NO ADS','NO TRACKING','NO AD ID','COUNTS OPT-IN'].map((item,index) => <div key={item} data-reveal><span>{String(index + 1).padStart(2,'0')}</span><strong>{item}</strong><i /></div>)}</div>
+        <div className={styles.privacyLead} data-reveal><h3>Your home screen is not an advertising surface.</h3><p>Your notes, local search and detailed daily records stay on the phone. Kern has no account or ads. Version 1.1 adds optional Firebase usage and crash reports, plus Google Play and Superwall for paywalls and purchases. Settings can turn reports off or reset local analytics; uploaded records need a deletion request.</p></div>
+        <div className={styles.noList}>{['NO ACCOUNT','LOCAL NOTES','NO ADS','NO DATA SALES','NO AD ID','REPORTS OPT-IN'].map((item,index) => <div key={item} data-reveal><span>{String(index + 1).padStart(2,'0')}</span><strong>{item}</strong><i /></div>)}</div>
         <div className={styles.privacyEnd} data-reveal><p className={styles.privacyNote}>Notification history keeps package · hour · outcome. It never stores title · text · sender.</p><a href={internalUrl('/kern/privacy/')}>READ THE FULL PRIVACY POLICY <span>↗</span></a></div>
       </section>
 

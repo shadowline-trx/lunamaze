@@ -4,32 +4,18 @@ import Link from 'next/link';
 import { contactEmail, secondaryContactEmail } from '@/content/lunamaze';
 import styles from './kern-privacy.module.css';
 
-/**
- * Kern's privacy policy.
- *
- * Its own page rather than a section of the studio policy, because Google Play links to
- * one URL per listing and that link is checked in review. It lives under /kern/ so it
- * inherits the product layout's fonts and reads as part of the same thing the visitor
- * just came from.
- *
- * The wording has to keep matching what the app actually does. Every claim below is
- * checkable against the source: the only networking code is data/Telemetry.kt (opt-in,
- * a fixed vocabulary of events and property keys) and the Google Play purchase path in
- * data/Billing.kt; the notification log stores a package name, an hour and an outcome
- * and nothing else. data/RcBilling.kt exists but is inert while RC_PUBLIC_KEY is empty;
- * if it is ever switched on, the Payments section has to name RevenueCat first.
- */
+/** Kern privacy disclosures for Android 1.1: match Telemetry.kt and Monetization.kt. */
 
-const LAST_UPDATED = 'October 2, 2026';
+const LAST_UPDATED = 'October 17, 2026';
 
 export const metadata: Metadata = {
   title: 'Privacy — Kern',
   description:
-    'Kern has no account, no ads and no tracking, and sends nothing about you unless you turn on anonymous counts. The full privacy policy.',
+    'Kern keeps your private content on your phone. Optional Firebase diagnostics and Google Play/Superwall purchases are explained in this policy.',
   alternates: { canonical: 'https://lunamaze.com/kern/privacy/' },
   openGraph: {
     title: 'Privacy — Kern',
-    description: 'No account, no ads, no tracking. Anonymous counts only if you turn them on.',
+    description: 'Local private content, optional Firebase diagnostics, and clear Google Play/Superwall purchase disclosures.',
     url: 'https://lunamaze.com/kern/privacy/',
     siteName: 'Luna Maze',
     type: 'article',
@@ -50,89 +36,60 @@ export default function KernPrivacyPage(): JSX.Element {
         <p className={styles.eyebrow}>PRIVACY POLICY</p>
         <h1 className={styles.title}>Privacy</h1>
         <p className={styles.lede}>
-          Kern has no account, no ads and no tracking. It sends nothing about you unless
-          you turn on anonymous counts &mdash; and if you do, you can read every one.
+          Kern keeps your notes and phone-use records on your device. It has no account
+          or ads. Optional diagnostics use Firebase; paywalls and purchases use Google
+          Play and Superwall.
         </p>
         <p>
-          That is the short version. Everything below is the detail behind it, written out
-          because a one-line privacy policy is easy to write and hard to believe.
+          Luna Maze publishes Kern and is responsible for the app practices described here.
+          This policy explains the local features, optional diagnostics and purchase services.
         </p>
 
         <h2>What leaves your phone</h2>
         <p>
-          By default, nothing about you. Kern has no account and no sign-in and no
-          advertising identifier, and it does not ask for your email address, your name,
-          your phone number or your contacts. Your notes, pages, usage figures and
-          everything else described further down stay on the device.
-        </p>
-        <p>Two things can use the network, and only these two:</p>
-        <ul>
-          <li>
-            <strong>Purchases.</strong> Buying or restoring a licence goes through Google
-            Play. See Payments below.
-          </li>
-          <li>
-            <strong>Anonymous counts, if you turn them on.</strong> Off by default. Kern
-            asks once, a day or more after you start using it, and Settings can turn it on
-            or off at any time.
-          </li>
-        </ul>
-
-        <h2>Anonymous counts (only if you say yes)</h2>
-        <p>
-          If you turn them on, Kern sends a small set of counts to a database run by Luna
-          Maze, so that the person who makes it can tell what is used, what is not, and
-          whether a purchase went through:
+          This policy describes Android version 1.1 and later. Earlier versions may not
+          include these services. Kern does not ask for your name, email, contacts or
+          account. Private notes, pages, searches, notification content and records of
+          which apps you use are not attached to analytics or paywall events.
         </p>
         <ul>
-          <li>
-            That Kern was opened on a given day, whether the licence is a trial, paid or
-            lapsed, which day of the trial it was, and whether usage access was granted.
-          </li>
-          <li>
-            That a feature was used: the record, focus sessions, the battery page, extra
-            pages, widgets, deep search, backup.
-          </li>
-          <li>
-            That the pause before opening an app appeared, whether it was turned back or
-            opened anyway, and how many seconds that took. Not which app.
-          </li>
-          <li>
-            That the price screen or the receipt was shown, which product was tapped, and
-            whether a purchase succeeded or failed.
-          </li>
-          <li>
-            That Kern stopped being, or became again, your home screen; and the class name
-            of an error if the app crashes (for example NullPointerException), with no
-            message and no trace.
-          </li>
-          <li>
-            The build number of Kern, the Android version, your language, and your time
-            zone&rsquo;s offset from UTC.
-          </li>
+          <li><strong>Optional usage and diagnostics.</strong> Firebase Analytics and
+            Crashlytics are off until you agree in Kern. You can decline without losing
+            launcher features, and change your answer in Settings.</li>
+          <li><strong>Paywalls and purchases.</strong> Superwall provides plan screens,
+            purchase validation and subscription status through Google Play. These
+            services operate separately from optional diagnostics.</li>
         </ul>
+        <h2>Usage and diagnostics, only with your agreement</h2>
         <p>
-          <strong>Never sent:</strong> which apps you use or pause, the name of any app,
-          the text of a page, note, notification or search, your contacts, your location,
-          or anything that identifies you. There is no account to link counts to. The only
-          identifier is a random number generated on your phone the first time you turn
-          counts on; it is not derived from anything about you or the device.
+          When enabled, Kern sends Firebase a fixed vocabulary of feature, tutorial,
+          pause-outcome, preview and purchase-result events. These can include the
+          feature category, subscription tier, preview day and product identifier.
+          Firebase also processes installation identifiers, sessions, app/device versions,
+          language and general location derived from the network address. Advertising ID
+          collection and advertising personalization are disabled.
         </p>
         <p>
-          You can read exactly what has been sent, word for word, in Settings under
-          Anonymous counts. You can also erase it there: Kern asks the server to delete
-          every count stored under your number, then starts a new one. Turning counts off
-          deletes anything not yet sent. Counts older than 90 days are deleted
-          automatically. Our hosting provider, Supabase, may log network addresses as part
-          of running its service; Kern does not store them with the counts.
+          Crashlytics receives crash and diagnostic reports, including stack traces,
+          installation identifiers and device/app state. Kern does not deliberately attach
+          your private content. These identifiers distinguish installations; reports are
+          not described as anonymous simply because Kern does not ask for your name.
+          See <a href="https://firebase.google.com/support/privacy">Firebase privacy information</a>.
+        </p>
+        <p>
+          Settings shows custom events handed to Firebase during the current session.
+          This is not a delivery receipt or a complete list of SDK-generated events.
+          Turning reports off stops future optional collection. Resetting local analytics
+          creates a fresh local analytics identity and clears local state; it does not
+          erase previously uploaded reports. Provider retention settings and policies
+          apply to uploaded data. Contact us about access or deletion requests.
         </p>
 
         <h2>What stays on your phone</h2>
         <p>
-          Kern is a launcher and a notebook, so it necessarily works with information
-          about how you use your phone. All of it is written to the device&rsquo;s own
-          private app storage, which no other app can read, and none of it leaves the
-          device:
+          Kern stores the following in Android&rsquo;s private app storage. It does not
+          upload this content or detailed phone-use history to Firebase or Superwall.
+          Exports you choose and Android&rsquo;s own backup/restore settings are separate:
         </p>
         <ul>
           <li>
@@ -169,20 +126,23 @@ export default function KernPrivacyPage(): JSX.Element {
           </li>
         </ul>
         <p>
-          Uninstalling Kern removes all of it. You can also export your pages, or clear
-          what Kern has learned, from within Settings at any time.
+          Uninstalling Kern removes the local app copy. Exported files remain wherever you
+          saved them. Android may back up and restore app data according to your device
+          and Google account settings; manage those backups in Android. You can export
+          your pages or clear what Kern has learned from Settings.
         </p>
 
         <h2>Permissions, and exactly why</h2>
         <p>
-          Every one of these is optional. Kern works without them; the feature each
-          supports is what stops working, and Kern asks only at the moment you use it.
+          Access for the optional features below can be left off; Kern still works with
+          those features unavailable. Network access is a standard Android permission
+          used by the services described here and does not have a separate runtime prompt.
         </p>
         <ul>
           <li>
-            <strong>Network access.</strong> Two things use it, both described above:
-            checking a purchase, and the anonymous counts, which do nothing until you
-            turn them on. Nothing else in Kern uses the network.
+            <strong>Network access.</strong> Google Play and Superwall use it for paywall
+            delivery and purchase checks. Optional Firebase reports use it after your
+            agreement. The launcher and private notes work offline.
           </li>
           <li>
             <strong>Usage access.</strong> The day&rsquo;s record, and the data-usage
@@ -215,37 +175,46 @@ export default function KernPrivacyPage(): JSX.Element {
           </li>
         </ul>
 
-        <h2>Payments</h2>
+        <h2>Paywalls and payments</h2>
         <p>
-          Purchases are handled entirely by Google Play. Kern never sees your card
-          details, your billing address or your Google account. It asks Play whether a
-          licence is held and receives a yes or a no; no purchase-checking service sits in
-          between. Google&rsquo;s handling of that transaction is covered by{' '}
-          <a href="https://policies.google.com/privacy">Google&rsquo;s privacy policy</a>.
+          Google Play handles payment. Kern does not receive card details. Superwall
+          processes installation identifiers, paywall interactions, device/app metadata
+          and Play purchase tokens or transaction details to load offers, restore access
+          and keep subscription status current, including renewals and refunds. It can
+          contact its service at startup to check configuration and existing access.
+          Kern does not set an email or account identity in Superwall.
         </p>
-
+        <p>
+          Purchase records are retained as needed to provide and verify access and handle
+          subscription changes, subject to provider policies and applicable obligations.
+          Uninstalling Kern or resetting optional analytics does not cancel a subscription
+          or erase purchase records. Manage or cancel subscriptions in Google Play.
+          See <a href="https://policies.google.com/privacy">Google&rsquo;s privacy policy</a> and{' '}
+          <a href="https://superwall.com/privacy">Superwall&rsquo;s privacy policy</a>.
+        </p>
         <h2>Children</h2>
         <p>
-          Kern is not directed at children, and since it collects no personal information
-          from anyone, it collects none from children either.
+          Kern is not directed at children. If you believe a child has supplied data to
+          these services through Kern, contact us so we can investigate and assist.
         </p>
-
-        <h2>Your rights</h2>
+        <h2 id="data-deletion">Your choices and data deletion requests</h2>
         <p>
-          Regulations such as the GDPR and India&rsquo;s DPDP Act give you the right to
-          access, correct, export and erase personal data held about you. Kern holds no
-          personal information: the anonymous counts are not linked to your name or an
-          account, and we cannot trace them to you, but you can still erase them from
-          Settings, or ask at <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.
-          Everything else is on your phone, exportable from Settings and destroyed when
-          you uninstall.
+          Turn optional reports off or reset their local state in Settings. Export your
+          pages before uninstalling if you want to keep them. For access, correction or
+          deletion of uploaded information, contact{' '}
+          <a href={`mailto:${contactEmail}`}>{contactEmail}</a>. We may need enough
+          information to locate the relevant provider record; do not send private notes,
+          a payment-card number or your Google password. We will explain any records we
+          cannot locate or must retain. Kern does not sell personal information or use an
+          advertising network. Providers process data on their infrastructure, which may
+          be outside your country.
         </p>
 
         <h2>Changes</h2>
         <p>
           If this policy ever changes, the revised version will be posted here with a new
-          date. Any change that would involve collecting information would arrive as a
-          prominent notice in the app first, and would be something you opt into.
+          date. Changes to optional diagnostics are explained in the app before consent.
+          Purchase processing needed to provide paid access is described here.
         </p>
 
         <h2>Contact</h2>

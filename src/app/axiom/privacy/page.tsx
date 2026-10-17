@@ -14,12 +14,12 @@ import { internalUrl } from '@/lib/paths';
  * fallback). Both must stay in sync and must match what the app actually does.
  *
  * Chrome restyled 2026-08-03 to the AXIOM v3 "Silver Studio" language (static
- * CSS stage, minimal fixed nav, `.ax-prose` long-form styles). The legal
- * wording, section structure, anchors, and the "Last updated" date are
- * untouched — only the shell around them changed.
+ * CSS stage, minimal fixed nav, `.ax-prose` long-form styles).
+ * The studio summary also identifies Kern's separately documented providers;
+ * Kern's full policy is maintained at /kern/privacy/.
  */
 
-const LAST_UPDATED = 'September 13, 2026';
+const LAST_UPDATED = 'October 17, 2026';
 const CONTACT_MAILTO = `mailto:${contactEmail}`;
 
 interface Principle {
@@ -34,9 +34,9 @@ const PRINCIPLES: ReadonlyArray<Principle> = [
       'Your data lives on your device by default. Most of what you enter never leaves it.',
   },
   {
-    title: 'No third-party tracking',
+    title: 'No advertising tracking',
     description:
-      'No third-party analytics or ad SDKs, no fingerprinting, no advertising identifiers. Any analytics we run are our own, and in Axiom you can switch them off.',
+      'No advertising profiles or advertising identifiers. Kern uses optional Firebase diagnostics and Google Play/Superwall purchase services, disclosed in its own privacy policy. Axiom’s practices are described below, and its analytics can be switched off.',
   },
   {
     title: 'No ads',
