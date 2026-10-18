@@ -103,6 +103,7 @@
 
 .main p { margin: 0 0 18px; }
 .main ul { margin: 0 0 18px; padding-left: 18px; }
+.main ol { margin: 0 0 18px; padding-left: 24px; list-style: decimal; }
 .main li { margin-bottom: 12px; }
 .main strong { color: var(--ink); font-weight: 500; }
 .main li, .main p:not(.lede) { color: var(--soft); }

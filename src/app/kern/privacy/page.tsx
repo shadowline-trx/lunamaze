@@ -207,7 +207,7 @@ export default function KernPrivacyPage(): JSX.Element {
         </p>
         <ol>
           <li>
-            Email <a href={`mailto:${contactEmail}`}>{contactEmail}</a> with the subject
+            Email <a href={`mailto:${contactEmail}`}>{contactEmail}</a>{' '}with the subject
             &ldquo;Kern data request&rdquo;. Say whether your request concerns usage/crash
             reports, paywall information or a purchase. No Kern account is required.
           </li>
