@@ -6,7 +6,7 @@ import styles from './kern-privacy.module.css';
 
 /** Kern privacy disclosures for Android 1.1: match Telemetry.kt and Monetization.kt. */
 
-const LAST_UPDATED = 'October 17, 2026';
+const LAST_UPDATED = 'October 18, 2026';
 
 export const metadata: Metadata = {
   title: 'Privacy — Kern',
@@ -178,8 +178,10 @@ export default function KernPrivacyPage(): JSX.Element {
         <h2>Paywalls and payments</h2>
         <p>
           Google Play handles payment. Kern does not receive card details. Superwall
-          processes installation identifiers, paywall interactions, device/app metadata
-          and Play purchase tokens or transaction details to load offers, restore access
+          processes installation identifiers, paywall interactions, device/app metadata,
+          service diagnostics, loading/performance measurements, app/store region and
+          network-derived region information, and Play purchase tokens or transaction
+          details to load offers, restore access
           and keep subscription status current, including renewals and refunds. It can
           contact its service at startup to check configuration and existing access.
           Kern does not set an email or account identity in Superwall.
@@ -200,14 +202,46 @@ export default function KernPrivacyPage(): JSX.Element {
         <h2 id="data-deletion">Your choices and data deletion requests</h2>
         <p>
           Turn optional reports off or reset their local state in Settings. Export your
-          pages before uninstalling if you want to keep them. For access, correction or
-          deletion of uploaded information, contact{' '}
-          <a href={`mailto:${contactEmail}`}>{contactEmail}</a>. We may need enough
-          information to locate the relevant provider record; do not send private notes,
-          a payment-card number or your Google password. We will explain any records we
-          cannot locate or must retain. Kern does not sell personal information or use an
-          advertising network. Providers process data on their infrastructure, which may
-          be outside your country.
+          pages before uninstalling if you want to keep them. To request access,
+          correction or deletion of uploaded Kern information:
+        </p>
+        <ol>
+          <li>
+            Email <a href={`mailto:${contactEmail}`}>{contactEmail}</a> with the subject
+            &ldquo;Kern data request&rdquo;. Say whether your request concerns usage/crash
+            reports, paywall information or a purchase. No Kern account is required.
+          </li>
+          <li>
+            We will ask only for the information needed to find the relevant provider
+            record. An email address alone does not identify a random installation.
+            A Play order reference can help locate a purchase. Do not send private notes,
+            card details or a Google password. Resetting local analytics first may make
+            older analytics records impossible to locate.
+          </li>
+          <li>
+            We will explain which records can be located and deleted through the
+            provider, complete supported deletion requests, and tell you which records
+            must be kept and why. A deletion request does not cancel a subscription;
+            cancel it separately in Google Play if desired.
+          </li>
+        </ol>
+        <p>
+          Requests can cover identifiable Firebase usage/crash reports and associated
+          installation identifiers, and Superwall paywall/customer records. Minimum
+          transaction or entitlement records may need to remain while paid access must
+          be restorable, for billing disputes, or to meet applicable obligations.
+          Google Play retains its own transaction records under Google&rsquo;s policies.
+          Local notes and Android backups are managed separately as described above.
+        </p>
+        <h2>Retention and processing</h2>
+        <p>
+          Firebase starts removing Crashlytics crash reports and associated identifiers
+          from live and backup systems after 90 days. Analytics uses the configured
+          retention settings of the Analytics property; aggregated reports may remain.
+          Purchase records follow the access and transaction-retention criteria above.
+          We will explain any additional retention that applies when responding to a
+          request. Kern does not sell personal information or use an advertising network.
+          Providers process data on their infrastructure, which may be outside your country.
         </p>
 
         <h2>Changes</h2>
