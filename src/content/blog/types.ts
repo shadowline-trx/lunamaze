@@ -18,7 +18,24 @@ export type BlogBlock =
   | { kind: 'callout'; title: string; text: string }
   | { kind: 'faq'; items: ReadonlyArray<{ q: string; a: string }> }
   /** Cited external sources — required for any article making factual claims about third parties. */
-  | { kind: 'sources'; items: ReadonlyArray<{ label: string; url: string }> };
+  | { kind: 'sources'; items: ReadonlyArray<{ label: string; url: string }> }
+  /**
+   * 24 hourly counts (index 0 = midnight to 1am) drawn as a bar chart, with
+   * the numbers also in a table so readers, screen readers and crawlers all
+   * get them. `peak` lists the hours drawn in the accent colour.
+   */
+  | {
+      kind: 'hourChart';
+      caption: string;
+      summary: string;
+      values: ReadonlyArray<number>;
+      peak: ReadonlyArray<number>;
+      tableLabel: string;
+      hourHeader: string;
+      valueHeader: string;
+    }
+  /** Internal links to related pages. Plain text blocks cannot carry links. */
+  | { kind: 'links'; title: string; items: ReadonlyArray<{ label: string; href: string }> };
 
 export interface BlogArticle {
   /** Shared across languages; used in the URL and for hreflang grouping. */
@@ -28,6 +45,12 @@ export interface BlogArticle {
   /** Text direction; omit for LTR. */
   readonly dir?: 'rtl';
   readonly title: string;
+  /**
+   * Optional title for the results page, about 60 characters or fewer. The H1
+   * keeps `title`; search shows this. Leave unset on a page that already ranks
+   * unless the change is deliberate.
+   */
+  readonly seoTitle?: string;
   /** Meta description — also the index-card teaser. Keep under ~160 chars. */
   readonly description: string;
   /** ISO date, e.g. '2026-07-22'. */
@@ -61,4 +84,5 @@ export const BLOG_LANGUAGES: Readonly<Record<string, BlogLanguageMeta>> = {
   de: { nativeName: 'Deutsch', englishName: 'German' },
   ru: { nativeName: 'Русский', englishName: 'Russian' },
   tr: { nativeName: 'Türkçe', englishName: 'Turkish' },
+  pl: { nativeName: 'Polski', englishName: 'Polish' },
 };

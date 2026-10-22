@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import ProductNav from '@/components/lunamaze/ProductNav';
 import LunaFooter from '@/components/lunamaze/LunaFooter';
 import AuroraField from '@/components/lunamaze/AuroraField';
+import BlogStoreButtons from '@/components/axiom/BlogStoreButtons';
 import { ALL_ARTICLES, articleVersions, getArticle } from '@/content/blog';
 import { BLOG_LANGUAGES } from '@/content/blog/types';
 import type { BlogArticle, BlogBlock } from '@/content/blog/types';
@@ -43,6 +44,7 @@ const CONTENTS_LABEL: Readonly<Record<string, string>> = {
   de: 'Auf dieser Seite',
   ru: 'На этой странице',
   tr: 'Bu sayfada',
+  pl: 'Na tej stronie',
 };
 
 const LANGUAGES_LABEL: Readonly<Record<string, string>> = {
@@ -58,6 +60,24 @@ const LANGUAGES_LABEL: Readonly<Record<string, string>> = {
   de: 'Andere Sprachen',
   ru: 'Другие языки',
   tr: 'Diğer diller',
+  pl: 'Inne języki',
+};
+
+/** The sources box heading: a translated page must not show English chrome. */
+const SOURCES_LABEL: Readonly<Record<string, string>> = {
+  en: 'Sources',
+  hi: 'स्रोत',
+  ta: 'ஆதாரங்கள்',
+  ml: 'സ്രോതസ്സുകൾ',
+  id: 'Sumber',
+  'pt-br': 'Fontes',
+  es: 'Fuentes',
+  ar: 'المصادر',
+  fr: 'Sources',
+  de: 'Quellen',
+  ru: 'Источники',
+  tr: 'Kaynaklar',
+  pl: 'Źródła',
 };
 
 interface ArticleParams {
@@ -93,7 +113,9 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${article.title} — Axiom`,
+    // A short search title when the article has one: the H1 can run long, the
+    // results page cuts at about 60 characters. No dash: the house style bans it.
+    title: article.seoTitle ?? `${article.title} | Axiom`,
     description: article.description,
     alternates: {
       canonical: articleUrl(article),
@@ -117,6 +139,7 @@ function jsonLd(article: BlogArticle): string {
       '@type': 'Article',
       headline: article.title,
       description: article.description,
+      image: `${BASE}/images/axiom/og.jpg`,
       inLanguage: article.lang,
       datePublished: article.datePublished,
       dateModified: article.dateModified,
@@ -148,10 +171,12 @@ function Block({
   block,
   index,
   accent,
+  lang,
 }: {
   block: BlogBlock;
   index: number;
   accent: string;
+  lang: string;
 }): JSX.Element {
   switch (block.kind) {
     case 'p':
@@ -205,10 +230,92 @@ function Block({
           ))}
         </div>
       );
+    case 'hourChart': {
+      const max = Math.max(...block.values, 1);
+      const W = 480;
+      const H = 180;
+      const slot = W / block.values.length;
+      return (
+        <figure className="my-10" dir="ltr">
+          <svg
+            viewBox={`0 0 ${W} ${H + 26}`}
+            role="img"
+            aria-label={block.summary}
+            className="w-full"
+          >
+            {block.values.map((v, h) => {
+              const bh = Math.max(2, (v / max) * H);
+              const isPeak = block.peak.includes(h);
+              return (
+                <rect
+                  key={h}
+                  x={h * slot + 2}
+                  y={H - bh}
+                  width={slot - 4}
+                  height={bh}
+                  rx={3}
+                  fill={isPeak ? accent : 'rgba(205,199,238,0.28)'}
+                />
+              );
+            })}
+            {[0, 6, 12, 18].map((h) => (
+              <text
+                key={h}
+                x={h * slot + slot / 2}
+                y={H + 18}
+                textAnchor="middle"
+                fontSize="11"
+                fill="rgba(205,199,238,0.7)"
+              >
+                {String(h).padStart(2, '0')}:00
+              </text>
+            ))}
+          </svg>
+          <figcaption className="mt-3 text-sm text-lunamaze-textDim">{block.caption}</figcaption>
+          <details className="mt-3 text-sm">
+            <summary className="cursor-pointer text-lunamaze-textSecondary">{block.tableLabel}</summary>
+            <table className="mt-3 w-full max-w-xs text-left tabular-nums">
+              <thead>
+                <tr>
+                  <th className="pb-1 font-semibold">{block.hourHeader}</th>
+                  <th className="pb-1 font-semibold">{block.valueHeader}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {block.values.map((v, h) => (
+                  <tr key={h}>
+                    <td>{String(h).padStart(2, '0')}:00</td>
+                    <td>{v}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </details>
+        </figure>
+      );
+    }
+    case 'links':
+      return (
+        <nav className="mt-8 rounded-2xl border border-lunamaze-border bg-lunamaze-bgSurface/40 px-6 py-5">
+          <p className="mb-2 font-semibold text-lunamaze-textPrimary">{block.title}</p>
+          <ul className="space-y-1">
+            {block.items.map((item) => (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  className="text-lunamaze-textSecondary underline decoration-lunamaze-border underline-offset-4 hover:text-lunamaze-signal"
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      );
     case 'sources':
       return (
         <div className="mt-8 rounded-2xl border border-lunamaze-border bg-lunamaze-bgSurface/40 px-6 py-5">
-          <p className="mb-2 font-semibold text-lunamaze-textPrimary">Sources</p>
+          <p className="mb-2 font-semibold text-lunamaze-textPrimary">{SOURCES_LABEL[lang] ?? SOURCES_LABEL.en}</p>
           <ul className="space-y-1 text-sm">
             {block.items.map((item) => (
               <li key={item.url}>
@@ -368,11 +475,11 @@ export default async function BlogArticlePage({
           lang={article.lang}
         >
           {article.blocks.map((block, index) => (
-            <Block key={index} block={block} index={index} accent={accent} />
+            <Block key={index} block={block} index={index} accent={accent} lang={article.lang} />
           ))}
         </article>
 
-        {/* Soft CTA — honest, one link, no dark patterns. */}
+        {/* Soft CTA: honest, no dark patterns. Store buttons tagged per article, then the product page. */}
         <aside
           className="max-w-[42rem] mx-auto mt-14 rounded-2xl border p-8"
           style={{
@@ -382,13 +489,10 @@ export default async function BlogArticlePage({
           dir={article.dir}
         >
           <p className="text-lunamaze-textSecondary leading-relaxed">{article.ctaText}</p>
+          <BlogStoreButtons slug={article.slug} lang={article.lang} accent={accent} />
           <Link
             href="/axiom/"
-            className="mt-5 inline-flex items-center rounded-full px-6 py-3 text-sm font-semibold text-lunamaze-textPrimary transition-colors"
-            style={{
-              border: `1px solid ${hexA(accent, 0.45)}`,
-              background: hexA(accent, 0.14),
-            }}
+            className="mt-4 inline-flex text-sm text-lunamaze-textSecondary underline decoration-lunamaze-border underline-offset-4 transition-colors hover:text-lunamaze-textPrimary"
           >
             {article.ctaLabel}
           </Link>

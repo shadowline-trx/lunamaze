@@ -19,7 +19,7 @@ import { internalUrl } from '@/lib/paths';
  * Kern's full policy is maintained at /kern/privacy/.
  */
 
-const LAST_UPDATED = 'October 17, 2026';
+const LAST_UPDATED = 'October 22, 2026';
 const CONTACT_MAILTO = `mailto:${contactEmail}`;
 
 interface Principle {
@@ -201,6 +201,12 @@ export default function PrivacyPage(): JSX.Element {
               <strong>{'How it links to you: '}</strong>
               {
                 'events carry a random install identifier. The App also records, once per install and again only if it changes, which anonymous RevenueCat identifier belongs to that install (the Support ID shown in Settings), so that if you contact us about a purchase we can find the right record. When you are signed in, events are additionally tagged with your account ID. Deleting your account removes the link between past events and your account.'
+              }
+            </li>
+            <li>
+              <strong>{'Published statistics: '}</strong>
+              {
+                'we may publish totals drawn from these events, for example the hours of the day when the panic button is opened most. They are counts across many people, never anything about one person, and never anything you wrote.'
               }
             </li>
             <li>

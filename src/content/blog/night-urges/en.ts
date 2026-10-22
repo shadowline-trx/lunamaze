@@ -11,6 +11,7 @@ const article: BlogArticle = {
   slug: 'night-urges',
   lang: 'en',
   title: 'Why Urges Hit Hardest at Night (and What Actually Works After 11pm)',
+  seoTitle: 'Why Porn Urges Hit Hardest at Night, and What Works',
   description:
     'Fine all day, then 11:47pm happens. Night urges are not weakness — they are five triggers stacking at once. Here is the mechanism and the fixes that hold.',
   datePublished: '2026-07-23',
