@@ -11,6 +11,7 @@ const article: BlogArticle = {
   slug: 'flatline',
   lang: 'en',
   title: 'The Flatline: Why You Feel Nothing After Quitting Porn — and Why That Is Not Damage',
+  seoTitle: 'Porn Flatline: Why You Feel Nothing and How Long It Lasts',
   description:
     'Zero libido, gray mood, no motivation a few weeks in? That is the flatline. What it is, how long it lasts, and the one mistake that restarts it.',
   datePublished: '2026-07-23',

@@ -11,6 +11,7 @@ const article: BlogArticle = {
   slug: 'rewire-timeline',
   lang: 'en',
   title: 'How Long Does It Take to Rewire Your Brain From Porn? The Honest Timeline',
+  seoTitle: 'How Long Does It Take to Rewire Your Brain From Porn?',
   description:
     'The real reboot timeline — week by week, including the flatline nobody warns you about. No miracle dates, just what actually happens and when.',
   datePublished: '2026-07-22',

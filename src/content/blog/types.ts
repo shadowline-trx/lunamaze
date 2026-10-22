@@ -28,6 +28,12 @@ export interface BlogArticle {
   /** Text direction; omit for LTR. */
   readonly dir?: 'rtl';
   readonly title: string;
+  /**
+   * Optional title for the results page, about 60 characters or fewer. The H1
+   * keeps `title`; search shows this. Leave unset on a page that already ranks
+   * unless the change is deliberate.
+   */
+  readonly seoTitle?: string;
   /** Meta description — also the index-card teaser. Keep under ~160 chars. */
   readonly description: string;
   /** ISO date, e.g. '2026-07-22'. */

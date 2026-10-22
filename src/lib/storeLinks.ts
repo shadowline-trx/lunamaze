@@ -56,11 +56,11 @@ export function iosBetaUrl(): string | null {
  * URL-encoded query string; Play requires the inner `&` separators to be
  * encoded or it silently drops everything after the first pair.
  */
-export function playStoreUrl(source: string): string {
+export function playStoreUrl(source: string, medium = 'social', campaign = 'launch'): string {
   const referrer = new URLSearchParams({
     utm_source: source,
-    utm_medium: 'social',
-    utm_campaign: 'launch',
+    utm_medium: medium,
+    utm_campaign: campaign,
   }).toString();
   const params = new URLSearchParams({ id: PLAY_PACKAGE, referrer });
   return `https://play.google.com/store/apps/details?${params.toString()}`;

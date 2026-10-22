@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import ProductNav from '@/components/lunamaze/ProductNav';
 import LunaFooter from '@/components/lunamaze/LunaFooter';
 import AuroraField from '@/components/lunamaze/AuroraField';
+import BlogStoreButtons from '@/components/axiom/BlogStoreButtons';
 import { ALL_ARTICLES, articleVersions, getArticle } from '@/content/blog';
 import { BLOG_LANGUAGES } from '@/content/blog/types';
 import type { BlogArticle, BlogBlock } from '@/content/blog/types';
@@ -93,7 +94,9 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${article.title} — Axiom`,
+    // A short search title when the article has one: the H1 can run long, the
+    // results page cuts at about 60 characters. No dash: the house style bans it.
+    title: article.seoTitle ?? `${article.title} | Axiom`,
     description: article.description,
     alternates: {
       canonical: articleUrl(article),
@@ -117,6 +120,7 @@ function jsonLd(article: BlogArticle): string {
       '@type': 'Article',
       headline: article.title,
       description: article.description,
+      image: `${BASE}/images/axiom/og.jpg`,
       inLanguage: article.lang,
       datePublished: article.datePublished,
       dateModified: article.dateModified,
@@ -372,7 +376,7 @@ export default async function BlogArticlePage({
           ))}
         </article>
 
-        {/* Soft CTA — honest, one link, no dark patterns. */}
+        {/* Soft CTA: honest, no dark patterns. Store buttons tagged per article, then the product page. */}
         <aside
           className="max-w-[42rem] mx-auto mt-14 rounded-2xl border p-8"
           style={{
@@ -382,13 +386,10 @@ export default async function BlogArticlePage({
           dir={article.dir}
         >
           <p className="text-lunamaze-textSecondary leading-relaxed">{article.ctaText}</p>
+          <BlogStoreButtons slug={article.slug} lang={article.lang} accent={accent} />
           <Link
             href="/axiom/"
-            className="mt-5 inline-flex items-center rounded-full px-6 py-3 text-sm font-semibold text-lunamaze-textPrimary transition-colors"
-            style={{
-              border: `1px solid ${hexA(accent, 0.45)}`,
-              background: hexA(accent, 0.14),
-            }}
+            className="mt-4 inline-flex text-sm text-lunamaze-textSecondary underline decoration-lunamaze-border underline-offset-4 transition-colors hover:text-lunamaze-textPrimary"
           >
             {article.ctaLabel}
           </Link>
