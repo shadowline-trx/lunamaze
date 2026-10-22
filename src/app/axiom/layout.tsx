@@ -30,6 +30,8 @@ const jetbrains = JetBrains_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://lunamaze.com'),
+  // Smart App Banner: Safari on iPhone shows AXIOM's App Store bar on every /axiom page.
+  itunes: { appId: '6791180351' },
   title: 'AXIOM — Quit Porn App. Your Phone Never Says So.',
   description:
     'Every other quit-porn app is named the accusation. On your home screen this one just says AXIOM. Real porn addiction recovery grounded in neuroscience, a journal that never leaves your phone, one honest price, no account needed to start.',
