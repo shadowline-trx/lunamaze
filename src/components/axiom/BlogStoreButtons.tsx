@@ -31,6 +31,7 @@ const APPLE_LABEL: Readonly<Record<string, string>> = {
   de: 'Laden im App Store',
   ru: 'Загрузите в App Store',
   tr: "App Store'dan indirin",
+  pl: 'Pobierz z App Store',
 };
 
 const PLAY_LABEL: Readonly<Record<string, string>> = {
@@ -46,6 +47,7 @@ const PLAY_LABEL: Readonly<Record<string, string>> = {
   de: 'Jetzt bei Google Play',
   ru: 'Доступно в Google Play',
   tr: "Google Play'den alın",
+  pl: 'Pobierz z Google Play',
 };
 
 interface Props {

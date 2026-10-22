@@ -140,6 +140,10 @@ function Block({ block, index }: { block: BlogBlock; index: number }): JSX.Eleme
           </ul>
         </div>
       );
+    // AXIOM-only blocks; no typecrt article uses them.
+    case 'hourChart':
+    case 'links':
+      return <></>;
   }
 }
 
