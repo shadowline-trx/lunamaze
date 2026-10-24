@@ -5,16 +5,19 @@ import { interClass } from '@/lib/interFont';
 import { APP_STORE_ID, PLAY_BLOCKED_TERRITORIES, PLAY_PACKAGE } from '@/lib/storeLinks';
 
 /**
- * /get/ — the Instagram link: bio, story stickers and the comment-to-DM reply.
+ * /get/ — the social link: Instagram bio, story stickers and the comment-to-DM
+ * reply, and creators' TikTok bios.
  *
  * Unlike /go/reddit/ it redirects from an inline script instead of waiting for
- * React. Instagram opens links in its in-app browser, and every second spent
- * loading the framework before the bounce is a second in which a meme viewer
- * closes the tab. The script runs as soon as the HTML is parsed.
+ * React. Instagram and TikTok open links in their in-app browsers, and every
+ * second spent loading the framework before the bounce is a second in which a
+ * viewer closes the tab. The script runs as soon as the HTML is parsed.
  *
  * `?s=<source>` names the campaign so installs split by where the tap came from
  * (`ig_bio` by default, e.g. `?s=ig_dm_level2` in the DM). It lands in Play's
- * UTM referrer and in Apple's `ct` token.
+ * UTM referrer and in Apple's `ct` token. A `tt_` prefix (e.g. `?s=tt_dert`)
+ * marks a TikTok link and sets `utm_source=tiktok`; every other value stays
+ * `instagram`, so links already out in the world keep their meaning.
  *
  * The buttons are the real link: detection can miss (desktop, odd user agents)
  * and a failed redirect must never strand anyone on a blank page.
@@ -36,10 +39,15 @@ export const metadata: Metadata = {
 };
 
 const DEFAULT_SOURCE = 'ig_bio';
+const TIKTOK_PREFIX = 'tt_';
+
+function utmSource(source: string): string {
+  return source.startsWith(TIKTOK_PREFIX) ? 'tiktok' : 'instagram';
+}
 
 function playUrl(source: string): string {
   const referrer = new URLSearchParams({
-    utm_source: 'instagram',
+    utm_source: utmSource(source),
     utm_medium: 'social',
     utm_campaign: source,
   }).toString();
@@ -58,7 +66,8 @@ const REDIRECT_SCRIPT = `(function(){try{
 var q=new URLSearchParams(location.search).get('s');
 var s=q&&/^[a-z0-9_]{1,40}$/.test(q)?q:${JSON.stringify(DEFAULT_SOURCE)};
 var apple=${JSON.stringify(APP_STORE_ID)};
-var play='https://play.google.com/store/apps/details?id=${PLAY_PACKAGE}&referrer='+encodeURIComponent('utm_source=instagram&utm_medium=social&utm_campaign='+s);
+var src=s.indexOf(${JSON.stringify(TIKTOK_PREFIX)})===0?'tiktok':'instagram';
+var play='https://play.google.com/store/apps/details?id=${PLAY_PACKAGE}&referrer='+encodeURIComponent('utm_source='+src+'&utm_medium=social&utm_campaign='+s);
 var ios=apple?'https://apps.apple.com/app/id'+apple+'?ct='+s+'&mt=8':null;
 var a=document.getElementById('get-apple'),p=document.getElementById('get-play');
 if(a&&ios)a.href=ios;if(p)p.href=play;
