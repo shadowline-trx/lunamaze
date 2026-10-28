@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
 import type { Glyph } from './content';
-import { internalUrl } from '@/lib/paths';
+import TwinsyRoom from './TwinsyRoom';
 import s from './studio.module.css';
 
 /**
@@ -264,44 +264,6 @@ function DriftRoom() {
       <text className={s.drPerfect} x="360" y="186" textAnchor="end">
         perfect
       </text>
-    </>
-  );
-}
-
-function TwinsyRoom() {
-  const copies = ['Personal', 'Work mail', 'Little ideas'] as const;
-  return (
-    <>
-      <g transform="rotate(8 275 134)">
-        <rect className={s.scDevice} x="218" y="40" width="118" height="184" rx="18" />
-        <rect x="226" y="49" width="102" height="166" rx="12" fill="#201711" />
-        <text x="237" y="77" fill="#FBF6EC" fontSize="14" fontWeight="600">Your copies</text>
-        {copies.map((name, i) => (
-          <g key={name}>
-            <rect x="235" y={92 + i * 30} width="84" height="38" rx="7" fill={['#4C5744', '#754D3B', '#96663B'][i]} />
-            <text x="243" y={110 + i * 30} fill="#FBF6EC" fontSize="8">{name}</text>
-          </g>
-        ))}
-      </g>
-      <g transform="rotate(-8 140 130)">
-        <rect className={s.scDevice} x="66" y="23" width="150" height="211" rx="20" />
-        <rect x="74" y="32" width="134" height="193" rx="14" fill="#F5EEE2" />
-        <image href={internalUrl('/twinsy/assets/twinsy-mark.svg')} x="88" y="43" width="17" height="17" />
-        <text x="111" y="55" fill="#15120E" fontSize="11" fontWeight="600">Twinsy</text>
-        <text x="87" y="88" fill="#15120E" fontSize="24" fontWeight="600" letterSpacing="-1">Copies</text>
-        <text x="166" y="76" fill="#E8441A" fontSize="8">03</text>
-        {copies.map((name, i) => (
-          <g key={name}>
-            <line x1="87" x2="195" y1={101 + i * 29} y2={101 + i * 29} stroke="#D8CDBB" />
-            <rect x="88" y={111 + i * 29} width="11" height="11" rx="3" fill={['#8A9C80', '#B88762', '#C6B171'][i]} />
-            <text x="106" y={119 + i * 29} fill="#15120E" fontSize="9">{name}</text>
-          </g>
-        ))}
-        <rect x="87" y="199" width="108" height="16" rx="3" fill="#201711" />
-        <text x="95" y="210" fill="#FBF6EC" fontSize="7">Add an app</text>
-        <text x="183" y="211" fill="#FBF6EC" fontSize="11">+</text>
-      </g>
-      <text className={s.scMono} x="200" y="253" textAnchor="middle">ONE PHONE · SEPARATE ACCOUNTS</text>
     </>
   );
 }
