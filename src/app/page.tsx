@@ -10,7 +10,7 @@ import s from '@/components/studio/studio.module.css';
 
 const TITLE = 'Luna Maze — Independent Software Studio';
 const DESCRIPTION =
-  'Luna Maze is an independent software studio making Axiom, Kern, Tether ADB, TypeCrt and Drift: focused, private software for the mind, the phone and the desk.';
+  'Luna Maze is an independent software studio making Axiom, Kern, Tether ADB, TypeCrt, Drift and Twinsy: focused, private software for the mind, the phone and the desk.';
 const OG_IMAGE = `${SITE}/images/og/lunamaze-og.jpg`;
 
 export const metadata: Metadata = {
@@ -56,7 +56,7 @@ const JSON_LD = {
       },
       image: { '@id': `${SITE}/#logo` },
       description:
-        `Luna Maze is an independent, bootstrapped software studio based in ${studioCountry}, established in ${establishedYear}. It designs and builds focused, private software: Axiom, Kern, Tether ADB, TypeCrt and Drift.`,
+        `Luna Maze is an independent, bootstrapped software studio based in ${studioCountry}, established in ${establishedYear}. It designs and builds focused, private software: Axiom, Kern, Tether ADB, TypeCrt, Drift and Twinsy.`,
       slogan: 'Quiet software, precisely made.',
       email: CONTACT_EMAIL,
       founder: { '@id': FOUNDER_ID },

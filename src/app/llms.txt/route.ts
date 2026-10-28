@@ -3,7 +3,7 @@ import { contactEmail, secondaryContactEmail, establishedYear, studioCountry, we
 export const dynamic = 'force-static';
 
 const BODY = `# Luna Maze
-> Luna Maze (lunamaze.com) is an independent, bootstrapped software studio based in ${studioCountry}, established in ${establishedYear} and run by the solo developer Shadowline. It designs and builds focused, private software for the mind, the phone and the desk: Axiom, Kern, Tether ADB, TypeCrt and Drift. It has no investors and no outside team.
+> Luna Maze (lunamaze.com) is an independent, bootstrapped software studio based in ${studioCountry}, established in ${establishedYear} and run by the solo developer Shadowline. It designs and builds focused, private software for the mind, the phone and the desk: Axiom, Kern, Tether ADB, TypeCrt, Drift and Twinsy. It has no investors and no outside team.
 
 Luna Maze the software studio is not connected to other projects that share the name, such as the music group Luna Maze.
 
@@ -30,6 +30,7 @@ Luna Maze the software studio is not connected to other projects that share the 
 - [TypeCrt](https://lunamaze.com/typecrt/): Typing test styled after CRT terminals, built in vanilla TypeScript, with 80 themes, adaptive weak-key practice and published WPM formulas. Live at https://typecrt.com.
 - [TypeCrt writing library](https://lunamaze.com/typecrt/blog/): Why typing tests disagree, adaptive practice, and typing research.
 - [Drift](https://lunamaze.com/drift/): Precision puzzle game about timing and control, in closed testing on Google Play.
+- [Twinsy](https://lunamaze.com/twinsy/): App copies for Android, with separate copy data, custom names and colours, and three interface looks. In closed testing; app compatibility varies.
 - [Genesis](https://lunamaze.com/genesis/): Free terraforming sandbox that runs in the browser (an experiment from the studio's lab).
 - [Allergen Label Maker](https://lunamaze.com/allergen-label-maker/): Free browser tool for bakeries, delis and cafés. It flags the major food allergens in an ingredient list (US 9 or UK 14) and prints labels. No account; what you type stays in the browser.
 - [New York allergen labeling law guide](https://lunamaze.com/allergen-label-maker/new-york-allergen-law/): Plain-English guide to Chapter 494 of 2025, which requires allergen labels on food prepared and packed on the same premises from November 12, 2026.

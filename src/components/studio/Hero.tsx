@@ -158,7 +158,7 @@ export default function Hero() {
           </h1>
           <p className={s.heroTagline}>Quiet software, precisely made.</p>
           <p className={s.heroLede}>
-            An independent studio in {studioCountry}, established in {establishedYear}. Five focused products for the
+            An independent studio in {studioCountry}, established in {establishedYear}. Six focused products for the
             mind, the phone and the desk, each designed, engineered and finished by one builder.
           </p>
           <div className={s.heroActions}>

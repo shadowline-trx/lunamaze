@@ -12,9 +12,9 @@ export const SECONDARY_CONTACT_EMAIL = secondaryContactEmail;
 export const GITHUB_URL = 'https://github.com/shadowline-trx';
 
 /** Bump when the home page copy changes; feeds dateModified and the sitemap. */
-export const HOME_UPDATED = '2026-10-13';
+export const HOME_UPDATED = '2026-10-28';
 
-export type Glyph = 'axiom' | 'kern' | 'tether' | 'typecrt' | 'drift' | 'genesis';
+export type Glyph = 'axiom' | 'kern' | 'tether' | 'typecrt' | 'drift' | 'twinsy' | 'genesis';
 
 export interface Work {
   readonly id: Glyph;
@@ -113,6 +113,22 @@ export const WORKS: ReadonlyArray<Work> = [
     category: 'GameApplication',
     os: 'Android',
   },
+  {
+    id: 'twinsy',
+    numeral: 'VI',
+    name: 'Twinsy',
+    href: '/twinsy/',
+    kind: 'App cloner for Android',
+    platforms: 'Android',
+    status: 'Closed testing',
+    line: 'One phone, a considered home for your extra app accounts.',
+    detail:
+      'Create and name app copies, keep their data separate from the original, and choose from three looks. The manager is free and ad-free during testing. App compatibility varies.',
+    accent: '#FF6A3D',
+    schemaType: 'MobileApplication',
+    category: 'UtilitiesApplication',
+    os: 'Android',
+  },
 ];
 
 export const LAB: Work = {
@@ -161,7 +177,7 @@ export interface Figure {
 }
 
 export const FIGURES: ReadonlyArray<Figure> = [
-  { value: 5, label: 'Products', note: 'Axiom, Kern, Tether ADB, TypeCrt, Drift' },
+  { value: 6, label: 'Products', note: 'Axiom, Kern, Tether ADB, TypeCrt, Drift, Twinsy' },
   { value: 4, label: 'Platforms', note: 'iPhone, Android, Windows, the web' },
   { value: 12, label: 'Languages', note: 'Axiom’s research library' },
   { value: 1, label: 'Builder', note: 'Designed and engineered by Shadowline' },
@@ -176,7 +192,7 @@ export interface Faq {
 export const FAQS: ReadonlyArray<Faq> = [
   {
     q: 'What is Luna Maze?',
-    a: `Luna Maze is an independent, bootstrapped software studio based in ${studioCountry}, established in ${establishedYear}. It designs and builds focused products for the mind, the phone and the desk: Axiom (a private recovery companion for iPhone and Android), Kern (a private Android launcher), Tether ADB (wireless ADB and device control for Windows), TypeCrt (a CRT-style typing test) and Drift (a precision puzzle game).`,
+    a: `Luna Maze is an independent, bootstrapped software studio based in ${studioCountry}, established in ${establishedYear}. It designs and builds focused products for the mind, the phone and the desk: Axiom (a private recovery companion for iPhone and Android), Kern (a private Android launcher), Tether ADB (wireless ADB and device control for Windows), TypeCrt (a CRT-style typing test), Drift (a precision puzzle game) and Twinsy (app copies for Android).`,
   },
   {
     q: 'Who founded Luna Maze?',
@@ -192,7 +208,7 @@ export const FAQS: ReadonlyArray<Faq> = [
   },
   {
     q: 'What does Luna Maze make?',
-    a: 'Five products and one experiment. Axiom helps people quit porn with a 30-day program and a journal that stays on the phone. Kern replaces the Android home screen with fast local search and an honest daily record. Tether ADB pairs Android phones to Windows over Wi-Fi by QR code and mirrors the screen. TypeCrt is a CRT-style typing test with adaptive practice. Drift is a puzzle game in closed testing. Genesis is a free terraforming sandbox that runs in the browser.',
+    a: 'Six products and one experiment. Axiom helps people quit porn with a 30-day program and a journal that stays on the phone. Kern replaces the Android home screen with fast local search and an honest daily record. Tether ADB pairs Android phones to Windows over Wi-Fi by QR code and mirrors the screen. TypeCrt is a CRT-style typing test with adaptive practice. Drift is a puzzle game in closed testing. Twinsy manages extra app accounts on Android and is in closed testing. Genesis is a free terraforming sandbox that runs in the browser.',
   },
   {
     q: 'Is Axiom free?',
