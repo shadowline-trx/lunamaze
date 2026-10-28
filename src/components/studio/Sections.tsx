@@ -161,13 +161,13 @@ function RoomCard({ work, index }: { readonly work: Work; readonly index: number
 export function Works() {
   return (
     <section id="works" className={s.works} data-chapter="II · The works" aria-labelledby="works-title">
-      <ChapterHead numeral="II" name="The works" lit={0.28} note="In which we walk through five rooms, each with its own light." />
+      <ChapterHead numeral="II" name="The works" lit={0.28} note="In which we walk through six rooms, each with its own light." />
       <div className={s.worksIntro}>
         <h2 id="works-title" className={s.sectionTitle} data-reveal data-split>
-          <Split text="Five rooms in the maze." />
+          <Split text="Six rooms in the maze." />
         </h2>
         <p className={s.sectionLede} data-reveal>
-          A recovery companion, a launcher, a developer tool, a typing test and a game. Different rooms, one rule:
+          A recovery companion, a launcher, a developer tool, a typing test, a game and an app cloner. Different rooms, one rule:
           nothing ships until the craft is right.
         </p>
       </div>
@@ -199,7 +199,7 @@ export function Works() {
 
 /* --------------------------------------------------------------- Reel */
 
-const REEL_A = ['Axiom', 'Kern', 'Tether ADB', 'TypeCrt', 'Drift', 'Genesis'];
+const REEL_A = ['Axiom', 'Kern', 'Tether ADB', 'TypeCrt', 'Drift', 'Twinsy', 'Genesis'];
 const REEL_B = ['quiet', 'precise', 'private', 'fast', 'honest', 'finished'];
 
 /** Kinetic type band between chapters. Decorative; it skews with scroll speed. */

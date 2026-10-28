@@ -25,6 +25,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/kern/faq/', priority: 0.8, changeFrequency: 'monthly', lastModified: new Date('2026-08-31') },
     { path: '/typecrt/', priority: 0.8, changeFrequency: 'monthly', lastModified: new Date('2026-09-26') },
     { path: '/typecrt/blog/', priority: 0.7, changeFrequency: 'weekly' },
+    { path: '/twinsy/', priority: 0.8, changeFrequency: 'monthly', lastModified: new Date('2026-10-28') },
     { path: '/drift/', priority: 0.5, changeFrequency: 'monthly', lastModified: new Date('2026-09-26') },
     { path: '/genesis/', priority: 0.8, changeFrequency: 'monthly', lastModified: new Date('2026-09-05') },
     // Static tool served from public/allergen-label-maker (not a Next.js route).
