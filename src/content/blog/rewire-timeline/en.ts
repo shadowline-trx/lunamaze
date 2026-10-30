@@ -1,122 +1,183 @@
 import type { BlogArticle } from '../types';
 
-/**
- * Flagship SEO article. Target queries: "how long to rewire brain from porn",
- * "porn reboot timeline", "flatline how long", "90 day reboot".
- * Voice: honest, concrete, no hype, no medical-efficacy claims — we describe
- * what people commonly report and what research suggests, and we say plainly
- * what nobody can promise.
- */
 const article: BlogArticle = {
-  slug: 'rewire-timeline',
-  lang: 'en',
-  title: 'How Long Does It Take to Rewire Your Brain From Porn? The Honest Timeline',
-  seoTitle: 'How Long Does It Take to Rewire Your Brain From Porn?',
-  description:
-    'The real reboot timeline — week by week, including the flatline nobody warns you about. No miracle dates, just what actually happens and when.',
-  datePublished: '2026-07-22',
-  dateModified: '2026-07-22',
-  readingMinutes: 9,
-  ctaLabel: 'See how Axiom works',
-  ctaText:
-    'Axiom tracks your recovery against this exact timeline — privately. Your journal never leaves your phone.',
-  blocks: [
+  "slug": "rewire-timeline",
+  "lang": "en",
+  "title": "How Long Does It Take to Rewire Your Brain From Porn? The Honest Timeline",
+  "seoTitle": "How Long Does It Take to Rewire Your Brain From Porn?",
+  "description": "What research can say about quitting porn, the limits of 30- and 90-day reboot claims, and a practical way to review your own progress.",
+  "datePublished": "2026-07-22",
+  "dateModified": "2026-10-30",
+  "readingMinutes": 6,
+  "ctaLabel": "See how AXIOM works",
+  "ctaText": "AXIOM gives the daily work a place: a journal, guided breathing and Recalibration, a programme of thirty nights. A programme length is not a brain-repair deadline.",
+  "blocks": [
     {
-      kind: 'p',
-      text: 'Short answer: most people start noticing real changes somewhere between week 3 and week 8, and the deeper rewiring — the part where urges stop running your evenings — usually takes months, not weeks. The popular "90 days" number is a decent landmark, but it is not a finish line, and for some people it is not even close.',
+      "kind": "callout",
+      "title": "The answer a calendar cannot give",
+      "text": "There is no established number of days that tells an individual when their brain has “rewired” after porn. Thirty and ninety days can be planning milestones. They are not validated tests of brain recovery, and a change in mood or libido cannot tell you a neural repair percentage."
     },
     {
-      kind: 'p',
-      text: 'That answer probably annoys you. It would have annoyed me too. Everyone who types this question into a search bar at 1am wants a date they can circle on a calendar. But here is the thing — the sites that give you a clean confident number are usually selling a $30,000 treatment program, and the honest version of this answer is actually more useful, because it tells you what to expect at each stage so you don’t quit the moment it gets weird.',
-    },
-    { kind: 'h2', text: 'What "rewiring" actually means' },
-    {
-      kind: 'p',
-      text: 'Years of heavy porn use train your reward system on a simple loop: cue, dopamine spike, release, repeat. Do that a few thousand times and your brain does what brains do with any heavily repeated behavior — it strengthens those pathways and quietly turns the volume down on everything else. Ordinary rewards start feeling flat. That flatness has a name in the research literature: desensitization.',
+      "kind": "p",
+      "text": "If you are asking this at the end of another difficult evening, you probably want something more useful than “everyone is different.” You want to know what to do tomorrow, which changes to pay attention to and when a symptom deserves help. Those questions have practical answers even when a fixed biological timetable does not."
     },
     {
-      kind: 'p',
-      text: 'Rewiring is the reverse process. You stop feeding the loop, the pathways weaken from disuse, and your sensitivity to normal rewards slowly comes back. This is neuroplasticity working in your favor for once. It is real, it is well-documented in addiction research generally, and it is slow — because you are not deleting a habit, you are waiting for a trail through a forest to grow over.',
-    },
-    { kind: 'h2', text: 'The timeline, stage by stage' },
-    { kind: 'h3', text: 'Days 1–14: the loud phase' },
-    {
-      kind: 'p',
-      text: 'The first two weeks are usually the noisiest. Urges come in waves, often at very predictable times — late night is the classic danger window. Sleep can be off. Mood swings are common. Some people get irritable in a way that surprises them.',
+      "kind": "p",
+      "text": "The distinction is between a schedule for your actions and a prediction about your body. You can plan a week of different evenings, review what happened and choose your next step. You cannot make the same promise about when desire, concentration or mood will change. A useful timeline keeps those two things separate."
     },
     {
-      kind: 'p',
-      text: 'None of this means something is wrong. It means the loop noticed you stopped feeding it. An urge is not a command, it is a wave — it rises, peaks, and passes in something like 10 to 20 minutes whether you act on it or not. The single most useful skill in this entire process is learning to sit through one wave. Just one. Then you know they end, and every wave after that is negotiable.',
-    },
-    { kind: 'h3', text: 'Weeks 2–6: the flatline (read this part twice)' },
-    {
-      kind: 'p',
-      text: 'Somewhere in this window, a lot of people hit the thing that kills more recoveries than urges ever do: the flatline. Libido drops to zero. Mood goes gray. You feel nothing — not tempted, not motivated, just beige. And your brain, which is not on your side yet, offers a helpful theory: "you broke yourself, this proves it, better test if everything still works."',
+      "kind": "h2",
+      "text": "What “rewiring” can mean, and what it cannot measure"
     },
     {
-      kind: 'p',
-      text: 'That test is a relapse. Do not take the bait.',
+      "kind": "p",
+      "text": "In ordinary habit language, rewiring is a metaphor for learning a different response: noticing a familiar cue, interrupting a browsing sequence and returning to something you chose. That can be a useful picture. It becomes misleading when a diagram presents days without porn as a direct measure of dopamine, damaged pathways or restored sensitivity."
     },
     {
-      kind: 'p',
-      text: 'The flatline is widely reported by people quitting, and the most common-sense read is that it is the trough of desensitization — the old, artificially loud signal is gone and the normal signal has not recovered yet. It can last days or weeks. People who know the flatline is coming mostly get through it. People who have never heard of it mostly interpret it as failure and relapse "to check". This paragraph exists so you are in the first group.',
-    },
-    { kind: 'h3', text: 'Weeks 6–12: the quiet returns' },
-    {
-      kind: 'p',
-      text: 'This is where the good reports start to cluster. Mornings feel less heavy. Music sounds better — people mention that one a lot, oddly. Concentration stretches longer. Real-life attraction starts to feel like a signal again instead of a memory. Urges still show up, but they arrive more like a knock than a siren.',
+      "kind": "p",
+      "text": "A streak counter observes time under a rule you set. A mood check-in records a self-report. Neither measures a neurotransmitter or scans the brain. Research on learning and addiction cannot simply be converted into a countdown for every person who watches porn, nor does it establish that every user has the same underlying problem."
     },
     {
-      kind: 'p',
-      text: 'This is also, ironically, the second most dangerous stretch. Feeling better makes people careless — "I’m basically fixed" is the thought that precedes a shocking number of week-9 relapses. The chaser effect (a strong pull to binge in the day or two after a single slip) is still fully loaded during this phase.',
-    },
-    { kind: 'h3', text: 'Months 3–6 and beyond: consolidation' },
-    {
-      kind: 'p',
-      text: 'Past the 90-day mark, most of the loud symptoms are gone and the work changes character. It stops being about surviving urges and becomes about not re-carving the old trail during stress, boredom, insomnia, loneliness — whatever your personal trigger was in the first place. Heavy, long-term users should genuinely expect the full arc to take longer, sometimes a year or more, and that is not a defect. A loop practiced for ten years does not fully quiet down in ninety days.',
-    },
-    { kind: 'h2', text: 'What actually moves the date' },
-    {
-      kind: 'list',
-      items: [
-        'How long and how heavily you used — the biggest single factor, and the one nobody can change now.',
-        'Whether you replace the time. An empty evening slot where the habit lived is a vacuum, and vacuums refill themselves. Exercise, people, projects — anything real.',
-        'Sleep. Almost everyone underestimates this. Tired brains lose negotiations with urges that rested brains win easily.',
-        'Whether you track honestly. Not because a counter fixes anything — because most people cannot see their own pattern (the day of week, the hour, the mood) until it is written down in front of them.',
-        'Whether anyone knows. One person — a friend, a partner, an anonymous accountability buddy. Secrecy is the habit’s home turf.',
-      ],
-    },
-    { kind: 'h2', text: 'The part nobody can promise you' },
-    {
-      kind: 'p',
-      text: 'Nobody — not this article, not any app, not a $200 course — can tell you your exact date, because it depends on your history, your stress, your sleep, and some brain-lottery factors no one fully understands. Anyone who promises "fixed in 30 days" is describing their refund policy, not your neurology.',
+      "kind": "p",
+      "text": "Start by describing the behaviour and its impact: losing sleep, repeatedly browsing instead of doing a task, watching more than you intended or experiencing relationship difficulties. Those are things you can discuss and track. You do not have to prove that your brain is damaged before choosing to change a habit."
     },
     {
-      kind: 'p',
-      text: 'What can be promised is the shape of the thing: it is front-loaded with noise, there is very likely a gray valley in the middle that means you are healing rather than broken, and the far side is quieter than you currently believe. The people who make it are rarely the ones with the most willpower. They are the ones who knew the map and did not panic in the valley.',
+      "kind": "h2",
+      "text": "What the research actually observed"
     },
     {
-      kind: 'faq',
-      items: [
+      "kind": "p",
+      "text": "A qualitative study examined 104 abstinence journals written by male members of an online rebooting forum. It documented their experiences and interpretations. That helps describe what some forum members report; self-selected journals cannot establish how common a symptom is, what caused it or when other people will recover."
+    },
+    {
+      "kind": "p",
+      "text": "A separate randomized seven-day study of regular pornography users did not find general withdrawal effects in its confirmatory analyses. Its exploratory craving findings require caution. The study does not describe everyone seeking help, but it gives no basis for saying every person must go through an initial withdrawal stage."
+    },
+    {
+      "kind": "p",
+      "text": "These studies also do not establish a universal ninety-day endpoint. A person reporting improvement after a chosen period may have changed sleep, routines, relationships or other activities at the same time. Their experience matters, while the explanation and timetable remain questions rather than established facts."
+    },
+    {
+      "kind": "h2",
+      "text": "A timeline for the work, without a symptom schedule"
+    },
+    {
+      "kind": "h3",
+      "text": "At the start: make the next evening different"
+    },
+    {
+      "kind": "p",
+      "text": "Write what you want to change and choose one adjustment to the setting. Move the phone charger if browsing starts in bed. Prepare an activity for the gap after work. If you want a blocker, check its real coverage. These are changes you can make without waiting to feel motivated or guessing your stage of recovery."
+    },
+    {
+      "kind": "p",
+      "text": "Prepare a response for an urge too: close the material, put the device down, notice the feeling and choose a next action. A short timer can prompt another check-in. It is not a promise that the urge must vanish at the end. The practical goal is room to choose what happens next."
+    },
+    {
+      "kind": "h3",
+      "text": "After several attempts: review the actual pattern"
+    },
+    {
+      "kind": "p",
+      "text": "Compare situations rather than searching for the week when something is supposed to happen. Which periods were difficult? Did you notice the first step? Was your planned response available? If the same setting keeps recurring, change one part of it and review again. Keep observations you are unsure about labelled as uncertain."
+    },
+    {
+      "kind": "p",
+      "text": "You might feel better, worse or much the same during this period. Do not use that alone to decide that the plan is repairing your brain or failing. Mood and sexual desire have other influences. Persistent changes that concern you deserve assessment in their own right rather than automatic assignment to a reboot stage."
+    },
+    {
+      "kind": "h3",
+      "text": "At a milestone: compare the same things over the same period"
+    },
+    {
+      "kind": "p",
+      "text": "If you choose thirty or ninety days, use the date as an appointment to review. Compare episode frequency over equal windows, time spent if you can estimate it consistently, whether you used your plan and how daily commitments are going. A longer streak is one observation, not the entire review."
+    },
+    {
+      "kind": "p",
+      "text": "Do not postpone help until a milestone. If behaviour repeatedly feels outside your control or interferes with daily life, a qualified professional can help assess it now. You can continue a practical plan alongside that help. Reaching a calendar date is not an entry requirement for being taken seriously."
+    },
+    {
+      "kind": "h2",
+      "text": "Where the “flatline” fits"
+    },
+    {
+      "kind": "p",
+      "text": "Online communities use flatline for experiences such as low libido, flat mood or reduced motivation after quitting. The label does not identify a single medically established phase. Low desire can have several causes, and the fact that it appears after a behaviour change does not by itself establish the cause."
+    },
+    {
+      "kind": "p",
+      "text": "You do not need to test yourself with porn to decide whether a symptom deserves attention. A reaction to explicit material is not a clinical assessment. If low libido worries you, NHS guidance recommends speaking with a GP. If mood or loss of interest persists or affects functioning, discuss that too rather than waiting for a supposed recovery clock."
+    },
+    {
+      "kind": "h2",
+      "text": "If the streak resets, keep the rest of the record"
+    },
+    {
+      "kind": "p",
+      "text": "An episode can reset a consecutive-day count without deleting the actions recorded earlier. End the session, note the situation and choose one practical change. There is no basis here for calculating that you lost a specific number of neural-repair days or that the following forty-eight hours have a fixed risk for everyone."
+    },
+    {
+      "kind": "p",
+      "text": "The next useful milestone may be simpler than a large day count: an evening when you used the plan, a normal bedtime or an appointment for support. Keep the record honest and specific. It gives you something to act on without asking a countdown to explain your health."
+    },
+    {
+      "kind": "faq",
+      "items": [
         {
-          q: 'Is the 90-day reboot scientifically proven?',
-          a: 'No controlled study has validated 90 days as a universal rewiring period. It began as a community convention and survives because it is a reasonable middle-of-the-road landmark. Lighter users often feel normal sooner; heavy long-term users often need considerably longer. Treat it as a milestone, not a finish line.',
+          "q": "Is the 90-day reboot scientifically proven?",
+          "a": "The research cited here does not validate ninety days as a universal brain-recovery period. You can choose it as a planning milestone, but it cannot diagnose recovery or tell you when symptoms should end."
         },
         {
-          q: 'How long does the flatline last?',
-          a: 'Reports range from a few days to a few months, with a couple of weeks being common. It typically starts in weeks 2–6. Duration seems loosely related to how heavy the prior use was, but there is no formula — the only reliable statement is that it ends, and that relapsing to "test" it restarts the clock.',
+          "q": "How long does the flatline last?",
+          "a": "There is no validated duration for an individual flatline, and the community term does not establish a cause. If low libido or flat mood concerns you, seek assessment instead of waiting for an expected week to arrive."
         },
         {
-          q: 'Does a single relapse erase all progress?',
-          a: 'No. The pathways you weakened over weeks do not fully rebuild from one event — what actually destroys progress is the binge spiral that shame talks people into afterward, and the chaser effect makes the following 48 hours the real danger. One slip logged honestly and followed by a normal day costs you far less than a week of "I already failed anyway".',
-        },
-        {
-          q: 'Why do urges hit hardest at night?',
-          a: 'Late evening combines almost every known trigger at once: fatigue, solitude, boredom, a phone, and a brain whose self-control resources are at their daily low. Most people’s pattern shows a sharp risk peak in the last two hours before sleep. Knowing your personal danger hour — and putting the phone somewhere else during it — is one of the highest-leverage moves in the entire process.',
-        },
-      ],
+          "q": "Does one relapse erase all progress?",
+          "a": "One episode changes your record under the rule you chose; it does not erase earlier actions or observations. Avoid neurological calculations. End the episode, review the setup and resume your next practical step."
+        }
+      ]
     },
-  ],
+    {
+      "kind": "links",
+      "title": "Turn the question into a next step",
+      "items": [
+        {
+          "label": "A manageable plan for your first week",
+          "href": "/axiom/blog/en/first-week/"
+        },
+        {
+          "label": "What to record alongside a streak",
+          "href": "/axiom/blog/en/progress-beyond-streaks/"
+        },
+        {
+          "label": "Low libido and the flatline question",
+          "href": "/axiom/blog/en/flatline/"
+        },
+        {
+          "label": "A short urge-surfing walkthrough",
+          "href": "/axiom/blog/en/urge-surfing/"
+        }
+      ]
+    },
+    {
+      "kind": "sources",
+      "items": [
+        {
+          "label": "Fernandez et al. (2021): qualitative analysis of online rebooting journals",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/33403533/"
+        },
+        {
+          "label": "Fernandez et al. (2023): randomized seven-day pornography-abstinence study",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/36652136/"
+        },
+        {
+          "label": "NHS: low sex drive, possible causes and when to seek advice",
+          "url": "https://www.nhs.uk/symptoms/loss-of-libido/"
+        }
+      ]
+    }
+  ]
 };
 
 export default article;

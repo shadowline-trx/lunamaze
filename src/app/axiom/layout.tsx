@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { Fraunces, Instrument_Sans, JetBrains_Mono } from 'next/font/google';
 import '../globals.css';
+import AxiomMeasurement from '@/components/axiom/AxiomMeasurement';
 
 // Grotesk: Instrument Sans (variable) — the big cinematic display voice and
 // the body voice. Display serif: Fraunces italic — the emotional accent
@@ -34,22 +35,14 @@ export const metadata: Metadata = {
   itunes: { appId: '6791180351' },
   title: 'AXIOM — Quit Porn App. Your Phone Never Says So.',
   description:
-    'Every other quit-porn app is named the accusation. On your home screen this one just says AXIOM. Real porn addiction recovery grounded in neuroscience, a journal that never leaves your phone, one honest price, no account needed to start.',
+    'Thirty guided nights, a plan for your hardest hour, and a journal that stays on your phone. Meet AXIOM 2.7.3, the private quit-porn app for iPhone and Android.',
   keywords: [
     'quit porn app',
     'porn addiction recovery',
-    'dopamine rewire app',
     'how to stop watching porn',
-    'reboot timeline calculator',
-    'porn induced erectile dysfunction',
-    'compulsive sexual behavior disorder',
-    'ICD-11 CSBD 6C72',
     'how to stop gooning',
     'private addiction tracker',
     'best quit porn app android ios',
-    'deltaFosB dopamine recovery',
-    'porn addiction self test',
-    'dopamine detox tracker',
     'private habit tracker',
   ],
   alternates: {
@@ -69,7 +62,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'AXIOM — Quit Porn App. Your Phone Never Says So.',
     description:
-      'Every other quit-porn app is named the accusation. On your home screen this one just says AXIOM. Real porn addiction recovery grounded in neuroscience, a journal that never leaves your phone, one honest price, no account needed to start.',
+      'Thirty guided nights. One task at a time. A reminder when you choose. AXIOM 2.7.3 keeps your journal on your phone.',
     type: 'website',
     url: 'https://lunamaze.com/axiom/',
     siteName: 'Luna Maze',
@@ -79,7 +72,7 @@ export const metadata: Metadata = {
         url: 'https://lunamaze.com/images/axiom/og.jpg',
         width: 1200,
         height: 630,
-        alt: 'AXIOM — Quit Porn App & Neuroscience Rewire Protocol',
+        alt: 'AXIOM, a private quit-porn app for iPhone and Android',
       },
     ],
   },
@@ -87,7 +80,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'AXIOM — Quit Porn App. Your Phone Never Says So.',
     description:
-      'Every other quit-porn app is named the accusation. On your home screen this one just says AXIOM. Real porn addiction recovery grounded in neuroscience, a journal that never leaves your phone, one honest price, no account needed to start.',
+      'Thirty guided nights. One task at a time. A reminder when you choose. AXIOM 2.7.3 keeps your journal on your phone.',
     images: ['https://lunamaze.com/images/axiom/og.jpg'],
   },
 };
@@ -104,6 +97,7 @@ export default function AxiomLayout({ children }: AxiomLayoutProps) {
       className={`axiom-root ${grotesk.variable} ${fraunces.variable} ${jetbrains.variable} text-axiom-textPrimary`}
     >
       {children}
+      <AxiomMeasurement />
     </div>
   );
 }

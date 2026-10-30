@@ -1,27 +1,14 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
-import { Fraunces, Jost } from 'next/font/google';
+import './fonts.css';
 import '../globals.css';
 import { interClass } from '@/lib/interFont';
 import { KERN_PLAY_URL } from '@/content/kern';
 
 // Preloaded per page by scripts/defer-hydration.mjs, not by next/font: Next
 // would preload these on every product page (see src/lib/interFont.ts).
-const jost = Jost({
-  subsets: ['latin'],
-  display: 'swap',
-  preload: false,
-  variable: '--kern-jost',
-  weight: ['300', '400', '500'],
-});
-
-const fraunces = Fraunces({
-  subsets: ['latin'],
-  display: 'swap',
-  preload: false,
-  variable: '--kern-fraunces',
-  weight: ['700', '900'],
-});
+const jost = { variable: 'kern-font-jost' };
+const fraunces = { variable: 'kern-font-fraunces' };
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://lunamaze.com'),

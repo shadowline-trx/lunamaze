@@ -1,122 +1,207 @@
 import type { BlogArticle } from '../types';
 
-/**
- * Article 3 — why relapse risk concentrates late at night, and what to do
- * about it. Target queries: "urges at night", "how to stop urges at night",
- * "relapse at night", "night time urges quitting porn". Doubles as the
- * teaser for the pattern/danger-hour tracking angle. Same voice rules:
- * honest, concrete, no medical-efficacy claims.
- */
 const article: BlogArticle = {
-  slug: 'night-urges',
-  lang: 'en',
-  title: 'Why Urges Hit Hardest at Night (and What Actually Works After 11pm)',
-  seoTitle: 'Why Porn Urges Hit Hardest at Night, and What Works',
-  description:
-    'Fine all day, then 11:47pm happens. Night urges are not weakness — they are five triggers stacking at once. Here is the mechanism and the fixes that hold.',
-  datePublished: '2026-07-23',
-  dateModified: '2026-07-23',
-  readingMinutes: 7,
-  ctaLabel: 'See how Axiom works',
-  ctaText:
-    'After dark, Axiom dims and slows itself down, because that is when this is hardest. Your journal never leaves your phone.',
-  blocks: [
+  "slug": "night-urges",
+  "lang": "en",
+  "title": "Why Urges Can Feel Stronger at Night, and What to Try After 11pm",
+  "seoTitle": "Why Porn Urges Hit Hardest at Night, and What Works",
+  "description": "If porn urges keep returning at night, look at the setting: tiredness, unplanned time and a phone within reach. Prepare a response before bedtime.",
+  "datePublished": "2026-07-23",
+  "dateModified": "2026-10-30",
+  "readingMinutes": 7,
+  "ctaLabel": "See AXIOM’s tools for the moment",
+  "ctaText": "Keep guided breathing, the Lighthouse and a journal within reach. Recalibration gives you thirty nights of guided practice, without a promise about when urges will end.",
+  "blocks": [
     {
-      kind: 'p',
-      text: 'Here is a pattern almost everyone in recovery recognizes. All day you are fine. Work, gym, dinner — the habit barely crosses your mind, and when it does, saying no costs nothing. Then it is 11:47pm, you are in bed with your phone, the house is quiet, and the same "no" that was free at 2pm suddenly costs everything you have.',
+      "kind": "callout",
+      "title": "If the urge is here now",
+      "text": "Close the explicit material, put the device down and change the immediate setting. Try a short breathing or urge-surfing exercise away from the browsing. Then choose an ordinary next action. A timer can remind you to choose again; it cannot tell you when a craving must disappear."
     },
     {
-      kind: 'p',
-      text: 'Most people read this as a character problem: strong during the day, weak at night. It is not. It is a stacking problem. Late night is the one part of the day when nearly every known trigger fires at the same time — and once you see the stack, the fixes become almost boringly obvious.',
-    },
-    { kind: 'h2', text: 'The five things that stack after dark' },
-    { kind: 'h3', text: '1. Your self-control is a battery, and it is empty' },
-    {
-      kind: 'p',
-      text: 'Whatever self-control actually is under the hood — and researchers argue about the details — the practical shape of it is not in dispute: resisting things gets harder the longer you have been awake and the more decisions you have made. By late evening you have spent a full day saying no to snoozing, snacks, distractions, and arguments. The urge that shows up at midnight is not stronger than the 2pm one. You are just negotiating it with an empty tank.',
-    },
-    { kind: 'h3', text: '2. You are alone, and nobody will know' },
-    {
-      kind: 'p',
-      text: 'This habit lives on privacy. During the day there are colleagues, family, open doors, the plain possibility of being seen. At night all of that goes away, and the oldest enabler in the world sits down next to you: nobody would ever find out. Secrecy is not a side condition of the habit — it is the habitat.',
-    },
-    { kind: 'h3', text: '3. Nothing is competing for your attention' },
-    {
-      kind: 'p',
-      text: 'An urge at 2pm has to fight your job, your commute, other people. An urge at midnight fights nothing. Boredom plus a quiet room is a vacuum, and the habit is the most rehearsed vacuum-filler your brain owns. It will helpfully suggest itself every time the schedule goes blank.',
-    },
-    { kind: 'h3', text: '4. The phone is already in your hand' },
-    {
-      kind: 'p',
-      text: 'For most people the entire distance between "urge" and "relapse" is about four taps, executed on a device that is already lying on their chest. No other addiction in history has had its trigger, its delivery system, and its privacy all bundled into the last object you touch before sleep. The physical setup matters more than almost anyone wants to admit.',
-    },
-    { kind: 'h3', text: '5. Your brain is chemically done for the day' },
-    {
-      kind: 'p',
-      text: 'Late at night you are tired, your mood is at its daily low ebb, and the sensible, consequence-weighing part of your thinking is the first thing fatigue switches off. The short version: the person lying in bed at midnight is simply not the same negotiator who confidently promised, at breakfast, that tonight would be different. Making a plan at 9am and expecting the midnight version of you to execute it on willpower is a losing bet.',
+      "kind": "p",
+      "text": "It is 11:47pm. You intended to sleep, but the phone is still in your hand and an ordinary scroll has started turning into a search. If this resembles your evenings, the useful question is what happens in that setting. It is not evidence that you have one personality at breakfast and a defective one after dark."
     },
     {
-      kind: 'callout',
-      title: 'The one-sentence version',
-      text: 'Night urges feel overwhelming because five triggers fire at once: an empty self-control tank, guaranteed privacy, zero competition for attention, a phone within reach, and a tired brain. Remove one or two layers and the stack collapses.',
-    },
-    { kind: 'h2', text: 'Your risk has a shape — find yours' },
-    {
-      kind: 'p',
-      text: 'Ask people to guess when they relapse and most say "randomly, whenever". Ask them to actually log it for a few weeks and something different shows up: a sharp, personal peak, usually in the last two hours before sleep, often on specific days of the week. Random feels unfightable. A peak from 11pm to 1am on Sunday and Thursday is just a scheduling problem.',
+      "kind": "p",
+      "text": "Night is not the highest-risk period for everyone. Shift work, routines, privacy and device access differ. Start with what you notice in your own life. You may find that several conditions come together near bedtime, or that a different period needs the plan. Either way, a specific setting gives you something you can change."
     },
     {
-      kind: 'p',
-      text: 'This is the single most underrated move in recovery: stop treating the habit as a mysterious force and start treating it as a pattern with a timestamp. You cannot fight fog. You can absolutely fight an appointment.',
-    },
-    { kind: 'h2', text: 'What does not work' },
-    {
-      kind: 'p',
-      text: 'White-knuckling at midnight — lying in bed with the phone, eyes closed, trying to out-will the urge — has a terrible track record, for the exact reasons in the stack above: you are fighting at the hour of your weakest willpower, on the habit’s home turf, with the delivery device in your hand. Losing that fight nightly then gets read as proof of being broken, which it is not. It is proof the battlefield was chosen badly.',
-    },
-    { kind: 'h2', text: 'What actually works after 11pm' },
-    {
-      kind: 'p',
-      text: 'Everything that works at night shares one property: it was set up before night. The midnight version of you executes; the daytime version of you decides.',
+      "kind": "h2",
+      "text": "Five parts of the evening worth looking at"
     },
     {
-      kind: 'list',
-      items: [
-        'Get the phone out of the bedroom. Charge it in the kitchen, buy a $10 alarm clock. This one change removes layers 2, 3 and 4 of the stack in a single move, and people consistently report it does more than everything else combined.',
-        'If the phone must stay, make the path longer. Blockers will not stop a determined 2am version of you, but every extra step buys the 10–20 minutes an urge needs to crest and pass. You are not building a wall, you are building a delay.',
-        'Give the danger window a script. The urge fills empty time, so end the day with something that occupies the hands and eyes — shower, stretching, paper book, tidying. Boring is fine. Boring is the point.',
-        'Move your bedtime to beat the peak. If your logged danger window is 11pm–1am, being asleep by 10:30 does not dodge the fight — it wins it. Sleep pressure is on your side if you use it.',
-        'Sit through one wave on purpose. An urge crests and passes in roughly 10–20 minutes whether you act or not. Once you have outlasted one — awake, uncomfortable, and still clean — night urges permanently lose their aura of inevitability.',
-        'Log the near-misses too. The nights you almost slipped are the most valuable data you own: they mark the exact hour and mood your pattern lives in, without costing you a streak.',
-      ],
-    },
-    { kind: 'h2', text: 'If you do slip at night' },
-    {
-      kind: 'p',
-      text: 'Log it honestly and go to sleep. Do not spend the small hours in a shame spiral — the "I already failed anyway" binge that follows a slip does far more damage than the slip itself, and the pull to repeat is strongest in the next 48 hours. One bad night, recorded and followed by a normal morning, is a data point. The same night, plus a spiral, is a setback. The difference between the two is a decision you can still make at 1am.',
+      "kind": "h3",
+      "text": "1. Tiredness can make a complicated plan less practical"
     },
     {
-      kind: 'faq',
-      items: [
+      "kind": "p",
+      "text": "NHLBI guidance explains that insufficient sleep can affect attention, decision-making and management of emotions and behaviour. That is a reason to take sleep seriously. It does not establish a nightly porn-relapse clock or a literal self-control battery that empties at the same hour for everyone."
+    },
+    {
+      "kind": "p",
+      "text": "Ask a simpler question: does your plan require several decisions when you are already tired? Choosing an activity, finding its equipment and deciding where to leave the phone can all be settled earlier. You can reduce those decisions without having to calculate how much willpower remains."
+    },
+    {
+      "kind": "h3",
+      "text": "2. Private time may change what is available"
+    },
+    {
+      "kind": "p",
+      "text": "Being alone is not a problem in itself, and privacy is a normal need. It may, however, be part of your browsing setup. Compare what you actually do when the house becomes quiet. If a particular room or closed door repeatedly precedes explicit browsing, choose an adjustment that respects your living circumstances."
+    },
+    {
+      "kind": "h3",
+      "text": "3. An unplanned gap may become a familiar routine"
+    },
+    {
+      "kind": "p",
+      "text": "After the day’s tasks finish, there may be no obvious next activity. If reaching for a feed has become your default, prepare a modest alternative: getting ready for tomorrow, reading a few pages or doing a quiet household task. You are choosing what fills one period, not scheduling every minute of your life."
+    },
+    {
+      "kind": "h3",
+      "text": "4. The phone may already be doing half the work"
+    },
+    {
+      "kind": "p",
+      "text": "The device’s position matters because it determines the next easy action. A phone on your chest is ready to browse. A phone charging across the room requires standing up. That difference does not guarantee an outcome, but it is an arrangement you can try and assess without making a medical claim."
+    },
+    {
+      "kind": "h3",
+      "text": "5. The last scroll may be linked to an earlier feeling"
+    },
+    {
+      "kind": "p",
+      "text": "Look at what came before the browsing: an argument, unfinished work, boredom or wanting company. Do not force every episode into a trigger category. If the situation is unclear, record it briefly. If the same concern keeps returning, plan for that concern rather than treating every evening as a contest with a search bar."
+    },
+    {
+      "kind": "h2",
+      "text": "Find your actual window before rearranging the night"
+    },
+    {
+      "kind": "p",
+      "text": "For a few attempts, note the time, setting and first step. Record moments when you interrupted browsing as well as episodes you wanted to avoid. Keep the notes neutral and short; explicit detail is not necessary. Missing information should stay missing rather than becoming an assumed successful evening."
+    },
+    {
+      "kind": "p",
+      "text": "AXIOM’s separate hourly analysis describes panic-button presses recorded in the app. Those observations are not a census of urges, a count of unique people or proof that everyone’s risk peaks at the same time. They can prompt a question about your own pattern, but your plan should follow your circumstances."
+    },
+    {
+      "kind": "p",
+      "text": "If your notes show a repeated period, choose a response for its beginning. For example: “If I take the phone to bed after finishing messages, I will put it on the desk before lying down.” You can practise that movement before the difficult night rather than writing a broad promise to resist harder."
+    },
+    {
+      "kind": "h2",
+      "text": "Set up three things before bedtime"
+    },
+    {
+      "kind": "list",
+      "items": [
+        "A place for the device: choose somewhere compatible with essential calls, accessibility or work needs. Across the room may be more practical than outside the bedroom.",
+        "A first quiet action: put out clothes, wash a cup, read a page or prepare the room for sleep. Pick something you can begin without choosing from a long list.",
+        "A reachable response: keep your breathing instructions, a brief urge-surfing exercise or an agreed support route easy to find, without an unplanned trip through feeds."
+      ]
+    },
+    {
+      "kind": "p",
+      "text": "If a blocker is part of the setup, check what it covers. A search filter, browser extension and device restriction do different things. Use a harmless test site to check the configuration. A restriction adds access friction; it does not determine what the feeling means or how long it will last."
+    },
+    {
+      "kind": "p",
+      "text": "Choose a bedtime routine you can realistically follow rather than moving sleep earlier as a guarantee against urges. If sleep itself is persistently difficult, discuss it with a health-care professional. An urge-management plan should not require staying awake to prove that you can endure the night."
+    },
+    {
+      "kind": "h2",
+      "text": "At the moment, follow the small sequence"
+    },
+    {
+      "kind": "p",
+      "text": "Close the material first. Put the device in its chosen place. Notice what you feel without searching for more cues or trying to prove whether you are aroused. Breathe comfortably and bring attention to something ordinary around you. Then begin the next available action you prepared."
+    },
+    {
+      "kind": "p",
+      "text": "Urge surfing is an exercise in responding differently, not an expiry timer for a craving. Research on a brief mindfulness instruction with student smokers found behaviour changes without a significant immediate difference in urges. It did not test pornography use. You can try the exercise without expecting a promised drop in feeling."
+    },
+    {
+      "kind": "p",
+      "text": "If an urge remains, choose again: continue the pause, move to another quiet activity or contact someone who has agreed to offer support. You do not need to reopen explicit material to check whether the method worked. The practical observation is what you did next, even if the night felt difficult."
+    },
+    {
+      "kind": "h2",
+      "text": "If you wake during the night"
+    },
+    {
+      "kind": "p",
+      "text": "Use the same prepared arrangement instead of beginning a fresh browsing session. Keep essential phone functions available while avoiding the feed that takes you towards explicit material. Follow the quiet response you chose earlier. If waking and being unable to return to sleep is a recurring concern, discuss the sleep difficulty separately rather than assuming a quitting timetable explains it."
+    },
+    {
+      "kind": "h2",
+      "text": "If the night did include a slip"
+    },
+    {
+      "kind": "p",
+      "text": "End the session, leave the material and return to getting ready for sleep. You can record a brief account now or make a note to review it tomorrow. Avoid turning the remaining night into a punishment, an argument with the counter or an extended investigation into supposed damage."
+    },
+    {
+      "kind": "p",
+      "text": "In the review, choose one adjustment you can make before the next similar period. If porn use repeatedly disrupts sleep or daily life despite your efforts, consider qualified support. You can bring the specific pattern and what you have tried. A recurring problem deserves more than another instruction to be stronger after midnight."
+    },
+    {
+      "kind": "faq",
+      "items": [
         {
-          q: 'Why are urges so much worse when I am tired?',
-          a: 'Fatigue hits your ability to inhibit impulses before it hits the impulses themselves — so the urge arrives at full strength while the braking system is running on fumes. This is also why all-nighters, jet lag, and broken sleep so often show up right before relapses in people’s logs. Protecting sleep is not a side tip; it is one of the main levers.',
+          "q": "Why do urges feel harder to handle when I am tired?",
+          "a": "Insufficient sleep can affect attention, decisions and management of emotions and behaviour. Your particular setting matters too. A simple prepared response may be more practical than several late-night decisions, but tiredness does not create a universal risk timetable."
         },
         {
-          q: 'Do blockers actually help at night?',
-          a: 'As a wall, no — a determined person defeats any blocker. As a delay, yes: an urge needs only 10–20 minutes to crest and pass, and every extra step between you and the content spends that window. Combine a blocker with a phone-out-of-bedroom rule and the urge usually expires before the workaround does.',
+          "q": "Do blockers help with night urges?",
+          "a": "They may add the access friction you want, depending on their scope and configuration. They do not guarantee that a craving will end during a delay. Check the coverage and pair the restriction with a practical next action."
         },
         {
-          q: 'What if I wake up at 3am with an urge?',
-          a: 'The half-awake window is genuinely dangerous because the reflective part of your thinking comes online last. The two things that work are mechanical, not mental: the phone being physically out of reach so the sleepy autopilot has nothing to execute, and getting out of bed briefly — water, bathroom, thirty seconds standing — which is usually enough to bring the thinking brain back online.',
-        },
-        {
-          q: 'Is late-night use worse than daytime use?',
-          a: 'It compounds differently: it costs you sleep, and short sleep weakens the next evening’s self-control, which makes the next night riskier — a genuine spiral that shows up clearly in people’s logs. Breaking the night link first is why many people find the whole habit loosens once their evenings change.',
-        },
-      ],
+          "q": "What if my difficult period is not at night?",
+          "a": "Plan for the period you actually observe. The same questions apply: what comes first, what is within reach and which response can you prepare? A night-focused article should not override your own record."
+        }
+      ]
     },
-  ],
+    {
+      "kind": "links",
+      "title": "Prepare the next evening",
+      "items": [
+        {
+          "label": "Write your if–then plan",
+          "href": "/axiom/blog/en/if-then-plan/"
+        },
+        {
+          "label": "Follow the urge-surfing walkthrough",
+          "href": "/axiom/blog/en/urge-surfing/"
+        },
+        {
+          "label": "Understand the hourly panic-button observations",
+          "href": "/axiom/blog/en/when-urges-hit/"
+        },
+        {
+          "label": "Know what a blocker can and cannot do",
+          "href": "/axiom/blog/en/porn-blocker-vs-recovery-app/"
+        },
+        {
+          "label": "Continue after a slip",
+          "href": "/axiom/blog/en/after-a-slip/"
+        }
+      ]
+    },
+    {
+      "kind": "sources",
+      "items": [
+        {
+          "label": "NHLBI: sleep deficiency, attention, decisions and behaviour",
+          "url": "https://www.nhlbi.nih.gov/health/sleep-deprivation/health-effects"
+        },
+        {
+          "label": "Bowen & Marlatt (2009): brief mindfulness instruction in student smokers",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/20025372/"
+        }
+      ]
+    }
+  ]
 };
 
 export default article;

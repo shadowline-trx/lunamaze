@@ -21,7 +21,7 @@ import { internalUrl } from '@/lib/paths';
  * untouched — only the shell around them changed.
  */
 
-const LAST_UPDATED = 'September 10, 2026';
+const LAST_UPDATED = 'October 30, 2026';
 const CONTACT_MAILTO = `mailto:${contactEmail}`;
 
 interface QuickFact {
@@ -33,7 +33,7 @@ const QUICK_FACTS: ReadonlyArray<QuickFact> = [
   {
     title: 'A paid app',
     description:
-      'Axiom requires a subscription. There is no free tier and no ad-supported version. The Lighthouse urge tool is the one exception, and it opens whether or not you have paid.',
+      'Full Axiom access requires membership. The Lighthouse opens without paying. The November Climb has a separate, limited seasonal free invitation with access conditions.',
   },
   {
     title: 'Recurring only',
@@ -166,7 +166,7 @@ export default function TermsPage(): JSX.Element {
           </p>
           <p>
             {
-              'One part of the App never requires a subscription. If you are experiencing an urge, the Lighthouse urge tool can be opened from the subscription screen itself and used without paying. We will not put a payment between a person and that.'
+              'The Lighthouse urge tool can be opened from the subscription screen and used without paying. The 2026 November Climb also has a limited seasonal free route: eligible nonmembers see it after 24 hours from their first membership-screen view on the current build, during the 18 October–30 November joining window. It is not an immediate unlock after installation or closing a store sheet. Its invitation covers the Climb, camp participation and Lighthouse, not the main member app or member camp advancement.'
             }
           </p>
           <div className="rounded-2xl border border-[#8b7cf7]/30 bg-[#8b7cf7]/[0.06] px-5 py-4 text-[#e8e6f0]">
@@ -265,7 +265,7 @@ export default function TermsPage(): JSX.Element {
           <h3>Refunds</h3>
           <p>
             {
-              'Apple and Google process every payment for in-app subscriptions, so they, not us, handle refunds under their own policies. We cannot charge your card and we cannot issue a store refund directly. To request a refund:'
+              'Apple and Google process subscription payments. Apple handles App Store refund decisions. Google offers its own refund process, and developers can also issue eligible Google Play refunds. You can contact us about a billing problem or the Android record guarantee below. For store refund requests:'
             }
           </p>
           <div className="overflow-x-auto">
@@ -289,7 +289,7 @@ export default function TermsPage(): JSX.Element {
                   <td>Android (Google)</td>
                   <td>
                     {
-                      'Open Google Play, then Menu, then Order history, select the Axiom purchase, then Report a problem or Request a refund. Google reviews and decides. Many purchases are eligible for an automatic refund within 48 hours of purchase, directly in Google Play.'
+                      'Use the Google Play refund request process, or contact us with your order details for an eligible developer refund. Google eligibility depends on the purchase, timing and applicable policy. A request is not a promise of an automatic refund.'
                     }
                   </td>
                 </tr>
@@ -299,7 +299,7 @@ export default function TermsPage(): JSX.Element {
           <p>
             <strong>{'Our position. '}</strong>
             {
-              'Aside from the automatic windows the stores provide and any rights the law gives you (see below), subscription payments are generally non-refundable, because the Protocol delivers its value, full access to its content and tools, immediately and for the entire billing period. We would rather you did not have to gamble before paying, so there are two ways to avoid it: the monthly plan starts with a free trial for eligible new subscribers, and if a paid month did not help you, the goodwill extension below covers the next one.'
+              'Store refund policies and your statutory rights continue to apply. The current in-app record guarantee is an additional, conditional offer described below. A free trial, when offered to an eligible monthly subscriber, has its own billing and cancellation terms. Neither a trial nor a guarantee promises a health outcome.'
             }
           </p>
           <p>
@@ -308,7 +308,18 @@ export default function TermsPage(): JSX.Element {
             }
           </p>
 
-          <h3>The goodwill extension</h3>
+          <h3 id="record-guarantee">The current record guarantee</h3>
+          <p>For the record guarantee shown in AXIOM 2.7.3, check in on at least 25 of the 30 nights. If you have not reached the personalised target displayed in the app by Night 30, request the remedy from Settings. The target and eligibility shown with your plan govern the offer.</p>
+          <ul>
+            <li>Android: an eligible claim receives a refund of the first payment.</li>
+            <li>iPhone: an eligible claim receives an additional month of access. This is an extension, not an Apple payment refund.</li>
+            <li>A slip does not cancel the nights or the guarantee. The check-in and target conditions still apply.</li>
+            <li>Contact support through Settings so we can verify the purchase and the in-app record. Nothing in this offer limits your statutory rights or the stores’ separate refund processes.</li>
+          </ul>
+          <p>Store guidance: <a href="https://support.google.com/googleplay/android-developer/answer/2741495?hl=en" target="_blank" rel="noopener noreferrer">Google Play developer refunds</a> and <a href="https://support.apple.com/118223" target="_blank" rel="noopener noreferrer">Apple refund requests</a>.</p>
+
+          <h3>Earlier goodwill extensions</h3>
+          <p>If you purchased under the earlier goodwill-extension offer, contact us about the terms offered with that purchase. The earlier offer is preserved here for those subscriptions; it does not replace the current record guarantee.</p>
           <p>
             <strong>
               {
@@ -324,7 +335,7 @@ export default function TermsPage(): JSX.Element {
           <ul>
             <li>
               {
-                'It adds access. It is not a refund. We cannot refund a store payment: Apple and Google collect every payment and only they can reverse one. What we can do is extend your paid period, so your next renewal date moves and that renewal is not charged. Money already paid stays paid.'
+                'The earlier goodwill remedy adds access rather than refunding an earlier payment. The extension moves the eligible renewal date rather than returning money already paid. This describes the earlier extension offer, not the Android first-payment refund in the current record guarantee.'
               }
             </li>
             <li>

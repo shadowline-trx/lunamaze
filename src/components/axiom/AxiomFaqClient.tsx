@@ -12,6 +12,7 @@ export interface FaqItem {
   readonly shortAnswer: string;
   readonly detailedAnswer: string;
   readonly reference?: string;
+  readonly referenceUrl?: string;
   readonly toolLink?: { label: string; href: string };
 }
 
@@ -33,8 +34,8 @@ const CHAPTERS: ReadonlyArray<Chapter> = [
     id: 'neuroscience',
     number: '01',
     category: 'Neuroscience',
-    title: 'Neurobiology & Receptor Recovery',
-    subtitle: 'How supernormal novelty alters dopamine pathways, receptor density, and homeostasis timelines.',
+    title: 'Habits & the Evidence',
+    subtitle: 'What research can tell us, and why a calendar cannot measure brain recovery.',
     accent: '#8b7cf7',
   },
   {
@@ -42,15 +43,15 @@ const CHAPTERS: ReadonlyArray<Chapter> = [
     number: '02',
     category: 'Psychology & Symptoms',
     title: 'Symptoms, Flatlines & Relationships',
-    subtitle: 'The clinical mechanics of withdrawal phases, desensitization, and relationship intimacy.',
+    subtitle: 'Questions about what you feel, with room for individual assessment.',
     accent: '#60a5fa',
   },
   {
     id: 'protocol',
     number: '03',
     category: 'Quitting & Tools',
-    title: 'The Rewiring Protocol',
-    subtitle: 'Evidence-based urge interception, identity transitions, and sustainable habit formation.',
+    title: 'The Next Practical Step',
+    subtitle: 'Plans, check-ins, and the tools actually available in AXIOM.',
     accent: '#00f5a0',
   },
   {
@@ -142,7 +143,7 @@ export default function AxiomFaqClient({ faqs }: AxiomFaqClientProps) {
               <span className={`${MONO} text-sm font-semibold tracking-[0.32em] text-[#f2f1f7]`}>
                 AXIOM
               </span>
-              <span className="text-[9px] tracking-[0.24em] text-[#8a86a0] uppercase">Neuroscience Archive</span>
+              <span className="text-[9px] tracking-[0.24em] text-[#8a86a0] uppercase">Recovery questions</span>
             </div>
           </Link>
 
@@ -180,26 +181,26 @@ export default function AxiomFaqClient({ faqs }: AxiomFaqClientProps) {
           <span className="text-[#3c3852]">/</span>
           <Link href="/axiom/" className="hover:text-[#edeaf5] transition-colors">Axiom</Link>
           <span className="text-[#3c3852]">/</span>
-          <span className="text-[#c5bdfc]">Clinical Archive</span>
+          <span className="text-[#c5bdfc]">Recovery questions</span>
         </nav>
 
         {/* Hero Presentation */}
         <div className="pb-12 border-b border-white/[0.06]">
           <div className={`${MONO} mb-4 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-[#8b7cf7]`}>
             <span className="h-1.5 w-1.5 rounded-full bg-[#8b7cf7] shadow-[0_0_8px_#8b7cf7]" />
-            Evidence-Based Clinical FAQ
+            The questions, with sources
           </div>
 
           <h1 className="text-[clamp(2.4rem,5.5vw,4.2rem)] font-light leading-[1.04] tracking-[-0.035em] text-[#fbfaff]">
             The questions everyone asks.
             <br />
             <span className="ax-serif font-normal italic text-axiom-violetGlow">
-              Answered with proof, not shame.
+              A place to start looking.
             </span>
           </h1>
 
           <p className="mt-6 max-w-2xl text-base leading-[1.75] text-[#a6a3b8] sm:text-lg">
-            A plain-language reference on compulsive pornography use, withdrawal flatlines, dopamine and recovery, and keeping it private. Drawn from peer-reviewed research, with sources.
+            Habits, difficult evenings, the tools in AXIOM, and what stays private. Research has limits; your own symptoms deserve individual attention. Updated for 2.7.3.
           </p>
         </div>
 
@@ -338,7 +339,7 @@ export default function AxiomFaqClient({ faqs }: AxiomFaqClientProps) {
               <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-12 text-center">
                 <p className="text-base font-medium text-[#edeaf5]">No matching answers found.</p>
                 <p className="mt-2 text-xs text-[#8983a3]">
-                  Try searching for terms like &ldquo;dopamine&rdquo;, &ldquo;flatline&rdquo;, &ldquo;PIED&rdquo;, &ldquo;tracking&rdquo;, or &ldquo;India&rdquo;.
+                  Try &ldquo;plan&rdquo;, &ldquo;flatline&rdquo;, &ldquo;privacy&rdquo; or &ldquo;membership&rdquo;.
                 </p>
                 <button
                   onClick={() => {
@@ -370,25 +371,25 @@ export default function AxiomFaqClient({ faqs }: AxiomFaqClientProps) {
           </p>
 
           <h2 className="text-2xl sm:text-3xl font-light tracking-tight text-[#edeaf5]">
-            Rewiring is an arc. Start yours with proof.
+            Give tonight a place to begin.
           </h2>
 
           <p className="mx-auto mt-4 max-w-lg text-sm sm:text-base text-[#a6a3b8] leading-relaxed">
-            AXIOM is an honest habit tracker and recovery protocol. One subscription covers all of it, with a 7-day free trial on the monthly plan: daily check-ins, guided breathing, the pattern engine, and a private journal that never leaves your phone. The Lighthouse urge tool opens in a crisis whether you subscribe or not.
+            AXIOM 2.7.3 offers thirty Recalibration nights, a daily plan, check-ins, breathing and a journal that stays on your phone. Full access is paid, with a seven-day monthly trial if eligible. The Lighthouse opens without membership.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
             <Link
-              href="/axiom/"
+              href="/axiom/#night-preview"
               className={`${MONO} rounded-xl bg-[#8b7cf7] px-7 py-3.5 text-xs font-semibold uppercase tracking-[0.22em] text-[#070709] transition-transform hover:scale-105 shadow-[0_0_25px_rgba(139,124,247,0.4)]`}
             >
-              Get Axiom
+              Preview your first night
             </Link>
             <Link
-              href="/axiom/tools/severity-test/"
+              href="/axiom/tools/panic/"
               className={`${MONO} rounded-xl border border-white/15 bg-white/[0.04] px-6 py-3.5 text-xs uppercase tracking-[0.22em] text-[#edeaf5] hover:bg-white/10 hover:border-white/30`}
             >
-              Severity Self-Test
+              Free Panic Button
             </Link>
             <Link
               href="/axiom/tools/rewire-calculator/"
@@ -505,9 +506,9 @@ function FaqCard({
               {item.reference && (
                 <div className="flex items-start gap-2.5 rounded-xl border border-white/[0.05] bg-black/40 p-3.5 text-xs text-[#8983a3]">
                   <span className={`${MONO} text-[10px] uppercase tracking-wider text-[#c5bdfc] shrink-0 font-semibold`}>
-                    Study:
+                    Source:
                   </span>
-                  <span className="italic leading-relaxed">{item.reference}</span>
+                  {item.referenceUrl ? <a href={item.referenceUrl} target="_blank" rel="noopener noreferrer" className="leading-relaxed underline underline-offset-4">{item.reference}</a> : <span className="leading-relaxed">{item.reference}</span>}
                 </div>
               )}
 

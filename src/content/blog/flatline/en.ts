@@ -1,148 +1,201 @@
 import type { BlogArticle } from '../types';
 
-/**
- * Deep-dive on the flatline — the single biggest relapse cause we can write
- * about. Target queries: "flatline how long", "no libido after quitting porn",
- * "flatline or permanent damage", "reboot flatline depression".
- * Same voice rules as rewire-timeline: honest, concrete, no medical-efficacy
- * claims, and a real "see a professional" line where it belongs.
- */
 const article: BlogArticle = {
-  slug: 'flatline',
-  lang: 'en',
-  title: 'The Flatline: Why You Feel Nothing After Quitting Porn — and Why That Is Not Damage',
-  seoTitle: 'Porn Flatline: Why You Feel Nothing and How Long It Lasts',
-  description:
-    'Zero libido, gray mood, no motivation a few weeks in? That is the flatline. What it is, how long it lasts, and the one mistake that restarts it.',
-  datePublished: '2026-07-23',
-  dateModified: '2026-07-23',
-  readingMinutes: 8,
-  ctaLabel: 'See how Axiom works',
-  ctaText:
-    'Axiom marks the flatline window on your own timeline so a gray week reads as a stage, not a verdict. Your journal never leaves your phone.',
-  blocks: [
+  "slug": "flatline",
+  "lang": "en",
+  "title": "The Porn Flatline: Low Libido, Flat Mood and What Deserves Attention",
+  "seoTitle": "Porn Flatline: Why You Feel Nothing and How Long It Lasts",
+  "description": "What people mean by a porn flatline, why it has no fixed timetable, and how to respond to low libido or flat mood without self-diagnosing.",
+  "datePublished": "2026-07-23",
+  "dateModified": "2026-10-30",
+  "readingMinutes": 7,
+  "ctaLabel": "See the daily tools in AXIOM",
+  "ctaText": "AXIOM offers a journal, guided breathing and thirty nights of Recalibration. Your notes can describe how you feel without assigning a biological recovery stage.",
+  "blocks": [
     {
-      kind: 'p',
-      text: 'Somewhere around week two or three of quitting, a lot of people run into something nobody warned them about. The urges quiet down — which sounds like winning — but so does everything else. Libido: gone. Not suppressed, not resisted. Gone, like a switch was flipped. Mood goes flat and gray. Food is fine, music is fine, everything is just… fine, in the way a waiting room is fine.',
+      "kind": "callout",
+      "title": "What the label can tell you",
+      "text": "“Flatline” is a word used in online quitting communities for experiences such as low libido or flat mood. It does not establish a cause, prove damage or prove healing. There is no reliable individual countdown. If symptoms worry you or affect daily life, seek assessment rather than waiting for an expected stage to end."
     },
     {
-      kind: 'p',
-      text: 'This is the flatline. It is probably the least-discussed and most misunderstood stage of the entire process, and it kills more recoveries than urges do. Not because it is painful — because it is convincing. It walks in wearing a lab coat and tells you, calmly, that you have broken yourself permanently and should probably check whether everything still works.',
+      "kind": "p",
+      "text": "You stop watching porn and begin checking for signs that things are improving. Instead, your interest in sex feels different, or the rest of the day feels unusually dull. A search produces two confident explanations: you are permanently damaged, or you are healing exactly on schedule. Neither conclusion follows from the feeling alone."
     },
     {
-      kind: 'p',
-      text: 'That check is a relapse. This article exists so you do not take the bait.',
-    },
-    { kind: 'h2', text: 'What the flatline actually is' },
-    {
-      kind: 'p',
-      text: 'Years of heavy use train your reward system on an artificially loud signal — novelty on tap, escalation on demand, a spike no real-life stimulus competes with. Your brain adapts the way brains always adapt to loud input: it turns the receiver down. That is desensitization, and it is well documented across addiction research in general.',
+      "kind": "p",
+      "text": "There is a more useful response than choosing between those claims. Describe what has changed, keep track of its impact and get appropriate advice if it concerns you. You can continue a chosen goal around porn while taking low mood or sexual difficulties seriously. One does not require dismissing the other."
     },
     {
-      kind: 'p',
-      text: 'Now you quit. The artificially loud signal stops. But the receiver is still turned way down, and it does not spring back overnight. For a stretch of time you are living in the gap between the two — the old volume is gone and the normal volume has not come back. Everything runs quiet. Libido runs quietest of all, because that is the exact channel that was being shouted into for years.',
+      "kind": "h2",
+      "text": "What people mean when they say “flatline”"
     },
     {
-      kind: 'p',
-      text: 'Seen that way, the flatline is not a malfunction. It is the trough of the recovery curve — the low point that exists precisely because healing is underway. A brain that felt nothing was wrong would have nothing to recalibrate.',
+      "kind": "p",
+      "text": "The word often groups several experiences together: less sexual desire, fewer urges to view porn, low energy, reduced enjoyment or anxiety about whether sexual responses will return. Those are not the same observation. A person who no longer wants to browse explicit material may be describing something quite different from someone who cannot enjoy anything or manage daily tasks."
     },
     {
-      kind: 'callout',
-      title: 'The one-sentence version',
-      text: 'The flatline is your brain recalibrating in silence. Feeling nothing for a while is what the middle of recovery feels like — not what damage feels like.',
-    },
-    { kind: 'h2', text: 'What it feels like from the inside' },
-    {
-      kind: 'list',
-      items: [
-        'Libido at or near zero — often the first and loudest symptom, and the scariest one.',
-        'Emotional grayness. Not sadness exactly; more like the color got turned down on everything.',
-        'Low motivation, low energy, a general "why bother" hum.',
-        'Weirdly, fewer urges. The silence people spent weeks wishing for shows up and immediately feels wrong.',
-        'A very persuasive internal voice explaining that this one is permanent.',
-      ],
+      "kind": "p",
+      "text": "Separate the observations before attaching an explanation. Is desire lower, or is your interest specifically in porn lower? Is the difficulty limited to one situation? Has your general mood changed? Are you tired or sleeping differently? You do not need to answer every question yourself; they can help you describe the concern in a conversation with a clinician."
     },
     {
-      kind: 'p',
-      text: 'Not everyone gets all of these, and some people barely flatline at all. Others get hit hard. There is no formula that predicts which you will be, though heavier and longer use generally means a deeper trough.',
-    },
-    { kind: 'h2', text: 'How long does it last?' },
-    {
-      kind: 'p',
-      text: 'The honest answer is a range: reports run from a few days to a few months, with a couple of weeks being the common middle. It usually starts somewhere in weeks 2–6 and lifts gradually rather than all at once — most people notice it left before they noticed it leaving. One morning music sounds good again, or someone attractive registers as attractive, and you realize the gray patch is behind you.',
+      "kind": "p",
+      "text": "The label is not a medically established stage with a standard start date and endpoint. A qualitative study of online rebooting journals describes members’ experiences and interpretations, not a test that distinguishes a flatline from other causes. Forum reports can offer recognition without establishing what is happening in your individual case."
     },
     {
-      kind: 'p',
-      text: 'Two things are worth saying plainly. First: nobody can tell you your exact duration, and anyone offering a precise number is guessing. Second: the flatline ends. Across thousands and thousands of self-reports, the pattern holds — it ends. The only reliable way to make it longer is the one mistake covered next.',
-    },
-    { kind: 'h2', text: 'The "test" trap' },
-    {
-      kind: 'p',
-      text: 'At some point during the gray weeks, the thought arrives: what if it never comes back? Better to check. Just once, just to confirm the machinery still works.',
+      "kind": "h2",
+      "text": "Why a dopamine story cannot diagnose the feeling"
     },
     {
-      kind: 'p',
-      text: 'Here is the trap in full view. The test uses the exact stimulus your brain is trying to recalibrate away from. It is like checking whether your sunburn healed by going back out at noon. The relief lasts minutes; the recalibration clock takes real damage; and the flatline that follows a "test" is routinely reported as deeper than the one before it. Worse, the test usually does work in the moment — the supernormal stimulus still fires even when nothing else does — which your anxious brain reads as proof that only porn works now. That conclusion is exactly backwards, and it is exactly how people get stuck in a loop of flatline, panic, test, deeper flatline.',
+      "kind": "p",
+      "text": "The familiar explanation says that porn turned the brain’s reward volume down and the silence proves it is turning back up. It is an appealing story because it gives discomfort a purpose. But feeling flat does not measure dopamine, identify a particular neural change or show that a repair process is on schedule."
     },
     {
-      kind: 'quote',
-      text: 'The flatline does not end because you tested it. It ends because you didn’t.',
-    },
-    { kind: 'h2', text: 'Flatline or depression? Take this part seriously' },
-    {
-      kind: 'p',
-      text: 'The flatline can look a lot like depression from the inside, and this deserves a straight answer instead of a shrug. Some rough distinguishing marks: the flatline arrives on schedule (a few weeks after quitting), centers on libido and reward-flatness, and drifts upward over weeks. It generally does not include hopelessness about your whole life, persistent thoughts of self-harm, or an inability to function at work or school.',
+      "kind": "p",
+      "text": "Research about reward and learning does not let a blog assign the same mechanism to every person with low desire. Nor can the depth of a bad week tell you how much prior damage you had. Treating the worst symptoms as proof of the most healing can encourage people to wait when they would benefit from assessment."
     },
     {
-      kind: 'p',
-      text: 'If what you are feeling includes those things — or if the grayness is still fully flat months in and not budging — do not diagnose yourself off a blog post, including this one. Talk to a doctor or a therapist. Quitting porn and treating depression are not competing explanations; some people genuinely need both, and getting help is not a failure of the process. It is part of it.',
-    },
-    { kind: 'h2', text: 'What to actually do during a flatline' },
-    {
-      kind: 'p',
-      text: 'The honest answer is: mostly boring maintenance. There is no lever that ends it early, and chasing one becomes its own problem. What helps is keeping the machine running while it recalibrates:',
+      "kind": "p",
+      "text": "A randomized seven-day pornography-abstinence study did not find general withdrawal effects in its confirmatory analyses. That finding has limits and does not dismiss anyone’s experience. It does mean a universal withdrawal narrative is too confident. Neither the study nor an online phase chart can explain all persistent symptoms after quitting."
     },
     {
-      kind: 'list',
-      items: [
-        'Keep the streak boring. The flatline is bad terrain for big decisions and grand experiments. Routine is your friend for a few weeks.',
-        'Move your body daily. Exercise will not end the flatline, but it reliably takes the edge off the grayness — and it is one of the few dopamine sources that helps rather than hurts.',
-        'Protect sleep like it is your job. A tired brain in a flatline is the most persuasive "just test it" brain there is.',
-        'Log the gray days honestly. A flat week that is written down becomes data — you can literally watch it lift. A flat week that is only felt becomes a story about being broken.',
-        'Tell one person, even anonymously. The flatline thrives on the private 2am conclusion that you are uniquely damaged. It survives contact with another human badly.',
-      ],
-    },
-    { kind: 'h2', text: 'Why the flatline is, weirdly, a good sign' },
-    {
-      kind: 'p',
-      text: 'Nobody enjoys hearing this mid-flatline, but it tends to land later: the people who report the deepest flatlines are usually the ones whose reward systems had adapted the furthest — which means the silence is the sound of a large recalibration actually happening. The absence of feeling is not the absence of progress. Underneath the gray, sensitivity is creeping back toward normal at its own pace, whether or not you can feel it doing so.',
+      "kind": "h2",
+      "text": "How long does a porn flatline last?"
     },
     {
-      kind: 'p',
-      text: 'You do not have to believe that today. You just have to not act against it. Get through the gray weeks doing boring maintenance, and let the far side of the curve make the argument for you.',
+      "kind": "p",
+      "text": "There is no validated duration you can use to predict an individual endpoint. Community accounts vary, and their dates do not establish a usual medical course. A symptom starting two weeks after you stop watching porn does not prove a particular stage; a symptom starting later does not rule other explanations out."
     },
     {
-      kind: 'faq',
-      items: [
+      "kind": "p",
+      "text": "The practical question is what the change is doing to your life and whether you are concerned. You do not have to wait thirty, sixty or ninety days to ask for help. NHS guidance recommends seeing a GP if you are worried about low sex drive. An appointment can consider circumstances a reboot calendar cannot."
+    },
+    {
+      "kind": "p",
+      "text": "Equally, a day with less sexual interest does not require an emergency investigation or repeated testing. Record the concern plainly if that helps, continue ordinary activities and decide on an appropriate next step. The aim is to respond proportionately, without either catastrophising a feeling or making a guarantee about how it will end."
+    },
+    {
+      "kind": "h2",
+      "text": "Low libido has more than one possible explanation"
+    },
+    {
+      "kind": "p",
+      "text": "NHS guidance lists possible contributors including stress, anxiety or depression, relationship and sexual difficulties, some medicines, hormonal changes, alcohol and certain health conditions. That list is not a diagnosis for you. Its importance here is that low desire is not specific enough to identify a porn-recovery mechanism."
+    },
+    {
+      "kind": "p",
+      "text": "If you have started or changed a medicine, make a note to discuss it with the prescriber rather than stopping it yourself. If there is pain, erectile difficulty or another sexual-health concern, describe that separately. A clinician can assess relevant causes and discuss options that fit what is actually happening."
+    },
+    {
+      "kind": "p",
+      "text": "You are allowed to care about sexual wellbeing without using porn as the measuring instrument. A response to explicit material is not a complete assessment of desire, relationships or physical health. It also cannot tell you how long a supposed flatline has left to run."
+    },
+    {
+      "kind": "h2",
+      "text": "When low mood needs attention in its own right"
+    },
+    {
+      "kind": "p",
+      "text": "You cannot reliably distinguish a community-described flatline from depression by whether it arrived in a particular week. NIMH describes persistent low mood or loss of interest that affects daily activities as reasons to seek a clinical conversation. Difficulties with sleep, energy and concentration can be part of a wider picture."
+    },
+    {
+      "kind": "p",
+      "text": "If your mood is persistently low, you have lost interest in things you usually enjoy, or daily functioning is becoming difficult, talk to a health-care professional. Do not interpret the inability to work, eat normally or care for yourself as a required phase to endure. Seek urgent local medical help if you feel unable to keep yourself safe."
+    },
+    {
+      "kind": "p",
+      "text": "You do not have to decide the cause before making the appointment. You can say: “I changed this behaviour, then noticed these symptoms, and they are affecting these parts of my day.” That gives the professional something concrete to assess without asking you to defend an internet diagnosis."
+    },
+    {
+      "kind": "h2",
+      "text": "What to do while arranging the next step"
+    },
+    {
+      "kind": "list",
+      "items": [
+        "Keep a brief record of the change, its timing and its impact. Avoid checking your arousal repeatedly or turning every hour into a score.",
+        "Maintain manageable routines around meals, sleep, movement and ordinary responsibilities. They support daily life; they are not promised cures for a flatline.",
+        "If an urge or anxious search appears, close the material and use a prepared response away from the screen.",
+        "Choose one trusted person to talk to if that would help. Agree on what you want to share and what support they can provide.",
+        "Bring relevant notes, medication changes and questions to a qualified professional rather than waiting for a calendar milestone."
+      ]
+    },
+    {
+      "kind": "p",
+      "text": "Keep the record short enough to use. “Low interest today; slept poorly; still went to work; worried about it” is more informative than a percentage of brain recovery. Mark what you observed and what you do not know. If logging makes you more preoccupied, simplify it or discuss that with the person helping you."
+    },
+    {
+      "kind": "h2",
+      "text": "If you have already “tested” yourself with porn"
+    },
+    {
+      "kind": "p",
+      "text": "You do not need a story about restarting a neurological clock. If the episode went against your chosen goal, end it, record the situation and choose the next practical step. You can also keep the question about your symptoms open and seek advice. A browsing episode does not resolve a medical question either way."
+    },
+    {
+      "kind": "p",
+      "text": "The useful aim is neither to force desire to return nor to prove that you can tolerate unlimited distress. It is to take your experience seriously, avoid conclusions the evidence cannot support and get suitable help when you need it. A careful plan leaves room for both habit change and health care."
+    },
+    {
+      "kind": "faq",
+      "items": [
         {
-          q: 'Is the flatline guaranteed to happen to everyone?',
-          a: 'No. Some people quit with barely a dip, others hit a deep trough for weeks. Depth seems loosely related to how heavy and how long the prior use was, but there is no reliable predictor. Plan for it so it cannot ambush you; be pleasantly surprised if it stays mild.',
+          "q": "Does everyone get a flatline after quitting porn?",
+          "a": "No universal phase has been established. The term collects different self-reported experiences and does not predict what you must feel. A quiet period in porn urges is also different from persistent low mood or loss of interest across life."
         },
         {
-          q: 'Can a flatline start late — after month two or three?',
-          a: 'Yes, later-onset and second flatlines are commonly reported, especially after a period of feeling better. A late gray patch does not mean you regressed. The recovery curve is not a straight line, and dips inside an overall uptrend are normal.',
+          "q": "Does a flatline prove my brain is healing?",
+          "a": "No. Low mood or low desire cannot measure neural repair. They also do not, by themselves, prove permanent damage. Describe the symptoms and seek assessment if they concern you rather than assigning a biological meaning."
         },
         {
-          q: 'Does relapsing during a flatline reset everything?',
-          a: 'It does not erase weeks of recalibration in one stroke, but flatline relapses are especially costly for two reasons: the chaser effect makes the next 48 hours dangerous, and the "test" logic that caused the slip is still sitting there ready to run again. If it happens, log it, skip the shame spiral, and get back to boring maintenance the same day.',
-        },
-        {
-          q: 'How do I know the flatline is ending?',
-          a: 'Usually in small, unannounced ways: music has color again, mornings feel less heavy, real people register as attractive, motivation shows up for something minor. It fades out gradually — most people only realize it ended when they look back at their log and see the gray week sitting behind them.',
-        },
-      ],
+          "q": "Should I wait for ninety days before seeing a doctor?",
+          "a": "No. You can seek advice whenever the symptoms worry you, persist or interfere with daily life. The date of a quitting milestone is not a medical threshold, and a forum label should not delay care."
+        }
+      ]
     },
-  ],
+    {
+      "kind": "links",
+      "title": "Keep the next step practical",
+      "items": [
+        {
+          "label": "What a porn-recovery timeline can actually tell you",
+          "href": "/axiom/blog/en/rewire-timeline/"
+        },
+        {
+          "label": "Track your experience without a recovery percentage",
+          "href": "/axiom/blog/en/progress-beyond-streaks/"
+        },
+        {
+          "label": "Respond to an anxious urge without testing yourself",
+          "href": "/axiom/blog/en/urge-surfing/"
+        },
+        {
+          "label": "What to do after a slip",
+          "href": "/axiom/blog/en/after-a-slip/"
+        }
+      ]
+    },
+    {
+      "kind": "sources",
+      "items": [
+        {
+          "label": "Fernandez et al. (2021): qualitative analysis of online rebooting journals",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/33403533/"
+        },
+        {
+          "label": "Fernandez et al. (2023): randomized seven-day pornography-abstinence study",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/36652136/"
+        },
+        {
+          "label": "NHS: causes of low sex drive and when to speak with a GP",
+          "url": "https://www.nhs.uk/symptoms/loss-of-libido/"
+        },
+        {
+          "label": "NIMH: depression, symptoms and seeking help",
+          "url": "https://www.nimh.nih.gov/health/publications/depression"
+        }
+      ]
+    }
+  ]
 };
 
 export default article;

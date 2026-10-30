@@ -1,0 +1,96 @@
+.tonight, .notes, .season, .updatePage { --ink: #ece9f4; --muted: #aaa5ba; --violet: #b5a6ff; --line: rgba(220, 214, 239, .13); color: var(--ink); }
+.mobileMenu { display: none; position: relative; }
+.mobileMenu summary { display: flex; flex-direction: column; justify-content: center; gap: 6px; width: 2.75rem; height: 2.75rem; cursor: pointer; list-style: none; padding: .7rem; }
+.mobileMenu summary::-webkit-details-marker { display: none; }
+.mobileMenu summary span { height: 1px; width: 100%; background: #c8c1db; transition: transform 180ms; }
+.mobileMenu[open] summary span:first-child { transform: translateY(3.5px) rotate(45deg); }
+.mobileMenu[open] summary span:last-child { transform: translateY(-3.5px) rotate(-45deg); }
+.mobileMenu nav { position: absolute; top: 3.3rem; left: 50%; transform: translateX(-50%); width: min(17rem,85vw); padding: .7rem 1.2rem; background: #14111cf7; border: 1px solid #bfa7ed33; border-radius: 1rem; box-shadow: 0 20px 70px #0009; }
+.mobileMenu nav a { display: flex; align-items: center; min-height: 2.9rem; font-size: .87rem; color: #e2d7ef; border-bottom: 1px solid #c1a8ed14; }
+.mobileMenu nav a:last-child { border: 0; }
+.mobileMenu summary:focus-visible { outline: 2px solid #c8b7ff; outline-offset: 2px; }
+.swipeHint { display: none; }
+.tonight { position: relative; isolation: isolate; padding: clamp(6rem, 12vw, 11rem) 1.5rem; background: #0b0b0f; scroll-margin-top: 5rem; }
+.tonight::before { content: ''; position: absolute; inset: 0; z-index: -1; background: radial-gradient(ellipse at 76% 42%, #2a20452e, transparent 55%); }
+.tonightInner { max-width: 72rem; margin: auto; display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 7vw, 7rem); align-items: center; }
+.eyebrow { font: 400 .64rem/1.7 var(--font-mono), monospace; letter-spacing: .23em; text-transform: uppercase; color: var(--violet); margin-bottom: 1.8rem; }
+.tonight h2, .notes h2, .season h2 { font: 550 clamp(2.5rem, 4.8vw, 4.4rem)/1.02 var(--font-grotesk), sans-serif; letter-spacing: -.045em; }
+.tonight h2 em, .notes h2 em, .season h2 em, .updatePage h1 em { font-family: var(--font-display), Georgia, serif; font-weight: 420; color: #d4cdeb; letter-spacing: -.04em; }
+.lede { max-width: 29rem; font-size: 1.2rem; line-height: 1.6; margin-top: 1.8rem; color: #ddd8e9; }
+.body { max-width: 29rem; color: var(--muted); line-height: 1.8; margin-top: 1.1rem; }
+.releaseLine { display: flex; align-items: start; gap: 1rem; border-top: 1px solid var(--line); padding-top: 1.5rem; margin: 2rem 0 1.5rem; line-height: 1.7; color: var(--muted); font-size: .88rem; }
+.releaseLine > span { font-size: 1.7rem; color: #b8d9cd; line-height: 1.2; }
+.releaseLine strong { font-weight: 500; color: var(--ink); }
+.textLink { display: inline-flex; align-items: center; gap: 1.4rem; min-height: 2.75rem; border-bottom: 1px solid #b5a6ff66; font-size: .9rem; color: #e4dff1; transition: color 180ms, border-color 180ms; }
+.textLink:hover { color: #fff; border-color: #dfd4ff; }
+.textLink span { transition: transform 180ms cubic-bezier(.16,1,.3,1); }
+.textLink:hover span { transform: translate(2px,-2px); }
+.quiet { font-size: .73rem; line-height: 1.6; color: #9992ac; margin-top: 1rem; }
+.tonightCopy { align-self: end; }
+.tonightInner { row-gap: 0; }
+.tonightDetails { grid-column: 1; align-self: start; }
+.nightStage { position: relative; padding: 3.6rem 1.5rem 2.5rem; grid-column: 2; grid-row: 1 / span 2; scroll-margin-top: 4.5rem; }
+.nightOrbit { position: absolute; inset: 0 -2.3rem; pointer-events: none; display: grid; place-items: center; }
+.nightOrbit svg { width: 110%; max-height: 39rem; overflow: visible; }
+.nightPreview { position: relative; margin: auto; max-width: 25rem; padding: 1.6rem 1.8rem 1.1rem; border-radius: 1.4rem; border: 1px solid #b4a4de35; background: linear-gradient(155deg,#1c1826f2,#0c0c12 66%); box-shadow: 0 0 0 7px #1d192321,0 32px 90px #0006; }
+.previewTop { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .8rem; font: 400 .57rem/1.7 var(--font-mono),monospace; letter-spacing: .17em; text-transform: uppercase; color: #a59db9; }
+.previewTop > :first-child { color: #dcd6eb; letter-spacing: .33em; }
+.lantern { margin: 2.7rem auto 2.2rem; width: 5.5rem; height: 6rem; position: relative; display: grid; place-items: center; }
+.lantern::before { content: ''; position: absolute; width: 8rem; height: 8rem; border-radius: 50%; background: radial-gradient(ellipse,#deb58125,transparent 66%); }
+.lantern span { position: relative; width: 2.5rem; height: 3rem; border: 1px solid #bca88b; border-radius: .25rem .25rem .5rem .5rem; background: linear-gradient(90deg,transparent,#dfba7e12,transparent); box-shadow: 0 0 35px #deb58112,inset 0 0 12px #deb5810a; }
+.lantern span::before { content: ''; position: absolute; width: 1.2rem; height: .7rem; border: 1px solid #bca88b; border-bottom: 0; border-radius: 1rem 1rem 0 0; left: .59rem; top: -.74rem; }
+.lantern span::after { content: ''; position: absolute; width: .45rem; height: 1.05rem; border-radius: 80% 20% 70% 30%; background: #efd7ab; left: .98rem; top: 1rem; box-shadow: 0 0 17px 5px #dfba7e4a; transform: rotate(12deg); }
+.lantern i { position: absolute; bottom: .15rem; width: 4rem; height: .35rem; border-radius: 50%; background: #bca88b13; filter: blur(3px); }
+.nightTabs { display: grid; grid-template-columns: repeat(3,1fr); border-bottom: 1px solid var(--line); }
+.nightTabs button { position: relative; padding: .8rem .25rem; font-size: .8rem; color: #9c94ad; transition: color 180ms; text-align: center; }
+.nightTabs button span { display: block; margin-bottom: .15rem; font: 400 .55rem/1.6 var(--font-mono),monospace; letter-spacing: .15em; }
+.nightTabs button[aria-selected='true'] { color: #eee7ff; }
+.nightTabs button[aria-selected='true']::after { content: ''; position: absolute; bottom: -1px; height: 1px; left: 15%; right: 15%; background: #bdabff; box-shadow: 0 0 12px #bdabff55; }
+.nightPanel { min-height: 17rem; padding-top: 1.65rem; }
+.nightPanel:not([hidden]) { animation: settleIn 300ms cubic-bezier(.16,1,.3,1) both; }
+.panelCaption { color: #a69bb9; font-size: .69rem; line-height: 1.7; }
+.nightPanel h3 { margin-top: .8rem; font: 450 1.7rem/1.12 var(--font-display),Georgia,serif; letter-spacing: -.03em; }
+.panelText { margin-top: 1.15rem; font-size: .9rem; line-height: 1.85; color: #c2b9d0; }
+.panelFoot { margin-top: 1.6rem; padding-top: 1rem; border-top: 1px solid var(--line); font: 400 .57rem/1.6 var(--font-mono),monospace; letter-spacing: .11em; text-transform: uppercase; color: #a69bb9; }
+.previewNote { position: relative; max-width: 23rem; margin: 1.8rem auto 0; font-size: .67rem; line-height: 1.7; text-align: center; color: #a59ab5; }
+.notes { position: relative; padding: 7rem 1.5rem; background: #0c0b10; }
+.notesInner { max-width: 72rem; margin: auto; }
+.notesHead { display: flex; align-items: end; justify-content: space-between; gap: 2rem; margin-bottom: 3rem; }
+.notesHead h2 { font-size: clamp(2.4rem,4.5vw,3.8rem); }
+.notesList { border-top: 1px solid var(--line); }
+.note { display: grid; grid-template-columns: 3rem 1fr 2rem; gap: 1.3rem; align-items: center; border-bottom: 1px solid var(--line); padding: 1.8rem 0; transition: background 200ms; }
+.note:hover { background: #e4d8ff04; }
+.noteNumber { font: 400 .65rem/1.7 var(--font-mono),monospace; color: #a69bb9; }
+.note h3 { font-size: clamp(1.2rem,2vw,1.5rem); font-weight: 500; letter-spacing: -.025em; line-height: 1.3; color: #e4ddf0; }
+.note p { margin-top: .5rem; font-size: .9rem; line-height: 1.7; color: var(--muted); }
+.note > :last-child { color: #bfb1e1; font-size: 1.4rem; transition: transform 200ms; }
+.note:hover > :last-child { transform: translate(3px,-3px); }
+.season { position: relative; padding: 6rem 1.5rem; background: #11110f; border-block: 1px solid #e5d6ab1c; }
+.seasonInner { max-width: 72rem; margin: auto; display: grid; grid-template-columns: 1fr 1.1fr; gap: 4rem; align-items: start; }
+.season .eyebrow { color: #cebd94; }
+.season h2 { font-size: clamp(2.4rem,4vw,3.7rem); }
+.season h2 em { color: #d9cbad; }
+.season p { line-height: 1.8; color: #b3ad9e; }
+.season small { display: block; line-height: 1.8; margin-top: 1.25rem; font-size: .78rem; color: #aaa494; }
+.season .textLink { border-color: #cebd9455; margin-top: 1.4rem; }
+.seasonCamps { display: flex; align-items: center; gap: 0; margin: 1.7rem 0 2.3rem; }
+.seasonCamps span { flex: 1; height: 1px; background: linear-gradient(90deg,#d9c99f25,#d9c99f77); }
+.seasonCamps i { width: .5rem; height: .5rem; border: 1px solid #d9c99f; border-radius: 50%; box-shadow: 0 0 15px #d9c99f33; }
+.updatePage { min-height: 100vh; background: #0b0b10; padding: 2rem 1.5rem 6rem; font-family: var(--font-grotesk),sans-serif; }
+.updateInner { max-width: 52rem; margin: auto; }
+.updateNav { display: flex; justify-content: space-between; gap: 1rem; font-size: .85rem; color: #c6bddd; margin-bottom: 6rem; }
+.updatePage h1 { font-size: clamp(3rem,7vw,5rem); font-weight: 550; letter-spacing: -.05em; line-height: 1.03; }
+.updateIntro { font-size: 1.2rem; line-height: 1.75; margin: 2rem 0; color: #c8bfd8; }
+.updateVersion { font: 400 .68rem/1.8 var(--font-mono),monospace; color: #b6a5e0; letter-spacing: .13em; text-transform: uppercase; }
+.updatePage section { border-top: 1px solid var(--line); padding: 2.5rem 0; scroll-margin-top: 2rem; }
+.updatePage h2 { font-size: 1.8rem; line-height: 1.2; letter-spacing: -.03em; margin-bottom: 1.2rem; }
+.updatePage section p, .updatePage li { color: #b6acc7; line-height: 1.9; }
+.updatePage section p + p { margin-top: 1rem; }
+.updatePage ul { list-style: disc; padding-left: 1.3rem; margin-top: 1.2rem; }
+.updatePage li + li { margin-top: .6rem; }
+.updatePage a:focus-visible, .tonight a:focus-visible, .nightTabs button:focus-visible, .notes a:focus-visible, .season a:focus-visible { outline: 2px solid #d2c2ff; outline-offset: 5px; border-radius: 2px; }
+@keyframes settleIn { from { opacity: .3; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+@media (max-width: 800px) { .tonightInner, .seasonInner { grid-template-columns: 1fr; gap: 2rem; } .tonightCopy { max-width: 34rem; } .nightStage { grid-column: 1; grid-row: auto; max-width: 31rem; width: 100%; margin: auto; } .nightOrbit { inset-inline: -1rem; } .tonight { padding-top: 5rem; padding-bottom: 4rem; } .season { padding-block: 4rem; } }
+@media (max-width: 480px) { .nightStage { padding: 2.2rem .5rem; } .nightPreview { padding: 1.4rem; } .nightPanel { min-height: 18rem; } .notesHead { align-items: start; flex-direction: column; gap: .8rem; } .note { grid-template-columns: 1.5rem 1fr 1rem; gap: .8rem; } .notes { padding-block: 4rem; } .note p { font-size: .83rem; } .updateNav { margin-bottom: 4rem; } }
+@media (max-width: 767px) { .mobileMenu { display: block; } .swipeHint { display: flex; gap: 1.5rem; padding: 0 1.5rem; margin-top: 1rem; font: 400 .65rem/1.8 var(--font-mono),monospace; text-transform: uppercase; letter-spacing: .12em; color: #b9accb; } }
+@media (prefers-reduced-motion: reduce) { .nightPanel:not([hidden]) { animation: none; } .textLink span, .note > :last-child { transition: none; } }

@@ -50,6 +50,12 @@ import nnnRulesId from './no-nut-november-rules/id';
 import nnnRulesEs from './no-nut-november-rules/es';
 import nnnRulesPtBr from './no-nut-november-rules/pt-br';
 import nnnTipsId from './no-nut-november-tips/id';
+import urgeSurfingEn from './urge-surfing/en';
+import afterSlipEn from './after-a-slip/en';
+import blockerVsAppEn from './porn-blocker-vs-recovery-app/en';
+import ifThenPlanEn from './if-then-plan/en';
+import progressEn from './progress-beyond-streaks/en';
+import firstWeekEn from './first-week/en';
 
 /**
  * Central registry of every blog article in every language. Routes, hreflang
@@ -57,6 +63,12 @@ import nnnTipsId from './no-nut-november-tips/id';
  * one import + one array entry.
  */
 export const ALL_ARTICLES: ReadonlyArray<BlogArticle> = [
+  urgeSurfingEn,
+  afterSlipEn,
+  blockerVsAppEn,
+  ifThenPlanEn,
+  progressEn,
+  firstWeekEn,
   rewireEn,
   rewireHi,
   rewireTa,

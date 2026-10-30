@@ -46,6 +46,9 @@ import ParticleField, {
   type ParticleFieldHandle,
 } from '@/components/axiom/ParticleField';
 import Grain from '@/components/axiom/Grain';
+import AxiomTonight from '@/components/axiom/AxiomTonight';
+import AxiomNotes, { AxiomClimb } from '@/components/axiom/AxiomNotes';
+import upgradeStyles from '@/components/axiom/axiom-upgrade.module.css';
 
 gsap.registerPlugin(
   ScrollTrigger,
@@ -78,7 +81,7 @@ const OVER_FIELD =
  * ever produced was unattributable, and "is the website converting?" had no
  * answer available — which is the state the site was judged in.
  */
-const PLAY_URL = playStoreUrl('site-landing');
+const PLAY_URL = playStoreUrl('site-landing', 'website', 'axiom-273');
 /**
  * The App Store listing, campaign-tagged. Falls back to /axiom/ios/ if the ID
  * is ever cleared in storeLinks, so the Apple button is never a dead link.
@@ -172,6 +175,7 @@ function StoreButtons({ variant }: { variant: StoreButtonsVariant }) {
   const play = (
     <a
       key="play"
+      data-store-placement={variant}
       href={PLAY_URL}
       target="_blank"
       rel="noreferrer"
@@ -185,6 +189,7 @@ function StoreButtons({ variant }: { variant: StoreButtonsVariant }) {
   const apple = (
     <a
       key="apple"
+      data-store-placement={variant}
       href={APP_STORE_URL}
       target="_blank"
       rel="noreferrer"
@@ -198,7 +203,7 @@ function StoreButtons({ variant }: { variant: StoreButtonsVariant }) {
   return <>{appleFirst ? [apple, play] : [play, apple]}</>;
 }
 
-const HERO_BADGE = 'ON YOUR HOME SCREEN, IT JUST SAYS AXIOM';
+const HERO_BADGE = 'AXIOM 2.7.3 / IPHONE + ANDROID';
 const JOURNAL_PLAIN =
   '“I relapsed last night. I don’t want anyone to ever know this.”';
 // What the SERVER panel shows. It used to be ciphertext under "No key ·
@@ -317,9 +322,9 @@ const Icon = {
 const CHAPTERS = [
   {
     index: '01',
-    label: 'NEUROSCIENCE',
+    label: 'DAILY WORK',
     word: 'REWIRE',
-    copy: 'Your brain isn’t broken — it’s plastic. AXIOM lays your recovery out in phases, so you can see how far you have come week by week.',
+    copy: 'One night at a time: read a little, do one thing, keep a line in your own words. Thirty authored nights give you somewhere to return.',
   },
   {
     index: '02',
@@ -331,16 +336,16 @@ const CHAPTERS = [
     index: '03',
     label: 'IDENTITY',
     word: 'BECOME',
-    copy: 'Streaks are scaffolding, not the point. The point is the person on the other side — calmer, sharper, in control.',
+    copy: 'A kept plan. A difficult hour handled differently. A night you came back. Count the actions alongside the days.',
   },
 ] as const;
 
 const DIFF_ROWS = [
-  { theirs: 'Fake “80% off” countdowns that reset every visit.', ours: 'One honest price. No countdown, no lie.' },
-  { theirs: 'Your confessions stored readable on their servers.', ours: 'Your journal never leaves your phone.' },
-  { theirs: 'Shame and fear tactics to make you pay.', ours: 'Compassion. A relapse is a reset, never a failure.' },
-  { theirs: 'Inflated “join 2 million men” social proof.', ours: 'No inflated numbers. We will not lie to you.' },
-  { theirs: 'Locked out the moment you stop paying.', ours: 'Mid-urge, the Lighthouse opens. Subscriber or not.' },
+  { theirs: '“Tomorrow I will just try harder.”', ours: 'Choose your hardest hour. Give it one concrete plan.' },
+  { theirs: '“I need to figure this out all at once.”', ours: 'A short read. One task. The next night can wait.' },
+  { theirs: '“I missed a night. I have to start over.”', ours: 'Your next Recalibration night stays where you left it.' },
+  { theirs: '“A reset means all of it was wasted.”', ours: 'Keep your check-in history. Review what happened.' },
+  { theirs: '“I cannot get help until I subscribe.”', ours: 'The Lighthouse opens whether or not you pay.' },
 ] as const;
 
 const MARQUEE_WORDS = [
@@ -361,27 +366,27 @@ type Feature = {
 };
 
 const FEATURES: Feature[] = [
-  { icon: Icon.Pulse, title: 'The Rewire Map', body: 'Your recovery laid out in phases, so every week has a shape instead of a bare count. Not a novelty counter — a picture of the road you are on.', accent: 'text-[#8b7cf7]' },
-  { icon: Icon.Life, title: 'Panic toolkit', body: 'Urge timer, grounding, and a breath pacer one tap from anywhere — built for the 90 seconds that decide everything.', accent: 'text-[#ff8f8f]', badge: 'urgent' },
+  { icon: Icon.Journal, title: 'Thirty nights of Recalibration', body: 'An authored reading and one task each night. Keep a reflection, settle the night, then choose when you will return. A missed night waits.', accent: 'text-[#cdc7ee]' },
+  { icon: Icon.Life, title: 'The Lighthouse', body: 'Choose one move for where you are and get support through the next ten minutes. Open it from the membership screen, whether or not you subscribe.', accent: 'text-[#ff8f8f]', badge: 'urgent' },
   { icon: Icon.Journal, title: 'Private journal', body: 'Write the whole truth. Your entries never leave your phone — they are not on our servers, so nobody there can read them.', accent: 'text-[#cdc7ee]' },
-  { icon: Icon.Compass, title: 'Pattern engine', body: 'The triggers and reset times you record come back to you gathered, so you stop guessing about your own week.', accent: 'text-[#8b7cf7]' },
-  { icon: Icon.Wind, title: 'Breathe', body: 'Ride a craving out in about ninety seconds with guided breathing tuned for urge waves, not spa music.', accent: 'text-[#7fd8ff]' },
-  { icon: Icon.Spark, title: 'Daily practice', body: 'A streak, a check-in, a daily brief. Small honest reps that compound instead of willpower.', accent: 'text-[#ffd27a]' },
-  { icon: Icon.Buddy, title: 'Recovery buddy', body: 'Invite one person you trust. They see whether you are standing — never your journal, never your data.', accent: 'text-[#7fd8ff]' },
+  { icon: Icon.Compass, title: 'Your first read', body: 'After three distinct check-in days, see an early summary of what you logged. More detailed patterns need more check-ins. Your entries set the pace.', accent: 'text-[#8b7cf7]' },
+  { icon: Icon.Wind, title: 'Breathe', body: 'Follow a breath pacer at a comfortable rhythm. Use the session to pause and choose your next action, whether the urge softens or stays.', accent: 'text-[#7fd8ff]' },
+  { icon: Icon.Spark, title: 'Plan your hardest hour', body: 'Choose the time that gets difficult and one response you can actually do. The reminder brings back your plan; the next morning asks how it went.', accent: 'text-[#ffd27a]' },
+  { icon: Icon.Buddy, title: 'Buddy Bond', body: 'Connect with one trusted person using a code and send a nudge. Your buddy sees your chosen display name, never your journal, check-ins or streak.', accent: 'text-[#7fd8ff]' },
   { icon: Icon.Widget, title: 'Widgets & milestones', body: 'Home-screen widgets on Android that keep the day in sight, and milestone artwork actually worth reaching.', accent: 'text-[#ffd27a]' },
-  { icon: Icon.Sound, title: 'Calming soundscapes', body: 'A synthesis engine tuned for urge-surfing — sound sculpted to slow your pulse, not another lo-fi playlist.', accent: 'text-[#7fd8ff]' },
+  { icon: Icon.Pulse, title: 'Focus Timer', body: 'Keep a two-, three- or five-minute commitment. On Android, optional screen pinning adds friction. AXIOM does not block apps or websites.', accent: 'text-[#7fd8ff]' },
   { icon: Icon.Export, title: 'Your data, your call', body: 'Export everything. Delete everything forever. Leaving takes one tap, subscribed or not — that is the point.', accent: 'text-[#cdc7ee]' },
-  { icon: Icon.Shield, title: 'The Shield', body: 'An honest content blocker that is friction, not a cage — and never watches what you browse.', accent: 'text-[#7ef7c2]', badge: 'soon' },
+  { icon: Icon.Sound, title: 'Soundscapes & the Rewire Map', body: 'Keep a quiet soundscape alongside your practice, and explore the map as an educational guide. It is not a scan or a measurement of brain recovery.', accent: 'text-[#7ef7c2]' },
 ];
 
 // The FAQ lives in '@/content/axiomFaq' so the page's JSON-LD can share it.
 
 
 const CURVE_PHASES = [
-  { x: 180, y: 300, w: 'DAYS 1–7', t: 'Withdrawal', d: 'The hardest stretch. Urges peak — this is where the panic tools live.' },
-  { x: 420, y: 330, w: 'WEEKS 2–3', t: 'The flatline', d: 'Feels like nothing is working. Most people hit this. It passes.' },
-  { x: 660, y: 218, w: 'WEEKS 4–6', t: 'Reconnection', d: 'Many people notice energy and focus coming back.' },
-  { x: 900, y: 98, w: 'WEEK 8+', t: 'Stability', d: 'For many, urges get rarer, quieter, survivable.' },
+  { x: 180, y: 300, w: 'START HERE', t: 'Name your reason', d: 'Night 1 asks for one sentence about why you started.' },
+  { x: 420, y: 330, w: 'WHEN IT GETS HARD', t: 'Make one move', d: 'Use the Lighthouse. Change your setting. Choose the next ten minutes.' },
+  { x: 660, y: 218, w: 'AFTER 3 CHECK-INS', t: 'Read what you logged', d: 'Three distinct check-in days open your first summary.' },
+  { x: 900, y: 98, w: 'KEEP RETURNING', t: 'Take the next night', d: 'Thirty Recalibration nights. Your next one waits if life interrupts.' },
 ] as const;
 
 // The recovery curve itself (viewBox 1000×400). Shared so the stroke, the
@@ -428,15 +433,24 @@ export default function AxiomLanding() {
     // is the single most common reason a site "scrolls weird on mobile."
     // Every serious Lenis integration gates it this way — the library's own
     // touch-sync option is off by default for the same reason.
-    if (!reduce && fine) {
-      lenis = new Lenis({ lerp: 0.09, smoothWheel: true });
-      lenis.on('scroll', ScrollTrigger.update);
-      tick = (time: number) => lenis?.raf(time * 1000);
-      gsap.ticker.add(tick);
-      gsap.ticker.lagSmoothing(0);
-      // Dev/test hook: lets tooling drive the smoothed scroller directly.
-      (window as Window & { __axLenis?: Lenis }).__axLenis = lenis;
-    }
+    const desktopScroll = window.matchMedia('(min-width: 768px) and (pointer: fine)');
+    const syncScroller = () => {
+      if (!reduce && desktopScroll.matches && !lenis) {
+        lenis = new Lenis({ lerp: 0.09, smoothWheel: true });
+        lenis.on('scroll', ScrollTrigger.update);
+        tick = (time: number) => lenis?.raf(time * 1000);
+        gsap.ticker.add(tick);
+        gsap.ticker.lagSmoothing(0);
+        (window as Window & { __axLenis?: Lenis }).__axLenis = lenis;
+      } else if (lenis && !desktopScroll.matches) {
+        if (tick) gsap.ticker.remove(tick);
+        tick = null;
+        lenis.destroy();
+        lenis = null;
+      }
+    };
+    syncScroller();
+    desktopScroll.addEventListener('change', syncScroller);
 
     // In-page anchors ride the smoothed scroller on desktop. Without Lenis
     // (touch) they fall back to the browser's own smooth scroll, which is the
@@ -446,13 +460,16 @@ export default function AxiomLanding() {
       if (!link) return;
       const target = document.querySelector<HTMLElement>(link.getAttribute('href') ?? '');
       if (!target) return;
-      e.preventDefault();
+      link.closest('details')?.removeAttribute('open');
       if (lenis) {
-        lenis.scrollTo(target, { offset: -64, duration: 1.5 });
-        return;
+        e.preventDefault();
+        // Settle deferred section heights before measuring a distant target.
+        root.querySelectorAll<HTMLElement>('.ax-cv').forEach((section) => { section.style.contentVisibility = 'visible'; });
+        ScrollTrigger.refresh();
+        const margin = Number.parseFloat(window.getComputedStyle(target).scrollMarginTop) || 0;
+        lenis.scrollTo(target, { offset: margin > 0 ? 0 : -64, duration: 1.5 });
       }
-      const top = target.getBoundingClientRect().top + window.scrollY - 64;
-      window.scrollTo({ top, behavior: reduce ? 'auto' : 'smooth' });
+      // Phones use native anchors, including focus, URL and scroll-margin.
     };
     root.addEventListener('click', onAnchorClick);
 
@@ -1078,8 +1095,9 @@ export default function AxiomLanding() {
             duration: 0.6,
             ease: 'power3.out',
             scrollTrigger: {
-              trigger: '[data-story]',
-              start: 'top 55%',
+              trigger: '[data-hero]',
+              start: 'bottom top',
+              end: 'max',
               toggleActions: 'play none none reverse',
               // One call to action on screen at a time: the nav button steps
               // aside on phones while the sticky bar is up.
@@ -1129,6 +1147,7 @@ export default function AxiomLanding() {
       cancelled = true;
       observers.forEach((stop) => stop());
       root.removeEventListener('click', onAnchorClick);
+      desktopScroll.removeEventListener('change', syncScroller);
       ctx.revert();
       if (tick) gsap.ticker.remove(tick);
       lenis?.destroy();
@@ -1167,6 +1186,7 @@ export default function AxiomLanding() {
         <Nav />
         <StickyCTA />
         <Hero />
+        <AxiomTonight />
         <StoryAct />
         <Marquee />
         <div data-postlude>
@@ -1175,8 +1195,10 @@ export default function AxiomLanding() {
           <Arc />
           <Privacy />
           <Tools />
+          <AxiomClimb />
           <Depth />
           <Pricing />
+          <AxiomNotes />
           <Faq />
           <Finale />
           <Footer />
@@ -1219,14 +1241,25 @@ function Nav() {
             AXIOM
           </span>
         </a>
+        <details className={upgradeStyles.mobileMenu}>
+          <summary aria-label="Open page navigation"><span /><span /></summary>
+          <nav aria-label="On this page">
+            <a href="#tonight">Your first night</a>
+            <a href="#tools">The tools</a>
+            <a href="#pricing">Membership & trial</a>
+            <a href={internalUrl('/axiom/blog/')}>Recovery library ↗</a>
+            <a href={internalUrl('/axiom/updates/')}>What changed in 2.7.3 ↗</a>
+          </nav>
+        </details>
         <div className={`${MONO} ax-glass hidden items-center gap-9 rounded-full px-7 py-3 text-[11px] uppercase tracking-[0.22em] text-[#9b98ad] md:flex`}>
-          <a className="transition-colors hover:text-[#e8e6f0]" href="#difference">The audit</a>
-          <a className="transition-colors hover:text-[#e8e6f0]" href="#arc">The arc</a>
+          <a className="transition-colors hover:text-[#e8e6f0]" href="#tonight">Your first night</a>
+          <a className="transition-colors hover:text-[#e8e6f0]" href="#tools">The tools</a>
           <a className="transition-colors hover:text-[#e8e6f0]" href="#privacy">Discretion</a>
           <a className="transition-colors hover:text-[#e8e6f0]" href="#pricing">Pricing</a>
         </div>
         <a
           href={store.href}
+          data-store-placement="navigation"
           target="_blank"
           rel="noreferrer"
           className="ax-btn-primary ax-nav-cta px-5 py-2 text-sm"
@@ -1259,11 +1292,12 @@ function StickyCTA() {
         <div className="min-w-0 flex-1">
           <p className="truncate text-[15px] font-semibold text-[#f2f1f7]">Quit porn, quietly.</p>
           <p className={`${MONO} truncate text-[10px] uppercase tracking-[0.12em] text-[#7ef7c2]`}>
-            7 days free on monthly
+            Monthly trial · eligibility applies
           </p>
         </div>
         <a
           href={store.href}
+          data-store-placement="mobile-sticky"
           target="_blank"
           rel="noreferrer"
           className="ax-btn-primary shrink-0 px-5 py-2.5 text-sm"
@@ -1318,10 +1352,8 @@ function Hero() {
           style={{ '--ax-d': '0.55s' } as CSSProperties}
           className={`ax-in mx-auto mt-8 max-w-xl text-base leading-relaxed text-[#a6a3b8] ${OVER_FIELD} sm:text-lg`}
         >
-          Every other app for this is named the accusation. On your home
-          screen, this one says AXIOM. Its notifications say “Daily brief”.
-          The recovery work underneath is real and grounded in neuroscience,
-          and your journal never leaves your phone.
+          Thirty guided nights. One task at a time. A reminder when you choose.
+          A private quit-porn app that keeps your journal on your phone.
         </p>
         <div
           data-hero-cta
@@ -1335,18 +1367,18 @@ function Hero() {
           style={{ '--ax-d': '0.85s' } as CSSProperties}
           className={`${MONO} ax-in mt-6 text-[10px] uppercase tracking-[0.22em] text-[#8f8ca1]`}
         >
-          7-day free trial on monthly · Cancel anytime · Journal stays on your phone
+          7-day monthly trial if eligible · Renews unless cancelled · Price shown in app
         </p>
         <p
           style={{ '--ax-d': '1s' } as CSSProperties}
           className={`ax-in mt-4 text-sm text-[#a6a3b8] ${OVER_FIELD}`}
         >
-          Not ready to install?{' '}
+          <a href="#night-preview" className="mr-5 inline-block py-2 text-[#e8e6f0] underline decoration-[#8b7cf7] underline-offset-4">Preview your first night ↓</a>{' '}
           <a
             href={internalUrl('/axiom/tools/panic/')}
             className="text-[#e8e6f0] underline decoration-[#8b7cf7] decoration-1 underline-offset-4 transition-colors hover:text-white"
           >
-            Use the free Panic Button now
+            Need a pause now? Free Panic Button ↗
           </a>
         </p>
       </div>
@@ -1355,7 +1387,7 @@ function Hero() {
         style={{ '--ax-d': '1.1s' } as CSSProperties}
         className={`${MONO} ax-in ax-cue absolute bottom-8 left-1/2 -translate-x-1/2 flex-col items-center gap-3 text-[10px] uppercase tracking-[0.3em] text-[#8f8ca1]`}
       >
-        Scroll — the rewire begins
+        A different night starts here
         <span className="block h-10 w-px overflow-hidden bg-white/10">
           <span className="block h-4 w-px animate-[cueDrop_1.8s_ease-in-out_infinite] bg-[#e8e6f0]/70" />
         </span>
@@ -1453,14 +1485,12 @@ function AuditIntro() {
       <div className="mx-auto max-w-6xl px-6">
         <Eyebrow>04 — the audit</Eyebrow>
         <h2 data-reveal className="max-w-3xl text-[clamp(2.2rem,5vw,3.9rem)] font-semibold leading-[1.04] text-[#f2f1f7]">
-          This category has a trust problem.{' '}
-          <span className="ax-serif text-[#cdc7ee]">We built the opposite.</span>
+          You have tried{' '}
+          <span className="ax-serif text-[#cdc7ee]">trying harder.</span>
         </h2>
         <p data-reveal className="mt-6 max-w-2xl text-lg leading-relaxed text-[#9b98ad]">
-          Most apps in this space run dark patterns and cloud-store the most
-          intimate data a person can share. One market leader recently leaked
-          hundreds of thousands of private confessions. Here is their receipt
-          — and our terms.
+          Give the difficult hour a plan you can follow. Give the next night
+          a place to begin. Here is what that changes in the way you use AXIOM.
         </p>
       </div>
     </section>
@@ -1494,10 +1524,10 @@ function Audit() {
             style={{ clipPath: RECEIPT_CLIP }}
           >
             <p className={`${MONO} text-center text-[13px] font-bold uppercase tracking-[0.3em]`}>
-              The Category
+              The old script
             </p>
             <p className={`${MONO} mt-1.5 text-center text-[9px] uppercase tracking-[0.24em] text-[#181622]/75`}>
-              Recovery apps inc · open 24/7 · every visit
+              Same hour · same promise · tomorrow again
             </p>
             <div className="my-5 border-t-2 border-dashed border-[#181622]/25" />
             {DIFF_ROWS.map((row, i) => (
@@ -1537,11 +1567,11 @@ function Audit() {
             ))}
             <div className="my-5 border-t-2 border-dashed border-[#181622]/25" />
             <div className={`${MONO} flex items-baseline justify-between text-[13px] font-bold uppercase tracking-[0.12em]`}>
-              <span>Total charged</span>
-              <span>Your trust</span>
+              <span>Another night</span>
+              <span>On repeat</span>
             </div>
             <p className={`${MONO} mt-4 text-center text-[9px] uppercase tracking-[0.3em] text-[#181622]/75`}>
-              ✱ no refunds ✱
+              ✱ you can change the next move ✱
             </p>
             {/* VOID stamp slams in at the end of the act. */}
             <div data-void className="pointer-events-none absolute inset-0 grid place-items-center opacity-0">
@@ -1556,9 +1586,9 @@ function Audit() {
           {/* Our terms. */}
           <div data-terms className="ax-card relative p-8 md:p-9">
             <p className={`${MONO} text-[11px] uppercase tracking-[0.3em] text-[#8b7cf7]`}>
-              The AXIOM terms
+              Your next move
             </p>
-            <p className="mt-2 text-[15px] text-[#9b98ad]">Plain, and permanent.</p>
+            <p className="mt-2 text-[15px] text-[#9b98ad]">Something you can actually do.</p>
             <div className="mt-6">
               {DIFF_ROWS.map((row) => (
                 <div
@@ -1601,8 +1631,8 @@ function Arc() {
       <div className="relative mx-auto w-full max-w-6xl px-6">
         <Eyebrow>05 — the arc</Eyebrow>
         <h2 data-reveal className="max-w-2xl text-[clamp(2.2rem,5vw,3.9rem)] font-semibold leading-[1.04] text-[#f2f1f7]">
-          What healing{' '}
-          <span className="ax-serif text-[#cdc7ee]">actually</span> looks like.
+          Progress has{' '}
+          <span className="ax-serif text-[#cdc7ee]">more than one shape.</span>
         </h2>
         <div className="relative mt-12 md:mt-16">
           {/* On touch the chart gets its own centred moment instead of being
@@ -1686,7 +1716,7 @@ function Arc() {
                 className={`${MONO} pointer-events-none absolute left-0 text-[9px] uppercase tracking-[0.22em] text-[#8f8ca1] sm:text-[10px]`}
                 style={{ top: '37.5%', transform: 'translateY(-165%)' }}
               >
-                Baseline — where you started
+                A way through / illustrated, not a recovery forecast
               </span>
               {/* Week labels for the axis above. Same reason as the baseline
                   caption: <text> inside a 1000-unit viewBox rendered at ~350px
@@ -1728,7 +1758,7 @@ function Arc() {
           </div>
         </div>
         <p data-reveal className={`${MONO} mt-10 text-[11px] uppercase tracking-[0.18em] text-[#8f8ca1] md:mt-24`}>
-          Timelines vary by person — this is the typical arc. The app maps yours.
+          A guide to the actions inside AXIOM. This curve does not predict symptoms or brain recovery.
         </p>
       </div>
     </section>
@@ -1827,8 +1857,8 @@ function Tools() {
       <div className="relative mx-auto w-full max-w-6xl px-6">
         <Eyebrow>07 — the tools</Eyebrow>
         <h2 data-reveal className="max-w-2xl text-[clamp(2.2rem,5vw,3.9rem)] font-semibold leading-[1.04] text-[#f2f1f7]">
-          Everything for the work.{' '}
-          <span className="ax-serif text-[#cdc7ee]">Nothing to manipulate you.</span>
+          For the moment.{' '}
+          <span className="ax-serif text-[#cdc7ee]">And the nights after it.</span>
         </h2>
       </div>
       <div
@@ -1842,7 +1872,7 @@ function Tools() {
                 aria-hidden
                 className={`${MONO} ax-outline pointer-events-none absolute -top-3 right-4 text-[5.5rem] font-semibold leading-none opacity-60`}
               >
-                0{i + 1}
+                {String(i + 1).padStart(2, '0')}
               </span>
               <div className="pointer-events-none absolute -left-20 -top-20 h-48 w-48 rounded-full bg-[#8b7cf7]/20 opacity-30 blur-[64px] transition-opacity duration-500 group-hover:opacity-80" />
               <div
@@ -1888,6 +1918,7 @@ function Tools() {
       <p className={`${MONO} mx-auto mt-10 hidden w-full max-w-6xl px-6 text-[10px] uppercase tracking-[0.24em] text-[#8f8ca1] md:block`}>
         Scroll — the shelf slides ⟶
       </p>
+      <p className={upgradeStyles.swipeHint}>Swipe to explore the tools <span aria-hidden="true">⟶</span></p>
     </section>
   );
 }
@@ -1895,21 +1926,21 @@ function Tools() {
 // ── built for depth ──────────────────────────────────────────────────
 const DEPTH_TIERS = [
   {
-    tag: 'Day one — stay light',
-    title: 'Two minutes, no theory.',
-    body: 'Open the app, check in, breathe. The streak and the panic toolkit carry you through the first hard week — nothing to configure, nothing to study.',
+    tag: 'Your first night',
+    title: 'Name the start.',
+    body: 'Read Night 1, write why you started, and keep one small task. The next night begins from there.',
     accent: '#7fd8ff',
   },
   {
-    tag: 'Weeks in — go deeper',
-    title: 'Your patterns surface.',
-    body: 'Your own triggers and reset times, your real arc against the recovery timeline. The plan you wrote after a reset comes back to you within 72 hours.',
+    tag: 'Three distinct check-in days',
+    title: 'Get an early read.',
+    body: 'See a first summary of your own entries. Seven check-in days open the first pattern; ranked triggers need thirty.',
     accent: '#8b7cf7',
   },
   {
-    tag: 'All the way — full depth',
-    title: 'Understand everything.',
-    body: 'The 30-day guided program, complete stats and history, every trigger you have logged. Built for people who want the whole machine, not a mascot.',
+    tag: 'Thirty authored nights',
+    title: 'Keep taking the next one.',
+    body: 'Move through Recalibration in your own order of nights. Your history stays when the streak resets. Missing a night does not erase the programme.',
     accent: '#7ef7c2',
   },
 ] as const;
@@ -1925,9 +1956,9 @@ function Depth() {
           <span className="ax-serif text-[#cdc7ee]">Deep when you’re ready.</span>
         </h2>
         <p data-reveal className="mt-6 max-w-2xl text-lg leading-relaxed text-[#a6a3b8]">
-          Most apps pick one user: the beginner who needs simplicity, or the
-          veteran who wants every variable. AXIOM is layered — the surface
-          stays calm, and the depth is there the day you go looking for it.
+          You do not have to use every tool on day one. Start with tonight.
+          Your check-ins give the pattern view something real to work with;
+          your next lesson stays available when you are ready.
         </p>
         <div className="mt-14 grid gap-5 md:grid-cols-3">
           {DEPTH_TIERS.map((t, i) => (
@@ -1975,12 +2006,11 @@ function Pricing() {
             <span className="ax-serif text-[#cdc7ee]">Shown before you pay.</span>
           </h2>
           <p data-reveal className="mt-6 text-lg leading-relaxed text-[#9b98ad]">
-            AXIOM is a paid app, and the monthly plan starts with a 7-day free
-            trial. You get the whole of it — the streak, the daily check-in,
-            breathing, the daily brief, the 30-day program, the full history.
-            There is no tier above the one you bought and nothing inside is
-            still selling to you. Cancel any time and your data leaves with
-            you.
+            Membership includes Recalibration, your daily plan, check-ins,
+            breathing, journal and full history. Eligible new monthly
+            subscribers get a seven-day trial. Annual plans have no trial.
+            Your store shows the local price, renewal period and first charge
+            before you confirm. A payment method may be required for a trial.
           </p>
           <ul className="mt-8 space-y-3.5">
             {['No fake urgency, ever', 'Price shown honestly, up front', 'No upsell inside the app you bought', 'Cancel any time, keep your data'].map((t) => (
@@ -1999,7 +2029,7 @@ function Pricing() {
             <div className="flex items-baseline justify-between">
               <div>
                 <p className={`${MONO} text-[11px] uppercase tracking-[0.26em] text-[#8b7cf7]`}>The Protocol</p>
-                <p className="mt-2 text-[#9b98ad]">Everything, unlocked.</p>
+                <p className="mt-2 text-[#9b98ad]">Thirty nights. Your daily tools.</p>
               </div>
               <span className={`${MONO} rounded-full border border-[#7ef7c2]/25 bg-[#7ef7c2]/10 px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-[#7ef7c2]`}>
                 One tier
@@ -2007,7 +2037,7 @@ function Pricing() {
             </div>
             <div className="my-8 h-px bg-white/[0.07]" />
             <div className="space-y-3.5">
-              {['A 30-day guided program, one read and one task a day', 'The plan you write after a reset, handed back within 72 hours', 'Your check-ins, triggers and full history', 'The Lighthouse, open even to non-subscribers'].map((t) => (
+              {['Thirty Recalibration nights, with a read and a task', 'Your next-night reminder, at the time you choose', 'Your daily plan, check-ins and private journal', 'The Lighthouse stays open without membership'].map((t) => (
                 <p key={t} className="flex items-start gap-3 text-[#9b98ad]">
                   <span className="mt-0.5 text-[#8b7cf7]">✓</span>
                   {t}
@@ -2018,10 +2048,13 @@ function Pricing() {
               <StoreButtons variant="card" />
             </div>
             <p className={`${MONO} mt-4 text-center text-[10px] uppercase tracking-[0.16em] text-[#8f8ca1]`}>
-              7-day free trial on monthly for new subscribers · cancel anytime
+              Eligible monthly trial · Renews unless cancelled in your store
             </p>
             <p className="mt-5 text-center text-sm leading-relaxed text-[#9b98ad]">
-              A paid month did not help? Ask in Settings and the next 30 days are free.
+              The record guarantee requires at least 25 of 30 check-in nights
+              and an unmet in-app target. Android: first-payment refund.
+              iPhone: an additional month. Claim through Settings.{' '}
+              <a href={internalUrl('/axiom/terms/#record-guarantee')} className="underline underline-offset-4">Read the conditions</a>.
             </p>
           </div>
         </div>
@@ -2119,8 +2152,8 @@ function Finale() {
           </span>
         </h2>
         <p data-reveal className={`mx-auto mt-7 max-w-xl text-lg text-[#c2bfd2] ${OVER_FIELD}`}>
-          Not a habit tracker with a counter and a quote. A private, honest
-          system for the person you are becoming.
+          Start with one authored night, one line in your words, and a time
+          to come back. Your journal stays on your phone.
         </p>
         <div data-reveal className="mt-11 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <StoreButtons variant="finale" />

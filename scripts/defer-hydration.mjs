@@ -72,7 +72,8 @@ async function fontUrls(html, faces) {
       const src = /url\(([^)]+\.woff2)\)/.exec(block)?.[1];
       if (!src || !/U\+\?\?|U\+0000-00FF/i.test(range)) continue;
       if (!faces.some(([f, st, w]) => f === family && st === style && (!w || w === weight))) continue;
-      urls.add(posix.join(posix.dirname(href), src.replace(/^["']|["']$/g, '')));
+      const fontHref = src.replace(/^["']|["']$/g, '');
+      urls.add(fontHref.startsWith('/') ? fontHref : posix.join(posix.dirname(href), fontHref));
     }
   }
   return [...urls];

@@ -1,0 +1,38 @@
+.library { min-height: 100vh; background: #0b0b10; color: #e8e3f1; font-family: var(--font-grotesk), sans-serif; }
+.nav { display: flex; align-items: center; justify-content: space-between; gap: 1rem; max-width: 72rem; margin: auto; padding: 1.6rem 1.5rem; font-size: .82rem; color: #b4abc5; }
+.brand { display: flex; align-items: center; gap: .8rem; font: 400 .7rem/1.6 var(--font-mono),monospace; letter-spacing: .3em; color: #eee8f7; }
+.brand img { border-radius: .7rem; }
+.intro { position: relative; isolation: isolate; max-width: 72rem; margin: auto; padding: 5rem 1.5rem 4rem; }
+.intro::before { content: ''; position: absolute; z-index: -1; top: -2rem; right: 4rem; width: min(50vw,32rem); aspect-ratio: 1; border: 1px solid #c4b5fd0e; border-radius: 50%; box-shadow: 0 0 0 5rem #c4b5fd02,0 0 0 10rem #c4b5fd01; pointer-events: none; }
+.eyebrow { font: 400 .64rem/1.8 var(--font-mono),monospace; letter-spacing: .23em; text-transform: uppercase; color: #b8a8e7; margin-bottom: 1.5rem; }
+.intro h1 { max-width: 60rem; font-size: clamp(3rem,7.5vw,6.4rem); letter-spacing: -.055em; line-height: 1.02; font-weight: 550; }
+.intro h1 em { font: italic 430 1em/1.02 var(--font-display),Georgia,serif; color: #c9bce7; letter-spacing: -.05em; }
+.intro > p:not(.eyebrow) { max-width: 36rem; margin-top: 1.8rem; color: #b6acc6; font-size: 1.1rem; line-height: 1.8; }
+.choices { display: flex; flex-wrap: wrap; gap: .35rem 1.6rem; margin-top: 2.4rem; max-width: 52rem; }
+.choices a { min-height: 2.75rem; display: inline-flex; align-items: center; gap: .5rem; color: #d4cbe4; border-bottom: 1px solid #c8b5ef26; font-size: .8rem; transition: border-color 180ms,color 180ms; }
+.choices a:hover { color: #fff; border-color: #bfa4f7; }
+.choices a::before { content: '↘'; color: #b8a8e7; }
+.content { max-width: 72rem; padding: 0 1.5rem 5rem; margin: auto; }
+.collection { padding-top: 3.7rem; scroll-margin-top: 1rem; }
+.collectionHead { display: grid; grid-template-columns: 2.2rem 1fr; gap: 1rem; margin-bottom: 1.6rem; }
+.collectionHead > span { color: #9b8daf; padding-top: .35rem; font: 400 .65rem/1.7 var(--font-mono),monospace; }
+.collectionHead h2 { font: 450 clamp(1.8rem,3vw,2.5rem)/1.15 var(--font-display),Georgia,serif; letter-spacing: -.03em; color: #e5dced; }
+.collectionHead p { margin-top: .65rem; font-size: .87rem; line-height: 1.7; color: #a59ab6; }
+.articles { border-top: 1px solid #dac6ff22; }
+.article { display: grid; grid-template-columns: minmax(0,1fr) 6rem; padding: 1.7rem 0; gap: .7rem 2rem; border-bottom: 1px solid #dac6ff18; }
+.title { font-size: clamp(1.18rem,2vw,1.55rem); font-weight: 500; letter-spacing: -.02em; line-height: 1.35; }
+.title a { display: block; min-height: 2.75rem; color: #e4ddec; transition: color 180ms; }
+.title a:hover { color: #c3adf0; }
+.article p { margin-top: .6rem; max-width: 43rem; font-size: .9rem; color: #ada1bf; line-height: 1.8; }
+.time { text-align: right; color: #a99abb; font: 400 .58rem/1.9 var(--font-mono),monospace; text-transform: uppercase; letter-spacing: .08em; padding-top: .2rem; }
+.languages { display: flex; flex-wrap: wrap; gap: .3rem .9rem; grid-column: 1/-1; }
+.languages a { padding: .2rem 0; min-height: 1.9rem; color: #b6a5cb; font-size: .72rem; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: #c3adf033; }
+.languages a:hover { color: #eee6fc; }
+.pause { margin-top: 4rem; padding: 2rem 0; border-block: 1px solid #dac6ff22; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+.pause h2 { font-size: 1.3rem; font-weight: 500; letter-spacing: -.03em; }
+.pause p { font-size: .87rem; color: #b3a6c3; margin-top: .5rem; line-height: 1.7; }
+.pause a { padding-block: .8rem; border-bottom: 1px solid #c3adf066; color: #d6c4ef; }
+.footer { max-width: 72rem; margin: auto; border-top: 1px solid #dac6ff18; padding: 2rem 1.5rem; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; font-size: .78rem; line-height: 1.8; color: #b0a1c2; }
+.footer a { text-decoration: underline; text-underline-offset: 4px; }
+.library a:focus-visible { outline: 2px solid #cdb2ff; outline-offset: 5px; }
+@media(max-width:600px) { .intro { padding-top: 3.6rem; } .article { grid-template-columns: 1fr; gap: .6rem; } .time { grid-row: 1; text-align: left; display: flex; gap: 1rem; } .languages { gap: .4rem 1rem; } .collectionHead { grid-template-columns: 1.5rem 1fr; } .choices { gap: .2rem 1rem; } }

@@ -20,7 +20,9 @@ const JSON_LD = {
       name: 'AXIOM',
       alternateName: ['Axiom: Quit Porn, PMO Recovery'],
       description:
-        'A quit porn app built for the minute the urge hits: a streak tracker, a panic button that opens whether or not you pay, a 30-day reboot program and a journal that stays on your phone.',
+        'A private quit-porn app with thirty authored Recalibration nights, a daily plan, check-ins and a journal kept on-device. The Lighthouse opens without membership.',
+      softwareVersion: '2.7.3',
+      inLanguage: ['en', 'es', 'pt-BR', 'hi', 'fr', 'de', 'ru', 'id', 'tr', 'ar', 'zh-Hans'],
       url: 'https://lunamaze.com/axiom/',
       image: 'https://lunamaze.com/images/axiom/og.jpg',
       operatingSystem: 'Android, iOS',
@@ -32,7 +34,7 @@ const JSON_LD = {
         price: '0',
         priceCurrency: 'USD',
         description:
-          'Free to install. A subscription is needed to use the app, and the price is shown in your own currency before you buy. The panic button opens for anyone, subscribed or not.',
+          'Free download. Full membership is paid at the local price shown in the app. Eligible monthly subscribers have a seven-day trial; annual plans have no trial. The Lighthouse opens without membership. A separate seasonal Climb invitation has limited access conditions.',
       },
       publisher: { '@id': 'https://lunamaze.com/#organization' },
     },

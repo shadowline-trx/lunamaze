@@ -35,6 +35,9 @@ jobs:
           NEXT_PUBLIC_BASE_PATH: ${{ vars.NEXT_PUBLIC_BASE_PATH }}
         run: npm run build
 
+      - name: Verify AXIOM links and search metadata
+        run: node scripts/verify-axiom-export.mjs
+
       - name: Setup Node for Genesis
         uses: actions/setup-node@v4
         with:

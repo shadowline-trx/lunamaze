@@ -19,7 +19,8 @@ Luna Maze the software studio is not connected to other projects that share the 
 - Founder: Shadowline (https://github.com/shadowline-trx).
 
 ## Products
-- [Axiom](https://lunamaze.com/axiom/): Private porn-recovery companion for iPhone and Android, grounded in neuroscience. A 30-day guided program, daily check-ins, and a journal that never leaves the phone.
+- [Axiom](https://lunamaze.com/axiom/): Private quit-porn habit and wellbeing app for iPhone and Android. Thirty authored Recalibration nights, a daily plan, check-ins, and a journal kept on-device.
+- [Axiom 2.7.3](https://lunamaze.com/axiom/updates/): Current release, next-night reminders, seasonal Climb access and feature limits.
 - [Axiom FAQ](https://lunamaze.com/axiom/faq/): Recovery, research, privacy and pricing answers.
 - [Axiom free tools](https://lunamaze.com/axiom/tools/): Severity self-test, rewire timeline calculator, urge panic tool, focus wallpapers.
 - [Axiom research library](https://lunamaze.com/axiom/blog/): Recovery articles in 12 languages.
@@ -38,7 +39,9 @@ Luna Maze the software studio is not connected to other projects that share the 
 ## Axiom facts
 - Platforms: iPhone (App Store) and Android (Google Play).
 - Pricing: paid app; the monthly plan starts with a 7-day free trial for eligible new subscribers, the annual plan has no trial. No account is needed to subscribe.
-- Open without a subscription: the Lighthouse urge tool, and data export and deletion.
+- Open without a subscription: the Lighthouse urge tool, data export and deletion. The November 2026 Climb has a separate limited free invitation, after 24 hours from the first membership-screen view on the current build during the joining window; it is not immediate full-app access.
+- Version 2.7.3: members can choose the next Recalibration night's reminder time. A missed night stays available. Three distinct check-in days open an early summary.
+- AXIOM does not block apps or websites. Shield, Circles and Community are not in this release.
 - Privacy: the journal, trigger names and reset reasons never leave the phone. Optional sign-in backs up streak dates and mood scores only; that backup is not end-to-end encrypted.
 - Not a medical device.
 

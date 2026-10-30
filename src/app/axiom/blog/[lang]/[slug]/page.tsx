@@ -127,7 +127,11 @@ export async function generateMetadata({
       type: 'article',
       publishedTime: article.datePublished,
       modifiedTime: article.dateModified,
+      url: articleUrl(article),
+      locale: article.lang.replace('-', '_'),
+      images: [{ url: `${BASE}/images/axiom/og.jpg`, width: 1200, height: 630, alt: article.title }],
     },
+    twitter: { card: 'summary_large_image', title: article.seoTitle ?? article.title, description: article.description, images: [`${BASE}/images/axiom/og.jpg`] },
   };
 }
 
@@ -135,6 +139,15 @@ export async function generateMetadata({
 function jsonLd(article: BlogArticle): string {
   const faq = article.blocks.find((b) => b.kind === 'faq');
   const graph: Record<string, unknown>[] = [
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Luna Maze', item: BASE },
+        { '@type': 'ListItem', position: 2, name: 'AXIOM', item: `${BASE}/axiom/` },
+        { '@type': 'ListItem', position: 3, name: 'Recovery Library', item: `${BASE}/axiom/blog/` },
+        { '@type': 'ListItem', position: 4, name: article.title, item: articleUrl(article) },
+      ],
+    },
     {
       '@type': 'Article',
       headline: article.title,
@@ -360,7 +373,7 @@ export default async function BlogArticlePage({
   const languagesLabel = LANGUAGES_LABEL[article.lang] ?? LANGUAGES_LABEL.en;
 
   return (
-    <main className="relative min-h-screen bg-lunamaze-bgDeep text-lunamaze-textPrimary">
+    <main lang={article.lang} className="relative min-h-screen bg-lunamaze-bgDeep text-lunamaze-textPrimary">
       <ProductNav product="Axiom" />
       <script
         type="application/ld+json"
@@ -386,6 +399,7 @@ export default async function BlogArticlePage({
             />
             Axiom
           </span>
+          {article.lang === 'en' && <nav aria-label="Breadcrumb" className="mb-6 text-sm text-lunamaze-textSecondary"><Link href="/axiom/blog/" className="underline underline-offset-4">Recovery library</Link><span aria-hidden="true"> / </span><span>English</span></nav>}
           <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight leading-[1.08] text-balance">
             <span className="lunamaze-text-gradient">{article.title}</span>
           </h1>
@@ -397,7 +411,8 @@ export default async function BlogArticlePage({
               {article.readingMinutes} min read
             </span>
             <span className="h-px w-6" style={{ background: hexA(accent, 0.4) }} aria-hidden="true" />
-            <span className="text-lunamaze-textDim">{article.datePublished}</span>
+            <time dateTime={article.dateModified} className="text-lunamaze-textDim">{article.dateModified}</time>
+            {article.lang === 'en' && <span className="text-lunamaze-textDim">Luna Maze editorial</span>}
           </p>
 
           {/* Stays above the fold on purpose: ProductNav has no route back to

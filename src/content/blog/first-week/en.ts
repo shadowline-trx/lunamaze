@@ -1,0 +1,51 @@
+import type { BlogArticle } from '../types';
+
+const article: BlogArticle = {
+  slug: 'first-week',
+  lang: 'en',
+  title: 'A First Week You Can Actually Begin.',
+  seoTitle: 'Your First Week Without Porn: A Small, Practical Plan',
+  description: 'Seven practical decisions for a first week without porn: define your goal, prepare for urges, change the setup and review what happened.',
+  datePublished: '2026-10-30',
+  dateModified: '2026-10-30',
+  readingMinutes: 5,
+  ctaLabel: 'Look inside AXIOM',
+  ctaText: 'AXIOM gives the daily work a place: breathing, a journal and Recalibration, a programme of thirty guided nights.',
+  blocks: [
+    { kind: 'callout', title: 'What this week is for', text: 'Choose a clear goal, change one part of the browsing setup, prepare a response to an urge and review the attempt. Seven days is a convenient planning window. It is not a deadline for your mood, libido, motivation or brain to change.' },
+    { kind: 'p', text: 'A first week can become an enormous promise made late at night: no porn, no social media, perfect sleep, daily workouts and a new personality by Monday. A smaller plan leaves you with decisions you can actually carry out and observations you can use afterwards.' },
+    { kind: 'p', text: 'The seven decisions below can be made one a day or before the week begins. Adapt the order to your circumstances. You do not have to wait for a Monday, a new month or a clean calendar. Start with the next ordinary period of your life that you can plan for.' },
+    { kind: 'h2', text: 'Decision one: say what you are changing' },
+    { kind: 'p', text: 'Write one sentence about the behaviour you want to change and why it matters to you. Be specific about pornography rather than assuming it means every sexual activity. Your chosen goal might concern explicit browsing, time lost or a habit that interferes with something you care about.' },
+    { kind: 'p', text: 'Keep the reason concrete: getting to bed when you intended, giving a task your attention or being present with another person. You do not need to claim that an entire life depends on a perfect week. If you are unsure what the problem is, a qualified professional can help you assess it without requiring a self-diagnosis.' },
+    { kind: 'h2', text: 'Decision two: change the first easy step' },
+    { kind: 'p', text: 'Look at how a recent browsing session started. Move the charger if the phone was already in bed. Remove a saved route that repeatedly takes you into explicit material. Set up a restriction if you want access friction, and check what that restriction actually covers on your device.' },
+    { kind: 'p', text: 'Choose one change you can maintain in your real living situation. You may need a phone nearby for work, accessibility or family contact. Find a workable arrangement instead of treating an ideal setup as the only acceptable one. The aim is to interrupt a familiar sequence, not to make normal life impossible.' },
+    { kind: 'h2', text: 'Decision three: prepare for an urge before it arrives' },
+    { kind: 'p', text: 'Pick a short response you can begin without negotiation: close the feed, stand up, move the phone and follow a brief breathing or urge-surfing exercise. Then choose an ordinary activity away from the browsing. Write where the instructions or support tool will be so you are not searching for them during the moment.' },
+    { kind: 'p', text: 'Do not use a timer as a promise that every urge must end within its count. The useful question at the end is what you will do next. You can continue the pause, change activities or contact someone. The exercise is available even when the feeling has not conveniently disappeared.' },
+    { kind: 'h2', text: 'Decision four: plan one vulnerable period' },
+    { kind: 'p', text: 'Choose a period you recognise from your own experience: after work, during an avoided task or before sleep. Do not assume evenings are your problem simply because they are common in other people’s accounts. Give the period a first action, an available activity and a place for the device.' },
+    { kind: 'p', text: 'For example: “After dinner I will wash the dishes before sitting down; the phone will stay charging on the counter.” This is an experiment in arranging one evening. If the arrangement does not fit, revise it. A practical plan can change without turning every adjustment into a broken promise.' },
+    { kind: 'h2', text: 'Decision five: choose what support would help' },
+    { kind: 'p', text: 'You might want a trusted person to talk to, a recurring activity that gets you out of the browsing setup or a professional conversation about a persistent problem. Name the help you want. “Can we talk after work?” asks for something clearer than asking someone to make sure you never slip.' },
+    { kind: 'p', text: 'Agree on boundaries if you share a goal. The other person can decide what they are able to offer. You do not need to hand over every journal entry, make a public announcement or disclose explicit details to deserve support. If nobody appropriate is available, consider professional or established support options you can evaluate.' },
+    { kind: 'h2', text: 'Decision six: decide how you will respond to a slip' },
+    { kind: 'p', text: 'Prepare this before you need it: end the session, leave the setup, record a short factual account and resume the next ordinary task. Note one thing to change before the situation returns. If you count consecutive days, record the reset accurately while keeping the rest of your observations.' },
+    { kind: 'p', text: 'You do not have to wait until tomorrow to stop an episode. You also do not need a punishment routine. One difficult moment can be followed by an ordinary meal, a completed task or bedtime. Those actions do not erase what happened; they let you continue making decisions.' },
+    { kind: 'h2', text: 'Decision seven: review the week without inventing a score' },
+    { kind: 'p', text: 'Ask what happened, which response you used and what you want to keep or change. Record missing information as missing. Choose one adjustment for the next week rather than rewriting your whole life. If your goal remains difficult, that is information you can bring to a more supported conversation.' },
+    { kind: 'p', text: 'A randomized study of a seven-day pornography-abstinence period did not find general withdrawal effects in its confirmatory analyses. Its limited sample and exploratory findings do not describe everyone. The practical lesson for this plan is to avoid predicting how you must feel on a particular day. Persistent or troubling symptoms deserve individual assessment rather than a countdown explanation.' },
+    { kind: 'links', title: 'Keep the next instructions close', items: [
+      { label: 'A practical urge-surfing walkthrough', href: '/axiom/blog/en/urge-surfing/' },
+      { label: 'Write a specific if–then plan', href: '/axiom/blog/en/if-then-plan/' },
+      { label: 'What to do after a slip', href: '/axiom/blog/en/after-a-slip/' },
+      { label: 'Track more than consecutive days', href: '/axiom/blog/en/progress-beyond-streaks/' },
+    ] },
+    { kind: 'sources', items: [
+      { label: 'Fernandez et al. (2023): randomized seven-day pornography-abstinence study', url: 'https://pubmed.ncbi.nlm.nih.gov/36652136/' },
+    ] },
+  ],
+};
+
+export default article;

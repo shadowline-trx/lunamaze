@@ -16,7 +16,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const routes: Array<{ path: string; priority: number; changeFrequency: MetadataRoute.Sitemap[number]['changeFrequency']; lastModified?: Date }> = [
     { path: '/', priority: 1.0, changeFrequency: 'monthly', lastModified: new Date(HOME_UPDATED) },
     { path: '/tether-adb/', priority: 0.9, changeFrequency: 'weekly' },
-    { path: '/axiom/', priority: 0.8, changeFrequency: 'monthly' },
+    { path: '/axiom/', priority: 0.8, changeFrequency: 'monthly', lastModified: new Date('2026-10-30') },
+    { path: '/axiom/updates/', priority: 0.7, changeFrequency: 'monthly', lastModified: new Date('2026-10-30') },
     // Weekly while the listing status is in flux; this page's copy changes the
     // day Apple approves.
     { path: '/axiom/ios/', priority: 0.8, changeFrequency: 'weekly' },

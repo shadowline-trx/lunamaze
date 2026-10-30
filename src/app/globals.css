@@ -463,6 +463,41 @@ body {
   font-family: var(--font-mono), ui-monospace, monospace;
 }
 
+/* The phone is the primary reading surface. Keep the bright particle strokes
+   behind the letters, rather than asking muted body copy to compete with them. */
+.axiom-v3 [data-hero-sub] {
+  color: #c5bfd3;
+  text-shadow: 0 0 5px #09090d, 0 1px 13px #09090d, 0 0 30px #09090d;
+}
+
+.axiom-v3 a:focus-visible, .axiom-v3 button:focus-visible {
+  outline: 2px solid #c8b7ff;
+  outline-offset: 5px;
+}
+
+@media (max-width: 767px) {
+  .axiom-v3 section[id] { scroll-margin-top: 5.5rem; }
+  .axiom-v3 .ax-cv { content-visibility: visible; contain-intrinsic-size: none; }
+  .axiom-v3 [data-hero-content] { padding-top: 6.8rem; padding-bottom: 3rem; }
+  .axiom-v3 [data-hero-sub] { max-width: 23rem; font-size: 1rem; line-height: 1.65; }
+  .axiom-v3 [data-hero-trust] { line-height: 1.9; letter-spacing: .12em; }
+  .axiom-v3 [data-hero-cta] { margin-top: 2rem; width: 100%; }
+  .axiom-v3 [data-hero-cta] a { width: min(100%, 22rem); justify-content: center; min-height: 3.4rem; }
+  .axiom-v3 .ax-nav-cta { white-space: nowrap; flex-shrink: 0; padding-inline: 1rem; }
+  .axiom-v3 [data-sticky-cta] { bottom: max(.75rem, env(safe-area-inset-bottom)); }
+  .axiom-v3 [data-tools-track] { flex-direction: row; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline-start: 1.5rem; overscroll-behavior-x: contain; gap: 1rem; padding-bottom: 1.2rem; scrollbar-width: thin; scrollbar-color: #8b7cf766 #ffffff08; }
+  .axiom-v3 [data-tools-track] > div { flex: 0 0 min(84vw, 23rem); scroll-snap-align: start; }
+  .axiom-v3 [data-tools-track] .ax-card { min-height: 22rem; }
+}
+
+@media (max-width: 360px) {
+  .axiom-v3 [data-hero-cta] a { font-size: .84rem; padding-inline: 1.1rem; gap: .5rem; }
+  .axiom-v3 [data-nav] > nav { padding-inline: 1rem; }
+  .axiom-v3 [data-nav] > nav > a:first-child { gap: .5rem; }
+  .axiom-v3 [data-nav] > nav > a:first-child img { width: 30px; height: 30px; }
+  .axiom-v3 [data-nav] > nav > a:first-child span { font-size: .75rem; letter-spacing: .25em; }
+}
+
 /* Soft volumetric light shafts (the Auralis silver-studio look). Pure CSS:
    angled linear gradients, heavily blurred, masked to fade downward. */
 .ax-shafts {

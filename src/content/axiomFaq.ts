@@ -9,42 +9,50 @@
 export const AXIOM_FAQS = [
   {
     q: 'Is there a free version?',
-    a: 'No. AXIOM is a paid app: the monthly plan starts with a 7-day free trial for eligible new subscribers, and the exact price is shown in the app before you pay anything. We tried it the other way and it made a worse product: a free tier funded by nagging the people using it. One exception, and it is not a marketing one — if you are in an urge, the Lighthouse opens whether you have paid or not.',
+    a: 'Full AXIOM membership is paid. Eligible new monthly subscribers get a seven-day trial; annual plans have no trial. The Lighthouse opens without membership, and the browser Panic Button is free. The November Climb has a limited seasonal free route: for eligible nonmembers it appears after 24 hours from the first membership-screen view on the current build, during the joining window. Installing the app or closing the store sheet does not unlock it immediately.',
   },
   {
     q: 'I installed AXIOM before it was paid. What changed?',
-    a: 'Since version 2.6.0 a subscription is needed on every install, including ones from before. Your data stays yours either way: export it or delete it from Settings, with or without a subscription, and the Lighthouse still opens whether you pay or not. Already subscribed on another phone? Tap Sign in or Restore on the membership screen.',
+    a: 'The main app requires membership, including on older installs. Your data remains available to export or delete from Settings without subscribing, and the Lighthouse still opens. A seasonal free Climb invitation, when available, covers the challenge rather than the full app. Already a member? Use Sign in or Restore on the membership screen.',
   },
   {
-    q: 'What if it does not help me?',
-    a: 'Ask from Settings and we make the next 30 days free. You do not have to explain what happened. It works on paid subscriptions, up to twice in any 12 months, and it adds time rather than refunding money.',
+    q: 'What does the record guarantee actually cover?',
+    a: 'The current in-app record guarantee requires check-ins on at least 25 of 30 nights. If you have not reached the target shown in the app by Night 30, claim from Settings. The remedy is a first-payment refund on Android or an additional month on iPhone. A slip does not cancel the nights or the guarantee. Check the terms shown with your plan; this is not a promise of a health outcome.',
   },
   {
     q: 'Can anyone at AXIOM read my journal?',
-    a: 'No. Your journal never leaves your phone. The app does not send it, and our database is built to refuse journal text, trigger names and reset reasons — so there is no journal on our servers to leak, sell, or hand over. If you sign in for backup, only your streak dates and mood scores sync.',
+    a: 'Your journal notes, trigger names, reset reasons and reflections stay on your device. Optional signed-in backup includes streak dates and mood scores. AXIOM also uses first-party usage analytics, which you can disable. Buddy nudges and seasonal camp participation are separate social features; they do not share your journal. Read the privacy policy for each data category.',
   },
   {
     q: 'What happens when I relapse?',
-    a: 'A reset, not a verdict. You log it honestly, AXIOM asks what happened and what you will do differently, and that plan comes back to you within 72 hours. Your total and your history stay. Shame is not a strategy here.',
+    a: 'Record what happened and choose one thing to change for the next difficult hour. Your streak can reset while your check-in history and Recalibration nights remain. The next lesson waits where you left it. You can use the Lighthouse without buying membership.',
   },
   {
-    q: 'How long does rewiring actually take?',
-    a: 'Honestly: usually longer than the famous ninety days, and different for everyone. Many people describe the flatline lifting somewhere in weeks two to six and things steadying after two to three months. AXIOM will not promise you a date.',
+    q: 'Does thirty nights mean I will be recovered in thirty days?',
+    a: 'No. Thirty nights is the length of Recalibration, not a biological deadline. There is no validated universal timetable for changing porn use, and a streak cannot measure dopamine levels or brain recovery. AXIOM is a habit and wellbeing tool. If symptoms or loss of control are affecting your life, a qualified professional can help assess them.',
   },
   {
     q: 'Do streak counters even work?',
-    a: 'Alone, no — a bare number resets to zero and takes your motivation down with it. That is why AXIOM builds phases, patterns, and triggers around the streak: a reset costs you a day, not your progress.',
+    a: 'A streak can be useful if it helps you follow your own goal. It is only one measure. AXIOM also keeps check-ins and history, with an early summary after three distinct check-in days, so the counter is not the only thing you have to look at.',
   },
   {
     q: 'Do I need an account or my real name?',
-    a: 'No account is needed, and your real name is never required. AXIOM works on your phone without signing in. If you choose to sign in for backup, only your streak dates and mood scores sync — your journal never does. A recovery buddy sees whether you are standing, never what you wrote.',
+    a: 'You can begin local use without an AXIOM account or your real name. Buying membership still uses your Apple or Google store account. Optional sign-in supports backup and social features. Buddy Bond connects you by code: your buddy sees your chosen display name and can exchange nudges, but does not see your streak, check-ins or journal.',
   },
   {
     q: 'Is AXIOM on iPhone?',
     a: 'Both. Android is on Google Play and iPhone is on the App Store — same app, same private journal. The price is shown in the app, in your currency.',
   },
   {
-    q: 'How is this different from the big-name quit apps?',
-    a: 'No fake countdowns, no invented member counts, no panic button behind a paywall — and no journal sitting in a cloud. Scroll back up to the receipt.',
+    q: 'Does AXIOM block porn, apps or websites?',
+    a: 'No. AXIOM 2.7.3 does not include a website or app blocker. Focus Timer is a two-, three- or five-minute commitment; Android optionally offers screen pinning. Shield, Circles and Community are not available in this release. Use device restrictions or a separate blocker if access filtering is what you need.',
+  },
+  {
+    q: 'Which languages does the app support?',
+    a: 'English, Spanish, Brazilian Portuguese, Hindi, French, German, Russian, Indonesian, Turkish, Arabic and Simplified Chinese. All thirty Recalibration nights are available in these eleven languages. The website library has its own language coverage, shown on each article; that does not mean every in-app article or story is translated.',
+  },
+  {
+    q: 'What is new in AXIOM 2.7.3?',
+    a: 'After finishing a Recalibration night, members can choose the time for their next one. With notification permission, AXIOM reminds you then. Missing the time leaves the next night available. The current app also includes the seasonal Climb, a daily plan for your difficult hour, and an early read after three distinct check-in days.',
   },
 ] as const;

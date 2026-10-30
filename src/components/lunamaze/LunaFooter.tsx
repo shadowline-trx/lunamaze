@@ -58,19 +58,19 @@ export default function LunaFooter(): JSX.Element {
             Genesis
           </a>
           <a
-            href="#studio"
+            href={internalUrl('/#studio')}
             className="text-lunamaze-textSecondary hover:text-lunamaze-violetLight transition-colors duration-200"
           >
             Studio
           </a>
           <a
-            href="#products"
+            href={internalUrl('/#works')}
             className="text-lunamaze-textSecondary hover:text-lunamaze-violetLight transition-colors duration-200"
           >
             Products
           </a>
           <a
-            href="#contact"
+            href={internalUrl('/#contact')}
             className="text-lunamaze-textSecondary hover:text-lunamaze-violetLight transition-colors duration-200"
           >
             Contact
