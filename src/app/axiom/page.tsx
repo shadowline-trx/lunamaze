@@ -34,7 +34,7 @@ const JSON_LD = {
         price: '0',
         priceCurrency: 'USD',
         description:
-          'Free download. Full membership is paid at the local price shown in the app. Eligible monthly subscribers have a seven-day trial; annual plans have no trial. The Lighthouse opens without membership. A separate seasonal Climb invitation has limited access conditions.',
+          'Free download. Full membership is paid at the local price shown in the app. Eligible monthly subscribers have a seven-day trial; annual plans have no trial. The Lighthouse opens without membership.',
       },
       publisher: { '@id': 'https://lunamaze.com/#organization' },
     },

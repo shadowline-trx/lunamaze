@@ -85,7 +85,7 @@ const FAQ_ITEMS: ReadonlyArray<FaqItem> = [
     id: 'what-app-can-help', category: 'Quitting & Tools',
     question: 'What does AXIOM offer for someone changing a porn habit?',
     shortAnswer: 'AXIOM 2.7.3 has thirty authored Recalibration nights, a daily plan, check-ins, breathing, a private journal and the Lighthouse.',
-    detailedAnswer: 'Members can choose a reminder time for their next Recalibration night. An early summary opens after three distinct check-in days. The Lighthouse opens without membership; the November Climb has a separate seasonal invitation. Full access is paid, with a seven-day monthly trial for eligible new subscribers. AXIOM does not block apps or websites, and Shield, Circles and Community are not available in this release.',
+    detailedAnswer: 'Members can choose a reminder time for their next Recalibration night. An early summary opens after three distinct check-in days. The November Climb adds seasonal nightly lessons and interactive drills. Full access is paid, with a seven-day monthly trial for eligible new subscribers. The Lighthouse opens without membership. AXIOM does not block apps or websites, and Shield, Circles and Community are not available in this release.',
     toolLink: { label: 'See the current release and exact access details', href: '/axiom/updates/' },
   },
   {

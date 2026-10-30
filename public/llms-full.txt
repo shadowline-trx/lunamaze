@@ -35,7 +35,7 @@ Secondary contact: lunamaze.dev@gmail.com
 - **Always open without a subscription**: the Lighthouse urge tool (panic button), and data export and deletion in Settings.
 - **Current release**: 2.7.3, Android build 51 and iPhone build 56. Details: https://lunamaze.com/axiom/updates/
 - **Record guarantee**: check in on at least 25 of 30 nights. If the in-app target is not reached by Night 30, claim through Settings. Android: first-payment refund. iPhone: an additional month. Conditions and earlier goodwill offers: https://lunamaze.com/axiom/terms/#record-guarantee
-- **Seasonal Climb**: November 2026 challenge. Joining window October 18–November 30. A limited free invitation for eligible nonmembers appears after 24 hours from their first membership-screen view on the current build. This is not immediate full-app access.
+- **Seasonal Climb**: November 2026 challenge with short nightly lessons, interactive drills, a lantern and camps. Joining window October 18–November 30.
 - **App languages**: English, Spanish, Brazilian Portuguese, Hindi, Arabic, French, German, Russian, Turkish, Indonesian and Simplified Chinese. All thirty Recalibration nights are available in these eleven languages. Article and story translation coverage varies.
 
 #### Core Philosophy & Architecture:

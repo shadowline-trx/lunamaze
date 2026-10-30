@@ -18,6 +18,6 @@ export default function AxiomNotes() {
 export function AxiomClimb() {
   return <section id="climb" className={styles.season} aria-labelledby="climb-title"><div className={styles.seasonInner}>
     <div><p className={styles.eyebrow}>The Climb / November 2026</p><h2 id="climb-title">Thirty nights.<br /><em>One camp at a time.</em></h2><div className={styles.seasonCamps} aria-hidden="true"><i /><span /><i /><span /><i /><span /><i /><span /><i /></div></div>
-    <div><p>A short lesson each night, an interactive drill, and a lantern to carry into the next camp. The Climb is AXIOM’s seasonal No Nut November challenge, alongside the year-round Recalibration programme.</p><small>Joining window: 18 October–30 November 2026. A seasonal free route is available to eligible nonmembers after 24 hours from their first membership-screen view on the current build. It does not immediately unlock when you install or close the store sheet. The in-app invitation shows your access.</small><a className={styles.textLink} href={internalUrl('/axiom/updates/#climb')}>Check the Climb access details <span aria-hidden="true">↗</span></a></div>
+    <div><p>A short lesson each night, an interactive drill, and a lantern to carry into the next camp. The Climb is AXIOM’s seasonal No Nut November challenge, alongside the year-round Recalibration programme.</p><small>November 2026 joining window: 18 October–30 November.</small><a className={styles.textLink} href={internalUrl('/axiom/updates/#climb')}>Explore the Climb <span aria-hidden="true">↗</span></a></div>
   </div></section>;
 }

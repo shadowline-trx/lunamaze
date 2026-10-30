@@ -33,7 +33,7 @@ const QUICK_FACTS: ReadonlyArray<QuickFact> = [
   {
     title: 'A paid app',
     description:
-      'Full Axiom access requires membership. The Lighthouse opens without paying. The November Climb has a separate, limited seasonal free invitation with access conditions.',
+      'Full Axiom access requires membership. The Lighthouse opens without paying, and export and deletion remain available without a subscription.',
   },
   {
     title: 'Recurring only',
@@ -166,7 +166,7 @@ export default function TermsPage(): JSX.Element {
           </p>
           <p>
             {
-              'The Lighthouse urge tool can be opened from the subscription screen and used without paying. The 2026 November Climb also has a limited seasonal free route: eligible nonmembers see it after 24 hours from their first membership-screen view on the current build, during the 18 October–30 November joining window. It is not an immediate unlock after installation or closing a store sheet. Its invitation covers the Climb, camp participation and Lighthouse, not the main member app or member camp advancement.'
+              'The Lighthouse urge tool can be opened from the subscription screen and used without paying. Separate seasonal invitations may be offered inside the app under the conditions shown with the invitation. Limited challenge access does not replace full membership or change its billing terms.'
             }
           </p>
           <div className="rounded-2xl border border-[#8b7cf7]/30 bg-[#8b7cf7]/[0.06] px-5 py-4 text-[#e8e6f0]">

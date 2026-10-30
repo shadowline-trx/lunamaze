@@ -9,11 +9,11 @@
 export const AXIOM_FAQS = [
   {
     q: 'Is there a free version?',
-    a: 'Full AXIOM membership is paid. Eligible new monthly subscribers get a seven-day trial; annual plans have no trial. The Lighthouse opens without membership, and the browser Panic Button is free. The November Climb has a limited seasonal free route: for eligible nonmembers it appears after 24 hours from the first membership-screen view on the current build, during the joining window. Installing the app or closing the store sheet does not unlock it immediately.',
+    a: 'Full AXIOM membership is paid. Eligible new monthly subscribers get a seven-day trial; annual plans have no trial. Membership includes Recalibration, your daily plan, check-ins, breathing, private journal and full history. The Lighthouse opens without membership, and the browser Panic Button is free.',
   },
   {
     q: 'I installed AXIOM before it was paid. What changed?',
-    a: 'The main app requires membership, including on older installs. Your data remains available to export or delete from Settings without subscribing, and the Lighthouse still opens. A seasonal free Climb invitation, when available, covers the challenge rather than the full app. Already a member? Use Sign in or Restore on the membership screen.',
+    a: 'The main app requires membership, including on older installs. Your data remains available to export or delete from Settings without subscribing, and the Lighthouse still opens. Already a member? Use Sign in or Restore on the membership screen.',
   },
   {
     q: 'What does the record guarantee actually cover?',

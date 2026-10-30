@@ -39,7 +39,7 @@ Luna Maze the software studio is not connected to other projects that share the 
 ## Axiom facts
 - Platforms: iPhone (App Store) and Android (Google Play).
 - Pricing: paid app; the monthly plan starts with a 7-day free trial for eligible new subscribers, the annual plan has no trial. No account is needed to subscribe.
-- Open without a subscription: the Lighthouse urge tool, data export and deletion. The November 2026 Climb has a separate limited free invitation, after 24 hours from the first membership-screen view on the current build during the joining window; it is not immediate full-app access.
+- Open without a subscription: the Lighthouse urge tool, data export and deletion.
 - Version 2.7.3: members can choose the next Recalibration night's reminder time. A missed night stays available. Three distinct check-in days open an early summary.
 - AXIOM does not block apps or websites. Shield, Circles and Community are not in this release.
 - Privacy: the journal, trigger names and reset reasons never leave the phone. Optional sign-in backs up streak dates and mood scores only; that backup is not end-to-end encrypted.
