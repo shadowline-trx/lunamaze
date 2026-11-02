@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import type { JSX } from 'react';
 import Link from 'next/link';
-import { contactEmail } from '@/content/lunamaze';
+import { secondaryContactEmail } from '@/content/lunamaze';
 import { KERN_PLAY_URL } from '@/content/kern';
 import styles from './kern-faq.module.css';
 
@@ -101,7 +101,7 @@ const groups = [
       {
         question: 'Does Kern work offline?',
         answer:
-          'Yes. The launcher, local search, pages, focus sessions and daily records work on the phone. In version 1.1, Google Play and Superwall use the network for paywalls, purchases and access checks. Optional Firebase usage and crash reports are off until you agree.',
+          'Yes. The launcher, local search, pages, focus sessions and daily records work on the phone. Since version 1.1, Google Play and Superwall use the network for paywalls, purchases and access checks, and Superwall counts opens and sessions. Optional Firebase usage and crash reports are off until you agree.',
       },
     ],
   },
@@ -150,7 +150,7 @@ const groups = [
       {
         question: 'Does Kern collect, sell, or send personal data?',
         answer:
-          'Kern keeps notes, searches, notification content and detailed phone-use records local. Version 1.1 uses optional Firebase Analytics and Crashlytics reports, with advertising IDs and ad personalization disabled. Google Play and Superwall process purchase/paywall information separately, including installation identifiers and transaction details. Kern has no account, ad network or sale of personal data. The Settings transcript shows custom events submitted this session; local reset does not delete uploaded reports. The privacy policy explains deletion requests, Android backups and exports.',
+          'Kern keeps notes, searches, notification content and detailed phone-use records local. Version 1.1 uses optional Firebase Analytics and Crashlytics reports, with advertising IDs and ad personalization disabled. Google Play handles purchases. Superwall is separate and always on: it runs plans and purchases and counts opens and sessions, using installation identifiers, device details, transaction details and your IP address with the location derived from it. Kern has no account, ad network or sale of personal data. The Settings transcript shows custom events submitted this session; local reset does not delete uploaded reports. The privacy policy explains deletion requests, Android backups and exports.',
       },
       {
         question: 'Which Android permissions does Kern need?',
@@ -290,7 +290,7 @@ export default function KernFaqPage(): JSX.Element {
         <Link href="/">LUNA MAZE</Link>
         <Link href="/kern/">KERN</Link>
         <Link href="/kern/privacy/">PRIVACY</Link>
-        <a href={`mailto:${contactEmail}`}>CONTACT</a>
+        <a href={`mailto:${secondaryContactEmail}`}>CONTACT</a>
         <a href="#top">BACK TO TOP ↑</a>
       </footer>
     </div>

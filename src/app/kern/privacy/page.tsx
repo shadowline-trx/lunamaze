@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
 import type { JSX } from 'react';
 import Link from 'next/link';
-import { contactEmail, secondaryContactEmail } from '@/content/lunamaze';
+import { secondaryContactEmail } from '@/content/lunamaze';
 import styles from './kern-privacy.module.css';
 
 /** Kern privacy disclosures for Android 1.1: match Telemetry.kt and Monetization.kt. */
 
-const LAST_UPDATED = 'October 18, 2026';
+const LAST_UPDATED = 'November 2, 2026';
 
 export const metadata: Metadata = {
   title: 'Privacy — Kern',
@@ -56,9 +56,10 @@ export default function KernPrivacyPage(): JSX.Element {
           <li><strong>Optional usage and diagnostics.</strong> Firebase Analytics and
             Crashlytics are off until you agree in Kern. You can decline without losing
             launcher features, and change your answer in Settings.</li>
-          <li><strong>Paywalls and purchases.</strong> Superwall provides plan screens,
-            purchase validation and subscription status through Google Play. These
-            services operate separately from optional diagnostics.</li>
+          <li><strong>Plans, purchases and usage counts.</strong> Superwall runs on every
+            install, whether or not you agree to optional reports. It provides plan screens,
+            purchase validation and subscription status through Google Play, and counts
+            opens and sessions. See Paywalls and payments below.</li>
         </ul>
         <h2>Usage and diagnostics, only with your agreement</h2>
         <p>
@@ -177,14 +178,20 @@ export default function KernPrivacyPage(): JSX.Element {
 
         <h2>Paywalls and payments</h2>
         <p>
-          Google Play handles payment. Kern does not receive card details. Superwall
-          processes installation identifiers, paywall interactions, device/app metadata,
-          service diagnostics, loading/performance measurements, app/store region and
-          network-derived region information, and Play purchase tokens or transaction
-          details to load offers, restore access
-          and keep subscription status current, including renewals and refunds. It can
-          contact its service at startup to check configuration and existing access.
-          Kern does not set an email or account identity in Superwall.
+          Google Play handles payment. Kern does not receive card details. Superwall runs
+          on every install, whether or not you agree to optional reports. It processes
+          installation identifiers, each time Kern is opened or closed and each session,
+          paywall interactions, device and app details (including model, Android version,
+          language, time zone, network type and install date), service diagnostics and
+          loading/performance measurements, your IP address and the country, region, city
+          and postal code derived from it, app/store region, and Play purchase tokens or
+          transaction details. These are used to load offers, restore access and keep
+          subscription status current, including renewals and refunds. We also read them
+          to count how many people use Kern, how often they return and whether it is their
+          home screen. They do not include your notes, searches, notification content or
+          which other apps you use. It can contact its service at startup to check
+          configuration and existing access. Kern does not set an email or account
+          identity in Superwall.
         </p>
         <p>
           Purchase records are retained as needed to provide and verify access and handle
@@ -207,7 +214,7 @@ export default function KernPrivacyPage(): JSX.Element {
         </p>
         <ol>
           <li>
-            Email <a href={`mailto:${contactEmail}`}>{contactEmail}</a>{' '}with the subject
+            Email <a href={`mailto:${secondaryContactEmail}`}>{secondaryContactEmail}</a>{' '}with the subject
             &ldquo;Kern data request&rdquo;. Say whether your request concerns usage/crash
             reports, paywall information or a purchase. No Kern account is required.
           </li>
@@ -254,7 +261,6 @@ export default function KernPrivacyPage(): JSX.Element {
         <h2>Contact</h2>
         <p>
           Questions about privacy, or anything else:{' '}
-          <a href={`mailto:${contactEmail}`}>{contactEmail}</a> or{' '}
           <a href={`mailto:${secondaryContactEmail}`}>{secondaryContactEmail}</a>.
         </p>
 

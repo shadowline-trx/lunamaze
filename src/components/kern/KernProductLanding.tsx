@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react';
 import { internalUrl } from '@/lib/paths';
-import { contactEmail } from '@/content/lunamaze';
+import { secondaryContactEmail } from '@/content/lunamaze';
 import { KERN_PLAY_URL, KERN_RELEASE_NOTE } from '@/content/kern';
 import KernClientShell from './KernClientShell';
 import KernScreenshots from './KernScreenshots';
@@ -74,7 +74,7 @@ export default function KernProductLanding() {
             <div className={styles.phoneSearch}><span>⌕</span><b>plst</b><i /></div>
           </div>
         </div>
-        <div className={styles.heroFoot}><span>NO ACCOUNT</span><span>NO CLOUD</span><span>NO TRACKING</span><span>KOTLIN / COMPOSE</span></div>
+        <div className={styles.heroFoot}><span>NO ACCOUNT</span><span>NO CLOUD</span><span>NO ADS</span><span>KOTLIN / COMPOSE</span></div>
       </section>
 
       <KernScreenshots />
@@ -207,7 +207,7 @@ export default function KernProductLanding() {
 
       <section id="privacy" className={styles.privacySection}>
         <SectionHead index="10 / PRIVACY" title="Private by default." note="Your apps, notes, searches, and daily records stay on your phone." />
-        <div className={styles.privacyLead} data-reveal><h3>Your home screen is not an advertising surface.</h3><p>Your notes, local search and detailed daily records stay on the phone. Kern has no account or ads. Version 1.1 adds optional Firebase usage and crash reports, plus Google Play and Superwall for paywalls and purchases. Settings can turn reports off or reset local analytics; uploaded records need a deletion request.</p></div>
+        <div className={styles.privacyLead} data-reveal><h3>Your home screen is not an advertising surface.</h3><p>Your notes, local search and detailed daily records stay on the phone. Kern has no account or ads. Version 1.1 adds optional Firebase usage and crash reports, plus Google Play for payment and Superwall, always on, for plans, purchases and counting opens and sessions. Settings can turn reports off or reset local analytics; uploaded records need a deletion request.</p></div>
         <div className={styles.noList}>{['NO ACCOUNT','LOCAL NOTES','NO ADS','NO DATA SALES','NO AD ID','REPORTS OPT-IN'].map((item,index) => <div key={item} data-reveal><span>{String(index + 1).padStart(2,'0')}</span><strong>{item}</strong><i /></div>)}</div>
         <div className={styles.privacyEnd} data-reveal><p className={styles.privacyNote}>Notification history keeps package · hour · outcome. It never stores title · text · sender.</p><a href={internalUrl('/kern/privacy/')}>READ THE FULL PRIVACY POLICY <span>↗</span></a></div>
       </section>
@@ -224,7 +224,7 @@ export default function KernProductLanding() {
 
       <div className={styles.techMarquee} aria-hidden><div>DEV.LUNAMAZE.KERN · ANDROID 8.0+ · KOTLIN · JETPACK COMPOSE · LOCAL FIRST · DEV.LUNAMAZE.KERN · ANDROID 8.0+ · KOTLIN · JETPACK COMPOSE · LOCAL FIRST ·&nbsp;</div></div>
 
-      <footer className={styles.footer}><div className={styles.footerTop}><Wordmark /><h2>Use your phone.<br /><em>Do not look at it.</em></h2><a className={styles.primaryAction} href={KERN_PLAY_URL} target="_blank" rel="noopener noreferrer"><span className={styles.filledSquare} /><span>VIEW ON GOOGLE PLAY</span><span aria-hidden>↗</span></a></div><div className={styles.footerBottom}><span>BUILT BY LUNA MAZE</span><span>ANDROID 8.0+</span><a href={internalUrl('/kern/faq/')}>FAQ</a><a href={internalUrl('/kern/privacy/')}>PRIVACY</a><a href={`mailto:${contactEmail}`}>CONTACT</a><a href="#top">BACK TO TOP ↑</a></div></footer>
+      <footer className={styles.footer}><div className={styles.footerTop}><Wordmark /><h2>Use your phone.<br /><em>Do not look at it.</em></h2><a className={styles.primaryAction} href={KERN_PLAY_URL} target="_blank" rel="noopener noreferrer"><span className={styles.filledSquare} /><span>VIEW ON GOOGLE PLAY</span><span aria-hidden>↗</span></a></div><div className={styles.footerBottom}><span>BUILT BY LUNA MAZE</span><span>ANDROID 8.0+</span><a href={internalUrl('/kern/faq/')}>FAQ</a><a href={internalUrl('/kern/privacy/')}>PRIVACY</a><a href={`mailto:${secondaryContactEmail}`}>CONTACT</a><a href="#top">BACK TO TOP ↑</a></div></footer>
     </main>
   );
 }

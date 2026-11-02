@@ -47,7 +47,7 @@ Luna Maze the software studio is not connected to other projects that share the 
 
 ## Kern facts
 - Platform: Android 8.0 and later. Native Kotlin and Jetpack Compose.
-- Privacy: notes, searches, notification content and detailed phone-use records stay local. Android 1.1 adds optional Firebase Analytics/Crashlytics, with no advertising ID. Google Play and Superwall handle purchases/paywalls separately. Local reset does not erase uploaded records; deletion requests are described at /kern/privacy/#data-deletion.
+- Privacy: notes, searches, notification content and detailed phone-use records stay local. Android 1.1 adds optional Firebase Analytics/Crashlytics, with no advertising ID. Google Play handles payment. Superwall is always on: it runs plans and purchases and counts opens and sessions. Local reset does not erase uploaded records; deletion requests are described at /kern/privacy/#data-deletion.
 - Availability: early access; a free launcher remains available after the 14-day full trial.
 
 ## Tether ADB facts
