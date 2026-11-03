@@ -1,6 +1,6 @@
 import { internalUrl } from '@/lib/paths';
 import { establishedYear, studioCountry, websiteLaunchDate, websiteLaunchLabel } from '@/content/lunamaze';
-import { CONTACT_EMAIL, SECONDARY_CONTACT_EMAIL, FAQS, FIGURES, GITHUB_URL, LAB, PRINCIPLES, WORKS, type Work } from './content';
+import { CONTACT_EMAIL, FAQS, FIGURES, GITHUB_URL, LAB, PRINCIPLES, WORKS, type Work } from './content';
 import Glyph from './Glyphs';
 import Room from './Rooms';
 import Split from './Split';
@@ -111,9 +111,6 @@ export function Manifesto() {
           <dd className={s.studioContacts}>
             <a className={s.inlineLink} href={`mailto:${CONTACT_EMAIL}`}>
               {CONTACT_EMAIL}
-            </a>
-            <a className={`${s.inlineLink} ${s.secondaryMail}`} href={`mailto:${SECONDARY_CONTACT_EMAIL}`}>
-              {SECONDARY_CONTACT_EMAIL}
             </a>
           </dd>
         </div>
@@ -489,12 +486,6 @@ export function Finale() {
           <svg viewBox="0 0 24 24"><path d="M5 19L19 5M8 5h11v11" /></svg>
         </i>
       </a>
-      <p className={s.finaleAlternate} data-reveal>
-        Also at{' '}
-        <a className={s.inlineLink} href={`mailto:${SECONDARY_CONTACT_EMAIL}`}>
-          {SECONDARY_CONTACT_EMAIL}
-        </a>
-      </p>
     </section>
   );
 }

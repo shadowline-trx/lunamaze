@@ -22,7 +22,7 @@ window.ALM_CONFIG = {
   paymentLink: '',
 
   // Shown in the privacy page and footer when set.
-  contactEmail: 'hello@lunamaze.com',
+  contactEmail: 'lunamaze.dev@gmail.com',
 
   // Prices shown on the page. Change here, not in the HTML.
   plans: {

@@ -1,5 +1,5 @@
 import { internalUrl } from '@/lib/paths';
-import { CONTACT_EMAIL, SECONDARY_CONTACT_EMAIL, GITHUB_URL, LAB, WORKS } from './content';
+import { CONTACT_EMAIL, GITHUB_URL, LAB, WORKS } from './content';
 import s from './studio.module.css';
 
 function Mark() {
@@ -177,7 +177,6 @@ export function Credits() {
           <dt>Correspondence</dt>
           <dd>
             <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
-            <a href={`mailto:${SECONDARY_CONTACT_EMAIL}`}>{SECONDARY_CONTACT_EMAIL}</a>
             <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer me">
               GitHub
             </a>

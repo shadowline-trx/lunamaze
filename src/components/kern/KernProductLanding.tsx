@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react';
 import { internalUrl } from '@/lib/paths';
-import { secondaryContactEmail } from '@/content/lunamaze';
+import { contactEmail } from '@/content/lunamaze';
 import { KERN_PLAY_URL, KERN_RELEASE_NOTE } from '@/content/kern';
 import KernClientShell from './KernClientShell';
 import KernScreenshots from './KernScreenshots';
@@ -224,7 +224,7 @@ export default function KernProductLanding() {
 
       <div className={styles.techMarquee} aria-hidden><div>DEV.LUNAMAZE.KERN · ANDROID 8.0+ · KOTLIN · JETPACK COMPOSE · LOCAL FIRST · DEV.LUNAMAZE.KERN · ANDROID 8.0+ · KOTLIN · JETPACK COMPOSE · LOCAL FIRST ·&nbsp;</div></div>
 
-      <footer className={styles.footer}><div className={styles.footerTop}><Wordmark /><h2>Use your phone.<br /><em>Do not look at it.</em></h2><a className={styles.primaryAction} href={KERN_PLAY_URL} target="_blank" rel="noopener noreferrer"><span className={styles.filledSquare} /><span>VIEW ON GOOGLE PLAY</span><span aria-hidden>↗</span></a></div><div className={styles.footerBottom}><span>BUILT BY LUNA MAZE</span><span>ANDROID 8.0+</span><a href={internalUrl('/kern/faq/')}>FAQ</a><a href={internalUrl('/kern/privacy/')}>PRIVACY</a><a href={`mailto:${secondaryContactEmail}`}>CONTACT</a><a href="#top">BACK TO TOP ↑</a></div></footer>
+      <footer className={styles.footer}><div className={styles.footerTop}><Wordmark /><h2>Use your phone.<br /><em>Do not look at it.</em></h2><a className={styles.primaryAction} href={KERN_PLAY_URL} target="_blank" rel="noopener noreferrer"><span className={styles.filledSquare} /><span>VIEW ON GOOGLE PLAY</span><span aria-hidden>↗</span></a></div><div className={styles.footerBottom}><span>BUILT BY LUNA MAZE</span><span>ANDROID 8.0+</span><a href={internalUrl('/kern/faq/')}>FAQ</a><a href={internalUrl('/kern/privacy/')}>PRIVACY</a><a href={`mailto:${contactEmail}`}>CONTACT</a><a href="#top">BACK TO TOP ↑</a></div></footer>
     </main>
   );
 }

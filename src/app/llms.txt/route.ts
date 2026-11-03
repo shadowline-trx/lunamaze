@@ -1,4 +1,4 @@
-import { contactEmail, secondaryContactEmail, establishedYear, studioCountry, websiteLaunchLabel } from '@/content/lunamaze';
+import { contactEmail, establishedYear, studioCountry, websiteLaunchLabel } from '@/content/lunamaze';
 
 export const dynamic = 'force-static';
 
@@ -15,7 +15,6 @@ Luna Maze the software studio is not connected to other projects that share the 
 - Location: ${studioCountry}.
 - Funding: bootstrapped; no investors or outside funding.
 - Contact: ${contactEmail} (partnerships, press, product questions; replies usually within two business days).
-- Secondary contact: ${secondaryContactEmail}.
 - Founder: Shadowline (https://github.com/shadowline-trx).
 
 ## Products

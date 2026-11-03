@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import type { JSX } from 'react';
 import Link from 'next/link';
-import { secondaryContactEmail } from '@/content/lunamaze';
+import { contactEmail } from '@/content/lunamaze';
 import styles from './kern-privacy.module.css';
 
 /** Kern privacy disclosures for Android 1.1: match Telemetry.kt and Monetization.kt. */
@@ -214,7 +214,7 @@ export default function KernPrivacyPage(): JSX.Element {
         </p>
         <ol>
           <li>
-            Email <a href={`mailto:${secondaryContactEmail}`}>{secondaryContactEmail}</a>{' '}with the subject
+            Email <a href={`mailto:${contactEmail}`}>{contactEmail}</a>{' '}with the subject
             &ldquo;Kern data request&rdquo;. Say whether your request concerns usage/crash
             reports, paywall information or a purchase. No Kern account is required.
           </li>
@@ -261,7 +261,7 @@ export default function KernPrivacyPage(): JSX.Element {
         <h2>Contact</h2>
         <p>
           Questions about privacy, or anything else:{' '}
-          <a href={`mailto:${secondaryContactEmail}`}>{secondaryContactEmail}</a>.
+          <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.
         </p>
 
         <p>

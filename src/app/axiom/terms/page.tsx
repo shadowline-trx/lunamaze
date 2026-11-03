@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
 import Link from 'next/link';
-import { contactEmail, secondaryContactEmail } from '@/content/lunamaze';
+import { contactEmail } from '@/content/lunamaze';
 import { internalUrl } from '@/lib/paths';
 
 /**
@@ -420,7 +420,6 @@ export default function TermsPage(): JSX.Element {
             <li>
               <strong>{'Email: '}</strong>
               <a href={CONTACT_MAILTO}>{contactEmail}</a>
-              {' or '}<a href={`mailto:${secondaryContactEmail}`}>{secondaryContactEmail}</a>
             </li>
             <li>
               <strong>{'Developer: '}</strong>

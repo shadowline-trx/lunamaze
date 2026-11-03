@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import type { JSX } from 'react';
 import Link from 'next/link';
-import { secondaryContactEmail } from '@/content/lunamaze';
+import { contactEmail } from '@/content/lunamaze';
 import { KERN_PLAY_URL } from '@/content/kern';
 import styles from './kern-faq.module.css';
 
@@ -290,7 +290,7 @@ export default function KernFaqPage(): JSX.Element {
         <Link href="/">LUNA MAZE</Link>
         <Link href="/kern/">KERN</Link>
         <Link href="/kern/privacy/">PRIVACY</Link>
-        <a href={`mailto:${secondaryContactEmail}`}>CONTACT</a>
+        <a href={`mailto:${contactEmail}`}>CONTACT</a>
         <a href="#top">BACK TO TOP ↑</a>
       </footer>
     </div>

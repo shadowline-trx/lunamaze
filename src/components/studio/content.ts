@@ -4,11 +4,10 @@
  * product changes, change it there first and mirror it here.
  */
 
-import { contactEmail, secondaryContactEmail, establishedYear, studioCountry, websiteLaunchLabel } from '@/content/lunamaze';
+import { contactEmail, establishedYear, studioCountry, websiteLaunchLabel } from '@/content/lunamaze';
 
 export const SITE = 'https://lunamaze.com';
 export const CONTACT_EMAIL = contactEmail;
-export const SECONDARY_CONTACT_EMAIL = secondaryContactEmail;
 export const GITHUB_URL = 'https://github.com/shadowline-trx';
 
 /** Bump when the home page copy changes; feeds dateModified and the sitemap. */
@@ -236,6 +235,6 @@ export const FAQS: ReadonlyArray<Faq> = [
   },
   {
     q: 'How can I contact Luna Maze?',
-    a: `Email ${CONTACT_EMAIL} or ${SECONDARY_CONTACT_EMAIL}. The studio answers partnership, press and product questions, usually within two business days.`,
+    a: `Email ${CONTACT_EMAIL}. The studio answers partnership, press and product questions, usually within two business days.`,
   },
 ];
