@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
+    <div class="bgs" aria-hidden="true"></div>
     <main id="app">
       <section class="screen doc">
         <div class="kicker">Voice test · Luna Maze</div>
@@ -20,8 +21,8 @@
         <h3>If you're a tester</h3>
         <p>At the end you choose whether to send your recordings. Nothing is sent unless you tap "Send my recordings".</p>
         <ul>
-          <li><b>What we get:</b> four short recordings (your two readings of the same line, an "mm-hmm" and a sliding "aaah", about 30 seconds in all, saved at 16 kHz), the numbers the test measured, and a Prolific ID if you came from Prolific. Your name only if you typed one.</li>
-          <li><b>Phone details we get:</b> your browser's user-agent text (it names the browser and system version, and on some phones the model), its language setting, your screen size, and the type of mic (built-in, Bluetooth or wired) with its sound settings. We don't keep the mic's name, because it can include yours ("Arun's AirPods").</li>
+          <li><b>What we get:</b> four short recordings (your two readings of the same line, an "mm-hmm" and a sliding "aaah", about 30 seconds in all, saved at 16 kHz), the numbers the test measured (from your voice, and how noisy your room was), the answer you picked for "When does your voice let you down?", and a Prolific ID if you came from Prolific. Your name only if you typed one.</li>
+          <li><b>Phone details we get:</b> your browser's user-agent text (it names the browser and system version, and on some phones the model), its language setting, your screen size, whether it has a touchscreen, and the type of mic (built-in, Bluetooth or wired) with its sound settings. We don't keep the mic's name, because it can include yours ("Arun's AirPods").</li>
           <li><b>What we don't get:</b> your contacts, your location, or anything else on your phone.</li>
           <li><b>Your IP address:</b> GitHub, which hosts this page, and Supabase, which runs the database, see it when your phone connects and keep it in their logs (Supabase for 1 day). We don't save it with your recordings.</li>
           <li><b>What we use it for:</b> checking that the measurement works on real phones and real voices, and improving it. If you allowed it, your two readings may be played, without your name, to other testers, who pick which one sounds deeper.</li>

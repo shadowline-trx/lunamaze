@@ -151,7 +151,7 @@ function drawFrame(g, W, H, t, s) {
     g.fillRect(0, 0, W, H);
     const c = s.cmp;
     if (c.dSt <= -0.5) {
-      centerText(g, Math.abs(c.dSt).toFixed(1), 560, F(800, 220), C.accent, W);
+      centerText(g, Math.abs(c.shownSt ?? c.dSt).toFixed(1), 560, F(800, 220), C.accent, W);
       centerText(g, 'semitones deeper', 640, F(700, 46), C.text, W);
     } else {
       centerText(g, `+${Math.max(0, c.dScore).toFixed(1)}`, 560, F(800, 220), C.accent, W);

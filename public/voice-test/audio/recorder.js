@@ -29,14 +29,15 @@ function makeHub() {
   };
 }
 
-export async function openMic() {
+// ctxIn: an AudioContext made inside the tap that started the test (iPhone Safari needs that).
+export async function openMic(ctxIn = null) {
   if (!navigator.mediaDevices?.getUserMedia) throw new Error('no_mic_api');
   // Raw signal: echo cancellation, noise suppression and auto gain all bend pitch and resonance.
   const stream = await navigator.mediaDevices.getUserMedia({
     audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false, channelCount: 1 },
   });
   const Ctx = window.AudioContext || window.webkitAudioContext;
-  const ctx = new Ctx();
+  const ctx = ctxIn || new Ctx();
   await ctx.resume();
   const source = ctx.createMediaStreamSource(stream);
   const hub = makeHub();
@@ -75,9 +76,10 @@ export async function openMic() {
 }
 
 // Test double: streams fixture WAVs in real time (x speed) as if they came from the mic.
-export async function openFakeMic(base, speed = 1) {
+// The "room" source is a quiet room (faint noise, about -70 dBFS), made here rather than stored.
+export async function openFakeMic(base, speed = 1, ctxIn = null) {
   const Ctx = window.AudioContext || window.webkitAudioContext;
-  const ctx = new Ctx();
+  const ctx = ctxIn || new Ctx();
   await ctx.resume();
   const hub = makeHub();
   const cache = new Map();
@@ -85,6 +87,13 @@ export async function openFakeMic(base, speed = 1) {
   let pos = 0;
   const load = async (slot) => {
     if (!cache.has(slot)) {
+      if (slot === 'room') {
+        const fs = cache.get('before')?.fs || 16000;
+        const pcm = new Float32Array(fs * 2);
+        for (let i = 0; i < pcm.length; i++) pcm[i] = (Math.random() - 0.5) * 0.0011;
+        cache.set(slot, { pcm, fs });
+        return cache.get(slot);
+      }
       const r = await fetch(`${base}/${slot}.dat`);
       if (!r.ok) throw new Error(`fixture ${slot} missing`);
       cache.set(slot, decodeWav(await r.arrayBuffer()));

@@ -15,12 +15,18 @@ export function compareTakes(before, after) {
   const endingsBetter = after.phraseCount > 0 && after.risingCount < before.risingCount;
   const fakeDeep = after.fryPct >= 0.2 && after.fryPct > before.fryPct + 0.1;
 
+  // What the screens print: the semitones between the two whole-Hz numbers they show, so anyone
+  // checking 132 → 116 gets the same 2.2. The gates use the unrounded dSt.
+  const bHz = Math.round(before.f0Median);
+  const aHz = Math.round(after.f0Median);
+  const shownSt = 12 * Math.log2(aHz / bHz);
+
   const highlights = [];
   if (dSt <= -0.5) {
     highlights.push({
       key: 'pitch',
-      title: `${Math.round(before.f0Median)} → ${Math.round(after.f0Median)} Hz`,
-      sub: `${Math.abs(dSt).toFixed(1)} semitones deeper`,
+      title: `${bHz} → ${aHz} Hz`,
+      sub: `${Math.abs(shownSt).toFixed(1)} semitones deeper`,
     });
   }
   if (dDfPct <= -1.5) {
@@ -41,6 +47,7 @@ export function compareTakes(before, after) {
   const improved = highlights.length > 0 && !fakeDeep;
   return {
     dSt,
+    shownSt,
     dHz,
     dDfPct,
     dScore,
