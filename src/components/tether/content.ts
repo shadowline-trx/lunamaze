@@ -59,8 +59,8 @@ export const FEATURES: ReadonlyArray<Feature> = [
   },
   {
     id: 'tracking',
-    title: 'Instant device tracking',
-    desc: 'Devices appear and disappear the moment they connect over USB or Wi-Fi. No manual refresh.',
+    title: 'Stays connected',
+    desc: 'One card per phone, live the moment it connects. Wireless phones that drop reconnect on their own, and Fix connection works through the repairs instead of telling you to restart.',
   },
 ];
 
@@ -116,6 +116,10 @@ export const FAQS: ReadonlyArray<Faq> = [
   {
     q: 'What is Direct link?',
     a: 'Direct link gets wireless debugging past a router that blocks it. Tether ADB turns on this PC’s own Windows Mobile Hotspot and shows a QR code to join it. The phone keeps its internet through the PC and connects straight to Tether ADB, with the router out of the path. If the phone is plugged in over USB, one click does the whole thing: hotspot on, phone moved onto it, adb connected wirelessly, cable free to unplug. Turning Direct link off sends the phone back to its usual Wi-Fi.',
+  },
+  {
+    q: 'Does Tether ADB slow my PC down when it runs in the tray?',
+    a: 'No. Tether ADB starts with Windows straight into the tray (you can turn that off in Settings). Closing the window frees the whole interface; what keeps running to track and reconnect your phones uses about 6 MB of memory and no measurable CPU.',
   },
   {
     q: 'Is there a VS Code, Cursor or Windsurf extension?',
