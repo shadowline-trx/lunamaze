@@ -352,7 +352,7 @@ function takeScreen(o) {
       },
     });
     cap.done.then(async (pcm) => {
-      track('take_done', { slot: o.slot, sec: Math.round((pcm.length / state.mic.sampleRate) * 10) / 10 });
+      track('take_done', { slot: o.slot, sec: Math.round((pcm.length / state.mic.sampleRate) * 10) / 10, end: cap.endedBy });
       section.classList.remove('recording');
       ws.forEach((w) => w.classList.add('lit'));
       if (!o.floor) d.prog(1);

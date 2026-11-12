@@ -2,7 +2,7 @@
 // when he starts talking (keeping the half second before) and stop when he is done.
 // Everything is timed in audio samples, so the fixture mic (10x speed in tests) behaves the same.
 import { livePitch, F0_MIN, F0_MAX, VOICING_THRESHOLD } from '../engine/pitch.js';
-import { concatChunks, percentile } from '../engine/dsp.js';
+import { concatChunks, percentile, semitones } from '../engine/dsp.js';
 
 const PITCH_EVERY = 0.04; // s of audio between live pitch estimates
 const RING_SEC = 0.08; // the window each estimate looks at
@@ -35,7 +35,7 @@ export const TAKE_RULES = Object.freeze({
   after: { maxSec: 12, minSec: 6, silenceSec: 1.3 },
   after2: { maxSec: 12, minSec: 6, silenceSec: 1.3 },
   mmhmm: { maxSec: 4, minSec: 1.5, silenceSec: 0.9 },
-  glide: { maxSec: 6, minSec: 2, silenceSec: 0.8 },
+  glide: { maxSec: 6, minSec: 2, silenceSec: 0.8, creakEndSec: 1, dropSt: 3 },
 });
 
 export function createEar(mic, rules = EAR_RULES) {
@@ -54,6 +54,7 @@ export function createEar(mic, rules = EAR_RULES) {
   let lastVoiced = -1e12; // last clean pitch reading (the pip)
   let lastActive = -1e12; // last moment that counted as him talking (takes)
   let lastVoiceLike = -1e12; // last voice-like estimate at any level: the floor never learns from voice
+  let lastVoiceLikeHz = 0; // and the period it found
   let run = 0; // start-quality estimates in a row: a take starts on two, so one click can't start it
   let muteUntil = -1;
   const recent = []; // last raw estimates, for a median of three
@@ -99,7 +100,10 @@ export function createEar(mic, rules = EAR_RULES) {
       const e = muted ? null : estimate();
       const voiceLike = Boolean(e && e.cmnd < rules.voicing && e.rawF0 >= F0_MIN && e.rawF0 <= F0_MAX);
       const startOk = voiceLike && levelDb > gate(rules.startDb);
-      if (voiceLike) lastVoiceLike = n;
+      if (voiceLike) {
+        lastVoiceLike = n;
+        lastVoiceLikeHz = e.rawF0;
+      }
       // Loud sound counts as him only near his voice (a consonant, creak at a sentence end, a laugh).
       // Loud sound with no voice in it for loudHoldSec is the room: on the app's mic check (11-12) a
       // floor far under a noisy room called the room "talking", and every take ran to its limit.
@@ -198,14 +202,20 @@ export function createEar(mic, rules = EAR_RULES) {
       });
     },
     // One take. It waits for his voice, keeps the half second before it, and ends at maxSec, or
-    // once he has been quiet for silenceSec after at least minSec.
-    capture({ maxSec, minSec = 1, silenceSec = 1.2, onStart } = {}) {
+    // once he has been quiet for silenceSec after at least minSec. With creakEndSec (the glide), it
+    // also ends once he has slid at least dropSt semitones and then sat in creak that long: creak
+    // never counts toward his floor, so holding it only makes him wait (11-12: ~3 s of fry at 80 Hz).
+    capture({ maxSec, minSec = 1, silenceSec = 1.2, creakEndSec = 0, dropSt = 3, onStart } = {}) {
       let resolveFn;
       const done = new Promise((r) => (resolveFn = r));
       const chunks = [];
       let got = 0;
       let start = -1;
       let quietFrom = -1;
+      let top = 0;
+      let low = 0;
+      let creak = 0; // samples of unbroken sound with no clean pitch
+      let endedBy = null;
       const t = {
         started: false,
         waitFrom: n,
@@ -228,13 +238,34 @@ export function createEar(mic, rules = EAR_RULES) {
           got += c.length;
           if (active) quietFrom = -1;
           else if (quietFrom < 0) quietFrom = n;
+          if (creakEndSec > 0) {
+            // Unbroken creak only: anything voice-like resets it (the engine's own voicing test, looser
+            // than the clean pitch the pip needs). On his 11-12 glide the modal 80 Hz frames that set
+            // his floor came between bursts of creak; counting creak across them ended the take
+            // before them and moved his floor from 79 to 106 Hz.
+            // Fry often reads as voice at 300 Hz and up (the formants ringing between pulses), so a
+            // reading far above his lowest so far is not part of the glide, and doesn't reset it.
+            if (pitch && (!low || pitch <= low * 1.6)) {
+              top = Math.max(top, pitch);
+              low = low ? Math.min(low, pitch) : pitch;
+            }
+            // Likewise far below it: fry's own pulses read as 30-60 Hz.
+            const hi = Math.max(top, low * 1.6) * 1.1;
+            const lo = low / 1.26;
+            const voiced = n - lastVoiceLike < PITCH_EVERY * fs + c.length && (!low || (lastVoiceLikeHz <= hi && lastVoiceLikeHz >= lo));
+            if (voiced) creak = 0;
+            else if (active) creak += c.length;
+          }
+          const slid = low > 0 && semitones(top) - semitones(low) >= dropSt;
+          const sat = creakEndSec > 0 && slid && got >= minSec * fs && creak >= creakEndSec * fs;
           const long = got >= maxSec * fs;
           const finished = got >= minSec * fs && quietFrom >= 0 && n - quietFrom >= silenceSec * fs;
-          if (long || finished) t.finish();
+          if (long || finished || sat) t.finish(sat ? 'creak' : finished ? 'pause' : 'max');
         },
-        finish() {
+        finish(why = 'stop') {
           if (take !== t) return;
           take = null;
+          endedBy = why;
           resolveFn(concatChunks(chunks.length ? chunks : pre));
         },
       };
@@ -242,6 +273,14 @@ export function createEar(mic, rules = EAR_RULES) {
       return {
         done,
         stop: () => t.finish(),
+        // how it ended: pause | max | creak | stop
+        get endedBy() {
+          return endedBy;
+        },
+        // the glide's creak count and range so far (seconds, Hz), for tests and tools
+        get creak() {
+          return { sec: creak / fs, top, low };
+        },
         get started() {
           return t.started;
         },
