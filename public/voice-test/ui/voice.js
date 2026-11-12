@@ -23,15 +23,17 @@ export const EAR_RULES = Object.freeze({
   voicing: VOICING_THRESHOLD, // voice-like = a YIN dip under this, as in the offline track
   roomCapDb: 6, // the live floor stays within this of the room check's floor...
   floorIgnoresVoice: true, // ...and never learns from voice-like sound
+  loudHoldSec: 1.5, // loud sound keeps a take going only this long after the last voice-like sound
 });
 // The rules up to 11-11, kept so older recordings can be replayed (tools/gate1-takes.mjs).
 export const EAR_RULES_V1 = Object.freeze({ startDb: 12, keepDb: 12, loudDb: Infinity, minDb: -58, voicing: 0.15 });
 
 // How long each take may run, and how long a pause ends it (seconds).
+// Readings may run 12 s: his readings on the app's mic check (11-12) still had voice at 8.8 and 9.9 s.
 export const TAKE_RULES = Object.freeze({
-  before: { maxSec: 10, minSec: 6, silenceSec: 1.3 },
-  after: { maxSec: 10, minSec: 6, silenceSec: 1.3 },
-  after2: { maxSec: 10, minSec: 6, silenceSec: 1.3 },
+  before: { maxSec: 12, minSec: 6, silenceSec: 1.3 },
+  after: { maxSec: 12, minSec: 6, silenceSec: 1.3 },
+  after2: { maxSec: 12, minSec: 6, silenceSec: 1.3 },
   mmhmm: { maxSec: 4, minSec: 1.5, silenceSec: 0.9 },
   glide: { maxSec: 6, minSec: 2, silenceSec: 0.8 },
 });
@@ -97,10 +99,14 @@ export function createEar(mic, rules = EAR_RULES) {
       const e = muted ? null : estimate();
       const voiceLike = Boolean(e && e.cmnd < rules.voicing && e.rawF0 >= F0_MIN && e.rawF0 <= F0_MAX);
       const startOk = voiceLike && levelDb > gate(rules.startDb);
-      const keepOk = !muted && ((voiceLike && levelDb > gate(rules.keepDb)) || levelDb > gate(rules.loudDb));
+      if (voiceLike) lastVoiceLike = n;
+      // Loud sound counts as him only near his voice (a consonant, creak at a sentence end, a laugh).
+      // Loud sound with no voice in it for loudHoldSec is the room: on the app's mic check (11-12) a
+      // floor far under a noisy room called the room "talking", and every take ran to its limit.
+      const loudOk = levelDb > gate(rules.loudDb) && n - lastVoiceLike < (rules.loudHoldSec ?? Infinity) * fs;
+      const keepOk = !muted && ((voiceLike && levelDb > gate(rules.keepDb)) || loudOk);
       run = startOk ? run + 1 : 0;
       if (keepOk) lastActive = n;
-      if (voiceLike) lastVoiceLike = n;
       // The pip shows clean pitch only. An octave slip lasts one estimate; the median of three ignores it.
       const f0 = e?.f0 && levelDb > gate(rules.keepDb) ? e.f0 : 0;
       if (f0) {
