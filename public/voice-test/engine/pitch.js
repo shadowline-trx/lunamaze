@@ -147,13 +147,15 @@ export function trackPitch(pcm, fsIn, { threshold = 0.15, voicingThreshold = VOI
 }
 
 // Live estimate from the newest samples of a ring buffer (any input rate).
+// f0 is clean pitch only. cmnd and rawF0 let a caller judge "voice-like" more loosely, the way the
+// offline track does (VOICING_THRESHOLD): breathy, soft or creaky voice fails the clean test.
 export function livePitch(recent, fsIn) {
   const x = resample(recent, fsIn, PITCH_FS);
   const need = WIN + TAU_MAX + 1;
-  if (x.length < need) return { f0: 0, rms: 0 };
+  if (x.length < need) return { f0: 0, rms: 0, cmnd: 1, rawF0: 0 };
   const off = Math.max(0, Math.floor((x.length - need) / 2));
   const rms = frameRms(x, off, WIN);
   const y = yinAt(x, off, 0.15);
   const ok = y.periodic && rms > 0.004 && y.f0 >= F0_MIN && y.f0 <= F0_MAX;
-  return { f0: ok ? y.f0 : 0, rms };
+  return { f0: ok ? y.f0 : 0, rms, cmnd: y.cmnd, rawF0: y.f0 };
 }

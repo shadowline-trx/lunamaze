@@ -11,7 +11,7 @@ import { semitones } from './engine/dsp.js';
 import { dialHtml, FIG, figForHz } from './ui/dial.js';
 import { placeDial, mountAt, centerSheen, still, form, driveLive, drivePlayback, demoLoop, ticker, follow } from './ui/live.js';
 import { frames, odometer, countTo, reveal, SPRING_POP, easeInOut } from './ui/motion.js';
-import { createEar } from './ui/voice.js';
+import { createEar, TAKE_RULES } from './ui/voice.js';
 import { synth } from './ui/demo.js';
 import { makeShareVideo, renderShareFrames, shareOrDownload, trimToVoice } from './ui/share.js';
 import { lab } from './lab/store.js';
@@ -51,7 +51,6 @@ const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const wait = (ms) => sleep(ms / SPEED); // pauses in the flow (short in the fast test mode)
 const nextFrame = () => new Promise((r) => requestAnimationFrame(() => r()));
-const sec = (s) => s / SPEED;
 const hz = (v) => Math.round(v);
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
@@ -385,24 +384,36 @@ function takeScreen(o) {
           flN.parentElement.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.07)' }, { transform: 'scale(1)' }], { duration: 520, easing: 'cubic-bezier(.34,1.56,.64,1)' });
           swapText(flL, 'your comfortable low · saved');
         } else swapText(flL, 'We couldn’t find it this time. That’s fine.');
-        await wait(1700);
+        await wait(1400);
       } else {
         const chip = $('.rd-st');
         if (chip) chip.innerHTML = `${I.check}<span>Got it</span>`;
-        await wait(650);
+        await wait(450);
       }
       if (alive()) resolve({ pcm, m });
     });
   });
 }
 
+// Words per take here; how long each may run and what pause ends it live in ui/voice.js (TAKE_RULES).
 const TAKES = {
-  before: { slot: 'before', kicker: 'Your normal voice', steps: stepsBar(3, 0), title: ['Read it the way', 'you normally talk.'], passage: true, cue: 'Start reading when you’re ready', maxSec: 10, minSec: 6, silenceSec: 1.3 },
-  mmhmm: { slot: 'mmhmm', kicker: 'Agree out loud', steps: stepsBar(3, 1), title: ['Say “mm-hmm”', 'twice.'], lead: 'The way you’d agree with someone.', cue: 'Say it when you’re ready', maxSec: 3, minSec: 1.5, silenceSec: 0.9 },
-  glide: { slot: 'glide', kicker: 'Find your floor', steps: stepsBar(3, 2), title: ['Glide down to', 'your lowest note.'], lead: 'Say “aaah” and slide down. Gentle. Never push.', cue: 'Start when you’re ready', floor: true, maxSec: 5, minSec: 2, silenceSec: 0.8, fine: 'If it feels tight, stop there. That’s your floor.' },
-  after: { slot: 'after', kicker: 'Your deeper voice', title: ['Same line.', 'Start from the hum.'], passage: true, target: true, cue: 'Start reading when you’re ready', maxSec: 10, minSec: 6, silenceSec: 1.3, fine: 'Same distance as before: 20 to 30 cm.' },
-  after2: { slot: 'after2', kicker: 'One more try', title: ['Slower.', 'Let each sentence land low.'], passage: true, target: true, cue: 'Start reading when you’re ready', maxSec: 10, minSec: 6, silenceSec: 1.3, fine: 'Same distance as before: 20 to 30 cm.' },
+  before: { slot: 'before', kicker: 'Your normal voice', steps: stepsBar(3, 0), title: ['Read it the way', 'you normally talk.'], passage: true, cue: 'Start reading when you’re ready', ...TAKE_RULES.before },
+  mmhmm: { slot: 'mmhmm', kicker: 'Agree out loud', steps: stepsBar(3, 1), title: ['Say “mm-hmm”', 'twice.'], lead: 'The way you’d agree with someone.', cue: 'Say it when you’re ready', ...TAKE_RULES.mmhmm },
+  glide: { slot: 'glide', kicker: 'Find your floor', steps: stepsBar(3, 2), title: ['Glide down to', 'your lowest note.'], lead: 'Say “aaah” and slide down. Gentle. Never push.', cue: 'Start when you’re ready', floor: true, ...TAKE_RULES.glide, fine: 'If it feels tight, stop there. That’s your floor.' },
+  after: { slot: 'after', kicker: 'Your deeper voice', title: ['Same line.', 'Start from the hum.'], passage: true, target: true, cue: 'Start reading when you’re ready', ...TAKE_RULES.after, fine: 'Same distance as before: 20 to 30 cm.' },
+  after2: { slot: 'after2', kicker: 'One more try', title: ['Slower.', 'Let each sentence land low.'], passage: true, target: true, cue: 'Start reading when you’re ready', ...TAKE_RULES.after2, fine: 'Same distance as before: 20 to 30 cm.' },
 };
+
+// A glide counts as his floor only if it went somewhere: at least 2 semitones of slide, ending under
+// his "mm-hmm" and his reading pitch. On 11-12 a glide cut short at 0.7 semitones set a floor above
+// his mm-hmm, which pushed his practice target up to his normal pitch.
+function glideFloor(g, hum, readingHz) {
+  if (!g?.ok) return null;
+  const span = semitones(g.topHz) - semitones(g.floorHz);
+  if (span < 2 || g.floorHz >= readingHz) return null;
+  if (hum?.ok && g.floorHz >= hum.f0Median) return null;
+  return g.floorHz;
+}
 
 // ---------- measuring ----------
 
@@ -422,7 +433,8 @@ async function measuringScreen() {
   const cap = $('.ms-cap');
   const order = [FIG.busy, FIG.locked, FIG.lattice, FIG.flower, FIG.mandala, FIG.rings];
   const mine = figForHz(b.f0Median);
-  const K = SPEED > 1 ? 4 : 1;
+  // 1.4: about two seconds in all (11-12: the wait after reading felt long on his phone).
+  const K = SPEED > 1 ? 4 : 1.4;
   const tick = ticker(d);
   let k = -1;
   let settling = false;
@@ -459,7 +471,7 @@ async function measuringScreen() {
   });
   if (!alive()) return;
   swapText(cap, 'Done');
-  await wait(600);
+  await wait(350);
 }
 
 // ---------- result ----------
@@ -486,8 +498,9 @@ function resultScreen() {
   const floor = state.floorHz;
   const gapSt = floor ? semitones(b.f0Median) - semitones(floor) : null;
   const findings = [];
+  // No floor (the glide didn't count) means we don't know the gap, so say nothing about it.
   if (gapSt !== null && gapSt >= 3) findings.push(`You talk <b>${gapSt.toFixed(1)} semitones</b> above your comfortable low. The depth is there.`);
-  else findings.push('You already talk close to your low notes. Your gain is resonance: a darker, fuller sound.');
+  else if (gapSt !== null) findings.push('You already talk close to your low notes. Your gain is resonance: a darker, fuller sound.');
   if (b.phraseCount && b.risingCount) findings.push(`<b>${b.risingCount} of ${b.phraseCount}</b> sentences ended going up. It reads as asking, not telling.`);
   else if (b.phraseCount) findings.push('Your sentences land low at the end. Keep that.');
   findings.push(b.scores.resonance < 6 ? `Resonance <b>${b.scores.resonance.toFixed(1)}</b>. The sound sits high and light.` : `Resonance <b>${b.scores.resonance.toFixed(1)}</b>. Good chest. It can carry more.`);
@@ -545,35 +558,44 @@ function resultScreen() {
 
 // ---------- the 60-second reset ----------
 
-function resetStep({ n, title, lead, seconds, kind }) {
+// One step of the reset. It runs by itself, like the takes (11-12: "do I tap Note or Next?"): the
+// note plays on its own, and again if he goes quiet; the hairline fills with what he actually does
+// (sighs, or seconds of humming); the step moves on once it has that, or when its time is up.
+// Tapping the dial plays the note again. All timing is in audio time, so test speeds work too.
+function resetStep({ n, title, lead, kind, goal, maxSec }) {
   return new Promise((resolve) => {
     const t = state.target;
+    const ear = state.ear;
     const live = kind !== 'breath';
     const alive = render(`<section class="screen reset">
       <div class="row sb rise"><span class="lab hi">60-second reset</span><span class="fine num">${n} of 3</span></div>
       <div class="tbar rise" aria-hidden="true"><i></i></div>
       <h2 class="h2 m14">${lines(title)}</h2>
       <p class="lead rise m10">${lead}</p>
-      <div class="stage" data-dial><div class="dial-host"></div></div>
+      <div class="stage" data-dial><div class="dial-host"></div><span class="chip rd-st m6" role="status"><span class="rd-dot"></span><span class="rd-t swap">${live ? 'Listen to the note' : 'Yawn, then sigh it out'}</span></span></div>
       ${
         live
           ? `<div class="row gap rise"><div class="well st"><div class="big"><span class="hz">–</span><span class="unit">Hz</span></div><div class="lab">you, now</div></div><div class="well st"><div class="big"><span class="bp">0</span><span class="unit">%</span></div><div class="lab">in the arc</div></div></div>`
           : ''
       }
-      <div class="row gap rise m12">${live ? `<button class="btn ghost" id="tone" style="flex:1">${I.play} Note</button>` : ''}<button class="btn" id="next" style="flex:2">${n < 3 ? 'Next' : 'Read the line again'}</button></div>
-      <p class="fine tc rise m12">If anything feels tight or scratchy, stop. Never push to the bottom of your range.</p>
+      <p class="fine tc rise m12">${live ? 'Tap the dial to hear the note again. ' : ''}If anything feels tight or scratchy, stop. Never push to the bottom of your range.</p>
     </section>`);
+    const section = $('.screen');
     if (state.mic.fake) state.mic.setSource(live ? 'hum' : 'glide');
     const d = placeDial($('[data-dial]'), { maxR: 120, fig: FIG.mandala, seed: 23 });
     centerSheen(d.el);
+    const chip = $('.rd-st');
+    const chipT = $('.rd-t');
+    let notes = 0;
     const note = () => {
+      notes++;
       playTone(state.mic.ctx, t.targetHz, 2.2);
-      state.ear.mute(2400); // the note comes out of the speaker; don't score it as him
+      ear.mute(2400); // the note comes out of the speaker; don't score it as him
     };
     const hzEl = $('.hz');
     const bpEl = $('.bp');
     let lastText = 0;
-    const drive = driveLive(d, state.ear, {
+    const drive = driveLive(d, ear, {
       target: live ? t : null,
       alive,
       onFrame: (dt, { hz: h, p }) => {
@@ -587,34 +609,80 @@ function resetStep({ n, title, lead, seconds, kind }) {
     });
     if (live) {
       note();
-      $('#tone').onclick = note;
+      const stage = $('[data-dial]');
+      stage.setAttribute('role', 'button');
+      stage.setAttribute('aria-label', 'Play the note again');
+      stage.onclick = () => !ear.muted && note();
     }
-    // The step's time runs along the hairline under the header; the bezel stays for his pitch.
     const bar = $('.tbar i');
-    const t0 = performance.now();
-    frames(() => {
-      if (!alive()) return false;
-      const p = Math.min(1, (performance.now() - t0) / 1000 / sec(seconds));
-      bar.style.transform = `scaleX(${p.toFixed(4)})`;
-      if (p >= 1) $('#next')?.classList.add('ready');
-      return p < 1;
-    });
+    let phase = '';
+    const cue = (key, text) => {
+      if (key !== phase) {
+        phase = key;
+        swapText(chipT, text);
+      } else if (chipT.textContent !== text) chipT.textContent = text;
+    };
+    const t0 = ear.time;
+    let last = t0;
+    let did = 0; // seconds of him humming or speaking (live steps)
+    let sighs = 0;
+    let burstFrom = -1;
+    let quietFrom = t0;
     let finished = false;
-    $('#next').onclick = () => {
+    const finish = async (why) => {
       if (finished) return;
       finished = true;
       const st = drive.stop();
-      track('reset_step', { n, inBand: live && st.voicedSec > 0.2 ? Math.round((100 * st.insideSec) / st.voicedSec) : null });
-      resolve();
+      section.classList.remove('recording');
+      bar.style.transform = 'scaleX(1)';
+      if (chip) chip.innerHTML = why === 'goal' ? `${I.check}<span>Got it</span>` : '<span>Moving on</span>';
+      track('reset_step', { n, end: why, sec: Math.round(did * 10) / 10, sighs: live ? null : sighs, notes, inBand: live && st.voicedSec > 0.2 ? Math.round((100 * st.insideSec) / st.voicedSec) : null });
+      await wait(why === 'goal' ? 600 : 350);
+      if (alive()) resolve();
     };
+    frames(() => {
+      if (finished || !alive()) return false;
+      const now = ear.time;
+      const step = Math.max(0, now - last);
+      last = now;
+      const on = ear.active && !ear.muted;
+      section.classList.toggle('recording', on);
+      if (on) quietFrom = -1;
+      else if (quietFrom < 0) quietFrom = now;
+      let p;
+      if (live) {
+        if (on) did += step;
+        p = did / goal;
+        if (ear.muted) cue('note', 'Listen to the note');
+        else if (!did) cue('go', kind === 'hum' ? 'Now hum it' : 'Hum it, then speak');
+        else cue('count', `Keep going · 0:${String(Math.max(1, Math.ceil(goal - did))).padStart(2, '0')}`);
+        // Quiet for a while: the note again, so he never has to look for it.
+        if (quietFrom >= 0 && now - quietFrom > 7 && !ear.muted) {
+          note();
+          quietFrom = now;
+        }
+      } else {
+        if (on && burstFrom < 0) burstFrom = now;
+        if (!on && burstFrom >= 0) {
+          if (now - burstFrom >= 0.4) sighs++;
+          burstFrom = -1;
+        }
+        p = sighs / goal;
+        cue(`s${sighs}`, sighs ? `Sigh ${sighs} of ${goal}` : 'Yawn, then sigh it out');
+      }
+      bar.style.transform = `scaleX(${Math.min(1, p).toFixed(4)})`;
+      if (p >= 1) finish('goal');
+      else if (now - t0 >= maxSec) finish('time');
+      return true;
+    });
   });
 }
 
 async function resetFlow() {
   track('reset_start');
-  await resetStep({ n: 1, title: ['Relax your throat.'], lead: 'Yawn with your lips closed, then sigh out <q>haaah</q> as the yawn ends. Three times.', seconds: 15, kind: 'breath' });
-  await resetStep({ n: 2, title: ['Hand on your chest.', 'Hum the note.'], lead: 'Feel the buzz under your hand. Keep the marker inside the blue arc.', seconds: 25, kind: 'hum' });
-  await resetStep({ n: 3, title: ['Speak from', 'the hum.'], lead: 'Hum, then open into <q>Mm-hmm… good morning.</q> Slow. Let the last word drop.', seconds: 20, kind: 'speak' });
+  await resetStep({ n: 1, title: ['Relax your throat.'], lead: 'Yawn with your lips closed, then sigh out <q>haaah</q> as the yawn ends. Three times.', kind: 'breath', goal: 3, maxSec: 20 });
+  await resetStep({ n: 2, title: ['Hand on your chest.', 'Hum the note.'], lead: 'Feel the buzz under your hand. Keep the marker inside the blue arc.', kind: 'hum', goal: 8, maxSec: 30 });
+  await resetStep({ n: 3, title: ['Speak from', 'the hum.'], lead: 'Hum, then open into <q>Mm-hmm… good morning.</q> Slow. Let the last word drop.', kind: 'speak', goal: 6, maxSec: 25 });
   track('reset_done');
 }
 
@@ -996,12 +1064,19 @@ async function run(ctx) {
     await errorScreen(m.reason);
   }
   state.takes.mmhmm = (await takeScreen(TAKES.mmhmm)).pcm;
-  const g = await takeScreen({ ...TAKES.glide, analyze: (p) => analyzeGlide(p, fs) });
+  state.res.hum = analyzeHum(state.takes.mmhmm, fs);
+  const b = state.res.before;
+  const g = await takeScreen({
+    ...TAKES.glide,
+    // The glide screen shows a floor only when it counts (glideFloor); the numbers still go to Gate 1.
+    analyze: (p) => {
+      const m = analyzeGlide(p, fs);
+      return glideFloor(m, state.res.hum, b.f0Median) ? m : { ...m, ok: false, reason: m.ok ? 'no_glide' : m.reason };
+    },
+  });
   state.takes.glide = g.pcm;
   state.res.glide = g.m;
-  const b = state.res.before;
-  state.res.hum = analyzeHum(state.takes.mmhmm, fs);
-  state.floorHz = state.res.glide.ok && state.res.glide.floorHz < b.f0Median ? state.res.glide.floorHz : null;
+  state.floorHz = glideFloor(g.m, state.res.hum, b.f0Median);
   state.target = targetPitch({ habitualHz: b.f0Median, mmhmmHz: state.res.hum.ok ? state.res.hum.f0Median : 0, floorHz: state.floorHz || 0 });
 
   await measuringScreen();
