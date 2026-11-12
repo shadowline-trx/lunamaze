@@ -9,7 +9,7 @@ export const DOWNLOAD_URL =
   'https://github.com/shadowline-trx/tether-adb/releases/latest/download/Tether-ADB-x64-setup.exe';
 export const RELEASES_URL = 'https://github.com/shadowline-trx/tether-adb/releases/latest';
 export const GITHUB_URL = 'https://github.com/shadowline-trx/tether-adb';
-export const VERSION = 'v0.1.2';
+export const VERSION = 'v0.2.0';
 export const SIZE = '10 MB';
 export const PAGE_URL = 'https://lunamaze.com/tether-adb/';
 
@@ -107,7 +107,19 @@ export const FAQS: ReadonlyArray<Faq> = [
   },
   {
     q: 'Can I use ADB over Wi-Fi without a USB cable?',
-    a: 'Yes. On Android 11 and newer, Wireless debugging lets you pair and connect with no cable at all: scan the QR code in Tether ADB and you are connected. On older devices, plug in once over USB and use “Go wireless”, which switches adb to TCP mode and connects over the network; the cable can then come out.',
+    a: 'Yes. On Android 11 and newer, Wireless debugging lets you pair and connect with no cable at all: scan the QR code in Tether ADB and you are connected. On older devices, plug in once over USB and use “Go wireless”, which switches adb to TCP mode and connects over the network; the cable can then come out. If your router keeps Wi-Fi devices apart, use Direct link instead (see below).',
+  },
+  {
+    q: 'My phone shows up on Wi-Fi but never connects. Why?',
+    a: 'Almost always the router. Many home, office and ISP routers have “client isolation” (also called AP isolation) switched on: they let discovery traffic through, so the phone appears, but drop direct connections between devices on their Wi-Fi, so every pair and connect attempt times out. Guest networks always do this. It explains the classic pattern where wireless debugging works over your phone’s hotspot but never on the home router. With the phone plugged in over USB, Tether ADB’s Connection Troubleshooter tests the path from the phone’s side and tells you for certain. The fix is to turn off client isolation in the router’s Wi-Fi settings, or to use Direct link.',
+  },
+  {
+    q: 'What is Direct link?',
+    a: 'Direct link gets wireless debugging past a router that blocks it. Tether ADB turns on this PC’s own Windows Mobile Hotspot and shows a QR code to join it. The phone keeps its internet through the PC and connects straight to Tether ADB, with the router out of the path. If the phone is plugged in over USB, one click does the whole thing: hotspot on, phone moved onto it, adb connected wirelessly, cable free to unplug. Turning Direct link off sends the phone back to its usual Wi-Fi.',
+  },
+  {
+    q: 'Is there a VS Code, Cursor or Windsurf extension?',
+    a: 'Yes. Search “Tether ADB” in the extensions view (it is on Open VSX). It puts your devices in the sidebar with one-click adb shell, logcat and screenshots, and installs or opens this desktop app for mirroring, files, apps and QR pairing. When the app is installed, the extension uses the app’s own adb, so the two never restart each other’s adb server.',
   },
   {
     q: 'My phone is stuck on “pairing” forever. How do I fix it?',
